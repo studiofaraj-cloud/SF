@@ -14,6 +14,7 @@ export default {
       padding: {
         DEFAULT: '1rem',
         sm: '1.5rem',
+        md: '2rem', // Tablet: 768px+ - optimized padding for tablet viewports
         lg: '2rem',
         xl: '2rem',
         '2xl': '2rem',
