@@ -1,0 +1,172 @@
+{
+  "placeholderImages": [
+    {
+      "id": "team-about",
+      "description": "Team image for the about us page",
+      "imageUrl": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxkaWdpdGFsJTIwYWdlbmN5JTIwdGVhbXxlbnwwfHx8fDE3MjE4OTAxMjF8MA&ixlib=rb-4.0.3&q=80&w=1080",
+      "imageHint": "digital agency team"
+    },
+    {
+      "id": "mission-illustration",
+      "description": "Abstract illustration for mission section",
+      "imageUrl": "https://images.unsplash.com/photo-1721539584865-134ea847dbaf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8YWJzdHJhY3QlMjBtaXNzaW9uJTIwaWxsdXN0cmF0aW9ufGVufDB8fHx8MTc2NTEzMTA4M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "abstract mission illustration"
+    },
+    {
+      "id": "unique-illustration",
+      "description": "Abstract illustration for unique section",
+      "imageUrl": "https://images.unsplash.com/photo-1689005047267-b9bf392f0bb8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxhYnN0cmFjdCUyMDNkJTIwc2hhcGVzfGVufDB8fHx8MTc2NTEzMTA4M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "abstract 3d shapes"
+    },
+    {
+      "id": "team-member-1",
+      "description": "Placeholder for team member 1",
+      "imageUrl": "https://images.unsplash.com/photo-1724654814378-108c93f5fa54?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxwcm9mZXNzaW9uYWwlMjBkZXZlbG9wZXIlMjBwb3J0cmFpdHxlbnwwfHx8fDE3NjUxMzEwODN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "professional developer portrait"
+    },
+    {
+      "id": "team-member-2",
+      "description": "Placeholder for team member 2",
+      "imageUrl": "https://images.unsplash.com/photo-1740223544743-2aac7fb644c4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxwcm9mZXNzaW9uYWwlMjBkZXNpZ25lciUyMHBvcnRyYWl0fGVufDB8fHx8MTc2NTEzMTA4M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "professional designer portrait"
+    },
+    {
+      "id": "team-member-3",
+      "description": "Placeholder for team member 3",
+      "imageUrl": "https://images.unsplash.com/photo-1740153204804-200310378f2f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzZW8lMjBzcGVjaWFsaXN0JTIwcG9ydHJhaXR8ZW58MHx8fHwxNzY1MTMxMDgzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "seo specialist portrait"
+    },
+    {
+      "id": "team-member-4",
+      "description": "Placeholder for team member 4",
+      "imageUrl": "https://images.unsplash.com/photo-1726671943476-dd9c87908437?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjb250ZW50JTIwc3RyYXRlZ2lzdCUyMHBvcnRyYWl0fGVufDB8fHx8MTc2NTEzMTA4M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "content strategist portrait"
+    },
+    {
+      "id": "admin-avatar",
+      "description": "Avatar for admin user dropdown",
+      "imageUrl": "https://images.unsplash.com/photo-1531123414780-f74242c2b052?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8cGVyc29uJTIwcG9ydHJhaXR8ZW58MHx8fHwxNzY1MDI2MTU1fDA&ixlib=rb-4.0.3&q=80&w=1080",
+      "imageHint": "person portrait"
+    },
+    {
+      "id": "contact-illustration",
+      "description": "Illustration for contact page",
+      "imageUrl": "https://images.unsplash.com/photo-1721378466904-3b0b21152470?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxhYnN0cmFjdCUyMGNvbW11bmljYXRpb258ZW58MHx8fHwxNzY1MTEzMDEzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "abstract communication"
+    },
+    {
+      "id": "blog-featured-1",
+      "description": "Featured image for first sample blog",
+      "imageUrl": "https://images.unsplash.com/photo-1579567761406-4684ee0c75b6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHx0ZWNobm9sb2d5JTIwYWJzdHJhY3R8ZW58MHx8fHwxNzY1MDQ4OTU2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "technology abstract"
+    },
+    {
+      "id": "blog-featured-2",
+      "description": "Featured image for second sample blog",
+      "imageUrl": "https://images.unsplash.com/photo-1731461297304-43a787ca744c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHx3ZWJzaXRlJTIwcGVyZm9ybWFuY2V8ZW58MHx8fHwxNzY1MTM1ODE5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "website performance"
+    },
+    {
+      "id": "blog-featured-3",
+      "description": "Featured image for third sample blog",
+      "imageUrl": "https://images.unsplash.com/photo-1686061593213-98dad7c599b9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxzZW8lMjBhbmFseXRpY3N8ZW58MHx8fHwxNzY1MTM1ODE5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "seo analytics"
+    },
+    {
+      "id": "blog-featured-4",
+      "description": "Featured image for fourth sample blog",
+      "imageUrl": "https://images.unsplash.com/photo-1523961131990-5ea7c61b2107?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxhaSUyMG1hcmtldGluZ3xlbnwwfHx8fDE3NjUwNTIwODR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "ai marketing"
+    },
+    {
+      "id": "project-featured-1",
+      "description": "Featured image for first sample project",
+      "imageUrl": "https://images.unsplash.com/photo-1511892549826-a48122d9b258?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxlY29tbWVyY2UlMjBmYXNoaW9ufGVufDB8fHx8MTc2NTEzNTgyMHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "ecommerce fashion"
+    },
+    {
+      "id": "project-gallery-1a",
+      "description": "Gallery image for first sample project",
+      "imageUrl": "https://images.unsplash.com/photo-1664455340023-214c33a9d0bd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxvbmxpbmUlMjBzaG9wcGluZ3xlbnwwfHx8fDE3NjUwODk2Mzh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "online shopping"
+    },
+    {
+      "id": "project-gallery-1b",
+      "description": "Gallery image for first sample project",
+      "imageUrl": "https://images.unsplash.com/photo-1760287363707-851f4780b98c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxmYXNoaW9uJTIwYm91dGlxdWV8ZW58MHx8fHwxNzY1MDk1ODQ1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "fashion boutique"
+    },
+    {
+      "id": "project-featured-2",
+      "description": "Featured image for second sample project",
+      "imageUrl": "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxsYXclMjBvZmZpY2V8ZW58MHx8fHwxNzY1MTM1ODE5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "law office"
+    },
+    {
+      "id": "project-gallery-2a",
+      "description": "Gallery image for second sample project",
+      "imageUrl": "https://images.unsplash.com/photo-1619771699034-fec6b1aabde3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxsYXclMjBib29rc3xlbnwwfHx8fDE3NjUxMjQ2ODl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "law books"
+    },
+    {
+      "id": "project-gallery-2b",
+      "description": "Gallery image for second sample project",
+      "imageUrl": "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxqdXN0aWNlJTIwc2NhbGV8ZW58MHx8fHwxNzY1MTM1ODE5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "justice scale"
+    },
+    {
+      "id": "project-featured-3",
+      "description": "Featured image for third sample project",
+      "imageUrl": "https://images.unsplash.com/photo-1522199873717-bc67b1a5e32b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHx0cmF2ZWwlMjBib29raW5nfGVufDB8fHx8MTc2NTEzNTgyMHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "travel booking"
+    },
+    {
+      "id": "project-gallery-3a",
+      "description": "Gallery image for third sample project",
+      "imageUrl": "https://images.unsplash.com/photo-1559414059-34fe0a59e57a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxob3RlbCUyMHZpZXd8ZW58MHx8fHwxNzY1MDkyMzM5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "hotel view"
+    },
+    {
+      "id": "project-gallery-3b",
+      "description": "Gallery image for third sample project",
+      "imageUrl": "https://images.unsplash.com/photo-1711510585247-493c74435468?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxzaWNpbHklMjBiZWFjaHxlbnwwfHx8fDE3NjUxMzU4MjB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "sicily beach"
+    },
+    {
+      "id": "hero-carousel-1",
+      "description": "An image representing professionalism, maybe a well-organized desk or a team meeting.",
+      "imageUrl": "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8cHJvZmVzc2lvbmFsfGVufDB8fDB8fHww",
+      "imageHint": "professional workspace"
+    },
+    {
+      "id": "hero-carousel-2",
+      "description": "An image of a professional handshake representing partnership and agreement.",
+      "imageUrl": "https://images.unsplash.com/photo-1543269865-cbf427effbad?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMnx8cGFydG5lcnNoaXB8ZW58MHx8fHwxNzY1MjI1MDk0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "partnership meeting"
+    },
+    {
+      "id": "hero-carousel-3",
+      "description": "An image representing custom coding, like abstract code lines or a developer at work.",
+      "imageUrl": "https://images.unsplash.com/photo-1592609931095-54a2168ae893?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8c291cmNlJTIwY29kZXxlbnwwfHwwfHx8MA%3D%3D",
+      "imageHint": "abstract code"
+    },
+    {
+      "id": "hero-carousel-4",
+      "description": "An image representing the admin area, like a dashboard interface.",
+      "imageUrl": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZGFzaGJvYXJkJTIwdWl8ZW58MHx8MHx8fDA%3D",
+      "imageHint": "dashboard ui"
+    },
+    {
+      "id": "responsive-design-showcase",
+      "description": "A close up photo of a thunder imac, keyboard and trackpad on a white desk",
+      "imageUrl": "https://images.unsplash.com/photo-1416339684178-3a239570f315?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHx3ZWJzaXRlJTIwZGVzaWdufGVufDB8fHx8MTc2NTIyNTA4NHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "website design"
+    },
+    {
+      "id": "why-us-image",
+      "description": "A collaborative team working on a project in a modern office.",
+      "imageUrl": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjb2xsYWJvcmF0aXZlJTIwdGVhbXxlbnwwfHx8fDE3NjUyMjUwODR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "collaborative team"
+    }
+  ]
+}

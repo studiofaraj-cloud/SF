@@ -1,0 +1,1135 @@
+{
+  "common": {
+    "home": "Home",
+    "about": "Chi Siamo",
+    "services": "Servizi",
+    "projects": "Progetti",
+    "blog": "Blog",
+    "contact": "Contatti",
+    "search": "Cerca",
+    "login": "Login",
+    "language": "Lingua",
+    "readMore": "Leggi di più",
+    "learnMore": "Scopri di più",
+    "getStarted": "Inizia",
+    "submit": "Invia",
+    "cancel": "Annulla",
+    "close": "Chiudi",
+    "save": "Salva",
+    "delete": "Elimina",
+    "edit": "Modifica",
+    "loading": "Caricamento...",
+    "error": "Errore",
+    "success": "Successo",
+    "notFound": {
+      "title": "Pagina Non Trovata",
+      "description": "La pagina che stai cercando non esiste o è stata spostata.",
+      "subtitle": "Possiamo aiutarti?",
+      "home": "Torna alla Home",
+      "search": "Cerca",
+      "bookCall": "Prenota una Chiamata"
+    }
+  },
+  "nav": {
+    "home": "Home",
+    "about": "Chi Siamo",
+    "services": "Servizi",
+    "projects": "Progetti",
+    "blog": "Blog",
+    "contact": "Contatti"
+  },
+  "services": {
+    "webDevelopment": {
+      "label": "Sviluppo Web",
+      "badge": "Sviluppo Web",
+      "title": "Sviluppo Web",
+      "titleHighlight": "su Misura",
+      "subtitle": "Realizziamo siti web e applicazioni web",
+      "subtitleHighlight": "performanti, sicuri e scalabili",
+      "subtitleEnd": ", perfettamente allineati con le tue esigenze di business.",
+      "ctaQuote": "Richiedi Preventivo",
+      "ctaProjects": "Vedi Progetti",
+      "features": {
+        "badge": "Caratteristiche",
+        "title": "Cosa Include il",
+        "titleHighlight": "Nostro Servizio",
+        "customDesign": {
+          "title": "Design Personalizzato",
+          "description": "Ogni progetto è unico. Creiamo design su misura che riflettono l'identità del tuo brand."
+        },
+        "mobileFirst": {
+          "title": "Mobile-First",
+          "description": "Sviluppo responsive ottimizzato per tutti i dispositivi, dalla progettazione iniziale."
+        },
+        "performance": {
+          "title": "Performance Ottimale",
+          "description": "Siti web veloci e ottimizzati con punteggi Core Web Vitals eccellenti."
+        },
+        "security": {
+          "title": "Sicurezza Integrata",
+          "description": "Implementazione di best practices di sicurezza e protezione dai principali attacchi."
+        },
+        "cms": {
+          "title": "CMS Headless",
+          "description": "Integrazione con i migliori CMS headless per una gestione contenuti flessibile."
+        },
+        "scalability": {
+          "title": "Scalabilità",
+          "description": "Architettura progettata per crescere con il tuo business."
+        }
+      },
+      "technologies": {
+        "badge": "Tecnologie",
+        "title": "Stack Tecnologico",
+        "titleHighlight": "All'Avanguardia",
+        "subtitle": "Utilizziamo le tecnologie più moderne e affidabili per garantire prodotti di qualità superiore.",
+        "whyChoose": "Perché Sceglierci",
+        "benefits": [
+          "Codice pulito e manutenibile",
+          "Documentazione completa",
+          "Test automatizzati",
+          "Deploy continuo (CI/CD)",
+          "Monitoraggio performance",
+          "Supporto post-lancio incluso"
+        ]
+      },
+      "process": {
+        "badge": "Processo",
+        "title": "Come Lavoriamo",
+        "steps": {
+          "discovery": {
+            "step": "01",
+            "title": "Discovery",
+            "description": "Analisi delle esigenze e definizione degli obiettivi"
+          },
+          "design": {
+            "step": "02",
+            "title": "Design",
+            "description": "Prototipazione UI/UX e architettura informativa"
+          },
+          "development": {
+            "step": "03",
+            "title": "Sviluppo",
+            "description": "Codifica frontend e backend con metodologia agile"
+          },
+          "testing": {
+            "step": "04",
+            "title": "Testing",
+            "description": "Test approfonditi di qualità, sicurezza e performance"
+          },
+          "deploy": {
+            "step": "05",
+            "title": "Deploy",
+            "description": "Lancio in produzione e configurazione infrastruttura"
+          },
+          "support": {
+            "step": "06",
+            "title": "Supporto",
+            "description": "Manutenzione continua e ottimizzazioni"
+          }
+        }
+      }
+    },
+    "ecommerce": {
+      "label": "E-commerce",
+      "badge": "E-commerce",
+      "title": "Soluzioni",
+      "titleHighlight": "E-commerce",
+      "subtitle": "Piattaforme di vendita online complete con",
+      "subtitleHighlight": "esperienza utente ottimizzata",
+      "subtitleEnd": " e gestione avanzata di prodotti, ordini e pagamenti.",
+      "ctaQuote": "Richiedi Preventivo",
+      "ctaProjects": "Vedi Progetti",
+      "features": {
+        "badge": "Caratteristiche",
+        "title": "Cosa Include il",
+        "titleHighlight": "Nostro Servizio",
+        "customStore": {
+          "title": "Negozio Personalizzato",
+          "description": "Creiamo e-commerce unici che rispecchiano il tuo brand e ottimizzano le conversioni."
+        },
+        "securePayments": {
+          "title": "Pagamenti Sicuri",
+          "description": "Integrazione con Stripe, PayPal e i principali gateway di pagamento certificati PCI-DSS."
+        },
+        "inventory": {
+          "title": "Gestione Inventario",
+          "description": "Sistema avanzato per gestire prodotti, varianti, scorte e magazzino in tempo reale."
+        },
+        "shipping": {
+          "title": "Spedizioni Integrate",
+          "description": "Calcolo automatico delle spedizioni e tracking ordini per i tuoi clienti."
+        },
+        "analytics": {
+          "title": "Analytics Avanzati",
+          "description": "Dashboard completa con metriche di vendita, conversioni e comportamento utenti."
+        },
+        "seo": {
+          "title": "SEO E-commerce",
+          "description": "Ottimizzazione per i motori di ricerca specifica per piattaforme di vendita online."
+        }
+      },
+      "platforms": {
+        "badge": "Piattaforme",
+        "title": "Tecnologie",
+        "titleHighlight": "Supportate",
+        "shopify": "Soluzione completa per e-commerce di ogni dimensione",
+        "woocommerce": "Flessibilità totale su WordPress",
+        "custom": "Soluzioni su misura con Next.js e headless CMS",
+        "magento": "Per enterprise e cataloghi complessi"
+      },
+      "benefits": {
+        "badge": "Vantaggi",
+        "title": "Perché Scegliere",
+        "titleHighlight": "il Nostro E-commerce",
+        "items": [
+          "Aumento del tasso di conversione",
+          "Esperienza mobile ottimizzata",
+          "Carrello recupero abbandonato",
+          "Email marketing integrato",
+          "Sistema recensioni prodotti",
+          "Multi-valuta e multi-lingua"
+        ]
+      }
+    },
+    "designUIUX": {
+      "label": "Design UI/UX",
+      "badge": "Design UI/UX",
+      "title": "Design",
+      "titleHighlight": "UI/UX",
+      "subtitle": "Interfacce intuitive e accattivanti ottimizzate per un'esperienza perfetta su qualsiasi dispositivo.",
+      "ctaQuote": "Richiedi Preventivo",
+      "ctaProjects": "Vedi Progetti"
+    },
+    "seoMarketing": {
+      "label": "SEO & Marketing",
+      "badge": "SEO & Marketing",
+      "title": "SEO &",
+      "titleHighlight": "Web Marketing",
+      "subtitle": "Strategie digitali per aumentare la visibilità online e generare lead qualificati.",
+      "ctaQuote": "Richiedi Preventivo",
+      "ctaProjects": "Vedi Progetti"
+    },
+    "aiAutomation": {
+      "label": "AI & Automazione",
+      "badge": "AI & Automazione",
+      "title": "Integrazione AI",
+      "titleHighlight": "e Automazione",
+      "subtitle": "Sfruttiamo l'intelligenza artificiale per creare",
+      "subtitleHighlight": "chatbot, analisi predittive e automazioni",
+      "subtitleEnd": " che trasformano il tuo business.",
+      "ctaDiscover": "Scopri le Possibilità",
+      "ctaDemo": "Vedi Demo"
+    },
+    "maintenance": {
+      "label": "Manutenzione",
+      "badge": "Manutenzione",
+      "title": "Manutenzione",
+      "titleHighlight": "e Supporto",
+      "subtitle": "Offriamo piani di manutenzione flessibili per garantire che il tuo sito sia sempre",
+      "subtitleHighlight": " aggiornato, sicuro e performante",
+      "subtitleEnd": ".",
+      "ctaSupport": "Richiedi Supporto",
+      "ctaPlans": "Vedi i Piani",
+      "features": {
+        "badge": "Servizi Inclusi",
+        "title": "Protezione",
+        "titleHighlight": "Completa"
+      }
+    },
+    "hostingCloud": {
+      "label": "Hosting & Cloud",
+      "badge": "Hosting & Cloud",
+      "title": "Hosting",
+      "titleHighlight": "& Cloud",
+      "subtitle": "Infrastruttura cloud scalabile e sicura per le tue applicazioni web.",
+      "ctaQuote": "Richiedi Preventivo",
+      "ctaProjects": "Vedi Progetti"
+    },
+    "consulting": {
+      "label": "Consulenza",
+      "badge": "Consulenza",
+      "title": "Consulenza",
+      "titleHighlight": "Strategica",
+      "subtitle": "Ti affianchiamo nelle",
+      "subtitleHighlight": "decisioni strategiche",
+      "subtitleEnd": " per il tuo progetto digitale, dall'analisi alla scelta delle tecnologie.",
+      "ctaCall": "Prenota una Call",
+      "ctaAbout": "Chi Siamo",
+      "features": {
+        "strategic": {
+          "title": "Analisi Strategica",
+          "description": "Valutiamo la tua presenza digitale e definiamo una roadmap chiara per raggiungere i tuoi obiettivi."
+        },
+        "goals": {
+          "title": "Definizione Obiettivi",
+          "description": "Identifichiamo KPI misurabili e traguardi realistici per il tuo progetto digitale."
+        },
+        "audit": {
+          "title": "Audit Tecnologico",
+          "description": "Analizziamo la tua infrastruttura attuale e identifichiamo aree di miglioramento."
+        },
+        "tech": {
+          "title": "Scelta Tecnologie",
+          "description": "Ti guidiamo nella selezione delle tecnologie più adatte al tuo progetto e budget."
+        },
+        "competitor": {
+          "title": "Competitor Analysis",
+          "description": "Studiamo i tuoi competitor per identificare opportunità e differenziatori."
+        },
+        "growth": {
+          "title": "Growth Strategy",
+          "description": "Definiamo strategie di crescita digitale scalabili e sostenibili."
+        }
+      },
+      "process": {
+        "discovery": {
+          "step": "01",
+          "title": "Discovery Call",
+          "description": "Conosciamo il tuo business e i tuoi obiettivi"
+        },
+        "analysis": {
+          "step": "02",
+          "title": "Analisi",
+          "description": "Studiamo il mercato, competitor e opportunità"
+        },
+        "strategy": {
+          "step": "03",
+          "title": "Strategia",
+          "description": "Definiamo la roadmap e le priorità"
+        },
+        "proposal": {
+          "step": "04",
+          "title": "Proposta",
+          "description": "Presentiamo soluzioni concrete e misurabili"
+        },
+        "implementation": {
+          "step": "05",
+          "title": "Implementazione",
+          "description": "Ti affianchiamo nell'esecuzione"
+        },
+        "monitoring": {
+          "step": "06",
+          "title": "Monitoraggio",
+          "description": "Misuriamo i risultati e ottimizziamo"
+        }
+      },
+      "areas": [
+        "Strategia digitale",
+        "Trasformazione digitale",
+        "E-commerce strategy",
+        "Product management",
+        "UX/UI optimization",
+        "Performance marketing",
+        "Tech stack selection",
+        "Team building digitale"
+      ]
+    },
+    "other": {
+      "label": "Altro"
+    }
+  },
+  "header": {
+    "search": "Cerca",
+    "language": "Lingua"
+  },
+  "home": {
+    "hero": {
+      "badge": "Studio Faraj — Web Development Agency",
+      "professionalism": "Professionalità Garantita",
+      "professionalismDesc": "Un team di esperti dedicati per risultati impeccabili e affidabili.",
+      "deadlines": "Rispetto delle Scadenze",
+      "deadlinesDesc": "Consegniamo il tuo progetto in tempo, sempre. La tua timeline è la nostra priorità.",
+      "customCode": "Codice Scritto su Misura",
+      "customCodeDesc": "Soluzioni uniche e performanti, create specificamente per le tue esigenze.",
+      "adminArea": "Area Amministrativa Inclusa",
+      "adminAreaDesc": "Gestisci il tuo sito in autonomia con un pannello di controllo intuitivo e potente.",
+      "ctaQuote": "Richiedi un preventivo",
+      "ctaProjects": "Scopri i nostri lavori"
+    },
+    "stats": {
+      "title": "I Nostri Numeri",
+      "projects": "Progetti Completati",
+      "clients": "Clienti Soddisfatti",
+      "experience": "Anni di Esperienza",
+      "support": "Supporto 24/7",
+      "technologies": "Tecnologie Padroneggiate"
+    },
+    "services": {
+      "badge": "Servizi",
+      "title": "Soluzioni Digitali per",
+      "titleHighlight": "la Tua Crescita",
+      "subtitle": "Offriamo una gamma completa di servizi per costruire, lanciare e far crescere la tua presenza online.",
+      "webDevelopment": {
+        "title": "Sviluppo Web su Misura",
+        "description": "Realizziamo siti web e applicazioni web performanti, sicuri e scalabili, perfettamente allineati con le tue esigenze di business."
+      },
+      "ecommerce": {
+        "title": "Soluzioni E-commerce",
+        "description": "E-commerce sviluppati con codice personalizzato e integrazione Shopify. Creiamo piattaforme di vendita online complete, dall'esperienza utente alla gestione del magazzino e dei pagamenti."
+      },
+      "designUIUX": {
+        "title": "Design Responsivo e UI/UX",
+        "description": "Progettiamo interfacce intuitive e accattivanti, ottimizzate per un'esperienza perfetta su qualsiasi dispositivo."
+      },
+      "maintenance": {
+        "title": "Manutenzione e Supporto",
+        "description": "Offriamo piani di manutenzione flessibili per garantire che il tuo sito sia sempre aggiornato, sicuro e performante."
+      },
+      "aiAutomation": {
+        "title": "Integrazione AI e Automazione",
+        "description": "Sfruttiamo l'intelligenza artificiale per creare funzionalità avanzate come chatbot, analisi predittive e automazioni."
+      },
+      "seoMarketing": {
+        "title": "SEO e Web Marketing",
+        "description": "Miglioriamo la visibilità del tuo sito sui motori di ricerca con strategie SEO mirate e campagne di web marketing."
+      },
+      "hostingCloud": {
+        "title": "Hosting e Infrastruttura Cloud",
+        "description": "Forniamo soluzioni di hosting gestito ad alte prestazioni, ottimizzate per la velocità e la sicurezza."
+      },
+      "consulting": {
+        "title": "Consulenza Strategica",
+        "description": "Ti affianchiamo nelle decisioni strategiche per il tuo progetto digitale, dall'analisi alla scelta delle tecnologie."
+      },
+      "requestInfo": "Richiedi informazioni",
+      "cta": "Contattaci per una Consulenza Gratuita",
+      "learnMore": "Scopri di più"
+    },
+    "technologies": {
+      "badge": "Stack Tecnologico",
+      "title": "Tecnologie Moderne",
+      "titleHighlight": "per Risultati Eccellenti",
+      "subtitle": "Utilizziamo solo le tecnologie più moderne, performanti e affidabili del settore per garantirti soluzioni all'avanguardia e future-proof.",
+      "frontend": {
+        "title": "Frontend",
+        "description": "Framework e librerie moderne per interfacce utente performanti e intuitive."
+      },
+      "backend": {
+        "title": "Backend & Cloud",
+        "description": "Infrastrutture scalabili e sicure per applicazioni enterprise-grade."
+      },
+      "ecommerce": {
+        "title": "E-commerce",
+        "description": "E-commerce sviluppati con codice personalizzato e integrazione Shopify per negozi online performanti e scalabili.",
+        "customCoding": "Codice Personalizzato"
+      },
+      "trust": {
+        "secure": "Sicure",
+        "performant": "Performanti",
+        "cuttingEdge": "All'Avanguardia"
+      }
+    },
+    "responsive": {
+      "badge": "Perfetto su Ogni Dispositivo",
+      "title": "Siti Web che Si Adattano",
+      "titleHighlight": "Perfettamente a Te",
+      "subtitle": "Ogni pixel conta. Progettiamo esperienze digitali che brillano su qualsiasi schermo, garantendo prestazioni ottimali e un'esperienza utente impeccabile su desktop, tablet e mobile.",
+      "desktop": {
+        "label": "Desktop",
+        "description": "Esperienza completa e dettagliata"
+      },
+      "tablet": {
+        "label": "Tablet",
+        "description": "Perfetto equilibrio tra funzionalità e portabilità"
+      },
+      "mobile": {
+        "label": "Mobile",
+        "description": "Ottimizzato per il touch e la navigazione rapida"
+      },
+      "features": {
+        "mobileFirst": {
+          "title": "Mobile-First",
+          "description": "Progettazione che parte dal mobile per garantire performance ottimali"
+        },
+        "touchFriendly": {
+          "title": "Touch-Friendly",
+          "description": "Interfacce ottimizzate per il tocco e la navigazione intuitiva"
+        },
+        "performance": {
+          "title": "Performance",
+          "description": "Caricamento rapido e fluido su qualsiasi connessione"
+        },
+        "accessibility": {
+          "title": "Accessibilità",
+          "description": "Design inclusivo accessibile a tutti gli utenti"
+        }
+      },
+      "cta": "Scopri i Nostri Servizi"
+    },
+    "values": {
+      "badge": "Perché Sceglierci",
+      "title": "Il Partner Ideale per",
+      "titleHighlight": "la Tua Crescita Digitale",
+      "subtitle": "Non siamo solo un'agenzia. Siamo il tuo team strategico dedicato al successo digitale, con un approccio personalizzato e risultati misurabili.",
+      "fastDelivery": {
+        "title": "Consegna Rapida",
+        "description": "Lavoriamo in modo efficiente per consegnare il tuo progetto nei tempi concordati, senza compromettere la qualità.",
+        "metric": "48h",
+        "metricLabel": "Risposta Media"
+      },
+      "support": {
+        "title": "Supporto 24/7",
+        "description": "Il nostro team è sempre a tua disposizione per risolvere qualsiasi problema e rispondere a ogni tua domanda.",
+        "metric": "24/7",
+        "metricLabel": "Disponibilità"
+      },
+      "transparency": {
+        "title": "Trasparenza Totale",
+        "description": "Crediamo in una comunicazione chiara e onesta. Sarai sempre aggiornato sullo stato del tuo progetto.",
+        "metric": "100%",
+        "metricLabel": "Trasparenza"
+      }
+    },
+    "process": {
+      "badge": "Il Nostro Metodo",
+      "title": "Un Processo Semplice",
+      "titleHighlight": "ed Efficace",
+      "subtitle": "Seguiamo un approccio collaudato in 4 fasi per garantire risultati eccellenti, sempre.",
+      "steps": {
+        "analysis": {
+          "number": "01",
+          "title": "Analisi e Strategia",
+          "description": "Ascoltiamo le tue esigenze e definiamo insieme gli obiettivi per creare una strategia su misura."
+        },
+        "design": {
+          "number": "02",
+          "title": "Design & Prototipazione",
+          "description": "Creiamo un design unico e funzionale, focalizzato sull'esperienza utente e sull'identità del tuo brand."
+        },
+        "development": {
+          "number": "03",
+          "title": "Sviluppo e Implementazione",
+          "description": "Trasformiamo il design in un sito web performante, sicuro e ottimizzato per tutti i dispositivi."
+        },
+        "launch": {
+          "number": "04",
+          "title": "Lancio e Ottimizzazione",
+          "description": "Mettiamo online il tuo sito e monitoriamo le performance per garantire risultati eccellenti nel tempo."
+        }
+      }
+    },
+    "team": {
+      "badge": "Chi Siamo",
+      "title": "Un Team di",
+      "titleHighlight": "Professionisti al Tuo Servizio",
+      "subtitle": "Sviluppatori esperti con competenze avanzate e anni di esperienza, sempre pronti a trasformare le tue idee in realtà digitali di successo.",
+      "expertDevelopers": {
+        "title": "Sviluppatori Esperti",
+        "description": "Un team di programmatori professionisti con competenze avanzate in tecnologie moderne, sempre aggiornati sulle ultime tendenze del settore per offrirti soluzioni all'avanguardia."
+      },
+      "available247": {
+        "title": "Disponibili 24/7",
+        "description": "Siamo sempre a tua disposizione, in qualsiasi momento. Il nostro team è pronto a rispondere alle tue esigenze e supportarti in ogni fase del progetto, garantendo assistenza continua e tempestiva."
+      },
+      "ceo": {
+        "title": "Hussein Faraj",
+        "role": "CEO & Founder",
+        "description": "Visionario e leader con una passione per l'innovazione digitale"
+      },
+      "vision": {
+        "title": "Visione Ambiziosa",
+        "description": "Hussein Faraj guida Studio Faraj verso obiettivi ambiziosi: diventare un punto di riferimento nel settore digitale, innovando costantemente e superando le aspettative dei clienti con soluzioni tecnologiche d'eccellenza."
+      },
+      "stats": {
+        "experience": {
+          "label": "Anni di Esperienza",
+          "value": "5+"
+        },
+        "clients": {
+          "label": "Clienti Soddisfatti",
+          "value": "100+"
+        },
+        "projects": {
+          "label": "Progetti Completati",
+          "value": "200+"
+        }
+      },
+      "cta": "Scopri di Più sul Nostro Team"
+    },
+    "projects": {
+      "title": "I Nostri Ultimi Lavori",
+      "subtitle": "Dai un'occhiata ad alcuni dei progetti che abbiamo realizzato con passione per i nostri clienti.",
+      "featured": "Progetto in Evidenza",
+      "viewAll": "Vedi Tutti i Progetti",
+      "discover": "Scopri il Progetto",
+      "discoverMore": "Scopri di più"
+    },
+    "blog": {
+      "title": "Ultimi Articoli",
+      "subtitle": "Resta aggiornato con i nostri ultimi articoli su sviluppo web, design e tecnologia.",
+      "readMore": "Leggi l'articolo"
+    },
+    "testimonials": {
+      "badge": "Testimonianze",
+      "title": "Cosa Dicono",
+      "titleHighlight": "di Noi",
+      "subtitle": "La soddisfazione dei nostri clienti è la nostra migliore pubblicità. Scopri le esperienze di chi ha scelto Studio Faraj.",
+      "swipeHint": "← Scorri per vedere altre recensioni →"
+    },
+    "contact": {
+      "title": "Iniziamo Insieme il Tuo",
+      "titleHighlight": "Progetto Digitale",
+      "subtitle": "Hai un'idea? Contattaci per una consulenza gratuita e scopri come possiamo aiutarti a realizzarla.",
+      "bookCall": "Prenota una Chiamata",
+      "requestQuote": "Richiedi un Preventivo"
+    }
+  },
+  "quoteDialog": {
+    "title": "Richiedi un Preventivo",
+    "description": "Raccontaci la tua idea. Rispondiamo solitamente entro 24 ore. Per urgenze, non esitare a contattarci direttamente.",
+    "infoTitle": "Informazioni",
+    "infoText": "Hai un progetto in mente? Scrivici una mail o compila il form.",
+    "operationalHQ": "Sede Operativa",
+    "operatesIn": "Operiamo in tutta Italia",
+    "form": {
+      "name": "Il tuo Nome / Azienda",
+      "email": "Il tuo Indirizzo E-mail",
+      "service": "Servizio di interesse",
+      "budget": "Qual è il tuo budget?",
+      "message": "Descrivi brevemente il tuo progetto",
+      "privacy": "Accetto la Privacy Policy e autorizzo il trattamento dei dati personali.",
+      "submit": "Invia Richiesta"
+    },
+    "success": {
+      "title": "Messaggio Inviato",
+      "description": "Grazie per averci contattato. Ti risponderemo il prima possibile."
+    }
+  },
+  "bookingDialog": {
+    "title": "Prenota una Chiamata",
+    "description": "Seleziona una data e compila il form. Ti contatteremo per confermare l'appuntamento.",
+    "form": {
+      "name": "Nome e Cognome *",
+      "email": "Email *",
+      "phone": "Telefono *",
+      "date": "Seleziona Data *",
+      "datePlaceholder": "Seleziona una data",
+      "time": "Fascia Oraria (Opzionale - Seleziona uno o più orari)",
+      "anytime": "Qualsiasi orario (09:00 - 18:00)",
+      "message": "Messaggio (Opzionale)",
+      "submit": "Invia Prenotazione",
+      "selectedAnytime": "Selezionato: Qualsiasi orario (9:00 - 18:00)",
+      "selectedTimes": "Selezionati {count} orario{count, plural, =1 {} other {i}}"
+    },
+    "success": {
+      "title": "Prenotazione Inviata!",
+      "description": "Ti contatteremo presto per confermare l'appuntamento."
+    },
+    "errors": {
+      "dateRequired": "Data Richiesta",
+      "dateRequiredDesc": "Seleziona una data per la chiamata."
+    }
+  },
+  "stats": {
+    "projects": "Progetti Completati",
+    "clients": "Clienti Soddisfatti",
+    "experience": "Anni di Esperienza",
+    "technologies": "Tecnologie Padroneggiate"
+  },
+  "contact": {
+    "badge": "Contattaci",
+    "title": "Iniziamo Insieme il Tuo",
+    "titleHighlight": "Progetto Digitale",
+    "subtitle": "Siamo entusiasti di conoscere la tua idea! Ogni grande progetto inizia con una conversazione.",
+    "bookCall": "Prenota una Chiamata",
+    "bookCallDescription": "Prenota una chiamata gratuita per discutere del tuo progetto e ricevere un preventivo personalizzato.",
+    "trust": {
+      "response24h": "Risposta in 24h",
+      "freeConsultation": "Consulenza Gratuita",
+      "gdprCompliant": "GDPR Compliant"
+    },
+    "methods": {
+      "directContact": "Contattaci Direttamente",
+      "email": {
+        "title": "Email",
+        "text": "Scrivici per preventivi, collaborazioni o assistenza.",
+        "metric": "< 24h",
+        "metricLabel": "Risposta"
+      },
+      "phone": {
+        "title": "Telefono",
+        "text": "Preferisci parlare direttamente con noi?",
+        "metric": "Disponibile",
+        "metricLabel": "Ora"
+      },
+      "location": {
+        "title": "Sede Operativa",
+        "text": "Lavoriamo in tutta Italia, operando principalmente da Sciacca.",
+        "metric": "Italia",
+        "metricLabel": "Wide"
+      }
+    },
+    "form": {
+      "name": "Il tuo Nome",
+      "email": "La tua Email",
+      "service": "Servizio di interesse",
+      "message": "Il tuo Messaggio",
+      "messagePlaceholder": "Descrivi il tuo progetto o la tua richiesta...",
+      "namePlaceholder": "Mario Rossi",
+      "emailPlaceholder": "latuaemail@esempio.com",
+      "privacy": "Accetto la Privacy Policy e autorizzo il trattamento dei dati personali.",
+      "submit": "Invia Messaggio",
+      "submitLoading": "Invio in corso...",
+      "formTitle": "Inviaci un Messaggio",
+      "formSubtitle": "Compila il form e ti risponderemo entro 24 ore."
+    },
+    "success": {
+      "title": "Messaggio Inviato",
+      "description": "Grazie per averci contattato. Ti risponderemo il prima possibile.",
+      "message": "Messaggio inviato con successo! Ti risponderemo presto."
+    },
+    "errors": {
+      "validation": "Errore di Validazione",
+      "generic": "Errore"
+    },
+    "faqSection": {
+      "badge": "FAQ",
+      "title": "Domande",
+      "titleHighlight": "Frequenti",
+      "subtitle": "Trova risposte rapide alle domande più comuni.",
+      "notFound": "Non hai trovato quello che cercavi?",
+      "writeDirectly": "Scrivici direttamente"
+    },
+    "cta": {
+      "badge": "Pronto a Iniziare?",
+      "title": "Trasforma la Tua",
+      "titleHighlight": "Idea in Realtà",
+      "subtitle": "Raccontaci cosa hai in mente e troveremo la soluzione ideale per te. La nostra consulenza iniziale è",
+      "subtitleHighlight": "sempre gratuita",
+      "availability": "Rispondiamo velocemente, sempre",
+      "startProject": "Inizia il Tuo Progetto",
+      "viewWorks": "Vedi i Nostri Lavori"
+    },
+    "availability": {
+      "status": "Disponibili per nuovi progetti"
+    },
+    "infoCards": {
+      "guaranteedResponse": {
+        "title": "Risposta Garantita",
+        "description": "Ci impegniamo a rispondere a ogni richiesta entro **24 ore lavorative**."
+      },
+      "freeConsultation": {
+        "title": "Consulenza Gratuita",
+        "description": "La prima chiamata è sempre gratuita. Analizzeremo insieme le tue esigenze senza impegno."
+      },
+      "privacyGuaranteed": {
+        "title": "Privacy Garantita",
+        "description": "I tuoi dati sono trattati secondo le normative GDPR. Non condividiamo informazioni con terzi."
+      },
+      "stats": {
+        "projects": "Progetti",
+        "satisfied": "Soddisfatti",
+        "years": "Anni"
+      }
+    },
+    "trustIndicators": {
+      "dataProtected": "Dati protetti",
+      "gdprCompliant": "GDPR Compliant",
+      "quickResponse": "Risposta rapida"
+    },
+    "bookCallCard": {
+      "description": "Inizia il tuo progetto oggi! Prenota una consulenza gratuita e ricevi consigli esperti su misura per le tue esigenze aziendali.",
+      "benefit1": {
+        "title": "Consulenza Esperta",
+        "description": "Accedi direttamente al nostro team esperto e ricevi una guida professionale."
+      },
+      "benefit2": {
+        "title": "Soluzione Su Misura",
+        "description": "Ricevi un preventivo dettagliato progettato specificamente per le esigenze del tuo progetto."
+      },
+      "benefit3": {
+        "title": "Completamente Gratuito",
+        "description": "Nessun costo nascosto, nessun impegno richiesto — solo consigli preziosi per il tuo successo."
+      }
+    }
+  },
+  "about": {
+    "hero": {
+      "badge": "Studio Faraj — Dal 2020",
+      "title": "Dove i Sogni Digitali",
+      "titleHighlight": "Prendono il Volo",
+      "subtitle": "Da",
+      "subtitleLocation": "Sciacca, Sicilia",
+      "subtitleText": ", trasformiamo visioni digitali in realtà misurabili. Sviluppo web, integrazione AI e soluzioni IT per aziende che vogliono dominare il futuro.",
+      "locationCoordinates": "37°30'N 13°05'E",
+      "operationalArea": "Operativi in tutta Italia",
+      "ctaStart": "Inizia il Tuo Progetto",
+      "ctaExplore": "Esplora i Lavori"
+    },
+    "identity": {
+      "badge": "Chi Siamo",
+      "title": "Giovani, Creativi,",
+      "titleHighlight": "Appassionati",
+      "subtitle": "Un team di sviluppatori, designer e professionisti IT uniti dalla missione di trasformare il panorama digitale italiano.",
+      "foundingYear": "2020",
+      "foundingLabel": "Anno di Fondazione",
+      "foundingLocation": "Sciacca, Sicilia",
+      "mission": {
+        "badge": "La Nostra Missione",
+        "title": "Rendere il Tuo Business Migliore",
+        "description": "Studio Faraj è nato con un obiettivo chiaro: aiutare le aziende italiane a prosperare nel mondo digitale. Non creiamo solo siti web, costruiamo",
+        "descriptionHighlight": "ecosistemi digitali",
+        "descriptionEnd": "che generano valore, risparmiano tempo e amplificano la visibilità del tuo brand."
+      },
+      "stats": {
+        "projects": "Progetti Completati",
+        "clients": "Clienti Soddisfatti",
+        "years": "Anni di Esperienza",
+        "technologies": "Tecnologie"
+      }
+    },
+    "philosophy": {
+      "badge": "Core Protocols",
+      "title": "I Nostri",
+      "titleHighlight": "Pilastri Fondamentali",
+      "subtitle": "Tre principi guida che definiscono ogni nostra interazione e progetto.",
+      "creativity": {
+        "title": "Creatività",
+        "subtitle": "PROTOCOL_001",
+        "description": "Ogni progetto è un ecosistema unico. Combiniamo arte e tecnologia per creare esperienze digitali che non solo funzionano, ma ispirano e coinvolgono.",
+        "features": [
+          "Design Thinking",
+          "UI/UX Innovation",
+          "Brand Storytelling"
+        ]
+      },
+      "collaboration": {
+        "title": "Collaborazione",
+        "subtitle": "PROTOCOL_002",
+        "description": "Non siamo fornitori, siamo partner. Integriamo i nostri processi con i tuoi, creando un flusso di lavoro sinergico che amplifica i risultati.",
+        "features": [
+          "Agile Workflow",
+          "Real-time Updates",
+          "Shared Vision"
+        ]
+      },
+      "transparency": {
+        "title": "Trasparenza",
+        "subtitle": "PROTOCOL_003",
+        "description": "Zero sorprese, massima chiarezza. Dashboard in tempo reale, comunicazione aperta e pricing cristallino sono i pilastri del nostro approccio.",
+        "features": [
+          "Live Dashboards",
+          "Open Communication",
+          "Clear Pricing"
+        ]
+      }
+    },
+    "timeline": {
+      "badge": "Timeline Odyssey",
+      "title": "La Nostra",
+      "titleHighlight": "Storia di Innovazione",
+      "subtitle": "Un viaggio di crescita, sfide e successi che ci ha portato dove siamo oggi.",
+      "2020": {
+        "title": "La Nascita",
+        "description": "Studio Faraj nasce da una visione: democratizzare l'accesso a soluzioni digitali di qualità per le imprese siciliane e italiane."
+      },
+      "2021": {
+        "title": "Primi Successi",
+        "description": "Completiamo i primi 20 progetti, costruendo una reputazione solida nel mercato locale con soluzioni e-commerce e siti web corporate."
+      },
+      "2022": {
+        "title": "Espansione Team",
+        "description": "Il team cresce con nuovi talenti specializzati in UI/UX design, backend development e digital marketing strategico."
+      },
+      "2023": {
+        "title": "AI Revolution",
+        "description": "Integriamo l'intelligenza artificiale nei nostri workflow, offrendo chatbot, automazioni e analisi predittive ai nostri clienti."
+      },
+      "2024": {
+        "title": "Espansione Nazionale",
+        "description": "Da Sciacca all'Italia intera: i nostri servizi raggiungono clienti in tutta la penisola con un approccio full-remote."
+      },
+      "2025": {
+        "title": "Verso il Futuro",
+        "description": "Continuiamo a innovare con realtà aumentata, web 3.0 e soluzioni enterprise per guidare i nostri clienti nel futuro digitale."
+      }
+    },
+    "team": {
+      "badge": "The Architects",
+      "title": "Le Menti Dietro",
+      "titleHighlight": "la Magia Digitale",
+      "subtitle": "Un team di professionisti con competenze complementari e una passione condivisa.",
+      "hussein": {
+        "name": "Hussein Faraj",
+        "role": "Founder & Full-Stack Developer",
+        "quote": "\"Il codice è poesia che risolve problemi reali.\"",
+        "bio": "Studente di ingegneria gestionale a Padova, unisce competenze di codifica avanzata e gestione aziendale. Esperto in architetture scalabili, integrazione AI e sviluppo di applicazioni web enterprise.",
+        "projects": "Progetti"
+      },
+      "maria": {
+        "name": "Maria Elisa Midulla",
+        "role": "Co-Founder & Frontend Developer",
+        "quote": "\"Il design è comunicazione visiva che crea connessioni.\"",
+        "bio": "Laureata all'Università di Padova, eccelle nel marketing digitale e nella comunicazione. Specializzata in sviluppo frontend moderno, strategie di branding e user experience design.",
+        "projects": "Progetti"
+      }
+    },
+    "sectors": {
+      "badge": "Industry Nexus",
+      "title": "Esperienza",
+      "titleHighlight": "Multi-Settoriale",
+      "subtitle": "Competenze trasversali che si adattano alle specificità di ogni mercato.",
+      "professional": {
+        "title": "Servizi Professionali",
+        "description": "Studi legali, consulenti, commercialisti"
+      },
+      "restaurant": {
+        "title": "Ristorazione",
+        "description": "Ristoranti, catering, food delivery"
+      },
+      "retail": {
+        "title": "Retail & E-commerce",
+        "description": "Negozi fisici e online, marketplace"
+      },
+      "startup": {
+        "title": "Start-up & Tech",
+        "description": "Innovazione, SaaS, fintech"
+      },
+      "health": {
+        "title": "Sanità & Benessere",
+        "description": "Cliniche, wellness center, farmacie"
+      },
+      "realEstate": {
+        "title": "Immobiliare",
+        "description": "Agenzie, property management"
+      },
+      "projects": "Progetti"
+    },
+    "advantages": {
+      "custom": {
+        "title": "Soluzioni su Misura",
+        "description": "Ogni progetto è unico. Analizziamo le tue esigenze specifiche per creare soluzioni personalizzate.",
+        "metric": "100%",
+        "metricLabel": "Personalizzazione"
+      },
+      "strategic": {
+        "title": "Approccio Strategico",
+        "description": "Non solo esecuzione, ma consulenza strategica per massimizzare il ROI del tuo investimento digitale.",
+        "metric": "3x",
+        "metricLabel": "ROI Medio"
+      },
+      "technology": {
+        "title": "Tecnologia All'Avanguardia",
+        "description": "Stack tecnologico moderno e best practices per garantire performance e scalabilità.",
+        "metric": "99.9%",
+        "metricLabel": "Uptime"
+      },
+      "support": {
+        "title": "Supporto Continuo",
+        "description": "Assistenza dedicata e manutenzione proattiva per un'esperienza senza pensieri.",
+        "metric": "24/7",
+        "metricLabel": "Disponibilità"
+      },
+      "global": {
+        "title": "Visione Globale",
+        "description": "Radici locali a Sciacca, ma competenze e visione che abbracciano i mercati internazionali.",
+        "metric": "50+",
+        "metricLabel": "Progetti Completati"
+      },
+      "guarantee": {
+        "title": "Garanzia Risultati",
+        "description": "Ci impegniamo per il tuo successo con milestone chiare e KPI misurabili.",
+        "metric": "98%",
+        "metricLabel": "Client Satisfaction"
+      }
+    },
+    "title": "Chi Siamo",
+    "subtitle": "Un team di professionisti dedicati al successo digitale",
+    "mission": "La Nostra Missione",
+    "vision": "La Nostra Visione",
+    "values": "I Nostri Valori",
+    "history": "La Nostra Storia",
+    "cta": "Inizia il Tuo Progetto"
+  },
+  "faq": {
+    "title": "Domande Frequenti",
+    "subtitle": "Trova le risposte alle domande più comuni sui nostri servizi e processi. Se non trovi quello che cerchi, non esitare a contattarci.",
+    "badge": "FAQ",
+    "questions": {
+      "services": {
+        "question": "Quali servizi offrite?",
+        "answer": "Offriamo una vasta gamma di servizi digitali, tra cui sviluppo di siti web personalizzati, soluzioni e-commerce, design UI/UX, ottimizzazione SEO, integrazione di intelligenza artificiale e piani di manutenzione e hosting. Il nostro obiettivo è fornire una soluzione completa per la tua presenza online."
+      },
+      "cost": {
+        "question": "Quanto costa realizzare un sito web?",
+        "answer": "Il costo di un sito web varia a seconda della complessità, delle funzionalità richieste e del design. Offriamo preventivi gratuiti e personalizzati dopo aver discusso a fondo le tue esigenze. Contattaci per un'analisi dettagliata del tuo progetto."
+      },
+      "timeline": {
+        "question": "Quanto tempo ci vuole per creare un sito?",
+        "answer": "I tempi di sviluppo dipendono dalla portata del progetto. Un sito vetrina semplice può richiedere poche settimane, mentre una piattaforma e-commerce complessa può richiedere diversi mesi. Forniamo sempre una timeline dettagliata all'inizio di ogni progetto."
+      },
+      "support": {
+        "question": "Offrite supporto dopo il lancio del sito?",
+        "answer": "Assolutamente sì. Offriamo piani di manutenzione e supporto per garantire che il tuo sito rimanga sicuro, aggiornato e performante nel tempo. Siamo sempre disponibili per assisterti con qualsiasi esigenza futura."
+      },
+      "ai": {
+        "question": "Lavorate anche con l'intelligenza artificiale?",
+        "answer": "Sì, l'integrazione AI è una delle nostre specialità. Possiamo implementare chatbot intelligenti, sistemi di raccomandazione personalizzati e altre soluzioni basate sull'IA per migliorare l'esperienza utente e automatizzare i processi."
+      },
+      "existing": {
+        "question": "Potete aiutarmi a migliorare il mio sito esistente?",
+        "answer": "Certamente. Oltre a creare nuovi siti, offriamo servizi di restyling, ottimizzazione delle performance e aggiornamento tecnologico per siti web esistenti per renderli più moderni, veloci e efficaci."
+      }
+    }
+  },
+  "projects": {
+    "title": "I Nostri Progetti",
+    "subtitle": "Scopri alcuni dei progetti che abbiamo realizzato",
+    "viewProject": "Vedi Progetto",
+    "allProjects": "Tutti i Progetti",
+    "noProjects": "Nessun progetto disponibile al momento",
+    "hero": {
+      "badge": "Portfolio",
+      "title": "I Nostri",
+      "titleHighlight": "Lavori",
+      "description": "Esplora una selezione dei nostri lavori migliori. Ogni progetto è una storia di",
+      "descriptionHighlight": "collaborazione, creatività e successo",
+      "completed": "Progetti Completati",
+      "satisfaction": "Soddisfazione Clienti"
+    },
+    "filters": {
+      "badge": "Progetti",
+      "title": "Esplora i Nostri",
+      "titleHighlight": "Progetti",
+      "searchPlaceholder": "Cerca progetti...",
+      "allCategories": "Tutte le Categorie",
+      "all": "Tutti",
+      "noResults": "Nessun progetto trovato",
+      "noResultsDesc": "Prova a modificare i filtri di ricerca.",
+      "resetFilters": "Reset Filtri",
+      "noProjects": "Nessun Progetto Disponibile",
+      "noProjectsDesc": "I progetti verranno pubblicati a breve.",
+      "liveSite": "Sito Live",
+      "details": "Dettagli",
+      "viewProject": "Vedi Progetto",
+      "cta": {
+        "badge": "Hai un Progetto?",
+        "title": "Iniziamo a Lavorare",
+        "titleHighlight": "Insieme",
+        "description": "Contattaci per discutere del tuo prossimo progetto e scoprire come possiamo trasformare le tue idee in realtà.",
+        "button": "Contattaci"
+      }
+    }
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Articoli e notizie su sviluppo web, design e tecnologia",
+    "readMore": "Leggi di più",
+    "noPosts": "Nessun articolo disponibile al momento",
+    "hero": {
+      "badge": "Blog",
+      "title": "Il Nostro",
+      "titleHighlight": "Blog",
+      "description": "Approfondimenti, guide e notizie dal mondo del digitale. Rimani aggiornato con le",
+      "descriptionHighlight": "ultime tendenze e best practices"
+    },
+    "list": {
+      "badge": "Articoli",
+      "title": "Ultimi",
+      "titleHighlight": "Articoli",
+      "noPosts": "Nessun Articolo Disponibile",
+      "noPostsDesc": "Gli articoli verranno pubblicati a breve."
+    }
+  },
+  "footer": {
+    "description": "Realizziamo soluzioni digitali innovative e su misura per far crescere il tuo business. Professionalità, qualità e risultati garantiti.",
+    "navigation": "Navigazione",
+    "services": "Servizi",
+    "support": "Supporto",
+    "newsletter": {
+      "title": "Newsletter",
+      "description": "Ricevi aggiornamenti esclusivi, guide pratiche e novità dal mondo del digitale direttamente nella tua inbox.",
+      "placeholder": "La tua email",
+      "subscribe": "Iscriviti",
+      "success": "Successo!",
+      "error": "Errore"
+    },
+    "badges": {
+      "gdpr": "GDPR Compliant",
+      "certified": "Certificato"
+    },
+    "copyright": "Tutti i diritti riservati.",
+    "privacy": "Privacy",
+    "cookiePolicy": "Cookie Policy",
+    "cookieSettings": "Gestisci preferenze cookie",
+    "cookie": "Cookie"
+  },
+  "contactPage": {
+    "hero": {
+      "badge": "Mettiti in Contatto",
+      "title": "Inizia una Conversazione",
+      "titleHighlight": "con Noi",
+      "subtitle": "Siamo qui per aiutarti a trasformare le tue idee in",
+      "subtitleHighlight": "soluzioni digitali di successo",
+      "subtitleEnd": "Raccontaci il tuo progetto e ti risponderemo entro 24 ore.",
+      "available": "Disponibili per nuovi progetti",
+      "writeNow": "Scrivici Ora",
+      "callUs": "Chiamaci"
+    },
+    "methods": {
+      "email": {
+        "title": "Email",
+        "text": "Scrivici per preventivi, collaborazioni o assistenza.",
+        "metric": "< 24h",
+        "metricLabel": "Risposta"
+      },
+      "phone": {
+        "title": "Telefono",
+        "text": "Preferisci parlare direttamente con noi?",
+        "metric": "Diretto",
+        "metricLabel": "Contatto"
+      },
+      "location": {
+        "title": "Sede Operativa",
+        "text": "Lavoriamo in tutta Italia, operando principalmente da Sciacca.",
+        "metric": "100%",
+        "metricLabel": "Remote"
+      },
+      "hours": {
+        "title": "Orari di Lavoro",
+        "metric": "45h",
+        "metricLabel": "Settimana",
+        "schedule": {
+          "weekdays": "Lun - Ven",
+          "weekdaysHours": "9:00 - 18:00",
+          "saturday": "Sabato",
+          "saturdayHours": "10:00 - 14:00",
+          "sunday": "Domenica",
+          "sundayHours": "Chiuso"
+        }
+      }
+    },
+    "faqs": {
+      "responseTime": {
+        "question": "In quanto tempo rispondete ai messaggi?",
+        "answer": "Il nostro obiettivo è rispondere a tutte le richieste entro 24 ore lavorative. La tua richiesta è importante per noi e faremo del nostro meglio per darti un riscontro il prima possibile."
+      },
+      "quoteProcess": {
+        "question": "Come funziona il processo di preventivo?",
+        "answer": "Dopo aver ricevuto la tua richiesta tramite il form, la analizzeremo attentamente. Se necessario, ti contatteremo per chiarire alcuni dettagli. Successivamente, ti invieremo un preventivo dettagliato e trasparente, senza impegno."
+      },
+      "support": {
+        "question": "Offrite supporto anche dopo la consegna del progetto?",
+        "answer": "Sì, assolutamente. Crediamo nelle partnership a lungo termine. Offriamo vari piani di manutenzione e supporto per garantire che il tuo progetto digitale rimanga performante, sicuro e aggiornato nel tempo."
+      },
+      "clients": {
+        "question": "Lavorate con aziende e privati?",
+        "answer": "Collaboriamo con una vasta gamma di clienti, dalle startup innovative alle aziende consolidate, fino ai liberi professionisti e privati con un'idea da realizzare. Siamo flessibili e pronti ad adattare le nostre soluzioni a ogni esigenza."
+      }
+    },
+    "sections": {
+      "contactChannels": {
+        "badge": "Canali di Contatto",
+        "title": "Scegli Come",
+        "titleHighlight": "Raggiungerci",
+        "subtitle": "Diversi canali, un unico obiettivo: essere sempre al tuo fianco."
+      },
+      "contactForm": {
+        "badge": "Scrivici",
+        "title": "Inviaci un Messaggio",
+        "subtitle": "Compila il form e ti risponderemo entro 24 ore."
+      }
+    }
+  }
+}
