@@ -131,8 +131,34 @@ export async function getAdminBlogBySlugAction(slug: string) {
     if (!slug || typeof slug !== 'string' || slug.trim().length === 0) {
         return null;
     }
-    const blog = await getBlogBySlug(slug);
-    return blog ? serializeFirestoreData(blog) : null;
+    try {
+        const blog = await getBlogBySlug(slug);
+        return blog ? serializeFirestoreData(blog) : null;
+    } catch (error) {
+        console.error('Error fetching blog by slug:', slug, error);
+        throw new Error(`Failed to fetch blog: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+}
+
+export async function getAdminProjectsAction() {
+    const projects = await getProjects();
+    return projects.map(project => serializeFirestoreData(project));
+}
+
+/** Uncached — always fetches fresh data for the admin edit form. */
+export async function getAdminProjectBySlugAction(slug: string) {
+    // Validate slug before proceeding
+    if (!slug || typeof slug !== 'string' || slug.trim().length === 0) {
+        return null;
+    }
+
+    try {
+        const project = await getProjectBySlug(slug);
+        return project ? serializeFirestoreData(project) : null;
+    } catch (error) {
+        console.error('Error fetching project by slug:', slug, error);
+        throw new Error(`Failed to fetch project: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
 }
 
 export async function getMessagesAction(filters?: {

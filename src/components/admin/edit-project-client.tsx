@@ -20,7 +20,7 @@ import { ImageUpload, MultiImageUpload } from '@/components/admin/image-upload';
 import { RichTextEditor, jsonContentToPlainText } from '@/components/admin/rich-text-editor';
 import { DynamicSEOTool } from '@/components/admin/dynamic-seo-tool';
 import type { Project } from '@/lib/definitions';
-import { updateProject, getProjectBySlugAction } from '@/lib/actions';
+import { updateProject, getAdminProjectBySlugAction } from '@/lib/actions';
 import { useToast } from '@/hooks/use-toast';
 
 const TECHNOLOGY_OPTIONS = [
@@ -92,7 +92,7 @@ export default function EditProjectClient({ slug }: { slug: string }) {
   useEffect(() => {
     const fetchProject = async () => {
       try {
-        const fetchedProject = await getProjectBySlugAction(slug);
+        const fetchedProject = await getAdminProjectBySlugAction(slug);
         if (fetchedProject) {
           setProject(fetchedProject);
           setTitle(fetchedProject.title);
