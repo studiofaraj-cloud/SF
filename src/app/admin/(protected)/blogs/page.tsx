@@ -14,7 +14,15 @@ import { PageHeader } from '@/components/admin/page-header';
 import { BlogsDataTable } from './data-table';
 
 export default async function AdminBlogsPage() {
-  const blogs = await getBlogsAction();
+  let blogs = [];
+  let error = null;
+
+  try {
+    blogs = await getBlogsAction();
+  } catch (err) {
+    console.error('Failed to fetch blogs:', err);
+    error = 'Unable to load blogs. Please try again later.';
+  }
 
   return (
     <>
@@ -37,7 +45,13 @@ export default async function AdminBlogsPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <BlogsDataTable blogs={blogs} />
+          {error ? (
+            <div className="text-red-600 p-4 bg-red-50 rounded">
+              {error}
+            </div>
+          ) : (
+            <BlogsDataTable blogs={blogs} />
+          )}
         </CardContent>
       </Card>
     </>

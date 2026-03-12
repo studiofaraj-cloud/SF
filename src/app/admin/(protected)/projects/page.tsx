@@ -14,7 +14,15 @@ import { PageHeader } from '@/components/admin/page-header';
 import { ProjectsDataTable } from './data-table';
 
 export default async function AdminProjectsPage() {
-  const projects = await getProjectsAction();
+  let projects = [];
+  let error = null;
+
+  try {
+    projects = await getProjectsAction();
+  } catch (err) {
+    console.error('Failed to fetch projects:', err);
+    error = 'Unable to load projects. Please try again later.';
+  }
 
   return (
     <>
@@ -37,7 +45,13 @@ export default async function AdminProjectsPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <ProjectsDataTable projects={projects} />
+          {error ? (
+            <div className="text-red-600 p-4 bg-red-50 rounded">
+              {error}
+            </div>
+          ) : (
+            <ProjectsDataTable projects={projects} />
+          )}
         </CardContent>
       </Card>
     </>
