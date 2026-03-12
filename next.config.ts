@@ -4,26 +4,18 @@ import createNextIntlPlugin from 'next-intl/plugin';
 
 const withNextIntl = createNextIntlPlugin('./i18n.ts');
 
-// Bundle analyzer
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: process.env.ANALYZE === 'true',
-});
-
 const nextConfig: NextConfig = {
-  /* config options here */
   typescript: {
     ignoreBuildErrors: true,
   },
-  // eslint config removed - deprecated in Next.js 16
-  // eslint: {
-  //   ignoreDuringBuilds: true,
-  // },
+  // Tell Turbopack to use this directory as the workspace root,
+  // not c:\Users\Utente where a stray package-lock.json was detected.
+  turbopack: {
+    root: process.cwd(),
+  },
   // Enable compression
   compress: true,
-  // Disable static export to enable dynamic routes and SSR
-  // output: 'export', // REMOVED: Required for [locale] dynamic routes to work
   images: {
-    // unoptimized: true, // Not needed without static export
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
@@ -55,11 +47,70 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'storage.googleapis.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.firebasestorage.app',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'studio-9657887514-d2729.firebasestorage.app',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
-  // Add headers for caching static assets
+  // Enforce trailing slash for consistent canonical URLs
+  trailingSlash: false,
+  // Generate ETags for better caching
+  generateEtags: true,
+  // Powered-by header removed for security
+  poweredByHeader: false,
+  // Security + cache headers
   async headers() {
+    const securityHeaders = [
+      {
+        key: 'X-DNS-Prefetch-Control',
+        value: 'on',
+      },
+      {
+        key: 'Strict-Transport-Security',
+        value: 'max-age=63072000; includeSubDomains; preload',
+      },
+      {
+        key: 'X-Content-Type-Options',
+        value: 'nosniff',
+      },
+      {
+        key: 'X-Frame-Options',
+        value: 'SAMEORIGIN',
+      },
+      {
+        key: 'X-XSS-Protection',
+        value: '1; mode=block',
+      },
+      {
+        key: 'Referrer-Policy',
+        value: 'strict-origin-when-cross-origin',
+      },
+      {
+        key: 'Permissions-Policy',
+        value: 'camera=(), microphone=(), geolocation=(self), interest-cohort=()',
+      },
+    ];
     return [
+      {
+        // Apply security headers to all routes
+        source: '/(.*)',
+        headers: securityHeaders,
+      },
       {
         source: '/assets/:path*',
         headers: [
@@ -78,8 +129,18 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      {
+        // Cache fonts aggressively
+        source: '/fonts/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
     ];
   },
 };
 
-export default withBundleAnalyzer(withNextIntl(nextConfig));
+export default withNextIntl(nextConfig);

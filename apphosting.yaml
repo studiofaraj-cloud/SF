@@ -1,0 +1,93 @@
+# apphosting.yaml
+# Firebase App Hosting configuration
+# Docs: https://firebase.google.com/docs/app-hosting/configure
+
+runConfig:
+  runtime: nodejs20
+  cpu: 1
+  memoryMiB: 1024
+  timeoutSeconds: 60
+  concurrency: 80
+  minInstances: 0
+  maxInstances: 100
+
+env:
+  # Public site URL (used for SEO, sitemaps, og:url)
+  - variable: NEXT_PUBLIC_SITE_URL
+    value: https://studio-9657887514-d2729.web.app
+    availability:
+      - BUILD
+      - RUNTIME
+
+  # Firebase project ID (public)
+  - variable: NEXT_PUBLIC_FIREBASE_PROJECT_ID
+    value: studio-9657887514-d2729
+    availability:
+      - BUILD
+      - RUNTIME
+
+  # ----- SECRETS (stored in Firebase Secret Manager) -----
+  # Create each secret once before deploying:
+  #   firebase apphosting:secrets:set SESSION_SECRET
+  #   firebase apphosting:secrets:set GEMINI_API_KEY
+  #   firebase apphosting:secrets:set GOOGLE_API_KEY
+  #
+  # Firebase public config (NEXT_PUBLIC_FIREBASE_API_KEY, etc.)
+  # should also be added as secrets:
+  #   firebase apphosting:secrets:set NEXT_PUBLIC_FIREBASE_API_KEY
+  #   firebase apphosting:secrets:set NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+  #   firebase apphosting:secrets:set NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+  #   firebase apphosting:secrets:set NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+  #   firebase apphosting:secrets:set NEXT_PUBLIC_FIREBASE_APP_ID
+  #   firebase apphosting:secrets:set NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
+
+  - variable: SESSION_SECRET
+    secret: SESSION_SECRET
+    availability:
+      - RUNTIME
+
+  - variable: GEMINI_API_KEY
+    secret: GEMINI_API_KEY
+    availability:
+      - RUNTIME
+
+  - variable: GOOGLE_API_KEY
+    secret: GOOGLE_API_KEY
+    availability:
+      - RUNTIME
+
+  - variable: NEXT_PUBLIC_FIREBASE_API_KEY
+    secret: NEXT_PUBLIC_FIREBASE_API_KEY
+    availability:
+      - BUILD
+      - RUNTIME
+
+  - variable: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+    secret: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+    availability:
+      - BUILD
+      - RUNTIME
+
+  - variable: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+    secret: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+    availability:
+      - BUILD
+      - RUNTIME
+
+  - variable: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+    secret: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+    availability:
+      - BUILD
+      - RUNTIME
+
+  - variable: NEXT_PUBLIC_FIREBASE_APP_ID
+    secret: NEXT_PUBLIC_FIREBASE_APP_ID
+    availability:
+      - BUILD
+      - RUNTIME
+
+  - variable: NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
+    secret: NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
+    availability:
+      - BUILD
+      - RUNTIME

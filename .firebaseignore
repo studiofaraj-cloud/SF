@@ -1,0 +1,21 @@
+# Firebase deployment ignore file
+# Files excluded when deploying Firestore/Storage rules
+
+.git/
+.gitignore
+firebase-debug.log
+firebase-debug.*.log
+
+# Dev / local config
+*.local
+.env
+.env.local
+.env.development
+.env.development.local
+.env.test.local
+
+# Source and build files (not needed for rules deploy)
+node_modules/
+.next/
+src/
+public/

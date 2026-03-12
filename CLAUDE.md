@@ -1,0 +1,1 @@
+this directory contains a next.js project for a tech company called studio faraj based is sciacca, italy. the project scope is to show the companies services, it's story and some more information. with a dashboard for admin that receives messages, subscribtions, bookings. there is the possibility to post a blog and projects from dashboard on the website also. 
