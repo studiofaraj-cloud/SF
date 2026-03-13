@@ -17,6 +17,8 @@ type TechCategory = {
 export function TechTabsMobile({ categories }: { categories: TechCategory[] }) {
   const [active, setActive] = useState(0);
 
+  if (!categories?.length) return null;
+
   return (
     <div className="md:hidden">
       {/* Tab bar */}

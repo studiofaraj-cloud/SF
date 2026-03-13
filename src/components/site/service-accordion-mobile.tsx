@@ -48,6 +48,8 @@ export function ServiceAccordionMobile({
     return accentBg[key] ?? 'bg-white/10 text-white';
   };
 
+  if (!services?.length) return null;
+
   return (
     <div className="md:hidden divide-y divide-border rounded-2xl border border-border overflow-hidden bg-card">
       {services.map((service, index) => {

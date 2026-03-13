@@ -21,5 +21,7 @@ interface TechSectionMobileProps {
 }
 
 export function TechSectionMobile({ categories }: TechSectionMobileProps) {
+  if (!categories?.length) return null;
+
   return <TechTabsMobile categories={categories} />;
 }
