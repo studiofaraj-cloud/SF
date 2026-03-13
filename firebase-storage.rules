@@ -1,0 +1,94 @@
+rules_version = '2';
+
+// Firebase Storage Security Rules for Production
+// This file contains recommended security rules for the Studio Faraj website
+// 
+// Key Features:
+// - Authenticated uploads only for /images/ and /gallery/ paths
+// - File size limits (5MB for general images, 10MB for gallery)
+// - MIME type validation (only image formats allowed)
+// - Public read access for all images
+// - Admin-only access for special paths
+//
+// To deploy these rules, run:
+// firebase deploy --only storage
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Helper function to check if user is admin
+    function isAdmin() {
+      return request.auth != null && 
+             request.auth.token.admin == true;
+    }
+    
+    // Helper function to validate image MIME types
+    function isValidImageType() {
+      return request.resource.contentType.matches('image/jpeg') ||
+             request.resource.contentType.matches('image/jpg') ||
+             request.resource.contentType.matches('image/png') ||
+             request.resource.contentType.matches('image/webp') ||
+             request.resource.contentType.matches('image/gif');
+    }
+    
+    // Helper function to validate file size (in bytes)
+    function isValidSize(maxSizeInMB) {
+      return request.resource.size <= maxSizeInMB * 1024 * 1024;
+    }
+    
+    // Blog images: authenticated upload, 5MB limit, public read
+    match /blogs/{blogId}/{filename} {
+      allow read: if true;
+      allow write: if isAuthenticated() && 
+                      isValidImageType() && 
+                      isValidSize(5);
+      allow delete: if isAuthenticated();
+    }
+    
+    // Project images: authenticated upload, 5MB limit, public read
+    match /projects/{projectId}/{filename} {
+      allow read: if true;
+      allow write: if isAuthenticated() && 
+                      isValidImageType() && 
+                      isValidSize(5);
+      allow delete: if isAuthenticated();
+    }
+    
+    // General images directory: authenticated upload, 5MB limit, public read
+    match /images/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAuthenticated() && 
+                      isValidImageType() && 
+                      isValidSize(5);
+      allow delete: if isAuthenticated();
+    }
+    
+    // Gallery images: authenticated upload, 10MB limit (higher for gallery), public read
+    match /gallery/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAuthenticated() && 
+                      isValidImageType() && 
+                      isValidSize(10);
+      allow delete: if isAuthenticated();
+    }
+    
+    // Admin-only uploads (for sensitive content)
+    match /admin/{allPaths=**} {
+      allow read: if isAdmin();
+      allow write: if isAdmin() && 
+                      isValidImageType() && 
+                      isValidSize(10);
+      allow delete: if isAdmin();
+    }
+    
+    // Default deny all other paths
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
