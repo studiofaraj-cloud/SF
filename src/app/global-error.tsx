@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { AlertCircle, Home, RefreshCw } from 'lucide-react';
 import Link from 'next/link';
+import { logError } from '@/lib/error-logger';
 
 export default function GlobalError({
   error,
@@ -14,8 +15,11 @@ export default function GlobalError({
   reset: () => void;
 }) {
   useEffect(() => {
-    // Log the error to an error reporting service
-    console.error('Global application error:', error);
+    logError(error, {
+      errorBoundary: 'global-error',
+      severity: 'critical',
+      path: typeof window !== 'undefined' ? window.location.pathname : undefined,
+    });
   }, [error]);
 
   return (
@@ -30,14 +34,17 @@ export default function GlobalError({
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-muted-foreground">
-              Si è verificato un errore critico nell&apos;applicazione. 
-              Controlla la console del browser per maggiori dettagli.
+              Ci scusiamo per l&apos;inconveniente. Si è verificato un errore critico nell&apos;applicazione.
+            </p>
+            
+            <p className="text-sm text-muted-foreground">
+              L&apos;errore è stato registrato automaticamente. Ti preghiamo di ricaricare la pagina o tornare alla home page.
             </p>
             
             {process.env.NODE_ENV === 'development' && (
               <div className="p-3 rounded-lg bg-muted/50 border border-border">
                 <p className="text-xs font-mono text-muted-foreground break-all">
-                  {error.message}
+                  {error.message || 'Errore sconosciuto'}
                 </p>
                 {error.stack && (
                   <details className="mt-2">
@@ -48,6 +55,11 @@ export default function GlobalError({
                       {error.stack}
                     </pre>
                   </details>
+                )}
+                {error.digest && (
+                  <p className="text-xs text-muted-foreground mt-2">
+                    Error ID: {error.digest}
+                  </p>
                 )}
               </div>
             )}
