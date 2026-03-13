@@ -34,11 +34,36 @@ import {
 import { Timestamp } from 'firebase/firestore';
 import { redirect } from 'next/navigation';
 import { uploadFile, type ImageMetadata } from './storage';
+import { logError, getFirebaseErrorMessage } from './error-logger';
 
 // Logout is now handled client-side in AdminHeader component using Firebase signOut
 // This function is kept for backwards compatibility but is no longer used
 export async function logout() {
   redirect('/admin/login');
+}
+
+// Helper function to validate image URLs
+function isValidImageUrl(url: string | undefined): boolean {
+    if (!url || url.trim() === '') {
+        return true;
+    }
+    
+    try {
+        new URL(url);
+        return true;
+    } catch {
+        return false;
+    }
+}
+
+// Helper function to filter and validate image URLs
+function validateImageUrls(urls: string[]): string[] {
+    return urls.filter(url => {
+        if (!url || url.trim() === '') {
+            return false;
+        }
+        return isValidImageUrl(url);
+    });
 }
 
 // Helper function to convert Firestore Timestamps to ISO strings
@@ -249,15 +274,45 @@ export async function createBlog(prevState: { message: string; errors?: any }, f
     if (!validatedFields.success) {
         return {
             errors: validatedFields.error.flatten().fieldErrors,
-            message: 'Validation failed. Please check the fields.',
+            message: 'Validazione fallita. Controlla i campi.',
+        };
+    }
+    
+    const featuredImage = validatedFields.data.featuredImage;
+    if (featuredImage && !isValidImageUrl(featuredImage)) {
+        return {
+            errors: { featuredImage: ['URL immagine in evidenza non valido'] },
+            message: 'URL immagine in evidenza non valido.',
+        };
+    }
+    
+    const validGalleryUrls = validateImageUrls(validatedFields.data.gallery || []);
+    if (validatedFields.data.gallery && validatedFields.data.gallery.length > 0 && validGalleryUrls.length === 0) {
+        return {
+            errors: { gallery: ['Nessun URL galleria valido fornito'] },
+            message: 'Gli URL della galleria non sono validi.',
         };
     }
     
     try {
-        await createBlogData(validatedFields.data as any);
+        const blogData = {
+            ...validatedFields.data,
+            featuredImage: featuredImage || undefined,
+            gallery: validGalleryUrls,
+        };
+        
+        await createBlogData(blogData as any);
     } catch (error) {
-        console.error('Firestore error:', error);
-        return { message: 'Failed to create blog post.', errors: {} };
+        logError(error, {
+            action: 'createBlog',
+            additionalData: {
+                slug: validatedFields.data.slug,
+                title: validatedFields.data.title,
+            },
+        });
+        
+        const userMessage = getFirebaseErrorMessage(error);
+        return { message: userMessage, errors: {} };
     }
 
     // Invalidate data cache + page cache
@@ -289,14 +344,46 @@ export async function updateBlog(id: string, prevState: { message: string; error
     if (!validatedFields.success) {
         return {
             errors: validatedFields.error.flatten().fieldErrors,
-            message: 'Validation failed.',
+            message: 'Validazione fallita. Controlla i campi.',
+        };
+    }
+    
+    const featuredImage = validatedFields.data.featuredImage;
+    if (featuredImage && !isValidImageUrl(featuredImage)) {
+        return {
+            errors: { featuredImage: ['URL immagine in evidenza non valido'] },
+            message: 'URL immagine in evidenza non valido.',
+        };
+    }
+    
+    const validGalleryUrls = validateImageUrls(validatedFields.data.gallery || []);
+    if (validatedFields.data.gallery && validatedFields.data.gallery.length > 0 && validGalleryUrls.length === 0) {
+        return {
+            errors: { gallery: ['Nessun URL galleria valido fornito'] },
+            message: 'Gli URL della galleria non sono validi.',
         };
     }
     
     try {
-        await updateBlogData(id, validatedFields.data as any);
+        const blogData = {
+            ...validatedFields.data,
+            featuredImage: featuredImage || undefined,
+            gallery: validGalleryUrls,
+        };
+        
+        await updateBlogData(id, blogData as any);
     } catch (error) {
-        return { message: 'Failed to update blog post.', errors: {} };
+        logError(error, {
+            action: 'updateBlog',
+            additionalData: {
+                blogId: id,
+                slug: validatedFields.data.slug,
+                title: validatedFields.data.title,
+            },
+        });
+        
+        const userMessage = getFirebaseErrorMessage(error);
+        return { message: userMessage, errors: {} };
     }
 
     // Invalidate data cache + page cache
@@ -383,18 +470,47 @@ export async function createProject(prevState: { message: string; errors?: any }
     });
 
     if (!validatedFields.success) {
-        console.log(validatedFields.error.flatten().fieldErrors);
         return {
             errors: validatedFields.error.flatten().fieldErrors,
-            message: 'Validation failed. Please check the fields.',
+            message: 'Validazione fallita. Controlla i campi.',
+        };
+    }
+    
+    const featuredImage = validatedFields.data.featuredImage;
+    if (featuredImage && !isValidImageUrl(featuredImage)) {
+        return {
+            errors: { featuredImage: ['URL immagine in evidenza non valido'] },
+            message: 'URL immagine in evidenza non valido.',
+        };
+    }
+    
+    const validGalleryUrls = validateImageUrls(validatedFields.data.gallery || []);
+    if (validatedFields.data.gallery && validatedFields.data.gallery.length > 0 && validGalleryUrls.length === 0) {
+        return {
+            errors: { gallery: ['Nessun URL galleria valido fornito'] },
+            message: 'Gli URL della galleria non sono validi.',
         };
     }
     
     try {
-        await createProjectData(validatedFields.data as any);
+        const projectData = {
+            ...validatedFields.data,
+            featuredImage: featuredImage || undefined,
+            gallery: validGalleryUrls,
+        };
+        
+        await createProjectData(projectData as any);
     } catch (error) {
-        console.error('Firestore error:', error);
-        return { message: 'Failed to create project.', errors: {} };
+        logError(error, {
+            action: 'createProject',
+            additionalData: {
+                slug: validatedFields.data.slug,
+                title: validatedFields.data.title,
+            },
+        });
+        
+        const userMessage = getFirebaseErrorMessage(error);
+        return { message: userMessage, errors: {} };
     }
 
     // Invalidate data cache + page cache
@@ -442,14 +558,46 @@ export async function updateProject(id: string, prevState: { message: string; er
     if (!validatedFields.success) {
         return {
             errors: validatedFields.error.flatten().fieldErrors,
-            message: 'Validation failed.',
+            message: 'Validazione fallita. Controlla i campi.',
+        };
+    }
+
+    const featuredImage = validatedFields.data.featuredImage;
+    if (featuredImage && !isValidImageUrl(featuredImage)) {
+        return {
+            errors: { featuredImage: ['URL immagine in evidenza non valido'] },
+            message: 'URL immagine in evidenza non valido.',
+        };
+    }
+    
+    const validGalleryUrls = validateImageUrls(validatedFields.data.gallery || []);
+    if (validatedFields.data.gallery && validatedFields.data.gallery.length > 0 && validGalleryUrls.length === 0) {
+        return {
+            errors: { gallery: ['Nessun URL galleria valido fornito'] },
+            message: 'Gli URL della galleria non sono validi.',
         };
     }
 
     try {
-        await updateProjectData(id, validatedFields.data as any);
+        const projectData = {
+            ...validatedFields.data,
+            featuredImage: featuredImage || undefined,
+            gallery: validGalleryUrls,
+        };
+        
+        await updateProjectData(id, projectData as any);
     } catch (error) {
-        return { message: 'Failed to update project.', errors: {} };
+        logError(error, {
+            action: 'updateProject',
+            additionalData: {
+                projectId: id,
+                slug: validatedFields.data.slug,
+                title: validatedFields.data.title,
+            },
+        });
+        
+        const userMessage = getFirebaseErrorMessage(error);
+        return { message: userMessage, errors: {} };
     }
 
     // Invalidate data cache + page cache
