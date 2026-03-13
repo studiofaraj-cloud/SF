@@ -31,6 +31,7 @@ export function ImageUpload({
   const [preview, setPreview] = useState(initialValue);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
+  const [isCompressing, setIsCompressing] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -49,16 +50,27 @@ export function ImageUpload({
     }
 
     setError(null);
+    setIsCompressing(true);
     setIsUploading(true);
     setUploadProgress(0);
 
     try {
+      // Compress and convert image to WebP before uploading
+      let fileToUpload = file;
+      try {
+        fileToUpload = await compressAndConvertImage(file);
+        setIsCompressing(false);
+      } catch (compressionError) {
+        console.warn('Image compression failed, uploading original:', compressionError);
+        setIsCompressing(false);
+      }
+
       const timestamp = Date.now();
-      const sanitizedFileName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+      const sanitizedFileName = fileToUpload.name.replace(/[^a-zA-Z0-9.-]/g, '_');
       const fileName = `${timestamp}-${sanitizedFileName}`;
       const storageRef = ref(storage, `images/${fileName}`);
 
-      const uploadTask = uploadBytesResumable(storageRef, file);
+      const uploadTask = uploadBytesResumable(storageRef, fileToUpload);
 
       uploadTask.on(
         'state_changed',
@@ -105,9 +117,10 @@ export function ImageUpload({
       console.error('Error starting upload:', error);
       setError('Failed to start upload. Please check your Firebase configuration.');
       setIsUploading(false);
+      setIsCompressing(false);
       setUploadProgress(0);
     }
-  }, [onUploadComplete, storage]);
+  }, [onUploadComplete]);
 
   const handleFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -244,7 +257,7 @@ export function ImageUpload({
             <div className="mt-4 space-y-2">
               <Progress value={uploadProgress} />
               <p className="text-sm text-muted-foreground text-center">
-                Uploading... {Math.round(uploadProgress)}%
+                {isCompressing ? 'Compressing and converting to WebP...' : `Uploading... ${Math.round(uploadProgress)}%`}
               </p>
             </div>
           )}
@@ -575,6 +588,3 @@ export function MultiImageUpload({
     </div>
   );
 }
-
-
-    
