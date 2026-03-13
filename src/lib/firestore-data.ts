@@ -18,10 +18,10 @@ import {
   DocumentData,
   QueryConstraint,
 } from 'firebase/firestore';
-import { initializeServerSideFirebaseSync } from '@/firebase/server-init';
+import { initializeServerSideFirebase } from '@/firebase/server-init';
 
 // Initialize server-side Firebase and get Firestore instance
-const { firestore } = initializeServerSideFirebaseSync();
+const { firestore } = initializeServerSideFirebase();
 export const db = firestore;
 
 export interface ImageMetadata {

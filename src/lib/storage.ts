@@ -2,9 +2,9 @@
 import "server-only";
 
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
-import { initializeServerSideFirebaseSync } from '@/firebase/server-init';
+import { initializeServerSideFirebase } from '@/firebase/server-init';
 
-const { storage } = initializeServerSideFirebaseSync();
+const { storage } = initializeServerSideFirebase();
 
 export type ImageMetadata = {
   url: string;
