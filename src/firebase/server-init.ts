@@ -1,11 +1,11 @@
 
 import "server-only";
 
-import { firebaseConfig } from '@/firebase/config';
 import { initializeApp, getApps, getApp, FirebaseApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
+import { firebaseConfig } from './config';
 
 const REQUIRED_CONFIG_FIELDS = [
   'apiKey',
@@ -363,6 +363,17 @@ async function initializeAppWithRetry(
     throw error;
   }
 }
+
+const getFirebaseConfig = () => {
+  return {
+    apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "AIzaSyCy-KUAHiPqdAfmjWMZ_8lj7q3A9C52XI4",
+    authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || "studio-9657887514-d2729.firebaseapp.com",
+    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "studio-9657887514-d2729",
+    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || "studio-9657887514-d2729.firebasestorage.app",
+    messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || "1013722830384",
+    appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID || "1:1013722830384:web:0a7eb991ae051f0e053ff5"
+  };
+};
 
 export async function initializeServerSideFirebase(): Promise<InitializationResult> {
   const existingApps = getApps();
