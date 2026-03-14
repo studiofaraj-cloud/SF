@@ -4,7 +4,7 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 
 const TechTabsMobile = dynamic(
-  () => import('./tech-tabs-mobile').then(mod => ({ default: mod.TechTabsMobile })),
+  () => import('./tech-tabs-mobile'),
   { ssr: false }
 );
 

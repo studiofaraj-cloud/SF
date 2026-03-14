@@ -40,9 +40,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 // Lazy load heavy components
-// LogoLoop is a client component, so it will only render on client side automatically
-const LogoLoop = dynamic(() => import('@/components/LogoLoop'));
-const TechLogosClient = dynamic(() => import('@/components/site/tech-logos-client').then(mod => ({ default: mod.TechLogosClient })));
+const TechLogosClient = dynamic(() => import('@/components/site/tech-logos-client'));
 import { Badge } from '@/components/ui/badge';
 import { generateMetadata as generateSEOMetadata, siteConfig } from '@/lib/seo';
 import { StructuredDataServer } from '@/components/seo/structured-data-server';
@@ -54,12 +52,12 @@ import { getHeroSlidesAction } from '@/lib/actions';
 import type { HeroSlide } from '@/lib/definitions';
 
 // Dynamically import client components
-const ProcessTimeline = dynamic(() => import('@/components/site/process-timeline').then(mod => ({ default: mod.ProcessTimeline })), { ssr: true });
-const ContactSection = dynamic(() => import('@/components/site/contact-section').then(mod => ({ default: mod.ContactSection })), { ssr: true });
-const HomepageClient = dynamic(() => import('@/components/site/homepage-client').then(mod => ({ default: mod.HomepageClient })), { ssr: true });
-const TestimonialsSection = dynamic(() => import('@/components/site/homepage-client').then(mod => ({ default: mod.TestimonialsSection })), { ssr: true });
-const StatsSection = dynamic(() => import('@/components/site/stats-section').then(mod => ({ default: mod.StatsSection })), { ssr: true });
-const ScrollFadeIn = dynamic(() => import('@/components/site/scroll-fade-in').then(mod => ({ default: mod.ScrollFadeIn })), { ssr: true });
+const ProcessTimeline = dynamic(() => import('@/components/site/process-timeline'));
+const ContactSection = dynamic(() => import('@/components/site/contact-section'));
+const HomepageClient = dynamic(() => import('@/components/site/homepage-client'));
+const TestimonialsSection = dynamic(() => import('@/components/site/testimonials-section'), { ssr: true });
+const StatsSection = dynamic(() => import('@/components/site/stats-section'));
+const ScrollFadeIn = dynamic(() => import('@/components/site/scroll-fade-in'));
 import { TechSectionMobile } from '@/components/site/tech-section-mobile';
 import { ServiceAccordionMobile } from '@/components/site/service-accordion-mobile';
 // Server Components — must NOT use dynamic(), import directly and wrap in <Suspense>

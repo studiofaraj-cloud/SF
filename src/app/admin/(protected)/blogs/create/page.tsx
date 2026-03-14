@@ -20,14 +20,14 @@ import { RichTextEditor, jsonContentToPlainText } from '@/components/admin/rich-
 import { createBlog } from '@/lib/actions';
 import { useToast } from '@/hooks/use-toast';
 
-function SubmitButton() {
+function SubmitButton({ isUploading }: { isUploading?: boolean }) {
   const { pending } = useFormStatus();
   return (
-    <Button size="sm" type="submit" disabled={pending}>
-      {pending ? (
+    <Button size="sm" type="submit" disabled={pending || isUploading}>
+      {pending || isUploading ? (
         <>
           <PlusCircle className="h-4 w-4 mr-2 animate-spin" />
-          Salvataggio...
+          {isUploading ? 'Caricamento immagini...' : 'Salvataggio...'}
         </>
       ) : (
         <>
@@ -44,9 +44,12 @@ export default function CreateBlogPage() {
   const [slug, setSlug] = useState('');
   const [excerpt, setExcerpt] = useState('');
   const [content, setContent] = useState('{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":""}]}]}');
+  const [isUploadingFeatured, setIsUploadingFeatured] = useState(false);
+  const [isUploadingGallery, setIsUploadingGallery] = useState(false);
+  const isUploading = isUploadingFeatured || isUploadingGallery;
   const { toast } = useToast();
 
-  const initialState = { message: '', errors: {} };
+  const initialState: { message: string, errors?: Record<string, string[]> } = { message: '', errors: {} };
   const [state, dispatch] = useActionState(createBlog, initialState);
 
   if (state?.message) {
@@ -67,7 +70,7 @@ export default function CreateBlogPage() {
               Torna agli Articoli
             </Link>
           </Button>
-          <SubmitButton />
+          <SubmitButton isUploading={isUploading} />
         </div>
       </PageHeader>
       <div className="grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8">
@@ -135,9 +138,9 @@ export default function CreateBlogPage() {
               <CardTitle>Immagini Articolo</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <ImageUpload label="Immagine in Evidenza" name="featuredImage" />
+              <ImageUpload label="Immagine in Evidenza" name="featuredImage" onUploadingChange={setIsUploadingFeatured} />
               {state.errors?.featuredImage && <p className="text-sm text-destructive">{state.errors.featuredImage[0]}</p>}
-              <MultiImageUpload label="Immagini Galleria" name="gallery" />
+              <MultiImageUpload label="Immagini Galleria" name="gallery" onUploadingChange={setIsUploadingGallery} />
             </CardContent>
           </Card>
         </div>

@@ -11,12 +11,12 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
-import { ScrollFadeIn } from '@/components/site/scroll-fade-in';
+import ScrollFadeIn from '@/components/site/scroll-fade-in';
 import RippleGrid from '@/components/RippleGrid';
 import GradientText from '@/components/GradientText';
 import { useTranslations, useLocale } from 'next-intl';
 import { getLocalizedPath } from '@/lib/i18n-helpers';
-import { ContactSection } from '@/components/site/contact-section';
+import ContactSection from '@/components/site/contact-section';
 
 export default function ContattiPage() {
   const locale = useLocale();

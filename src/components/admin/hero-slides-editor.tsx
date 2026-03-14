@@ -37,6 +37,10 @@ export function HeroSlidesEditor({ initialSlides }: HeroSlidesEditorProps) {
   const [isPending, startTransition] = useTransition();
   const [status, setStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
   const [draggedIdx, setDraggedIdx] = useState<number | null>(null);
+  
+  // Track which slides have ongoing uploads
+  const [uploadingSlideIds, setUploadingSlideIds] = useState<Set<string>>(new Set());
+  const isAnyUploading = uploadingSlideIds.size > 0;
 
   // ── Field updaters ──────────────────────────────────────────────────────────
 
@@ -44,6 +48,15 @@ export function HeroSlidesEditor({ initialSlides }: HeroSlidesEditorProps) {
     setSlides(prev =>
       prev.map(s => (s.id === id ? { ...s, [field]: value } : s))
     );
+  };
+
+  const handleUploadingChange = (id: string, isUploading: boolean) => {
+    setUploadingSlideIds(prev => {
+      const next = new Set(prev);
+      if (isUploading) next.add(id);
+      else next.delete(id);
+      return next;
+    });
   };
 
   const addSlide = () => {
@@ -189,6 +202,7 @@ export function HeroSlidesEditor({ initialSlides }: HeroSlidesEditorProps) {
                   name={`hero-image-${slide.id}`}
                   initialValue={slide.imageUrl}
                   onUploadComplete={url => updateField(slide.id, 'imageUrl', url)}
+                  onUploadingChange={isUploading => handleUploadingChange(slide.id, isUploading)}
                 />
               </div>
             </CardContent>
@@ -203,11 +217,11 @@ export function HeroSlidesEditor({ initialSlides }: HeroSlidesEditorProps) {
           Add Slide
         </Button>
 
-        <Button type="button" onClick={handleSave} disabled={isPending}>
-          {isPending ? (
+        <Button type="button" onClick={handleSave} disabled={isPending || isAnyUploading}>
+          {isPending || isAnyUploading ? (
             <>
               <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-              Saving…
+              {isAnyUploading ? 'Uploading Image...' : 'Saving…'}
             </>
           ) : (
             <>

@@ -10,7 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ScrollFadeIn } from '@/components/site/scroll-fade-in';
+import ScrollFadeIn from '@/components/site/scroll-fade-in';
 import RippleGrid from '@/components/RippleGrid';
 import GradientText from '@/components/GradientText';
 import { BookingDialog } from '@/components/site/booking-dialog';

@@ -14,7 +14,7 @@ type TechCategory = {
   badges: string[];
 };
 
-export function TechTabsMobile({ categories }: { categories: TechCategory[] }) {
+export default function TechTabsMobile({ categories }: { categories: TechCategory[] }) {
   const [active, setActive] = useState(0);
 
   if (!categories?.length) return null;

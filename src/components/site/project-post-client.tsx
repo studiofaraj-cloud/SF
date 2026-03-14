@@ -14,7 +14,7 @@ import { TechnologyBadge } from '@/components/site/technology-badge';
 import type { Project } from '@/lib/definitions';
 
 const ScrollFadeIn = dynamic(
-  () => import('@/components/site/scroll-fade-in').then(mod => ({ default: mod.ScrollFadeIn })),
+  () => import('@/components/site/scroll-fade-in'),
   { ssr: true }
 );
 const RippleGrid = dynamic(() => import('@/components/RippleGrid'), { ssr: false });

@@ -16,7 +16,7 @@ type ScrollFadeInProps = {
   performanceMode?: boolean;
 };
 
-export function ScrollFadeIn({ 
+export default function ScrollFadeIn({ 
   children, 
   className = '',
   animation = 'fade-up',

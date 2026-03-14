@@ -23,14 +23,14 @@ import { useToast } from '@/hooks/use-toast';
 import { jsonContentToPlainText } from '@/components/admin/rich-text-editor';
 
 
-function SubmitButton() {
+function SubmitButton({ isUploading }: { isUploading?: boolean }) {
   const { pending } = useFormStatus();
   return (
-    <Button size="sm" type="submit" disabled={pending}>
-      {pending ? (
+    <Button size="sm" type="submit" disabled={pending || isUploading}>
+      {pending || isUploading ? (
         <>
           <PlusCircle className="h-4 w-4 mr-2 animate-spin" />
-          Salvataggio...
+          {isUploading ? 'Caricamento immagini...' : 'Salvataggio...'}
         </>
       ) : (
         <>
@@ -69,9 +69,12 @@ export default function CreateProjectPage() {
   const [technologies, setTechnologies] = useState<string[]>([]);
   const [highlights, setHighlights] = useState<string[]>(['']);
   const [metrics, setMetrics] = useState<Array<{label: string, value: string}>>([{label: '', value: ''}]);
+  const [isUploadingFeatured, setIsUploadingFeatured] = useState(false);
+  const [isUploadingGallery, setIsUploadingGallery] = useState(false);
+  const isUploading = isUploadingFeatured || isUploadingGallery;
   const { toast } = useToast();
 
-  const initialState = { message: '', errors: {} };
+  const initialState: { message: string, errors?: Record<string, string[]> } = { message: '', errors: {} };
   const [state, dispatch] = useActionState(createProject, initialState);
 
   const addTechnology = (tech: string) => {
@@ -130,7 +133,7 @@ export default function CreateProjectPage() {
               Torna ai Progetti
             </Link>
           </Button>
-          <SubmitButton />
+          <SubmitButton isUploading={isUploading} />
         </div>
       </PageHeader>
       <div className="grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8">
@@ -385,9 +388,9 @@ export default function CreateProjectPage() {
               <CardTitle>Immagini Progetto</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <ImageUpload label="Immagine Principale" name="featuredImage" />
+              <ImageUpload label="Immagine Principale" name="featuredImage" onUploadingChange={setIsUploadingFeatured} />
               {state.errors?.featuredImage && <p className="text-sm text-destructive">{state.errors.featuredImage[0]}</p>}
-              <MultiImageUpload label="Immagini Galleria" name="gallery" />
+              <MultiImageUpload label="Immagini Galleria" name="gallery" onUploadingChange={setIsUploadingGallery} />
             </CardContent>
           </Card>
         </div>

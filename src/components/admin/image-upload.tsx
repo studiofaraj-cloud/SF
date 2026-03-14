@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import Image from 'next/image';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -19,6 +19,7 @@ type ImageUploadProps = {
   initialValue?: string;
   onUploadComplete?: (url: string) => void;
   onDelete?: () => void;
+  onUploadingChange?: (isUploading: boolean) => void;
 };
 
 export function ImageUpload({ 
@@ -26,7 +27,8 @@ export function ImageUpload({
   name, 
   initialValue = '',
   onUploadComplete,
-  onDelete
+  onDelete,
+  onUploadingChange
 }: ImageUploadProps) {
   const [preview, setPreview] = useState(initialValue);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -52,6 +54,7 @@ export function ImageUpload({
     setError(null);
     setIsCompressing(true);
     setIsUploading(true);
+    onUploadingChange?.(true);
     setUploadProgress(0);
 
     try {
@@ -92,6 +95,7 @@ export function ImageUpload({
           
           setError(errorMessage);
           setIsUploading(false);
+          onUploadingChange?.(false);
           setUploadProgress(0);
         },
         async () => {
@@ -100,6 +104,7 @@ export function ImageUpload({
             setPreview(downloadURL);
             setUploadedUrl(downloadURL);
             setIsUploading(false);
+            onUploadingChange?.(false);
             setUploadProgress(100);
             
             if (onUploadComplete) {
@@ -109,6 +114,7 @@ export function ImageUpload({
             console.error('Error getting download URL:', error);
             setError('Failed to get image URL. Please try again.');
             setIsUploading(false);
+            onUploadingChange?.(false);
             setUploadProgress(0);
           }
         }
@@ -117,6 +123,7 @@ export function ImageUpload({
       console.error('Error starting upload:', error);
       setError('Failed to start upload. Please check your Firebase configuration.');
       setIsUploading(false);
+      onUploadingChange?.(false);
       setIsCompressing(false);
       setUploadProgress(0);
     }
@@ -288,13 +295,15 @@ type MultiImageUploadProps = {
   name: string;
   initialValues?: string[];
   storagePath?: string;
+  onUploadingChange?: (isUploading: boolean) => void;
 };
 
 export function MultiImageUpload({ 
   label, 
   name, 
   initialValues = [],
-  storagePath = 'gallery'
+  storagePath = 'gallery',
+  onUploadingChange
 }: MultiImageUploadProps) {
   const [images, setImages] = useState<GalleryImage[]>(
     initialValues.map((url, index) => ({
@@ -305,6 +314,11 @@ export function MultiImageUpload({
     }))
   );
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    const isAnyUploading = images.some(img => img.isUploading);
+    onUploadingChange?.(isAnyUploading);
+  }, [images, onUploadingChange]);
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;

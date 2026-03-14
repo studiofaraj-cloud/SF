@@ -22,14 +22,14 @@ import type { Blog } from '@/lib/definitions';
 import { updateBlog, getAdminBlogBySlugAction } from '@/lib/actions';
 import { useToast } from '@/hooks/use-toast';
 
-function SubmitButton() {
+function SubmitButton({ isUploading }: { isUploading?: boolean }) {
   const { pending } = useFormStatus();
   return (
-    <Button size="sm" type="submit" disabled={pending}>
-      {pending ? (
+    <Button size="sm" type="submit" disabled={pending || isUploading}>
+      {pending || isUploading ? (
         <>
           <Save className="h-4 w-4 mr-2 animate-spin" />
-          Salvataggio...
+          {isUploading ? 'Caricamento immagini...' : 'Salvataggio...'}
         </>
       ) : (
         <>
@@ -47,6 +47,9 @@ export default function EditBlogClient({ slug }: { slug: string }) {
   const [title, setTitle] = useState('');
   const [slugState, setSlug] = useState('');
   const [content, setContent] = useState('{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":""}]}]}');
+  const [isUploadingFeatured, setIsUploadingFeatured] = useState(false);
+  const [isUploadingGallery, setIsUploadingGallery] = useState(false);
+  const isUploading = isUploadingFeatured || isUploadingGallery;
   const { toast } = useToast();
   
   const initialState = { message: '', errors: {} };
@@ -111,7 +114,7 @@ export default function EditBlogClient({ slug }: { slug: string }) {
               Torna agli Articoli
             </Link>
           </Button>
-          <SubmitButton />
+          <SubmitButton isUploading={isUploading} />
         </div>
       </PageHeader>
       <div className="grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8">
@@ -175,9 +178,9 @@ export default function EditBlogClient({ slug }: { slug: string }) {
               <CardTitle>Immagini Articolo</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <ImageUpload key={`featured-${blog.id}`} label="Immagine in Evidenza" name="featuredImage" initialValue={blog.featuredImage || ''} />
+              <ImageUpload key={`featured-${blog.id}`} label="Immagine in Evidenza" name="featuredImage" initialValue={blog.featuredImage || ''} onUploadingChange={setIsUploadingFeatured} />
               {state.errors?.featuredImage && <p className="text-sm text-destructive mt-2">{state.errors.featuredImage[0]}</p>}
-              <MultiImageUpload key={`gallery-${blog.id}`} label="Immagini Galleria" name="gallery" initialValues={blog.gallery || []} />
+              <MultiImageUpload key={`gallery-${blog.id}`} label="Immagini Galleria" name="gallery" initialValues={blog.gallery || []} onUploadingChange={setIsUploadingGallery} />
             </CardContent>
           </Card>
         </div>

@@ -10,7 +10,7 @@ import { RichContentRenderer } from '@/components/site/rich-content-renderer';
 import type { Blog } from '@/lib/definitions';
 
 const ScrollFadeIn = dynamic(
-  () => import('@/components/site/scroll-fade-in').then(mod => ({ default: mod.ScrollFadeIn })),
+  () => import('@/components/site/scroll-fade-in'),
   { ssr: true }
 );
 

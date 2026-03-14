@@ -45,7 +45,7 @@ const serviceValueToKey: Record<string, string> = {
   'altro': 'other',
 };
 
-export function QuoteDialog({ open, onOpenChange }: QuoteDialogProps) {
+export default function QuoteDialog({ open, onOpenChange }: QuoteDialogProps) {
   const { toast } = useToast();
   const t = useTranslations('quoteDialog');
   const tServices = useTranslations('services');

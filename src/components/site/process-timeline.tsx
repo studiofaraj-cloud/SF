@@ -15,7 +15,7 @@ type ProcessTimelineProps = {
   steps: ProcessStep[];
 };
 
-export const ProcessTimeline = ({ steps }: ProcessTimelineProps) => {
+export default function ProcessTimeline({ steps }: ProcessTimelineProps) {
   const isMobile = useIsMobile();
   const [progress, setProgress] = useState(0);
   const timelineRef = useRef<HTMLDivElement>(null);

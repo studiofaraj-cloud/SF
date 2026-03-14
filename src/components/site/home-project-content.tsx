@@ -10,7 +10,7 @@ import dynamic from 'next/dynamic';
 import type { Project } from '@/lib/definitions';
 import { useLocale } from 'next-intl';
 
-const ScrollFadeIn = dynamic(() => import('@/components/site/scroll-fade-in').then(mod => ({ default: mod.ScrollFadeIn })), { ssr: true });
+const ScrollFadeIn = dynamic(() => import('@/components/site/scroll-fade-in'), { ssr: true });
 
 interface HomeProjectContentProps {
   projects: Project[];

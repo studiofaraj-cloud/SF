@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
-import { ScrollFadeIn } from '@/components/site/scroll-fade-in';
+import ScrollFadeIn from '@/components/site/scroll-fade-in';
 import RippleGrid from '@/components/RippleGrid';
 import GradientText from '@/components/GradientText';
 import { useTranslations, useLocale } from 'next-intl';

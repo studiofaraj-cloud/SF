@@ -43,14 +43,14 @@ const CATEGORY_OPTIONS = [
   'Other'
 ];
 
-function SubmitButton() {
+function SubmitButton({ isUploading }: { isUploading?: boolean }) {
   const { pending } = useFormStatus();
   return (
-    <Button size="sm" type="submit" disabled={pending}>
-      {pending ? (
+    <Button size="sm" type="submit" disabled={pending || isUploading}>
+      {pending || isUploading ? (
         <>
           <Save className="h-4 w-4 mr-2 animate-spin" />
-          Salvataggio...
+          {isUploading ? 'Caricamento immagini...' : 'Salvataggio...'}
         </>
       ) : (
         <>
@@ -76,6 +76,9 @@ export default function EditProjectClient({ slug }: { slug: string }) {
   const [category, setCategory] = useState('');
   const [projectUrl, setProjectUrl] = useState('');
   const [githubUrl, setGithubUrl] = useState('');
+  const [isUploadingFeatured, setIsUploadingFeatured] = useState(false);
+  const [isUploadingGallery, setIsUploadingGallery] = useState(false);
+  const isUploading = isUploadingFeatured || isUploadingGallery;
   const { toast } = useToast();
   
   const initialState = { message: '', errors: {} };
@@ -186,7 +189,7 @@ export default function EditProjectClient({ slug }: { slug: string }) {
               Torna ai Progetti
             </Link>
           </Button>
-          <SubmitButton />
+          <SubmitButton isUploading={isUploading} />
         </div>
       </PageHeader>
       <div className="grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8">
@@ -448,9 +451,9 @@ export default function EditProjectClient({ slug }: { slug: string }) {
               <CardTitle>Immagini Progetto</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <ImageUpload key={`featured-${project.id}`} label="Immagine Principale" name="featuredImage" initialValue={project.featuredImage || ''} />
+              <ImageUpload key={`featured-${project.id}`} label="Immagine Principale" name="featuredImage" initialValue={project.featuredImage || ''} onUploadingChange={setIsUploadingFeatured} />
               {state.errors?.featuredImage && <p className="text-sm text-destructive">{state.errors.featuredImage[0]}</p>}
-              <MultiImageUpload key={`gallery-${project.id}`} label="Immagini Galleria" name="gallery" initialValues={project.gallery || []} />
+              <MultiImageUpload key={`gallery-${project.id}`} label="Immagini Galleria" name="gallery" initialValues={project.gallery || []} onUploadingChange={setIsUploadingGallery} />
             </CardContent>
           </Card>
         </div>

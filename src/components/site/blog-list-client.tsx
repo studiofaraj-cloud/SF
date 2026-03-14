@@ -10,7 +10,7 @@ import { useTranslations, useLocale } from 'next-intl';
 import { useState, useMemo } from 'react';
 
 const ScrollFadeIn = dynamic(
-  () => import('@/components/site/scroll-fade-in').then(mod => ({ default: mod.ScrollFadeIn })),
+  () => import('@/components/site/scroll-fade-in'),
   { ssr: true }
 );
 const RippleGrid = dynamic(() => import('@/components/RippleGrid'), { ssr: false });
@@ -128,7 +128,7 @@ export function BlogListClient({ blogs: initialBlogs }: BlogListClientProps) {
               value={query}
               onChange={e => setQuery(e.target.value)}
               placeholder={locale === 'it' ? 'Cerca articoli…' : 'Search articles…'}
-              className="w-full rounded-xl border border-border/40 bg-background/60 backdrop-blur-sm pl-10 pr-4 py-3 text-sm placeholder:text-muted-foreground/40 focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500/40 transition-all"
+              className="w-full rounded-xl border border-border/40 bg-background/60 backdrop-blur-sm pl-10 pr-4 py-3 text-sm placeholder:text-muted-foreground/70 focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500/40 transition-all"
             />
           </div>
         </div>

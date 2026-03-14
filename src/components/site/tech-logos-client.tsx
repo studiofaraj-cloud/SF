@@ -3,7 +3,7 @@
 import { SiReact, SiNextdotjs, SiTypescript, SiTailwindcss, SiVercel, SiFirebase, SiNodedotjs, SiHtml5, SiCss3, SiShopify, SiJavascript } from 'react-icons/si';
 import { LogoLoop, type LogoItem } from '@/components/LogoLoop';
 
-export function TechLogosClient() {
+export default function TechLogosClient() {
   const techLogos: LogoItem[] = [
     { node: <SiReact size={32} />, title: "React", href: "https://react.dev" },
     { node: <SiNextdotjs size={32} />, title: "Next.js", href: "https://nextjs.org" },

@@ -17,7 +17,7 @@ import { useLocale } from 'next-intl';
 import { getLocalizedPath } from '@/lib/i18n-helpers';
 
 // Lazy load heavy components
-const ScrollFadeIn = dynamic(() => import('@/components/site/scroll-fade-in').then(mod => ({ default: mod.ScrollFadeIn })), { ssr: true });
+const ScrollFadeIn = dynamic(() => import('@/components/site/scroll-fade-in'), { ssr: true });
 const RippleGrid = dynamic(() => import('@/components/RippleGrid'), { ssr: false });
 const GradientText = dynamic(() => import('@/components/GradientText'), { ssr: false });
 
@@ -170,7 +170,7 @@ export function ProjectsListClient({ projects: initialProjects }: ProjectsListCl
                       placeholder={t('filters.searchPlaceholder')}
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="pl-10 pr-10"
+                      className="pl-10 pr-10 placeholder:text-muted-foreground/70"
                     />
                     {searchQuery && (
                       <Button

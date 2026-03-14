@@ -52,7 +52,7 @@ function AnimatedCounter({
   return <span className="tabular-nums">{count}{suffix}</span>;
 }
 
-export function StatsSection() {
+export default function StatsSection() {
   const isMobile = useIsMobile();
   const sectionRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);

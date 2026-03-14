@@ -34,7 +34,7 @@ const serviceValueToKey: Record<string, string> = {
   'altro': 'other',
 };
 
-export function ContactSection() {
+export default function ContactSection() {
     const { toast } = useToast();
     const locale = useLocale();
     const t = useTranslations('contact');
