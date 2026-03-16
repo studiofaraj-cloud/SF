@@ -127,7 +127,7 @@ export function ImageUpload({
       setIsCompressing(false);
       setUploadProgress(0);
     }
-  }, [onUploadComplete]);
+  }, [onUploadComplete, onUploadingChange]);
 
   const handleFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -171,15 +171,13 @@ export function ImageUpload({
     }
 
     // Attempt to delete from Firebase Storage — best-effort, won't block UI
-    if (urlToDelete.includes('firebasestorage.googleapis.com')) {
+    const isFirebaseUrl = urlToDelete.includes('firebasestorage.googleapis.com') ||
+                          urlToDelete.includes('firebasestorage.app');
+    if (isFirebaseUrl) {
       try {
-        // Firebase Storage URLs contain the path encoded in the URL
-        // We can create a ref directly from the download URL
         const imageRef = ref(storage, urlToDelete);
         await deleteObject(imageRef);
       } catch (err) {
-        // Silently ignore — the image reference may no longer be valid or
-        // the URL may be a download URL that doesn't map directly to a storage path.
         console.warn('Could not delete image from storage (non-fatal):', err);
       }
     }
@@ -443,12 +441,15 @@ export function MultiImageUpload({
     setImages(prev => prev.filter(img => img.id !== imageId));
 
     // Best-effort: attempt to delete from Firebase Storage
-    if (imageUrl && imageUrl.includes('firebasestorage.googleapis.com')) {
+    const isFirebaseUrl = imageUrl && (
+      imageUrl.includes('firebasestorage.googleapis.com') ||
+      imageUrl.includes('firebasestorage.app')
+    );
+    if (isFirebaseUrl) {
       try {
         const fileRef = ref(storage, imageUrl);
         await deleteObject(fileRef);
       } catch (error) {
-        // Non-fatal — the image is removed from the form regardless
         console.warn('Could not delete image from storage (non-fatal):', error);
       }
     }

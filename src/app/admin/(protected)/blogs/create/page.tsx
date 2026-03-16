@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useActionState } from 'react';
+import { useState, useActionState, useEffect } from 'react';
 import Link from 'next/link';
 import { useFormStatus } from 'react-dom';
 import { ChevronLeft, PlusCircle } from 'lucide-react';
@@ -52,13 +52,15 @@ export default function CreateBlogPage() {
   const initialState: { message: string, errors?: Record<string, string[]> } = { message: '', errors: {} };
   const [state, dispatch] = useActionState(createBlog, initialState);
 
-  if (state?.message) {
-    const hasErrors = Object.keys(state.errors || {}).length > 0;
-    toast({
-      title: hasErrors ? 'Errore' : 'Errore',
-      description: state.message
-    });
-  }
+  useEffect(() => {
+    if (state?.message) {
+      const hasErrors = Object.keys(state.errors || {}).length > 0;
+      toast({
+        title: hasErrors ? 'Errore' : 'Successo',
+        description: state.message
+      });
+    }
+  }, [state, toast]);
 
   return (
     <form action={dispatch} className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
