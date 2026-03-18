@@ -39,8 +39,9 @@ import {
 import Link from 'next/link';
 import Image from 'next/image';
 
-// Lazy load heavy components
-const TechLogosClient = dynamic(() => import('@/components/site/tech-logos-client'));
+// Lazy load heavy components — use .then() to safely extract default export
+// and prevent React Error #130 (undefined component) in production builds
+const TechLogosClient = dynamic(() => import('@/components/site/tech-logos-client').then(mod => mod.default ? mod : { default: mod.TechLogosClient ?? (() => null) }));
 import { Badge } from '@/components/ui/badge';
 import { generateMetadata as generateSEOMetadata, siteConfig } from '@/lib/seo';
 import { StructuredDataServer } from '@/components/seo/structured-data-server';
@@ -51,13 +52,14 @@ import { getLocalizedPath } from '@/lib/i18n-helpers';
 import { getHeroSlidesAction } from '@/lib/actions';
 import type { HeroSlide } from '@/lib/definitions';
 
-// Dynamically import client components
-const ProcessTimeline = dynamic(() => import('@/components/site/process-timeline'));
-const ContactSection = dynamic(() => import('@/components/site/contact-section'));
-const HomepageClient = dynamic(() => import('@/components/site/homepage-client'));
-const TestimonialsSection = dynamic(() => import('@/components/site/testimonials-section'), { ssr: true });
-const StatsSection = dynamic(() => import('@/components/site/stats-section'));
-const ScrollFadeIn = dynamic(() => import('@/components/site/scroll-fade-in'));
+// Dynamically import client components — use .then() to safely extract default export
+// and prevent React Error #130 (undefined component) in production builds
+const ProcessTimeline = dynamic(() => import('@/components/site/process-timeline').then(mod => mod.default ? mod : { default: mod.ProcessTimeline ?? (() => null) }));
+const ContactSection = dynamic(() => import('@/components/site/contact-section').then(mod => mod.default ? mod : { default: mod.ContactSection ?? (() => null) }));
+const HomepageClient = dynamic(() => import('@/components/site/homepage-client').then(mod => mod.default ? mod : { default: mod.HomepageClient ?? (() => null) }));
+const TestimonialsSection = dynamic(() => import('@/components/site/testimonials-section').then(mod => mod.default ? mod : { default: mod.TestimonialsSection ?? (() => null) }), { ssr: true });
+const StatsSection = dynamic(() => import('@/components/site/stats-section').then(mod => mod.default ? mod : { default: mod.StatsSection ?? (() => null) }));
+const ScrollFadeIn = dynamic(() => import('@/components/site/scroll-fade-in').then(mod => mod.default ? mod : { default: mod.ScrollFadeIn ?? (() => null) }));
 import { TechSectionMobile } from '@/components/site/tech-section-mobile';
 import { ServiceAccordionMobile } from '@/components/site/service-accordion-mobile';
 // Server Components — must NOT use dynamic(), import directly and wrap in <Suspense>

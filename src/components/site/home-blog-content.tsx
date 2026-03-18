@@ -11,7 +11,7 @@ import type { Blog } from '@/lib/definitions';
 import { useTranslations, useLocale } from 'next-intl';
 import { getLocalizedPath } from '@/lib/i18n-helpers';
 
-const ScrollFadeIn = dynamic(() => import('@/components/site/scroll-fade-in'), { ssr: true });
+const ScrollFadeIn = dynamic(() => import('@/components/site/scroll-fade-in').then(mod => mod.default ? mod : { default: mod.ScrollFadeIn ?? (() => null) }), { ssr: true });
 
 interface HomeBlogContentProps {
   blogs: Blog[];
