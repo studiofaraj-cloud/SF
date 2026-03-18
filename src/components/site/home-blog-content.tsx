@@ -25,7 +25,7 @@ export function HomeBlogContent({ blogs }: HomeBlogContentProps) {
   }
 
   return (
-    <section className="relative w-full py-16 sm:py-24 md:py-32 lg:py-40 overflow-hidden">
+    <section className="relative w-full py-16 sm:py-24 md:py-32 lg:py-40 overflow-hidden suspense-reveal">
       {/* Constellation Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-secondary/50 via-background to-background" />
       <div className="absolute inset-0 bg-constellation" />

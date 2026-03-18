@@ -5,12 +5,13 @@ import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
 export const firebaseConfig = {
-  apiKey: "AIzaSyCy-KUAHiPqdAfmjWMZ_8lj7q3A9C52XI4",
-  authDomain: "studio-9657887514-d2729.firebaseapp.com",
-  projectId: "studio-9657887514-d2729",
-  storageBucket: "studio-9657887514-d2729.firebasestorage.app",
-  messagingSenderId: "1013722830384",
-  appId: "1:1013722830384:web:0a7eb991ae051f0e053ff5"
+  apiKey: "AIzaSyCLs-uSNjkKm1LgkIne9AlVn2QeFAYtqqg",
+  authDomain: "studiofarajnext.firebaseapp.com",
+  projectId: "studiofarajnext",
+  storageBucket: "studiofarajnext.firebasestorage.app",
+  messagingSenderId: "448578143537",
+  appId: "1:448578143537:web:3f92f69e64db0eb3969c10",
+  measurementId: "G-ZRN8CFWT4W"
 };
 
 const app = initializeApp(firebaseConfig);

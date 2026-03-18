@@ -23,7 +23,7 @@ export function HomeProjectContent({ projects }: HomeProjectContentProps) {
   }
 
   return (
-    <section className="relative w-full py-16 sm:py-24 md:py-32 lg:py-40 overflow-hidden" suppressHydrationWarning>
+    <section className="relative w-full py-16 sm:py-24 md:py-32 lg:py-40 overflow-hidden suspense-reveal" suppressHydrationWarning>
       {/* Background Effects */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-secondary/30 to-background" />
       <div className="absolute inset-0 overflow-hidden pointer-events-none">

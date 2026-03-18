@@ -14,14 +14,14 @@ runConfig:
 env:
   # Public site URL (used for SEO, sitemaps, og:url)
   - variable: NEXT_PUBLIC_SITE_URL
-    value: https://studio-9657887514-d2729.web.app
+    value: https://studiofarajnext.web.app
     availability:
       - BUILD
       - RUNTIME
 
   # Firebase project ID (public)
   - variable: NEXT_PUBLIC_FIREBASE_PROJECT_ID
-    value: studio-9657887514-d2729
+    value: studiofarajnext
     availability:
       - BUILD
       - RUNTIME

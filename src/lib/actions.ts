@@ -771,18 +771,28 @@ export async function deleteBookingAction(id: string) {
 // ─── Hero Slides Actions ───────────────────────────────────────────────────────
 
 export async function getHeroSlidesAction(): Promise<HeroSlideData[]> {
-  try {
-    return await getHeroSlides();
-  } catch (error) {
-    console.error('Error fetching hero slides:', error);
-    return [];
-  }
+  return unstable_cache(
+    async () => {
+      try {
+        const slides = await getHeroSlides();
+        return slides.map(slide => serializeFirestoreData(slide));
+      } catch (error) {
+        console.error('Error fetching hero slides:', error);
+        return [];
+      }
+    },
+    ['hero-slides'],
+    { revalidate: 3600, tags: ['hero-slides'] }
+  )();
 }
 
 export async function saveHeroSlidesAction(slides: HeroSlideData[]) {
   try {
     await saveHeroSlides(slides);
-    revalidatePath('/', 'layout');
+    revalidateTag('hero-slides');
+    for (const locale of ['it', 'en']) {
+      revalidatePath(`/${locale}`);
+    }
     return { success: true, message: 'Slides salvate con successo.' };
   } catch (error) {
     console.error('Error saving hero slides:', error);

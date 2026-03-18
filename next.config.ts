@@ -61,7 +61,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'studio-9657887514-d2729.firebasestorage.app',
+        hostname: 'studiofarajnext.firebasestorage.app',
         port: '',
         pathname: '/**',
       },

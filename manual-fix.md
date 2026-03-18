@@ -75,19 +75,19 @@ A `cors.json` file has been created in the project root. Run this command from t
 project directory:
 
 ```bash
-gcloud storage buckets update gs://studio-9657887514-d2729.firebasestorage.app --cors-file=cors.json
+gcloud storage buckets update gs://studiofarajnext.firebasestorage.app --cors-file=cors.json
 ```
 
 If the above command doesn't work (older gcloud version), try:
 
 ```bash
-gsutil cors set cors.json gs://studio-9657887514-d2729.firebasestorage.app
+gsutil cors set cors.json gs://studiofarajnext.firebasestorage.app
 ```
 
 ### Verify CORS Was Applied
 
 ```bash
-gcloud storage buckets describe gs://studio-9657887514-d2729.firebasestorage.app --format="json(cors)"
+gcloud storage buckets describe gs://studiofarajnext.firebasestorage.app --format="json(cors)"
 ```
 
 You should see the CORS config with `"origin": ["*"]` and `"method": ["GET", "HEAD"]`.
