@@ -1,12 +1,20 @@
 import { ReactNode } from 'react';
 import "@/app/globals.css";
-import { Inter, Tomorrow } from 'next/font/google';
+import { Inter, Tomorrow, Open_Sans } from 'next/font/google';
 import { defaultLocale } from '@/i18n/config';
 import { cn } from "@/lib/utils";
 
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
+  display: 'swap',
+  preload: true,
+  adjustFontFallback: true,
+});
+
+const openSans = Open_Sans({
+  subsets: ['latin'],
+  variable: '--font-open-sans',
   display: 'swap',
   preload: true,
   adjustFontFallback: true,
@@ -25,7 +33,7 @@ const tomorrow = Tomorrow({
 // The locale-specific content is handled in [locale]/layout.tsx
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang={defaultLocale} className={`${inter.variable} ${tomorrow.variable}`} suppressHydrationWarning>
+    <html lang={defaultLocale} className={`${inter.variable} ${openSans.variable} ${tomorrow.variable}`} suppressHydrationWarning>
       <head>
         {/* DNS prefetch and preconnect for external resources */}
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />

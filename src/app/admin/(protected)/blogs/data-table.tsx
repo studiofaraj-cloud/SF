@@ -78,7 +78,7 @@ export function BlogsDataTable({ blogs }: { blogs: Blog[] }) {
               </TableCell>
               <TableCell className="font-medium">{blog.title}</TableCell>
               <TableCell>
-                <Badge variant={blog.published ? 'default' : 'secondary'}>
+                <Badge className={blog.published ? 'bg-green-600 text-white border-transparent' : 'bg-yellow-500 text-black border-transparent'}>
                   {blog.published ? 'Pubblicato' : 'Bozza'}
                 </Badge>
               </TableCell>

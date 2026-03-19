@@ -136,28 +136,31 @@ export function HomeProjectContent({ projects }: HomeProjectContentProps) {
                         {/* Decorative corner accent */}
                         <div className="hidden md:block absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-primary/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                         
-                        {/* Content */}
-                        <div className="relative z-10 h-full flex flex-col justify-between p-5 md:p-8 text-white">
-                          {/* Badge at top */}
-                          <Badge variant="secondary" className="w-fit bg-white/20 backdrop-blur-sm border-0 text-white text-xs">
+                        {/* Badge at top */}
+                        <div className="absolute top-4 left-4 md:top-6 md:left-6 z-20">
+                          <Badge variant="secondary" className="bg-white/20 backdrop-blur-sm border-0 text-white text-xs">
                             <Tag className="w-3 h-3 mr-1 md:mr-2" />
                             Progetto
                           </Badge>
-                          
+                        </div>
+
+                        {/* Content */}
+                        <div className="relative z-10 h-full flex flex-col justify-end p-5 md:p-8 text-white">
                           {/* Bottom content */}
-                          <div className="relative">
-                            <h3 className="text-xl md:text-2xl font-bold mb-2 md:mb-3 transition-transform duration-500 ease-out md:group-hover:-translate-y-20">
+                          <div className="relative transition-transform duration-500 ease-out md:group-hover:-translate-y-4">
+                            <h3 className="text-xl md:text-2xl font-bold mb-0">
                               {project.title}
                             </h3>
-                            
-                            <p className="hidden md:block text-white/80 text-sm line-clamp-2 mb-4 opacity-0 group-hover:opacity-100 transition-all duration-500 absolute bottom-8 left-0 right-0">
-                              {project.description}
-                            </p>
-                            
-                            <span className="inline-flex items-center text-sm font-medium text-white/90 group-hover:text-white">
-                              Scopri di più
-                              <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-2" />
-                            </span>
+
+                            <div className="max-h-0 overflow-hidden opacity-0 group-hover:max-h-24 group-hover:opacity-100 transition-all duration-500 ease-out">
+                              <p className="text-white/80 text-sm mt-2 mb-2">
+                                {project.description?.split(/(?<=[.!?])\s+/).slice(0, 2).join(' ')}
+                              </p>
+                              <span className="inline-flex items-center text-primary text-sm font-medium group-hover:underline">
+                                Scopri di più
+                                <ArrowRight className="w-3.5 h-3.5 ml-1 transition-transform group-hover:translate-x-1" />
+                              </span>
+                            </div>
                           </div>
                         </div>
                       </Card>

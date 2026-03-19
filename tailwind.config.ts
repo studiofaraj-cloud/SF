@@ -22,10 +22,11 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['var(--font-inter)'],
+        sans: ['var(--font-inter)', 'var(--font-open-sans)', 'sans-serif'],
         brand: ['var(--font-tomorrow)'],
-        body: ['Inter', 'sans-serif'],
+        body: ['Inter', 'Open Sans', 'sans-serif'],
         headline: ['var(--font-inter)'],
+        'open-sans': ['var(--font-open-sans)', 'sans-serif'],
         code: ['monospace'],
       },
       transitionDuration: {

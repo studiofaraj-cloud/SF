@@ -598,7 +598,8 @@ function nodeToJson(node: Node): JSONContent {
   const children: JSONContent[] = [];
   node.childNodes.forEach(child => {
     const childJson = nodeToJson(child);
-    if (childJson.type === 'image') {
+    // Always preserve structural nodes (images, line breaks, horizontal rules)
+    if (childJson.type === 'image' || childJson.type === 'hardBreak' || childJson.type === 'horizontalRule') {
       children.push(childJson);
     } else if (childJson.text || childJson.content) {
       if (marks.length > 0 && childJson.type === 'text') {

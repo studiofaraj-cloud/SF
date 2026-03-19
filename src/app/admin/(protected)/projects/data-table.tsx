@@ -79,7 +79,7 @@ export function ProjectsDataTable({ projects }: { projects: Project[] }) {
               </TableCell>
               <TableCell className="font-medium">{project.title}</TableCell>
               <TableCell>
-                <Badge variant={project.published ? 'default' : 'secondary'}>
+                <Badge className={project.published ? 'bg-green-600 text-white border-transparent' : 'bg-yellow-500 text-black border-transparent'}>
                   {project.published ? 'Pubblicato' : 'Bozza'}
                 </Badge>
               </TableCell>
