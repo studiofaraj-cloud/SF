@@ -107,6 +107,28 @@ export function RichTextEditor({
     }
   }, [onChange, history, historyIndex]);
 
+  // Add delete buttons to image blocks and handle clicks
+  useEffect(() => {
+    const editor = editorRef.current;
+    if (!editor) return;
+
+    const handleClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('.editor-image-delete')) {
+        e.preventDefault();
+        e.stopPropagation();
+        const block = target.closest('.editor-image-block');
+        if (block) {
+          block.remove();
+          updateContent();
+        }
+      }
+    };
+
+    editor.addEventListener('click', handleClick);
+    return () => editor.removeEventListener('click', handleClick);
+  }, [updateContent]);
+
   const execCommand = (command: string, value?: string) => {
     document.execCommand(command, false, value);
     updateContent();
@@ -188,8 +210,9 @@ export function RichTextEditor({
     }
 
     if (finalUrl && editorRef.current) {
-      // Build a custom image block with data attributes for size/align
+      // Build a custom image block with delete button
       const imgHtml = `<div class="editor-image-block" data-size="${imageSize}" data-align="${imageAlign}" contenteditable="false">` +
+        `<button type="button" class="editor-image-delete" title="Rimuovi immagine">&times;</button>` +
         `<img src="${finalUrl}" alt="${imageAlt || ''}" title="${imageCaption || ''}" data-size="${imageSize}" data-align="${imageAlign}" />` +
         (imageCaption ? `<p class="image-caption">${imageCaption}</p>` : '') +
         `</div><p><br></p>`;
@@ -228,6 +251,36 @@ export function RichTextEditor({
     setLinkUrl('');
     setLinkText('');
   };
+
+  // Handle paste/drop images directly into the editor
+  const handleEditorPaste = useCallback(async (e: React.ClipboardEvent) => {
+    const items = e.clipboardData?.items;
+    if (!items) return;
+    for (const item of Array.from(items)) {
+      if (item.type.startsWith('image/')) {
+        e.preventDefault();
+        const file = item.getAsFile();
+        if (file) {
+          setImageFile(file);
+          setImageAlt(file.name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' '));
+          setShowImageDialog(true);
+        }
+        return;
+      }
+    }
+  }, []);
+
+  const handleEditorDrop = useCallback(async (e: React.DragEvent) => {
+    const files = e.dataTransfer?.files;
+    if (!files?.length) return;
+    const file = files[0];
+    if (file.type.startsWith('image/')) {
+      e.preventDefault();
+      setImageFile(file);
+      setImageAlt(file.name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' '));
+      setShowImageDialog(true);
+    }
+  }, []);
 
   const handleImageFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -313,6 +366,9 @@ export function RichTextEditor({
         contentEditable
         onInput={updateContent}
         onBlur={updateContent}
+        onPaste={handleEditorPaste}
+        onDrop={handleEditorDrop}
+        onDragOver={(e) => e.preventDefault()}
         className="prose prose-sm max-w-none p-4 min-h-[20rem] focus:outline-none [&_img]:max-w-full [&_img]:rounded-lg [&_.editor-image-block]:my-4 [&_.editor-image-block]:relative [&_.editor-image-block[data-align='center']]:mx-auto [&_.editor-image-block[data-align='left']]:mr-auto [&_.editor-image-block[data-align='right']]:ml-auto [&_.editor-image-block[data-size='full']]:w-full [&_.editor-image-block[data-size='medium']]:w-3/4 [&_.editor-image-block[data-size='small']]:w-1/2 [&_.image-caption]:text-sm [&_.image-caption]:text-center [&_.image-caption]:text-muted-foreground [&_.image-caption]:mt-2 [&_.image-caption]:italic"
         data-placeholder={placeholder}
         suppressContentEditableWarning
@@ -326,6 +382,35 @@ export function RichTextEditor({
           color: hsl(var(--muted-foreground));
           pointer-events: none;
           position: absolute;
+        }
+      `}</style>
+      <style>{`
+        .editor-image-block {
+          position: relative;
+        }
+        .editor-image-delete {
+          position: absolute;
+          top: 8px;
+          right: 8px;
+          z-index: 10;
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+          background: rgba(239, 68, 68, 0.9);
+          color: white;
+          border: none;
+          font-size: 18px;
+          line-height: 1;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          opacity: 0;
+          transition: opacity 0.2s;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+        .editor-image-block:hover .editor-image-delete {
+          opacity: 1;
         }
       `}</style>
 
@@ -525,15 +610,46 @@ export function RichTextEditor({
 function htmlToJson(html: string): JSONContent {
   const parser = new DOMParser();
   const doc = parser.parseFromString(html, 'text/html');
-  return nodeToJson(doc.body);
+  const result = nodeToJson(doc.body, []);
+  if (Array.isArray(result)) {
+    return { type: 'doc', content: result };
+  }
+  return result;
 }
 
-function nodeToJson(node: Node): JSONContent {
+// Inline elements that produce marks instead of wrapper nodes
+const INLINE_MARK_TAGS = new Set(['strong', 'b', 'em', 'i', 'a', 'u']);
+
+function getMarksForTag(element: HTMLElement, tagName: string): { type: string; attrs?: Record<string, any> }[] {
+  const marks: { type: string; attrs?: Record<string, any> }[] = [];
+  if (tagName === 'strong' || tagName === 'b') marks.push({ type: 'bold' });
+  if (tagName === 'em' || tagName === 'i') marks.push({ type: 'italic' });
+  if (tagName === 'u') marks.push({ type: 'underline' });
+  if (tagName === 'a') {
+    marks.push({
+      type: 'link',
+      attrs: {
+        href: element.getAttribute('href') || '',
+        target: element.getAttribute('target') || '_blank'
+      }
+    });
+  }
+  return marks;
+}
+
+function nodeToJson(
+  node: Node,
+  inheritedMarks: { type: string; attrs?: Record<string, any> }[]
+): JSONContent | JSONContent[] {
+  // Text node — leaf with inherited marks
   if (node.nodeType === Node.TEXT_NODE) {
-    return {
-      type: 'text',
-      text: node.textContent || ''
-    };
+    const text = node.textContent || '';
+    if (!text) return { type: 'text', text: '' };
+    const result: JSONContent = { type: 'text', text };
+    if (inheritedMarks.length > 0) {
+      result.marks = [...inheritedMarks];
+    }
+    return result;
   }
 
   const element = node as HTMLElement;
@@ -571,6 +687,26 @@ function nodeToJson(node: Node): JSONContent {
     };
   }
 
+  // Handle <br> and <hr>
+  if (tagName === 'br') return { type: 'hardBreak' };
+  if (tagName === 'hr') return { type: 'horizontalRule' };
+
+  // Inline mark elements (strong, em, a, u) — flatten into children with accumulated marks
+  if (INLINE_MARK_TAGS.has(tagName)) {
+    const marks = [...inheritedMarks, ...getMarksForTag(element, tagName)];
+    const results: JSONContent[] = [];
+    node.childNodes.forEach(child => {
+      const childResult = nodeToJson(child, marks);
+      if (Array.isArray(childResult)) {
+        results.push(...childResult);
+      } else {
+        results.push(childResult);
+      }
+    });
+    return results;
+  }
+
+  // Block element
   const content: JSONContent = {
     type: tagNameToType(tagName)
   };
@@ -580,32 +716,20 @@ function nodeToJson(node: Node): JSONContent {
     content.attrs = { level: parseInt(tagName.charAt(1)) };
   }
 
-  // Handle marks (bold, italic, etc.)
-  const marks: { type: string; attrs?: Record<string, any> }[] = [];
-  if (tagName === 'strong' || tagName === 'b') marks.push({ type: 'bold' });
-  if (tagName === 'em' || tagName === 'i') marks.push({ type: 'italic' });
-  if (tagName === 'a') {
-    marks.push({
-      type: 'link',
-      attrs: {
-        href: element.getAttribute('href') || '',
-        target: element.getAttribute('target') || '_blank'
-      }
-    });
-  }
-
-  // Process children
+  // Process children — no inherited marks for block elements
   const children: JSONContent[] = [];
   node.childNodes.forEach(child => {
-    const childJson = nodeToJson(child);
-    // Always preserve structural nodes (images, line breaks, horizontal rules)
-    if (childJson.type === 'image' || childJson.type === 'hardBreak' || childJson.type === 'horizontalRule') {
-      children.push(childJson);
-    } else if (childJson.text || childJson.content) {
-      if (marks.length > 0 && childJson.type === 'text') {
-        childJson.marks = marks;
+    const childResult = nodeToJson(child, []);
+    if (Array.isArray(childResult)) {
+      childResult.forEach(c => {
+        if (c.type === 'image' || c.type === 'hardBreak' || c.type === 'horizontalRule' || c.text || c.content) {
+          children.push(c);
+        }
+      });
+    } else {
+      if (childResult.type === 'image' || childResult.type === 'hardBreak' || childResult.type === 'horizontalRule' || childResult.text || childResult.content) {
+        children.push(childResult);
       }
-      children.push(childJson);
     }
   });
 
@@ -626,11 +750,6 @@ function tagNameToType(tagName: string): string {
     'ol': 'orderedList',
     'li': 'listItem',
     'blockquote': 'blockquote',
-    'strong': 'text',
-    'b': 'text',
-    'em': 'text',
-    'i': 'text',
-    'a': 'text',
     'br': 'hardBreak',
     'hr': 'horizontalRule',
     'body': 'doc'
@@ -640,6 +759,11 @@ function tagNameToType(tagName: string): string {
 
 function jsonToHtml(json: JSONContent): string {
   if (json.type === 'text') {
+    // Wrapper text node (from inline elements like <strong>, <em>, <a>)
+    // has content children but no text — render children instead
+    if (!json.text && json.content) {
+      return json.content.map(child => jsonToHtml(child)).join('');
+    }
     let text = json.text || '';
     if (json.marks) {
       json.marks.forEach(mark => {
@@ -658,6 +782,7 @@ function jsonToHtml(json: JSONContent): string {
     const size = json.attrs?.size || 'full';
     const align = json.attrs?.align || 'center';
     return `<div class="editor-image-block" data-size="${size}" data-align="${align}" contenteditable="false">` +
+      `<button type="button" class="editor-image-delete" title="Rimuovi immagine">&times;</button>` +
       `<img src="${src}" alt="${alt}" title="${title}" data-size="${size}" data-align="${align}" />` +
       (title ? `<p class="image-caption">${title}</p>` : '') +
       `</div>`;

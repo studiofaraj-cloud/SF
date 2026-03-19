@@ -134,8 +134,10 @@ export function SiteFooter() {
                 <Facebook className="h-5 w-5" />
               </Link>
               <Link 
-                href="#" 
-                className="w-10 h-10 rounded-lg bg-secondary border border-border/50 flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary hover:bg-primary/5 transition-all duration-300" 
+                href="https://instagram.com/studiofaraj.it"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-lg bg-secondary border border-border/50 flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary hover:bg-primary/5 transition-all duration-300"
                 aria-label="Instagram"
               >
                 <Instagram className="h-5 w-5" />

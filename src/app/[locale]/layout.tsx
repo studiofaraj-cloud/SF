@@ -11,6 +11,7 @@ import { CookieProvider } from '@/contexts/cookie-context';
 import { AppBody } from '@/components/site/app-body';
 import { StructuredDataServer } from '@/components/seo/structured-data-server';
 import { generateStructuredDataOrganization, generateStructuredDataWebSite, generateStructuredDataProfessionalService } from '@/lib/seo';
+import Script from 'next/script';
 
 type Props = {
   children: ReactNode;
@@ -87,7 +88,9 @@ export default async function LocaleLayout({ children, params }: Props) {
   // The root layout has the html/body tags, so we update the lang here
   return (
     <>
-      <script
+      <Script
+        id="set-lang"
+        strategy="beforeInteractive"
         dangerouslySetInnerHTML={{
           __html: `document.documentElement.lang = '${locale}';`,
         }}

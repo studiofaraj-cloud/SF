@@ -69,12 +69,12 @@ export function BlogPostClient({ blog, related, locale, readingTime = 1, formatt
         <div className="relative z-20 pt-28 sm:pt-32 md:pt-36 pb-10 sm:pb-12 md:pb-14">
           <div className="container px-4 sm:px-6 md:px-8 max-w-4xl mx-auto text-center">
             {/* Breadcrumb */}
-            <nav aria-label="breadcrumb" className="flex items-center justify-center gap-1.5 text-xs text-white/40 mb-6">
-              <Link href={`/${locale}`} className="hover:text-white/70 transition-colors">Home</Link>
+            <nav aria-label="breadcrumb" className="inline-flex items-center justify-center flex-wrap gap-x-1.5 gap-y-1 text-xs text-white/40 mb-6">
+              <Link href={`/${locale}`} className="hover:text-white/70 transition-colors whitespace-nowrap">Home</Link>
               <ChevronRight className="h-3 w-3 shrink-0" />
-              <Link href={`/${locale}/blog`} className="hover:text-white/70 transition-colors">Blog</Link>
+              <Link href={`/${locale}/blog`} className="hover:text-white/70 transition-colors whitespace-nowrap">Blog</Link>
               <ChevronRight className="h-3 w-3 shrink-0" />
-              <span className="text-white/30 truncate max-w-[200px]">{blog.title}</span>
+              <span className="text-white/30 truncate max-w-[140px] sm:max-w-[200px]">{blog.title}</span>
             </nav>
 
             {/* Badge */}

@@ -52,7 +52,7 @@ export function ProjectPostClient({
     <div className="bg-background text-foreground overflow-x-hidden">
 
       {/* ── Hero ── */}
-      <section className="relative min-h-[60svh] sm:min-h-[65svh] flex flex-col justify-end overflow-hidden pt-20">
+      <section className="relative min-h-[60svh] sm:min-h-[65svh] flex flex-col justify-end overflow-x-hidden pt-20">
         <div className="absolute inset-0 z-0">
           <RippleGrid
             gridColor="#8b5cf6"
@@ -79,22 +79,24 @@ export function ProjectPostClient({
 
         {/* Content */}
         <div className="relative z-20 container px-4 sm:px-6 md:px-8 text-center max-w-4xl py-12">
+          {/* Badge */}
+          <div className="mb-3">
+            <Badge className="badge-futuristic bg-violet-500/20 text-violet-400 border-violet-500/30">
+              <FolderKanban className="w-3.5 h-3.5 mr-1.5" />
+              {project.category || (locale === 'it' ? 'Progetto' : 'Project')}
+            </Badge>
+          </div>
+
           {/* Breadcrumb */}
-          <nav aria-label="breadcrumb" className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground/60 mb-5">
-            <Link href={`/${locale}`} className="hover:text-foreground transition-colors">Home</Link>
+          <nav aria-label="breadcrumb" className="inline-flex items-center justify-center flex-wrap gap-x-1.5 gap-y-1 text-xs text-muted-foreground/60 mb-5">
+            <Link href={`/${locale}`} className="hover:text-foreground transition-colors whitespace-nowrap">Home</Link>
             <ChevronRight className="h-3 w-3 shrink-0" />
-            <Link href={`/${locale}/projects`} className="hover:text-foreground transition-colors">
+            <Link href={`/${locale}/projects`} className="hover:text-foreground transition-colors whitespace-nowrap">
               {locale === 'it' ? 'Progetti' : 'Projects'}
             </Link>
             <ChevronRight className="h-3 w-3 shrink-0" />
-            <span className="text-muted-foreground/40 truncate max-w-[200px]">{project.title}</span>
+            <span className="text-muted-foreground/40 truncate max-w-[140px] sm:max-w-[200px]">{project.title}</span>
           </nav>
-
-          {/* Badge */}
-          <Badge className="badge-futuristic mb-4 sm:mb-5 bg-violet-500/20 text-violet-400 border-violet-500/30">
-            <FolderKanban className="w-3.5 h-3.5 mr-1.5" />
-            {project.category || (locale === 'it' ? 'Progetto' : 'Project')}
-          </Badge>
 
           {/* Title */}
           <div className="mb-5">
@@ -163,8 +165,8 @@ export function ProjectPostClient({
       {/* ── Featured Image ── */}
       {project.featuredImage && (
         <ScrollFadeIn animation="fade-up" delay={100}>
-          <section className="max-w-2xl mx-auto px-4 sm:px-6 md:px-8 -mt-8 relative z-30 mb-12">
-            <div className="rounded-xl overflow-hidden holographic-card neon-border group">
+          <section className="max-w-2xl mx-auto px-4 sm:px-6 md:px-8 -mt-16 sm:-mt-20 relative z-40 mb-12">
+            <div className="rounded-xl overflow-hidden shadow-2xl shadow-black/20 group">
               <FirebaseImage
                 src={project.featuredImage}
                 alt={project.title}
