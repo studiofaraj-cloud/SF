@@ -1,0 +1,111 @@
+{
+  "label": "SEO & Marketing",
+  "badge": "SEO & Marketing",
+  "title": "SEO &",
+  "titleHighlight": "Web Marketing",
+  "subtitle": "Strategie digitali per aumentare la visibilità online e generare lead qualificati.",
+  "ctaQuote": "Richiedi Preventivo",
+  "ctaProjects": "Vedi Progetti",
+  "metrics": {
+    "organicTraffic": {
+      "value": "+250%",
+      "label": "Traffico Organico"
+    },
+    "rankings": {
+      "value": "Top 3",
+      "label": "Posizionamenti"
+    },
+    "leads": {
+      "value": "+180%",
+      "label": "Lead Generati"
+    },
+    "roi": {
+      "value": "4.2x",
+      "label": "ROI Medio"
+    }
+  },
+  "features": {
+    "badge": "Servizi",
+    "title": "Strategie per",
+    "titleHighlight": "Crescere Online",
+    "seoOnPage": {
+      "title": "SEO On-Page",
+      "description": "Ottimizzazione di contenuti, meta tag, struttura URL e performance per i motori di ricerca."
+    },
+    "seoOffPage": {
+      "title": "SEO Off-Page",
+      "description": "Strategie di link building e digital PR per aumentare l'autorità del tuo dominio."
+    },
+    "contentMarketing": {
+      "title": "Content Marketing",
+      "description": "Creazione di contenuti ottimizzati che attraggono e convertono il tuo pubblico target."
+    },
+    "localSeo": {
+      "title": "Local SEO",
+      "description": "Posizionamento locale per attività con presenza fisica sul territorio."
+    },
+    "analytics": {
+      "title": "Analytics & Reporting",
+      "description": "Monitoraggio KPI con report dettagliati su traffico, conversioni e ROI."
+    },
+    "ppc": {
+      "title": "Campagne PPC",
+      "description": "Gestione campagne Google Ads e social advertising per risultati immediati."
+    }
+  },
+  "plans": {
+    "badge": "Piani",
+    "title": "Scegli il Piano SEO",
+    "titleHighlight": "Adatto al Tuo Business",
+    "popularBadge": "Più Popolare",
+    "requestBtn": "Richiedi {planName}",
+    "securePayment": "Pagamento Sicuro",
+    "starter": {
+      "name": "Starter",
+      "unit": "/mese",
+      "features": [
+        "Audit SEO iniziale",
+        "Ottimizzazione fino a 10 pagine",
+        "Ricerca keyword base",
+        "Report mensile",
+        "Supporto email",
+        "Google Business Profile"
+      ]
+    },
+    "growth": {
+      "name": "Growth",
+      "unit": "/mese",
+      "features": [
+        "Tutto di Starter +",
+        "Ottimizzazione illimitata pagine",
+        "Content strategy mensile",
+        "Link building attivo",
+        "Analisi competitor",
+        "Report settimanali",
+        "Supporto prioritario"
+      ]
+    },
+    "performance": {
+      "name": "Performance",
+      "unit": "/mese",
+      "features": [
+        "Tutto di Growth +",
+        "Campagne PPC Google Ads",
+        "SEO tecnica avanzata",
+        "Contenuti SEO mensili (4 articoli)",
+        "Local SEO multi-sede",
+        "Dashboard analytics dedicata",
+        "Account manager dedicato"
+      ]
+    }
+  },
+  "cta": {
+    "badge": "Inizia Ora",
+    "title": "Pronto a Scalare le",
+    "titleHighlight": "Classifiche Google?",
+    "subtitle": "Richiedi un audit SEO gratuito e scopri come migliorare la visibilità del tuo sito.",
+    "button": "Richiedi Audit Gratuito",
+    "responseTime": "Risposta in 24h",
+    "freeAudit": "Audit Gratuito"
+  }
+}

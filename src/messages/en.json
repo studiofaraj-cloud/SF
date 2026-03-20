@@ -128,6 +128,15 @@
             "description": "Continuous maintenance and optimizations"
           }
         }
+      },
+      "cta": {
+        "badge": "Start Now",
+        "title": "Ready to Create Your",
+        "titleHighlight": "Website?",
+        "subtitle": "Turn your vision into reality with a professional and high-performance website. Contact us today for a free quote.",
+        "button": "Start Now",
+        "responseTime": "Response within 24h",
+        "freeQuote": "Free Quote"
       }
     },
     "ecommerce": {
@@ -176,7 +185,8 @@
         "shopify": "Complete solution for e-commerce of any size",
         "woocommerce": "Total flexibility on WordPress",
         "custom": "Custom solutions with Next.js and headless CMS",
-        "magento": "For enterprise and complex catalogs"
+        "magento": "For enterprise and complex catalogs",
+        "subtitle": "We choose the platform best suited to your needs, from small shops to enterprise."
       },
       "benefits": {
         "badge": "Benefits",
@@ -190,6 +200,15 @@
           "Product review system",
           "Multi-currency and multi-language"
         ]
+      },
+      "cta": {
+        "badge": "Start Now",
+        "title": "Ready to Take Your",
+        "titleHighlight": "Business Online?",
+        "subtitle": "Create your online store with the best technologies and start selling everywhere. Request a free consultation.",
+        "button": "Start Now",
+        "responseTime": "Response within 24h",
+        "freeConsultation": "Free Consultation"
       }
     },
     "designUIUX": {
@@ -199,7 +218,141 @@
       "titleHighlight": "Design",
       "subtitle": "Intuitive and engaging interfaces optimized for a perfect experience on any device.",
       "ctaQuote": "Request Quote",
-      "ctaProjects": "View Projects"
+      "ctaProjects": "View Projects",
+      "features": {
+        "badge": "Services",
+        "title": "Design that",
+        "titleHighlight": "Makes a Difference",
+        "uiDesign": {
+          "title": "UI Design",
+          "description": "Visually stunning interfaces that capture attention and communicate your brand."
+        },
+        "uxResearch": {
+          "title": "UX Research",
+          "description": "In-depth user analysis to create intuitive and engaging experiences."
+        },
+        "responsive": {
+          "title": "Responsive Design",
+          "description": "Layouts that adapt perfectly to any device and screen resolution."
+        },
+        "designSystem": {
+          "title": "Design System",
+          "description": "Creating scalable design systems to ensure visual consistency."
+        },
+        "prototyping": {
+          "title": "Prototyping",
+          "description": "Interactive prototypes to test and validate ideas before development."
+        },
+        "handoff": {
+          "title": "Developer Handoff",
+          "description": "Organized delivery with detailed specifications for developers."
+        }
+      },
+      "process": {
+        "badge": "Process",
+        "title": "Our Approach",
+        "titleHighlight": "to Design",
+        "discovery": {
+          "step": "01",
+          "title": "Discovery",
+          "description": "Brand, competitor, and target audience analysis"
+        },
+        "wireframing": {
+          "step": "02",
+          "title": "Wireframing",
+          "description": "Structure and information architecture"
+        },
+        "visualDesign": {
+          "step": "03",
+          "title": "Visual Design",
+          "description": "Creating the visual identity of the interface"
+        },
+        "prototype": {
+          "step": "04",
+          "title": "Prototype",
+          "description": "Interactive version for testing and validation"
+        },
+        "userTesting": {
+          "step": "05",
+          "title": "User Testing",
+          "description": "Real feedback to optimize the experience"
+        },
+        "delivery": {
+          "step": "06",
+          "title": "Delivery",
+          "description": "File delivery and complete documentation"
+        }
+      },
+      "benefits": {
+        "title": "Guaranteed Results",
+        "items": [
+          "Increased user engagement",
+          "Reduced bounce rate",
+          "Improved conversions",
+          "Consistent brand identity",
+          "WCAG 2.1 accessibility",
+          "Animated micro-interactions"
+        ]
+      },
+      "plans": {
+        "badge": "Plans & Pricing",
+        "title": "UI/UX Packages",
+        "titleHighlight": "Flexible & Transparent",
+        "subtitle": "Tailored solutions for every need. Prices are indicative and calibrated based on time estimates and workload.",
+        "popularBadge": "Most Requested",
+        "requestBtn": "Request {planName}",
+        "securePayment": "Secure Payment",
+        "starter": {
+          "name": "Starter",
+          "unit": "one-time",
+          "time": "1-2 Weeks of work",
+          "features": [
+            "Showcase Website / Landing Page",
+            "Basic Wireframing and User Flow",
+            "Custom UI Design",
+            "Interactive Prototype",
+            "Up to 2 revisions included",
+            "Developer Handoff"
+          ]
+        },
+        "pro": {
+          "name": "Pro",
+          "unit": "one-time",
+          "time": "3-5 Weeks of work",
+          "features": [
+            "Full Web App / E-commerce",
+            "UX Research / Competitor Analysis",
+            "Information Architecture",
+            "Base Design System",
+            "High-fidelity Prototype",
+            "Up to 4 revisions included",
+            "Development phase support"
+          ]
+        },
+        "retainer": {
+          "name": "Retainer",
+          "unit": "/month",
+          "time": "Ongoing Monthly Support",
+          "features": [
+            "Continuous UI/UX Design",
+            "Complete and maintained Design System",
+            "A/B Testing and UX optimizations",
+            "Micro-interaction creation",
+            "Unlimited revisions",
+            "Weekly alignment meetings",
+            "Top priority"
+          ]
+        }
+      },
+      "cta": {
+        "badge": "Get Started",
+        "title": "Ready to Improve Your",
+        "titleHighlight": "User Experience?",
+        "subtitle": "Contact us for a free consultation and discover how design can transform your business.",
+        "button": "Request Free Quote",
+        "response": "Response within 24h",
+        "freeQuote": "Free Quote"
+      }
     },
     "seoMarketing": {
       "label": "SEO & Marketing",
@@ -208,7 +361,109 @@
       "titleHighlight": "Web Marketing",
       "subtitle": "Digital strategies to increase online visibility and generate qualified leads.",
       "ctaQuote": "Request Quote",
-      "ctaProjects": "View Projects"
+      "ctaProjects": "View Projects",
+      "metrics": {
+        "organicTraffic": {
+          "value": "+250%",
+          "label": "Organic Traffic"
+        },
+        "rankings": {
+          "value": "Top 3",
+          "label": "Rankings"
+        },
+        "leads": {
+          "value": "+180%",
+          "label": "Generated Leads"
+        },
+        "roi": {
+          "value": "4.2x",
+          "label": "Average ROI"
+        }
+      },
+      "features": {
+        "badge": "Services",
+        "title": "Strategies to",
+        "titleHighlight": "Grow Online",
+        "seoOnPage": {
+          "title": "On-Page SEO",
+          "description": "Content, meta tag, URL structure, and performance optimization for search engines."
+        },
+        "seoOffPage": {
+          "title": "Off-Page SEO",
+          "description": "Link building and digital PR strategies to increase your domain authority."
+        },
+        "contentMarketing": {
+          "title": "Content Marketing",
+          "description": "Creation of optimized content that attracts and converts your target audience."
+        },
+        "localSeo": {
+          "title": "Local SEO",
+          "description": "Local positioning for businesses with a physical location."
+        },
+        "analytics": {
+          "title": "Analytics & Reporting",
+          "description": "KPI monitoring with detailed reports on traffic, conversions, and ROI."
+        },
+        "ppc": {
+          "title": "PPC Campaigns",
+          "description": "Management of Google Ads and social advertising campaigns for immediate results."
+        }
+      },
+      "plans": {
+        "badge": "Plans",
+        "title": "Choose the Right SEO Plan",
+        "titleHighlight": "For Your Business",
+        "popularBadge": "Most Popular",
+        "requestBtn": "Request {planName}",
+        "securePayment": "Secure Payment",
+        "starter": {
+          "name": "Starter",
+          "unit": "/month",
+          "features": [
+            "Initial SEO Audit",
+            "Optimization up to 10 pages",
+            "Basic keyword research",
+            "Monthly report",
+            "Email support",
+            "Google Business Profile"
+          ]
+        },
+        "growth": {
+          "name": "Growth",
+          "unit": "/month",
+          "features": [
+            "Everything in Starter +",
+            "Unlimited page optimization",
+            "Monthly content strategy",
+            "Active link building",
+            "Competitor analysis",
+            "Weekly reports",
+            "Priority support"
+          ]
+        },
+        "performance": {
+          "name": "Performance",
+          "unit": "/month",
+          "features": [
+            "Everything in Growth +",
+            "Google Ads PPC campaigns",
+            "Advanced technical SEO",
+            "Monthly SEO content (4 articles)",
+            "Multi-location local SEO",
+            "Dedicated analytics dashboard",
+            "Dedicated account manager"
+          ]
+        }
+      },
+      "cta": {
+        "badge": "Start Now",
+        "title": "Ready to Climb",
+        "titleHighlight": "Google Rankings?",
+        "subtitle": "Request a free SEO audit and discover how to improve your site's visibility.",
+        "button": "Request Free Audit",
+        "responseTime": "Response in 24h",
+        "freeAudit": "Free Audit"
+      }
     },
     "aiAutomation": {
       "label": "AI & Automation",
@@ -219,7 +474,69 @@
       "subtitleHighlight": "chatbots, predictive analytics, and automations",
       "subtitleEnd": " that transform your business.",
       "ctaDiscover": "Discover Possibilities",
-      "ctaDemo": "View Demo"
+      "ctaDemo": "View Demo",
+      "features": {
+        "badge": "Solutions",
+        "title": "The Power of AI",
+        "titleHighlight": "At Your Service",
+        "chatbots": {
+          "title": "Intelligent Chatbots",
+          "description": "Advanced virtual assistants based on LLMs for 24/7 customer support."
+        },
+        "automations": {
+          "title": "Process Automation",
+          "description": "Optimizing business workflows to eliminate repetitive tasks."
+        },
+        "analysis": {
+          "title": "Predictive Analysis",
+          "description": "Using data to predict future customer trends and behaviors."
+        },
+        "nlp": {
+          "title": "Natural Language Processing",
+          "description": "Systems capable of understanding and analyzing natural language."
+        },
+        "computerVision": {
+          "title": "Computer Vision",
+          "description": "Image and video analysis solutions for quality control or security."
+        },
+        "integrations": {
+          "title": "Custom Integrations",
+          "description": "We connect AI to your existing software for a seamless ecosystem."
+        }
+      },
+      "useCases": {
+        "badge": "Use Cases",
+        "title": "Practical",
+        "titleHighlight": "Applications",
+        "items": [
+          { "title": "Customer Support", "description": "Immediate answers to frequently asked questions" },
+          { "title": "Lead Generation", "description": "Automatic qualification of prospects" },
+          { "title": "Content Creation", "description": "AI-assisted content generation" },
+          { "title": "Data Analysis", "description": "Automatic analysis of large datasets" },
+          { "title": "Email Automation", "description": "Intelligent personalized email sequences" },
+          { "title": "Inventory Management", "description": "Stock forecasts and automatic reorders" }
+        ]
+      },
+      "benefits": {
+        "title": "Concrete Benefits",
+        "items": [
+          "Reduction in operating costs",
+          "Efficiency increased by 40%",
+          "24/7 availability",
+          "Data-driven decisions",
+          "Infinite scalability",
+          "Competitive advantage"
+        ]
+      },
+      "cta": {
+        "badge": "Start Now",
+        "title": "Ready to Integrate",
+        "titleHighlight": "Artificial Intelligence?",
+        "subtitle": "Discover how AI can transform your business. Free consultation to evaluate your needs.",
+        "button": "Request Free Consultation",
+        "responseTime": "Response within 24h",
+        "freeConsultation": "Free Consultation"
+      }
     },
     "maintenance": {
       "label": "Maintenance",
@@ -234,7 +551,83 @@
       "features": {
         "badge": "Included Services",
         "title": "Complete",
-        "titleHighlight": "Protection"
+        "titleHighlight": "Protection",
+        "updates": {
+          "title": "Regular Updates",
+          "description": "We keep your CMS, plugins, and dependencies up to date for security and performance."
+        },
+        "security": {
+          "title": "Proactive Security",
+          "description": "Continuous vulnerability monitoring and security patch implementation."
+        },
+        "performance": {
+          "title": "Performance Optimization",
+          "description": "Ongoing analysis and improvement of speed and Core Web Vitals."
+        },
+        "backup": {
+          "title": "Automatic Backups",
+          "description": "Daily backups with 30-day retention and quick recovery in case of issues."
+        },
+        "bugfix": {
+          "title": "Bug Fixing",
+          "description": "Fast bug and technical issue resolution with severity-based prioritization."
+        },
+        "support": {
+          "title": "Dedicated Support",
+          "description": "Support team available via email, ticket system, and phone."
+        }
+      },
+      "plans": {
+        "badge": "Plans",
+        "title": "Choose the Plan",
+        "titleHighlight": "Right for You",
+        "popularBadge": "Most Popular",
+        "requestBtn": "Request {planName}",
+        "securePayment": "Secure Payment",
+        "essential": {
+          "name": "Essential",
+          "unit": "/hour",
+          "features": [
+            "On-demand interventions",
+            "Bug fixing",
+            "Timely updates",
+            "Email support",
+            "No monthly commitment"
+          ]
+        },
+        "professional": {
+          "name": "Professional",
+          "unit": "/month",
+          "features": [
+            "Monthly subscription",
+            "Weekly updates",
+            "Daily backups",
+            "Security monitoring",
+            "Priority support",
+            "Performance optimization"
+          ]
+        },
+        "enterprise": {
+          "name": "Enterprise",
+          "unit": "/month",
+          "features": [
+            "Complete maintenance",
+            "Monthly SEO updates",
+            "Real-time backups",
+            "Quarterly security audit",
+            "24/7 support",
+            "Dedicated account manager"
+          ]
+        }
+      },
+      "cta": {
+        "badge": "Contact Us",
+        "title": "Need",
+        "titleHighlight": "Assistance?",
+        "subtitle": "Our team is ready to help. Contact us for a free evaluation of your website.",
+        "button": "Request Support",
+        "responseTime": "Response within 24h",
+        "freeEvaluation": "Free Evaluation"
       }
     },
     "hostingCloud": {
@@ -244,7 +637,170 @@
       "titleHighlight": "& Cloud",
       "subtitle": "Scalable and secure cloud infrastructure for your web applications.",
       "ctaQuote": "Request Quote",
-      "ctaProjects": "View Projects"
+      "ctaProjects": "View Projects",
+      "metrics": {
+        "uptime": {
+          "value": "99.9%",
+          "label": "Guaranteed Uptime"
+        },
+        "latency": {
+          "value": "<100ms",
+          "label": "Average Latency"
+        },
+        "monitoring": {
+          "value": "24/7",
+          "label": "Monitoring"
+        },
+        "edge": {
+          "value": "50+",
+          "label": "Edge Locations"
+        }
+      },
+      "features": {
+        "badge": "Features",
+        "title": "Enterprise-Grade",
+        "titleHighlight": "Infrastructure",
+        "performance": {
+          "title": "High Performance",
+          "description": "NVMe SSD servers with global CDN for ultra-fast loading times."
+        },
+        "security": {
+          "title": "Advanced Security",
+          "description": "SSL certificates, WAF firewall, DDoS protection, and automatic backups."
+        },
+        "uptime": {
+          "title": "99.9% Uptime",
+          "description": "Redundant infrastructure with 24/7 monitoring and automatic failover."
+        },
+        "databases": {
+          "title": "Managed Databases",
+          "description": "PostgreSQL, MySQL, and MongoDB with automatic backups and scaling."
+        },
+        "scaling": {
+          "title": "Auto Scaling",
+          "description": "Resources that automatically adapt to your site's traffic."
+        },
+        "storage": {
+          "title": "Unlimited Storage",
+          "description": "Scalable storage space for files, media, and backups."
+        }
+      },
+      "providers": {
+        "badge": "Technology Partners",
+        "title": "We Work with the",
+        "titleHighlight": "Best Providers",
+        "subtitle": "We choose the infrastructure best suited to your needs, ensuring performance and reliability.",
+        "vercel": {
+          "name": "Vercel",
+          "description": "Instant deployment for Next.js and React"
+        },
+        "aws": {
+          "name": "AWS",
+          "description": "Enterprise cloud infrastructure"
+        },
+        "googleCloud": {
+          "name": "Google Cloud",
+          "description": "Scalable cloud services"
+        },
+        "cloudflare": {
+          "name": "Cloudflare",
+          "description": "CDN and DDoS protection"
+        }
+      },
+      "benefits": {
+        "title": "Included in Every Plan",
+        "items": [
+          "Free setup and migration",
+          "Free SSL certificate",
+          "Automatic daily backups",
+          "Global CDN included",
+          "24/7 technical support",
+          "Intuitive control panel"
+        ]
+      },
+      "domain": {
+        "badge": "Common Problem",
+        "title": "Your Site Doesn't Appear",
+        "titleHighlight": "on Google?",
+        "description1": "Many websites remain invisible to search engines because they are published on free subdomains. URLs like those shown",
+        "description1Highlight": "are not indexed",
+        "description1End": "by Google and cannot rank in search results.",
+        "description2": "To be found online you need a",
+        "description2Highlight": "custom domain",
+        "description2End": "(e.g. yourbrand.com) properly configured with DNS, SSL, and the right search engine settings.",
+        "setupBadge": "Domain Setup",
+        "setupUnit": "one-time",
+        "setupPrice": "190",
+        "setupFeatures": [
+          "Domain registration and configuration",
+          "DNS setup and SSL certificate",
+          "Connection to your existing site",
+          "Google indexing optimization",
+          "Sitemap and robots.txt configuration",
+          "Google Search Console verification"
+        ],
+        "setupButton": "Go Online with Your Domain",
+        "notIndexedLabel": "Not indexed by search engines",
+        "indexedDomain": "yourbrand.com",
+        "indexedLabel": "Indexed and visible on Google"
+      },
+      "plans": {
+        "badge": "Studio Faraj Cloud",
+        "title": "Hosting on Our Cloud",
+        "titleHighlight": "At Affordable Prices",
+        "subtitle": "Host your site on our cloud infrastructure. Annual plans with traffic-based pricing, no surprises.",
+        "popularBadge": "Most Popular",
+        "requestBtn": "Request {planName}",
+        "securePayment": "Secure Payment",
+        "starter": {
+          "name": "Starter",
+          "unit": "/year",
+          "traffic": "Up to 10,000 visits/month",
+          "features": [
+            "1 website",
+            "5 GB SSD storage",
+            "Free SSL certificate",
+            "Weekly backups",
+            "Email support"
+          ]
+        },
+        "business": {
+          "name": "Business",
+          "unit": "/year",
+          "traffic": "Up to 50,000 visits/month",
+          "features": [
+            "Up to 3 websites",
+            "20 GB SSD storage",
+            "Free SSL certificate",
+            "Daily backups",
+            "CDN included",
+            "Priority support"
+          ]
+        },
+        "pro": {
+          "name": "Pro",
+          "unit": "/year",
+          "traffic": "Up to 200,000 visits/month",
+          "features": [
+            "Unlimited websites",
+            "50 GB NVMe SSD storage",
+            "Free SSL certificate",
+            "Real-time backups",
+            "Global CDN",
+            "Dedicated 24/7 support",
+            "Uptime monitoring"
+          ]
+        }
+      },
+      "cta": {
+        "badge": "Get Started",
+        "title": "Ready for Worry-Free",
+        "titleHighlight": "Hosting?",
+        "subtitle": "Free migration and dedicated support. Contact us for a personalized consultation.",
+        "button": "Request Free Quote",
+        "responseTime": "Response within 24h",
+        "freeMigration": "Free Migration"
+      }
     },
     "consulting": {
       "label": "Consulting",
@@ -257,6 +813,9 @@
       "ctaCall": "Book a Call",
       "ctaAbout": "About Us",
       "features": {
+        "badge": "Areas of Expertise",
+        "title": "How We Can",
+        "titleHighlight": "Help You",
         "strategic": {
           "title": "Strategic Analysis",
           "description": "We evaluate your digital presence and define a clear roadmap to achieve your goals."
@@ -283,6 +842,9 @@
         }
       },
       "process": {
+        "badge": "Our Approach",
+        "title": "How",
+        "titleHighlight": "We Work",
         "discovery": {
           "step": "01",
           "title": "Discovery Call",
@@ -314,16 +876,46 @@
           "description": "We measure results and optimize"
         }
       },
-      "areas": [
-        "Digital strategy",
-        "Digital transformation",
-        "E-commerce strategy",
-        "Product management",
-        "UX/UI optimization",
-        "Performance marketing",
-        "Tech stack selection",
-        "Digital team building"
-      ]
+      "areas": {
+        "title": "Consulting Areas",
+        "items": [
+          "Digital strategy",
+          "Digital transformation",
+          "E-commerce strategy",
+          "Product management",
+          "UX/UI optimization",
+          "Performance marketing",
+          "Tech stack selection",
+          "Digital team building"
+        ]
+      },
+      "pricing": {
+        "badge": "Pricing",
+        "title": "Consulting",
+        "titleHighlight": "Transparent & Flexible",
+        "hourlyBadge": "Hourly Rate",
+        "unit": "/hour",
+        "hourlyPrice": "45",
+        "features": [
+          "Free introductory call (30 min)",
+          "Personalized analysis and strategy",
+          "Technical and business consulting",
+          "No contracts or subscriptions",
+          "Reports and documentation included",
+          "Email support between sessions"
+        ],
+        "button": "Request Consultation",
+        "securePayment": "Secure Payment"
+      },
+      "cta": {
+        "badge": "Start Now",
+        "title": "Have a Project",
+        "titleHighlight": "in Mind?",
+        "subtitle": "Book a free 30-minute call to discuss your needs and discover how we can help you.",
+        "button": "Book Free Call",
+        "freeMinutes": "30 free minutes",
+        "noCommitment": "No commitment"
+      }
     },
     "other": {
       "label": "Other"
@@ -816,10 +1408,6 @@
       }
     },
     "timeline": {
-      "badge": "Timeline Odyssey",
-      "title": "Our",
-      "titleHighlight": "Innovation Story",
-      "subtitle": "A journey of growth, challenges, and successes that brought us where we are today.",
       "2020": {
         "title": "The Birth",
         "description": "Studio Faraj was born from a vision: to democratize access to quality digital solutions for Sicilian and Italian businesses."
@@ -843,7 +1431,11 @@
       "2025": {
         "title": "Towards the Future",
         "description": "We continue to innovate with augmented reality, web 3.0, and enterprise solutions to guide our clients into the digital future."
-      }
+      },
+      "badge": "Timeline Odyssey",
+      "title": "Our",
+      "titleHighlight": "Innovation Story",
+      "subtitle": "A journey of growth, challenges, and successes that brought us where we are today."
     },
     "team": {
       "badge": "The Architects",
@@ -1131,5 +1723,44 @@
         "subtitle": "Fill out the form and we'll respond within 24 hours."
       }
     }
+  },
+  "dialogs": {
+    "planRequest": {
+      "title": "Request {planName}",
+      "description": "Enter your email for the <serviceNameTag>{serviceName}</serviceNameTag> service. We will send you a secure payment link as soon as possible!",
+      "priceLabel": "Estimated Price:",
+      "emailPlaceholder": "Your email (e.g. name@company.com)",
+      "processing": "Processing...",
+      "submit": "Send Request",
+      "successTitle": "Request Sent!",
+      "successDesc": "We will send you an email with the payment link associated with the <planNameTag>{planName}</planNameTag> plan as soon as possible. See you soon!",
+      "errors": {
+        "title": "Error",
+        "default": "Something went wrong, please try again.",
+        "connectionTitle": "Connection Error",
+        "connectionDesc": "Make sure you are connected to the internet and try again."
+      }
+    },
+    "search": {
+      "title": "Search website",
+      "placeholder": "Search blogs, projects...",
+      "project": "Project",
+      "noResults": "No results found for",
+      "hint": "Search blogs and projects. Use ↑↓ to navigate, Enter to select.",
+      "navigate": "navigate",
+      "open": "open",
+      "close": "close",
+      "results": "results"
+    }
+  },
+  "serverActions": {
+    "validationFailed": "Validation failed. Please check the fields.",
+    "permissionError": "Permission error. Please check configuration or try again.",
+    "networkError": "Connection error. Please check your internet connection and try again.",
+    "dbError": "Error saving data. Please try again later.",
+    "unexpectedError": "An unexpected error occurred. Please try again later.",
+    "successCreated": "Message sent successfully!",
+    "emailValidationFailed": "Email validation failed. Please try with a valid email.",
+    "successPlanRequest": "Request received successfully!"
   }
 }

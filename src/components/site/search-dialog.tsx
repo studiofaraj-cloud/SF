@@ -8,7 +8,7 @@ import { Search, FileText, FolderKanban, ArrowRight, Loader2, X } from 'lucide-r
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { getBlogsAction, getProjectsAction } from '@/lib/actions';
 import type { Blog, Project } from '@/lib/definitions';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 
@@ -32,6 +32,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
   const locale = useLocale();
+  const t = useTranslations('dialogs.search');
   const router = useRouter();
 
   // Preload data when dialog opens
@@ -140,8 +141,6 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
     );
   };
 
-  const isIt = locale === 'it';
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
@@ -158,7 +157,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
         onKeyDown={handleKeyDown}
       >
         <VisuallyHidden>
-          <DialogTitle>{isIt ? 'Cerca nel sito' : 'Search website'}</DialogTitle>
+          <DialogTitle>{t('title')}</DialogTitle>
         </VisuallyHidden>
 
         {/* Search input */}
@@ -171,7 +170,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
           <Input
             ref={inputRef}
             type="search"
-            placeholder={isIt ? 'Cerca blog, progetti...' : 'Search blogs, projects...'}
+            placeholder={t('placeholder')}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             className="flex-1 h-14 sm:h-16 border-0 bg-transparent text-base sm:text-lg placeholder:text-muted-foreground/60 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none"
@@ -229,7 +228,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                             {highlightMatch(item.title, query)}
                           </span>
                           <span className="text-[10px] uppercase tracking-wider text-muted-foreground bg-muted px-1.5 py-0.5 rounded flex-shrink-0">
-                            {item.type === 'blog' ? 'Blog' : (isIt ? 'Progetto' : 'Project')}
+                            {item.type === 'blog' ? 'Blog' : t('project')}
                           </span>
                         </div>
                         {excerpt && (
@@ -251,7 +250,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
             ) : (
               <div className="py-10 text-center">
                 <p className="text-muted-foreground text-sm">
-                  {isIt ? 'Nessun risultato trovato per' : 'No results found for'}{' '}
+                  {t('noResults')}{' '}
                   <span className="font-medium text-foreground">&ldquo;{query}&rdquo;</span>
                 </p>
               </div>
@@ -263,9 +262,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
         {!query.trim() && !loading && (
           <div className="px-4 sm:px-5 py-4 text-center">
             <p className="text-xs text-muted-foreground">
-              {isIt
-                ? 'Cerca tra blog e progetti. Usa ↑↓ per navigare, Invio per selezionare.'
-                : 'Search blogs and projects. Use ↑↓ to navigate, Enter to select.'}
+              {t('hint')}
             </p>
           </div>
         )}
@@ -276,18 +273,18 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
             <div className="flex items-center gap-3">
               <span className="flex items-center gap-1">
                 <kbd className="px-1.5 py-0.5 bg-muted rounded border border-border/50 text-[10px]">↑↓</kbd>
-                {isIt ? 'naviga' : 'navigate'}
+                {t('navigate')}
               </span>
               <span className="flex items-center gap-1">
                 <kbd className="px-1.5 py-0.5 bg-muted rounded border border-border/50 text-[10px]">↵</kbd>
-                {isIt ? 'apri' : 'open'}
+                {t('open')}
               </span>
               <span className="flex items-center gap-1">
                 <kbd className="px-1.5 py-0.5 bg-muted rounded border border-border/50 text-[10px]">esc</kbd>
-                {isIt ? 'chiudi' : 'close'}
+                {t('close')}
               </span>
             </div>
-            <span>{results.length} {isIt ? 'risultati' : 'results'}</span>
+            <span>{results.length} {t('results')}</span>
           </div>
         )}
       </DialogContent>

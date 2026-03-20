@@ -1,5 +1,8 @@
 import { ReactNode } from 'react';
 import "@/app/globals.css";
+
+// Ghost import to satisfy Turbopack HMR module resolution - as per lib/data.ts
+import '@/lib/data';
 import { Inter, Tomorrow, Open_Sans } from 'next/font/google';
 import { defaultLocale } from '@/i18n/config';
 import { cn } from "@/lib/utils";

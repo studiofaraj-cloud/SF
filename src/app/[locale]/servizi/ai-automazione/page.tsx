@@ -28,52 +28,52 @@ export default function AiAutomazionePage() {
   const features = [
     {
       icon: <MessageSquare className="w-6 h-6" />,
-      title: "Chatbot Intelligenti",
-      description: "Assistenti virtuali 24/7 che gestiscono richieste clienti e qualificano lead automaticamente."
+      title: t('features.chatbots.title'),
+      description: t('features.chatbots.description')
     },
     {
       icon: <Brain className="w-6 h-6" />,
-      title: "Analisi Predittive",
-      description: "Algoritmi di machine learning per prevedere trend, comportamenti e ottimizzare decisioni."
+      title: t('features.analysis.title'),
+      description: t('features.analysis.description')
     },
     {
       icon: <Workflow className="w-6 h-6" />,
-      title: "Automazione Processi",
-      description: "Workflow automatizzati per ridurre attività ripetitive e aumentare l&apos;efficienza operativa."
+      title: t('features.automations.title'),
+      description: t('features.automations.description')
     },
     {
       icon: <Cpu className="w-6 h-6" />,
-      title: "Integrazione LLM",
-      description: "Integrazione con GPT-4, Claude e altri modelli per funzionalità avanzate di AI generativa."
+      title: t('features.nlp.title'),
+      description: t('features.nlp.description')
     },
     {
       icon: <BarChart3 className="w-6 h-6" />,
-      title: "Business Intelligence",
-      description: "Dashboard intelligenti con insight automatici per decisioni data-driven."
+      title: t('features.computerVision.title'),
+      description: t('features.computerVision.description')
     },
     {
       icon: <Cog className="w-6 h-6" />,
-      title: "API & Integrazioni",
-      description: "Connessione con i tuoi strumenti esistenti: CRM, ERP, email marketing e altro."
+      title: t('features.integrations.title'),
+      description: t('features.integrations.description')
     }
   ];
 
   const useCases = [
-    { title: "Customer Support", description: "Risposte immediate alle domande frequenti" },
-    { title: "Lead Generation", description: "Qualificazione automatica dei prospect" },
-    { title: "Content Creation", description: "Generazione di contenuti assistita da AI" },
-    { title: "Data Analysis", description: "Analisi automatica di grandi dataset" },
-    { title: "Email Automation", description: "Sequenze email personalizzate intelligenti" },
-    { title: "Inventory Management", description: "Previsioni di stock e riordini automatici" }
+    { title: t('useCases.items.0.title'), description: t('useCases.items.0.description') },
+    { title: t('useCases.items.1.title'), description: t('useCases.items.1.description') },
+    { title: t('useCases.items.2.title'), description: t('useCases.items.2.description') },
+    { title: t('useCases.items.3.title'), description: t('useCases.items.3.description') },
+    { title: t('useCases.items.4.title'), description: t('useCases.items.4.description') },
+    { title: t('useCases.items.5.title'), description: t('useCases.items.5.description') }
   ];
 
   const benefits = [
-    "Riduzione costi operativi fino al 60%",
-    "Disponibilità 24/7 senza interruzioni",
-    "Scalabilità illimitata",
-    "Risposte coerenti e accurate",
-    "Analisi in tempo reale",
-    "Integrazione con sistemi esistenti"
+    t('benefits.items.0'),
+    t('benefits.items.1'),
+    t('benefits.items.2'),
+    t('benefits.items.3'),
+    t('benefits.items.4'),
+    t('benefits.items.5')
   ];
 
   return (
@@ -102,7 +102,7 @@ export default function AiAutomazionePage() {
           <div className="floating-shape absolute top-[60%] right-[15%] w-16 h-16 md:w-24 md:h-24 border-2 border-rose-500/20 rounded-full" style={{ animationDelay: '2s' }} />
         </div>
 
-        <div className="relative z-20 container px-4 sm:px-6 md:px-8 text-center">
+        <div className="container relative z-10 px-4 sm:px-6 md:px-8 text-center">
           <div className={`transition-all duration-1000 ${heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <Badge className="badge-futuristic mb-4 sm:mb-6 bg-pink-500/20 text-pink-400 border-pink-500/30">
               <Bot className="w-4 h-4 mr-2" />
@@ -128,13 +128,13 @@ export default function AiAutomazionePage() {
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Button size="lg" className="group bg-pink-600 hover:bg-pink-700 px-8 w-full sm:w-auto" asChild>
-                <Link href={getLocalizedPath('/contatti', locale)}>
+                <Link href={getLocalizedPath('/contatti', locale as any)}>
                   {t('ctaDiscover')}
                   <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
                 </Link>
               </Button>
               <Button size="lg" variant="outline" className="border-pink-500/50 w-full sm:w-auto" asChild>
-                <Link href={getLocalizedPath('/projects', locale)}>{t('ctaDemo')}</Link>
+                <Link href={getLocalizedPath('/projects', locale as any)}>{t('ctaDemo')}</Link>
               </Button>
             </div>
 
@@ -155,11 +155,11 @@ export default function AiAutomazionePage() {
             <div className="text-center max-w-3xl mx-auto mb-16">
               <Badge className="badge-futuristic mb-4 bg-pink-500/20 text-pink-400 border-pink-500/30">
                 <Sparkles className="w-4 h-4 mr-2" />
-                Soluzioni
+                {t('features.badge')}
               </Badge>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-                <span className="text-foreground">Il Potere dell&apos;AI</span>
-                <span className="block text-pink-400">al Tuo Servizio</span>
+                <span className="text-foreground">{t('features.title')}</span>
+                <span className="block text-pink-400">{t('features.titleHighlight')}</span>
               </h2>
             </div>
           </ScrollFadeIn>
@@ -192,11 +192,11 @@ export default function AiAutomazionePage() {
             <div className="text-center max-w-3xl mx-auto mb-16">
               <Badge className="badge-futuristic mb-4 bg-pink-500/20 text-pink-400 border-pink-500/30">
                 <Zap className="w-4 h-4 mr-2" />
-                Casi d&apos;Uso
+                {t('useCases.badge')}
               </Badge>
               <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-                <span className="text-foreground">Applicazioni</span>
-                <span className="block text-pink-400">Pratiche</span>
+                <span className="text-foreground">{t('useCases.title')}</span>
+                <span className="block text-pink-400">{t('useCases.titleHighlight')}</span>
               </h2>
             </div>
           </ScrollFadeIn>
@@ -225,7 +225,7 @@ export default function AiAutomazionePage() {
             <ScrollFadeIn animation="fade-up">
               <Card className="holographic-card neon-border overflow-hidden">
                 <CardContent className="p-8 md:p-12">
-                  <h3 className="text-2xl sm:text-3xl font-bold mb-8 text-center text-pink-400">Vantaggi Concreti</h3>
+                  <h3 className="text-2xl sm:text-3xl font-bold mb-8 text-center text-pink-400">{t('benefits.title')}</h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {benefits.map((item, index) => (
                       <div key={index} className="flex items-center gap-3">
@@ -254,22 +254,22 @@ export default function AiAutomazionePage() {
               <div className="bg-card p-8 md:p-12 text-center">
                 <Badge className="badge-futuristic mb-6 bg-pink-500/20 text-pink-400 border-pink-500/30">
                   <Globe className="w-4 h-4 mr-2" />
-                  Inizia Ora
+                  {t('cta.badge')}
                 </Badge>
                 
                 <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-                  <span className="text-foreground">Pronto a Integrare</span>
-                  <span className="block text-pink-400">l&apos;Intelligenza Artificiale?</span>
+                  <span className="text-foreground">{t('cta.title')}</span>
+                  <span className="block text-pink-400">{t('cta.titleHighlight')}</span>
                 </h2>
                 
                 <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
-                  Scopri come l&apos;AI può trasformare il tuo business. Consulenza gratuita per valutare le tue esigenze.
+                  {t('cta.subtitle')}
                 </p>
 
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                   <Button size="lg" className="group bg-pink-600 hover:bg-pink-700 px-8 w-full sm:w-auto" asChild>
                     <Link href={getLocalizedPath('/contatti', locale as any)}>
-                      Richiedi Consulenza Gratuita
+                      {t('cta.button')}
                       <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
                     </Link>
                   </Button>
@@ -278,11 +278,11 @@ export default function AiAutomazionePage() {
                 <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
                   <span className="flex items-center gap-2">
                     <Clock className="w-4 h-4 text-pink-400" />
-                    Risposta in 24h
+                    {t('cta.responseTime')}
                   </span>
                   <span className="flex items-center gap-2">
                     <ShieldCheck className="w-4 h-4 text-pink-400" />
-                    Consulenza Gratuita
+                    {t('cta.freeConsultation')}
                   </span>
                 </div>
               </div>

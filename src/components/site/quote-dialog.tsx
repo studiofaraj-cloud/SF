@@ -1,6 +1,9 @@
 
 'use client';
 
+// Ghost import to satisfy Turbopack HMR module resolution - as per lib/data.ts
+import '@/lib/data';
+
 import { useActionState, useState, useTransition } from 'react';
 import { Mail, MapPin } from 'lucide-react';
 import RippleGrid from '@/components/RippleGrid';
@@ -49,6 +52,7 @@ export default function QuoteDialog({ open, onOpenChange }: QuoteDialogProps) {
   const { toast } = useToast();
   const t = useTranslations('quoteDialog');
   const tServices = useTranslations('services');
+  const tServer = useTranslations('serverActions');
   const initialState = { message: null, errors: {}, success: false };
   const [state, dispatch] = useActionState(createMessage, initialState);
   const [isPending, startTransition] = useTransition();
@@ -67,12 +71,12 @@ export default function QuoteDialog({ open, onOpenChange }: QuoteDialogProps) {
       onOpenChange(false);
     }
     if (state.message && state.errors) {
-      toast({ variant: 'destructive', title: t('form.submit'), description: state.message });
+      toast({ variant: 'destructive', title: t('form.submit'), description: tServer(state.message) });
     }
     if (state.message && !state.success && !state.errors) {
-      toast({ variant: 'destructive', title: t('form.submit'), description: state.message });
+      toast({ variant: 'destructive', title: t('form.submit'), description: tServer(state.message) });
     }
-  }, [state, toast, onOpenChange, t]);
+  }, [state, toast, onOpenChange, t, tServer]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

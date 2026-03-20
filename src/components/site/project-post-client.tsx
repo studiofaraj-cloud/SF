@@ -165,7 +165,7 @@ export function ProjectPostClient({
       {/* ── Featured Image ── */}
       {project.featuredImage && (
         <ScrollFadeIn animation="fade-up" delay={100}>
-          <section className="max-w-2xl mx-auto px-4 sm:px-6 md:px-8 -mt-16 sm:-mt-20 relative z-40 mb-12">
+          <section className="max-w-2xl mx-auto px-4 sm:px-6 md:px-8 mt-6 sm:mt-8 relative z-40 mb-12">
             <div className="rounded-xl overflow-hidden shadow-2xl shadow-black/20 group">
               <FirebaseImage
                 src={project.featuredImage}

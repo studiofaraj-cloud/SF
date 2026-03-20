@@ -44,7 +44,7 @@ export async function createMessage(prevState: { message: string | null, success
             console.error('[createMessage] Validation failed:', validatedFields.error.flatten().fieldErrors);
             return {
                 errors: validatedFields.error.flatten().fieldErrors,
-                message: 'Validation failed. Please check the fields.',
+                message: 'validationFailed',
                 success: false,
             };
         }
@@ -61,21 +61,21 @@ export async function createMessage(prevState: { message: string | null, success
                 if (errorMessage.includes('permission') || errorMessage.includes('unauthorized') || errorMessage.includes('denied')) {
                     console.error('[createMessage] Permission error detected');
                     return { 
-                        message: 'Errore di permessi. Controlla la configurazione del database.', 
+                        message: 'permissionError', 
                         success: false 
                     };
                 }
                 if (errorMessage.includes('network') || errorMessage.includes('fetch') || errorMessage.includes('connection')) {
                     console.error('[createMessage] Network error detected');
                     return { 
-                        message: 'Errore di connessione. Controlla la tua connessione internet e riprova.', 
+                        message: 'networkError', 
                         success: false 
                     };
                 }
                 if (errorMessage.includes('failed to create message')) {
                     console.error('[createMessage] Database creation error:', error.message);
                     return { 
-                        message: 'Errore nel salvataggio del messaggio. Riprova più tardi.', 
+                        message: 'dbError', 
                         success: false 
                     };
                 }
@@ -87,14 +87,14 @@ export async function createMessage(prevState: { message: string | null, success
                 });
             }
             return { 
-                message: 'Errore durante l\'invio del messaggio. Riprova più tardi.', 
+                message: 'dbError', 
                 success: false 
             };
         }
 
         revalidatePath('/admin/messages');
         console.log('[createMessage] Message created successfully, revalidating paths');
-        return { success: true, message: 'Message sent successfully!' };
+        return { success: true, message: 'successCreated' };
     } catch (error) {
         console.error('[createMessage] Unexpected error:', error);
         // Log full error details for debugging
@@ -106,7 +106,56 @@ export async function createMessage(prevState: { message: string | null, success
             });
         }
         return { 
-            message: 'Si è verificato un errore imprevisto. Riprova più tardi.', 
+            message: 'unexpectedError', 
+            success: false 
+        };
+    }
+}
+
+const PlanRequestSchema = z.object({
+    email: z.string().email('Indirizzo email non valido'),
+    planName: z.string().min(1, 'Nome del piano mancante'),
+    planPrice: z.string().min(1, 'Prezzo del piano mancante'),
+    serviceName: z.string().min(1, 'Nome del servizio mancante'),
+});
+
+export async function submitPlanRequest(prevState: { message: string | null, success: boolean, errors?: any }, formData: FormData) {
+    try {
+        const validatedFields = PlanRequestSchema.safeParse({
+            email: formData.get('email'),
+            planName: formData.get('planName'),
+            planPrice: formData.get('planPrice'),
+            serviceName: formData.get('serviceName'),
+        });
+
+        if (!validatedFields.success) {
+            return {
+                errors: validatedFields.error.flatten().fieldErrors,
+                message: 'emailValidationFailed',
+                success: false,
+            };
+        }
+
+        const messageDto = {
+            name: 'Nuovo Lead (Richiesta Piano Pagamento)',
+            email: validatedFields.data.email,
+            phone: '',
+            service: validatedFields.data.serviceName,
+            subject: `🔥 Richiesta Pagamento Piano: ${validatedFields.data.planName}`,
+            budget: validatedFields.data.planPrice,
+            source: 'plan-request',
+            message: `Un utente ha richiesto il link di pagamento per il piano "${validatedFields.data.planName}" riferito al servizio di ${validatedFields.data.serviceName}.\n\n✅ Prezzo indicato nell'offerta: €${validatedFields.data.planPrice}\n✉️ Contattalo all'email: ${validatedFields.data.email} per inviargli il link e procedere col setup!`,
+        };
+
+        await createMessageData(messageDto as any);
+        
+        revalidatePath('/admin/messages');
+        return { success: true, message: 'successPlanRequest' };
+
+    } catch (error) {
+        console.error('[submitPlanRequest] Unexpected error:', error);
+        return { 
+            message: 'unexpectedError', 
             success: false 
         };
     }

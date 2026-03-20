@@ -126,13 +126,13 @@ export default function EcommercePage() {
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Button size="lg" className="group bg-emerald-600 hover:bg-emerald-700 px-8 w-full sm:w-auto" asChild>
-                <Link href={getLocalizedPath('/contatti', locale)}>
+                <Link href={getLocalizedPath('/contatti', locale as any)}>
                   {t('ctaQuote')}
                   <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
                 </Link>
               </Button>
               <Button size="lg" variant="outline" className="border-emerald-500/50 w-full sm:w-auto" asChild>
-                <Link href={getLocalizedPath('/projects', locale)}>{t('ctaProjects')}</Link>
+                <Link href={getLocalizedPath('/projects', locale as any)}>{t('ctaProjects')}</Link>
               </Button>
             </div>
 
@@ -197,7 +197,7 @@ export default function EcommercePage() {
                 <span className="block text-emerald-400">{t('platforms.titleHighlight')}</span>
               </h2>
               <p className="text-muted-foreground mb-8">
-                Scegliamo la piattaforma più adatta alle tue esigenze, dal piccolo negozio all&apos;enterprise.
+                {t('platforms.subtitle')}
               </p>
 
               <div className="space-y-4">
@@ -249,22 +249,22 @@ export default function EcommercePage() {
               <div className="bg-card p-8 md:p-12 text-center">
                 <Badge className="badge-futuristic mb-6 bg-emerald-500/20 text-emerald-400 border-emerald-500/30">
                   <Globe className="w-4 h-4 mr-2" />
-                  {t('benefits.badge')}
+                  {t('cta.badge')}
                 </Badge>
                 
                 <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-                  <span className="text-foreground">{t('benefits.title')}</span>
-                  <span className="block text-emerald-400">{t('benefits.titleHighlight')}</span>
+                  <span className="text-foreground">{t('cta.title')}</span>
+                  <span className="block text-emerald-400">{t('cta.titleHighlight')}</span>
                 </h2>
                 
                 <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
-                  {t('subtitle')}
+                  {t('cta.subtitle')}
                 </p>
 
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                   <Button size="lg" className="group bg-emerald-600 hover:bg-emerald-700 px-8 w-full sm:w-auto" asChild>
-                    <Link href={getLocalizedPath('/contatti', locale)}>
-                      {t('ctaQuote')}
+                    <Link href={getLocalizedPath('/contatti', locale as any)}>
+                      {t('cta.button')}
                       <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
                     </Link>
                   </Button>
@@ -273,11 +273,11 @@ export default function EcommercePage() {
                 <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
                   <span className="flex items-center gap-2">
                     <Clock className="w-4 h-4 text-emerald-400" />
-                    Risposta in 24h
+                    {t('cta.responseTime')}
                   </span>
                   <span className="flex items-center gap-2">
                     <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                    Preventivo Gratuito
+                    {t('cta.freeConsultation')}
                   </span>
                 </div>
               </div>

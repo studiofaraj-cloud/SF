@@ -129,7 +129,7 @@ export function CookieConsent() {
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 p-4 md:p-6 animate-fade-in-up">
         <div className="container mx-auto max-w-6xl">
-            <div className="rounded-2xl md:rounded-3xl shadow-2xl shadow-primary/25 bg-gradient-to-r from-primary/5 via-card/95 to-primary/5 backdrop-blur-xl border border-primary/20 p-5 md:p-7 flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6 transition-all duration-500 hover:shadow-primary/30 hover:border-primary/30">
+            <div className="rounded-2xl md:rounded-3xl shadow-2xl shadow-primary/25 bg-gradient-to-r from-card/80 via-background/80 to-primary/10 backdrop-blur-2xl border border-primary/20 p-5 md:p-7 flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6 transition-all duration-500 hover:shadow-primary/30 hover:border-primary/30">
                 <div className="flex items-center gap-3 md:gap-4 flex-1">
                     <div className="relative flex-shrink-0">
                         <div className="absolute inset-0 bg-primary/20 rounded-2xl blur-xl animate-pulse" />
@@ -174,8 +174,8 @@ export function CookieConsent() {
 
         {/* Cookie Preferences Dialog */}
         <Dialog open={showPreferences} onOpenChange={setShowPreferences}>
-          <DialogContent className="!rounded-3xl bg-gradient-to-b from-card via-card to-primary/5 backdrop-blur-xl border-primary/20 w-[95vw] sm:w-full max-w-2xl max-h-[90vh] sm:max-h-[85vh] [&]:!fixed [&]:!left-1/2 [&]:!top-1/2 [&]:!-translate-x-1/2 [&]:!-translate-y-1/2 p-0 flex flex-col shadow-2xl shadow-primary/20 overflow-hidden">
-            <DialogHeader className="sticky top-0 bg-gradient-to-b from-card via-card to-card/95 backdrop-blur-md z-10 pb-4 sm:pb-5 px-5 sm:px-7 pt-5 sm:pt-7 border-b border-primary/10">
+          <DialogContent className="!rounded-3xl bg-gradient-to-b from-card/85 via-background/85 to-primary/10 backdrop-blur-2xl border-primary/20 w-[95vw] sm:w-full max-w-2xl max-h-[90vh] sm:max-h-[85vh] [&]:!fixed [&]:!left-1/2 [&]:!top-1/2 [&]:!-translate-x-1/2 [&]:!-translate-y-1/2 p-0 flex flex-col shadow-2xl shadow-primary/20 overflow-hidden">
+            <DialogHeader className="sticky top-0 bg-gradient-to-b from-card/90 via-background/90 to-card/80 backdrop-blur-xl z-10 pb-4 sm:pb-5 px-5 sm:px-7 pt-5 sm:pt-7 border-b border-primary/10">
               <div className="flex items-center gap-3 sm:gap-4 mb-2">
                 <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center shadow-lg shadow-primary/30 flex-shrink-0">
                   <Settings className="h-5 w-5 sm:h-6 sm:w-6 text-primary-foreground" />
@@ -246,7 +246,7 @@ export function CookieConsent() {
               </div>
             </div>
 
-            <DialogFooter className="sticky bottom-0 bg-gradient-to-t from-card via-card to-card/95 backdrop-blur-md z-10 px-5 sm:px-7 py-4 sm:py-5 border-t border-primary/10 flex-col sm:flex-row gap-2 sm:gap-3">
+            <DialogFooter className="sticky bottom-0 bg-gradient-to-t from-card/90 via-background/90 to-card/80 backdrop-blur-xl z-10 px-5 sm:px-7 py-4 sm:py-5 border-t border-primary/10 flex-col sm:flex-row gap-2 sm:gap-3">
               <Button
                 variant="outline"
                 onClick={() => {

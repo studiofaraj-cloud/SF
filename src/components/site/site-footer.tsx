@@ -36,7 +36,7 @@ function NewsletterForm() {
     }, [state, toast, t]);
 
     return (
-        <form ref={formRef} action={formAction} className="flex flex-col md:flex-row max-w-md gap-2">
+        <form ref={formRef} action={formAction} className="flex max-w-md gap-2">
             <Input 
                 type="email" 
                 name="email" 
@@ -44,9 +44,8 @@ function NewsletterForm() {
                 className="flex-1 bg-background border-border/50 focus:border-primary focus:ring-primary/20 h-11 min-h-[44px]" 
                 required 
             />
-            <Button type="submit" className="h-11 px-6 min-h-[44px]">
-                {t('newsletter.subscribe')}
-                <ArrowRight className="w-4 h-4 ml-2" />
+            <Button type="submit" size="icon" className="h-11 w-11 min-w-[44px] min-h-[44px] shrink-0" aria-label={t('newsletter.subscribe')}>
+                <Mail className="w-5 h-5" />
             </Button>
         </form>
     )
@@ -73,10 +72,10 @@ export function SiteFooter() {
 
       <div className="container relative z-10 py-12 md:py-16 px-4 md:px-6 lg:px-8">
         {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 md:gap-8 mb-12">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-12 gap-y-10 gap-x-6 md:gap-8 mb-12">
           
           {/* Company Info */}
-          <div className="md:col-span-1 lg:col-span-3 space-y-4 md:space-y-6">
+          <div className="col-span-2 md:col-span-1 lg:col-span-3 space-y-4 md:space-y-6">
             <Link href="/" className="flex items-center gap-3 group">
               <div className="relative">
                 <Image 
@@ -155,7 +154,7 @@ export function SiteFooter() {
           </div>
           
           {/* Navigation Links */}
-          <div className="md:col-span-1 lg:col-span-2">
+          <div className="col-span-1 md:col-span-1 lg:col-span-2">
             <h4 className="font-bold text-foreground mb-4 md:mb-6 text-sm md:text-base">{t('navigation')}</h4>
             <ul className="space-y-3">
               <li>
@@ -186,7 +185,7 @@ export function SiteFooter() {
           </div>
 
           {/* Services Links */}
-          <div className="md:col-span-1 lg:col-span-2">
+          <div className="col-span-1 md:col-span-1 lg:col-span-2">
             <h4 className="font-bold text-foreground mb-4 md:mb-6 text-sm md:text-base">{t('services')}</h4>
             <ul className="space-y-3">
               <li>
@@ -229,7 +228,7 @@ export function SiteFooter() {
           </div>
 
           {/* Legal & Support */}
-          <div className="md:col-span-1 lg:col-span-2">
+          <div className="col-span-2 md:col-span-1 lg:col-span-2">
             <h4 className="font-bold text-foreground mb-4 md:mb-6 text-sm md:text-base">{t('support')}</h4>
             <ul className="space-y-3">
               <li>
@@ -260,7 +259,7 @@ export function SiteFooter() {
           </div>
           
           {/* Newsletter */}
-          <div className="md:col-span-2 lg:col-span-3">
+          <div className="col-span-2 md:col-span-2 lg:col-span-3">
             <div className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl p-4 md:p-6">
               <div className="flex items-center gap-2 mb-3">
                 <Zap className="w-5 h-5 text-primary" />

@@ -65,7 +65,7 @@ function MobileNav({ onSearchOpen }: { onSearchOpen: () => void }) {
                 </Button>
             </SheetTrigger>
 
-            <SheetContent side="left" className="w-[300px] sm:w-[340px] p-0 border-r border-primary/15 gap-0 bg-gradient-to-b from-background to-secondary/20">
+            <SheetContent side="left" className="w-[300px] sm:w-[340px] p-0 border-r border-primary/15 gap-0 bg-gradient-to-b from-background/85 to-secondary/40 backdrop-blur-xl">
                 <VisuallyHidden><SheetTitle>Navigation</SheetTitle></VisuallyHidden>
 
                 {/* ═══ HEADER ═══ */}

@@ -90,7 +90,7 @@ export default async function LocaleLayout({ children, params }: Props) {
     <>
       <Script
         id="set-lang"
-        strategy="beforeInteractive"
+        strategy="afterInteractive"
         dangerouslySetInnerHTML={{
           __html: `document.documentElement.lang = '${locale}';`,
         }}

@@ -293,22 +293,22 @@ export default function SviluppoWebPage() {
               <div className="bg-card p-8 md:p-12 text-center">
                 <Badge className="badge-futuristic mb-6">
                   <Globe className="w-4 h-4 mr-2" />
-                  Inizia Ora
+                  {t('cta.badge')}
                 </Badge>
                 
                 <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-                  <span className="text-foreground">Pronto a Creare il Tuo</span>
-                  <span className="block text-primary">Sito Web?</span>
+                  <span className="text-foreground">{t('cta.title')}</span>
+                  <span className="block text-primary">{t('cta.titleHighlight')}</span>
                 </h2>
                 
                 <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
-                  Contattaci per una consulenza gratuita e scopri come possiamo trasformare la tua idea in realtà.
+                  {t('cta.subtitle')}
                 </p>
 
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                   <Button size="lg" className="group neon-glow-intense px-8 w-full sm:w-auto" asChild>
                     <Link href={getLocalizedPath('/contatti', locale as any)}>
-                      Richiedi Preventivo Gratuito
+                      {t('cta.button')}
                       <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
                     </Link>
                   </Button>
@@ -317,11 +317,11 @@ export default function SviluppoWebPage() {
                 <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
                   <span className="flex items-center gap-2">
                     <Clock className="w-4 h-4 text-primary" />
-                    Risposta in 24h
+                    {t('cta.responseTime')}
                   </span>
                   <span className="flex items-center gap-2">
                     <ShieldCheck className="w-4 h-4 text-primary" />
-                    Preventivo Gratuito
+                    {t('cta.freeQuote')}
                   </span>
                 </div>
               </div>

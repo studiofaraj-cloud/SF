@@ -5,11 +5,12 @@ import Link from 'next/link';
 import { 
   Wrench, CheckCircle, ArrowRight, Sparkles, Zap, Clock, 
   ShieldCheck, RefreshCw, Bug, Gauge, Server, Shield,
-  HeadphonesIcon, ChevronDown, Globe
+  HeadphonesIcon, ChevronDown, Globe, Lock, CreditCard
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { PlanRequestDialog } from '@/components/site/plan-request-dialog';
 import ScrollFadeIn from '@/components/site/scroll-fade-in';
 import RippleGrid from '@/components/RippleGrid';
 import GradientText from '@/components/GradientText';
@@ -26,75 +27,39 @@ export default function ManutenzionePage() {
   }, []);
 
   const features = [
-    {
-      icon: <RefreshCw className="w-6 h-6" />,
-      title: "Aggiornamenti Regolari",
-      description: "Manteniamo CMS, plugin e dipendenze sempre aggiornati per sicurezza e performance."
-    },
-    {
-      icon: <Shield className="w-6 h-6" />,
-      title: "Sicurezza Proattiva",
-      description: "Monitoraggio costante delle vulnerabilità e implementazione patch di sicurezza."
-    },
-    {
-      icon: <Gauge className="w-6 h-6" />,
-      title: "Ottimizzazione Performance",
-      description: "Analisi e miglioramento continuo della velocità e dei Core Web Vitals."
-    },
-    {
-      icon: <Server className="w-6 h-6" />,
-      title: "Backup Automatici",
-      description: "Backup giornalieri con retention di 30 giorni e ripristino rapido in caso di problemi."
-    },
-    {
-      icon: <Bug className="w-6 h-6" />,
-      title: "Bug Fixing",
-      description: "Risoluzione rapida di bug e problemi tecnici con priorità basata sulla severità."
-    },
-    {
-      icon: <HeadphonesIcon className="w-6 h-6" />,
-      title: "Supporto Dedicato",
-      description: "Team di supporto disponibile via email, ticket system e telefono."
-    }
+    { icon: <RefreshCw className="w-6 h-6" />, key: 'updates' },
+    { icon: <Shield className="w-6 h-6" />, key: 'security' },
+    { icon: <Gauge className="w-6 h-6" />, key: 'performance' },
+    { icon: <Server className="w-6 h-6" />, key: 'backup' },
+    { icon: <Bug className="w-6 h-6" />, key: 'bugfix' },
+    { icon: <HeadphonesIcon className="w-6 h-6" />, key: 'support' },
   ];
 
   const plans = [
     {
-      name: "Essential",
-      price: "149",
-      features: [
-        "Aggiornamenti mensili",
-        "Backup settimanali",
-        "Monitoraggio uptime",
-        "Supporto email",
-        "2 ore intervento/mese"
-      ]
+      key: 'essential',
+      price: '45',
+      name: t('plans.essential.name'),
+      unit: t('plans.essential.unit'),
+      popular: false,
+      features: Array.from({ length: 5 }).map((_, i) => t(`plans.essential.features.${i}`))
     },
     {
-      name: "Professional",
-      price: "299",
+      key: 'professional',
+      price: '149',
+      name: t('plans.professional.name'),
+      unit: t('plans.professional.unit'),
       popular: true,
-      features: [
-        "Aggiornamenti settimanali",
-        "Backup giornalieri",
-        "Monitoraggio sicurezza",
-        "Supporto prioritario",
-        "5 ore intervento/mese",
-        "Ottimizzazione performance"
-      ]
+      features: Array.from({ length: 6 }).map((_, i) => t(`plans.professional.features.${i}`))
     },
     {
-      name: "Enterprise",
-      price: "599",
-      features: [
-        "Aggiornamenti in tempo reale",
-        "Backup in tempo reale",
-        "Security audit trimestrale",
-        "Supporto 24/7",
-        "Ore illimitate",
-        "Account manager dedicato"
-      ]
-    }
+      key: 'enterprise',
+      price: '490',
+      name: t('plans.enterprise.name'),
+      unit: t('plans.enterprise.unit'),
+      popular: false,
+      features: Array.from({ length: 6 }).map((_, i) => t(`plans.enterprise.features.${i}`))
+    },
   ];
 
   return (
@@ -194,8 +159,8 @@ export default function ManutenzionePage() {
                     <div className="w-14 h-14 rounded-xl bg-orange-500/20 flex items-center justify-center text-orange-400 mb-4 group-hover:bg-orange-500 group-hover:text-white transition-all">
                       {feature.icon}
                     </div>
-                    <h3 className="text-xl font-bold mb-2 text-orange-400">{feature.title}</h3>
-                    <p className="text-muted-foreground">{feature.description}</p>
+                    <h3 className="text-xl font-bold mb-2 text-orange-400">{t(`features.${feature.key}.title`)}</h3>
+                    <p className="text-muted-foreground">{t(`features.${feature.key}.description`)}</p>
                   </CardContent>
                 </Card>
               </ScrollFadeIn>
@@ -214,11 +179,11 @@ export default function ManutenzionePage() {
             <div className="text-center max-w-3xl mx-auto mb-16">
               <Badge className="badge-futuristic mb-4 bg-orange-500/20 text-orange-400 border-orange-500/30">
                 <Zap className="w-4 h-4 mr-2" />
-                Piani
+                {t('plans.badge')}
               </Badge>
               <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-                <span className="text-foreground">Scegli il Piano</span>
-                <span className="block text-orange-400">Adatto a Te</span>
+                <span className="text-foreground">{t('plans.title')}</span>
+                <span className="block text-orange-400">{t('plans.titleHighlight')}</span>
               </h2>
             </div>
           </ScrollFadeIn>
@@ -227,14 +192,14 @@ export default function ManutenzionePage() {
             {plans.map((plan, index) => (
               <ScrollFadeIn key={index} animation="fade-up" delay={index * 100}>
                 <Card className={`holographic-card neon-border relative h-full flex flex-col transition-all duration-300 hover:shadow-xl hover:shadow-orange-500/20 ${
-                  plan.popular 
-                    ? 'border-orange-500/50 border-2 shadow-lg shadow-orange-500/10 md:scale-105 pt-4 sm:pt-5' 
+                  plan.popular
+                    ? 'border-orange-500/50 border-2 shadow-lg shadow-orange-500/10 md:scale-105 pt-4 sm:pt-5 !overflow-visible'
                     : 'border-primary/20 hover:border-orange-500/30'
                 }`}>
                   {plan.popular && (
                     <div className="absolute -top-4 sm:-top-3 left-1/2 -translate-x-1/2 z-20">
                       <Badge className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-4 py-1.5 text-xs sm:text-sm font-semibold shadow-lg shadow-orange-500/30">
-                        Più Popolare
+                        {t('plans.popularBadge')}
                       </Badge>
                     </div>
                   )}
@@ -243,7 +208,7 @@ export default function ManutenzionePage() {
                       <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-orange-400 mb-3 sm:mb-4">{plan.name}</h3>
                       <div className="mb-6 sm:mb-8">
                         <span className="text-4xl sm:text-5xl md:text-6xl font-bold text-foreground">€{plan.price}</span>
-                        <span className="text-muted-foreground text-base sm:text-lg ml-1">/mese</span>
+                        <span className="text-muted-foreground text-base sm:text-lg ml-1">{plan.unit}</span>
                       </div>
                     </div>
                     <ul className="space-y-3 sm:space-y-4 mb-6 sm:mb-8 flex-1">
@@ -254,19 +219,23 @@ export default function ManutenzionePage() {
                         </li>
                       ))}
                     </ul>
-                    <Button 
-                      className={`w-full h-11 sm:h-12 md:h-14 text-sm sm:text-base font-semibold transition-all duration-300 ${
+                    <PlanRequestDialog
+                      planName={plan.name}
+                      planPrice={plan.price}
+                      serviceName={t('label')}
+                      btnClassName={`w-full h-11 sm:h-12 md:h-14 text-sm sm:text-base font-semibold transition-all duration-300 ${
                         plan.popular 
                           ? 'bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40' 
                           : 'border-2 border-primary/30 hover:border-orange-500/50 hover:bg-orange-500/10 text-foreground bg-background'
-                      }`} 
-                      variant={plan.popular ? 'default' : 'outline'} 
-                      asChild
-                    >
-                      <Link href={getLocalizedPath('/contatti', locale)}>
-                        Scegli {plan.name}
-                      </Link>
-                    </Button>
+                      }`}
+                      btnVariant={plan.popular ? 'default' : 'outline'}
+                      btnLabel={t('plans.requestBtn', { planName: plan.name })}
+                    />
+                    <div className="mt-4 flex items-center justify-center gap-1.5 text-[11px] sm:text-xs text-muted-foreground font-medium opacity-80">
+                      <Lock className="w-3.5 h-3.5" />
+                      <span>{t('plans.securePayment')}</span>
+                      <CreditCard className="w-3.5 h-3.5 ml-1" />
+                    </div>
                   </CardContent>
                 </Card>
               </ScrollFadeIn>
@@ -288,22 +257,22 @@ export default function ManutenzionePage() {
               <div className="bg-card p-8 md:p-12 text-center">
                 <Badge className="badge-futuristic mb-6 bg-orange-500/20 text-orange-400 border-orange-500/30">
                   <Globe className="w-4 h-4 mr-2" />
-                  Contattaci
+                  {t('cta.badge')}
                 </Badge>
                 
                 <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-                  <span className="text-foreground">Hai Bisogno di</span>
-                  <span className="block text-orange-400">Assistenza?</span>
+                  <span className="text-foreground">{t('cta.title')}</span>
+                  <span className="block text-orange-400">{t('cta.titleHighlight')}</span>
                 </h2>
                 
                 <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
-                  Il nostro team è pronto ad aiutarti. Contattaci per una valutazione gratuita del tuo sito.
+                  {t('cta.subtitle')}
                 </p>
 
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                   <Button size="lg" className="group bg-orange-600 hover:bg-orange-700 px-8 w-full sm:w-auto" asChild>
                     <Link href={getLocalizedPath('/contatti', locale as any)}>
-                      Richiedi Supporto
+                      {t('cta.button')}
                       <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
                     </Link>
                   </Button>
@@ -312,11 +281,11 @@ export default function ManutenzionePage() {
                 <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
                   <span className="flex items-center gap-2">
                     <Clock className="w-4 h-4 text-orange-400" />
-                    Risposta in 24h
+                    {t('cta.responseTime')}
                   </span>
                   <span className="flex items-center gap-2">
                     <ShieldCheck className="w-4 h-4 text-orange-400" />
-                    Valutazione Gratuita
+                    {t('cta.freeEvaluation')}
                   </span>
                 </div>
               </div>

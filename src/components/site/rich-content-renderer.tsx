@@ -1,3 +1,4 @@
+import React from 'react';
 import { FirebaseImage } from '@/components/ui/firebase-image';
 import { cn } from '@/lib/utils';
 
@@ -270,7 +271,11 @@ function renderNode(node: TiptapNode, index: number, insideParagraph: boolean = 
     }
 
     case 'text':
-      return renderText(node);
+      // Handle wrapper text nodes from old editor format (no text, but has content children)
+      if (!node.text && node.content) {
+        return <span key={key}>{node.content.map((child, i) => renderNode(child, i, insideParagraph))}</span>;
+      }
+      return <React.Fragment key={key}>{renderText(node)}</React.Fragment>;
 
     default:
       if (node.content) {
