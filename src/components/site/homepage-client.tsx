@@ -12,8 +12,8 @@ import { FirebaseImage } from '@/components/ui/firebase-image';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { getLocalizedPath } from '@/lib/i18n-helpers';
 
-// Dynamically import QuoteDialog to avoid Turbopack HMR issues with next-intl
-const QuoteDialog = dynamic(() => import('@/components/site/quote-dialog').then(mod => mod.default ? mod : { default: mod.QuoteDialog ?? (() => null) }), {
+// Dynamically import QuoteDialog (client-only, no SSR)
+const QuoteDialog = dynamic(() => import('@/components/site/quote-dialog'), {
   ssr: false,
 });
 

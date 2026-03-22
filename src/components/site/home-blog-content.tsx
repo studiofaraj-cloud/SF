@@ -6,12 +6,10 @@ import Link from 'next/link';
 import { FirebaseImage } from '@/components/ui/firebase-image';
 import { ArrowRight, Sparkles, Calendar, Tag, Clock, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import dynamic from 'next/dynamic';
 import type { Blog } from '@/lib/definitions';
 import { useTranslations, useLocale } from 'next-intl';
 import { getLocalizedPath } from '@/lib/i18n-helpers';
-
-const ScrollFadeIn = dynamic(() => import('@/components/site/scroll-fade-in').then(mod => mod.default ? mod : { default: mod.ScrollFadeIn ?? (() => null) }), { ssr: true });
+import ScrollFadeIn from '@/components/site/scroll-fade-in';
 
 interface HomeBlogContentProps {
   blogs: Blog[];

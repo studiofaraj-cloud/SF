@@ -6,11 +6,9 @@ import Link from 'next/link';
 import { FirebaseImage } from '@/components/ui/firebase-image';
 import { ArrowRight, Sparkles, Tag, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import dynamic from 'next/dynamic';
 import type { Project } from '@/lib/definitions';
 import { useLocale } from 'next-intl';
-
-const ScrollFadeIn = dynamic(() => import('@/components/site/scroll-fade-in').then(mod => mod.default ? mod : { default: mod.ScrollFadeIn ?? (() => null) }), { ssr: true });
+import ScrollFadeIn from '@/components/site/scroll-fade-in';
 
 interface HomeProjectContentProps {
   projects: Project[];

@@ -38,9 +38,6 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-
-// Lazy load heavy components
-const TechLogosClient = dynamic(() => import('@/components/site/tech-logos-client'));
 import { Badge } from '@/components/ui/badge';
 import { generateMetadata as generateSEOMetadata, siteConfig } from '@/lib/seo';
 import { StructuredDataServer } from '@/components/seo/structured-data-server';
@@ -51,20 +48,24 @@ import { getLocalizedPath } from '@/lib/i18n-helpers';
 import { getHeroSlidesAction } from '@/lib/actions';
 import type { HeroSlide } from '@/lib/definitions';
 
-// Dynamically import client components
+// Client components — lazy loaded
+const TechLogosClient = dynamic(() => import('@/components/site/tech-logos-client'));
 const ProcessTimeline = dynamic(() => import('@/components/site/process-timeline'));
 const ContactSection = dynamic(() => import('@/components/site/contact-section'));
 const HomepageClient = dynamic(() => import('@/components/site/homepage-client'));
-const TestimonialsSection = dynamic(() => import('@/components/site/testimonials-section'), { ssr: true });
+const TestimonialsSection = dynamic(() => import('@/components/site/testimonials-section'));
 const StatsSection = dynamic(() => import('@/components/site/stats-section'));
-const ScrollFadeIn = dynamic(() => import('@/components/site/scroll-fade-in'));
+import ScrollFadeIn from '@/components/site/scroll-fade-in';
 import { TechSectionMobile } from '@/components/site/tech-section-mobile';
 import { ServiceAccordionMobile } from '@/components/site/service-accordion-mobile';
-// Server Components — must NOT use dynamic(), import directly and wrap in <Suspense>
+// Server Components
 import { HomeProjectSection } from '@/components/site/home-project-section';
 import { HomeBlogSection } from '@/components/site/home-blog-section';
 import { HomeProjectSkeleton } from '@/components/site/home-project-skeleton';
 import { HomeBlogSkeleton } from '@/components/site/home-blog-skeleton';
+
+// Use ISR instead of static prerendering to avoid Turbopack worker timeouts on this large page
+export const revalidate = 3600;
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
