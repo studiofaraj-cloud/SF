@@ -59,10 +59,10 @@ export default function EcommercePage() {
   ];
 
   const platforms = [
-    { name: "Shopify", description: t('platforms.shopify') },
-    { name: "WooCommerce", description: t('platforms.woocommerce') },
-    { name: "Custom Development", description: t('platforms.custom') },
-    { name: "Magento", description: t('platforms.magento') }
+    { name: "Next.js & React", description: t('platforms.nextjs') },
+    { name: "Node.js & API", description: t('platforms.nodejs') },
+    { name: "Custom Full-Stack", description: t('platforms.custom') },
+    { name: "Headless CMS", description: t('platforms.headless') }
   ];
 
   const benefits = [

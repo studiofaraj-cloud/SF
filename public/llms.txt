@@ -1,0 +1,63 @@
+# Studio Faraj
+
+> Full-stack web development studio based in Sciacca, Sicily, Italy. We build websites, e-commerce platforms, and web applications entirely with custom code — no templates, no WordPress, no Shopify, no third-party website builders.
+
+## About
+
+Studio Faraj is a team of skilled full-stack developers specializing in building high-performance, custom-coded digital solutions. Founded in Sciacca (Agrigento), Sicily, we serve businesses across Italy and internationally.
+
+What makes us different: every project we deliver is written from scratch using modern technologies. We don't use page builders, pre-made templates, or third-party e-commerce platforms. Our clients own 100% of their code — clean, maintainable, and built to scale.
+
+## Services
+
+- **Custom Web Development**: Fully coded websites and web applications built with React, Next.js, TypeScript, and Node.js. Server-side rendering, SEO-optimized, responsive on every device.
+- **Custom E-Commerce**: Online stores developed entirely from scratch — custom shopping carts, payment gateway integrations (Stripe, PayPal), inventory management, and analytics dashboards. No Shopify, no WooCommerce, no templates.
+- **UI/UX Design**: Research-driven interface design with responsive layouts, accessibility standards, and conversion-focused user experiences.
+- **SEO & Web Marketing**: Technical SEO audits, on-page optimization, ongoing SEO subscription plans, Google Ads management, and content strategy. We offer monthly SEO maintenance packages.
+- **AI & Automation**: Custom chatbots, predictive analytics, workflow automation, and AI-powered features integrated into web applications.
+- **Managed Hosting & Cloud Infrastructure**: High-performance hosting on Vercel, Google Cloud, and AWS. Domain management, SSL certificates, CDN setup, server monitoring, and 24/7 uptime support.
+- **Maintenance & Support**: Flexible maintenance plans including security updates, performance monitoring, content updates, backups, and technical support.
+- **Strategic IT Consulting**: Technology audits, digital transformation roadmaps, architecture planning, and technology stack advisory.
+
+## Tech Stack
+
+- **Frontend**: React, Next.js, TypeScript, JavaScript, Tailwind CSS, HTML5, CSS3
+- **Backend**: Node.js, Python, Firebase, REST APIs, GraphQL
+- **Infrastructure**: Vercel, Google Cloud, AWS, Docker, CI/CD pipelines
+- **Databases**: Firestore, PostgreSQL, MongoDB
+- **CMS**: Headless CMS (Sanity, Strapi), custom admin dashboards
+- **Tools**: Git, GitHub, Figma, Google Analytics, Search Console
+
+## Key Differentiators
+
+1. **100% Custom Code**: Every website and application is written from scratch. No WordPress, no Shopify, no page builders, no templates.
+2. **Full-Stack Expertise**: Our team handles frontend, backend, databases, hosting, and DevOps — one team, end-to-end.
+3. **SEO Built-In**: Every project includes technical SEO optimization as standard, with optional ongoing SEO subscription plans.
+4. **Performance-First**: We build for Core Web Vitals excellence — fast load times, smooth interactivity, and visual stability.
+5. **Ownership**: Clients receive full ownership of their codebase. No vendor lock-in, no recurring platform fees.
+6. **Rapid Delivery**: Most projects delivered within 15 business days, with 24/7 support.
+
+## Contact
+
+- Website: https://studiofaraj.it
+- Email: info@studiofaraj.it
+- Phone: +39 320 222 3322
+- Location: Sciacca (AG), 92019, Sicily, Italy
+- Languages: Italian, English
+
+## Links
+
+- [Services](https://studiofaraj.it/it/servizi)
+- [Web Development](https://studiofaraj.it/it/servizi/sviluppo-web)
+- [E-Commerce](https://studiofaraj.it/it/servizi/e-commerce)
+- [UI/UX Design](https://studiofaraj.it/it/servizi/design-ui-ux)
+- [SEO & Marketing](https://studiofaraj.it/it/servizi/seo-marketing)
+- [AI & Automation](https://studiofaraj.it/it/servizi/ai-automazione)
+- [Hosting & Cloud](https://studiofaraj.it/it/servizi/hosting-cloud)
+- [Maintenance](https://studiofaraj.it/it/servizi/manutenzione)
+- [Consulting](https://studiofaraj.it/it/servizi/consulenza)
+- [Projects](https://studiofaraj.it/it/projects)
+- [Blog](https://studiofaraj.it/it/blog)
+- [About Us](https://studiofaraj.it/it/chi-siamo)
+- [Contact](https://studiofaraj.it/it/contatti)
+- [FAQ](https://studiofaraj.it/it/faq)

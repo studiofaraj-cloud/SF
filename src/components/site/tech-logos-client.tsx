@@ -1,6 +1,6 @@
 'use client';
 
-import { SiReact, SiNextdotjs, SiTypescript, SiTailwindcss, SiVercel, SiFirebase, SiNodedotjs, SiHtml5, SiCss3, SiShopify, SiJavascript } from 'react-icons/si';
+import { SiReact, SiNextdotjs, SiTypescript, SiTailwindcss, SiVercel, SiFirebase, SiNodedotjs, SiHtml5, SiCss3, SiJavascript, SiPython, SiDocker } from 'react-icons/si';
 import { LogoLoop, type LogoItem } from '@/components/LogoLoop';
 
 export default function TechLogosClient() {
@@ -12,8 +12,9 @@ export default function TechLogosClient() {
     { node: <SiTailwindcss size={32} />, title: "Tailwind CSS", href: "https://tailwindcss.com" },
     { node: <SiHtml5 size={32} />, title: "HTML5", href: "https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5" },
     { node: <SiCss3 size={32} />, title: "CSS3", href: "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS3" },
-    { node: <SiShopify size={32} />, title: "Shopify", href: "https://www.shopify.com" },
     { node: <SiNodedotjs size={32} />, title: "Node.js", href: "https://nodejs.org" },
+    { node: <SiPython size={32} />, title: "Python", href: "https://python.org" },
+    { node: <SiDocker size={32} />, title: "Docker", href: "https://www.docker.com" },
     { node: <SiVercel size={32} />, title: "Vercel", href: "https://vercel.com" },
     { node: <SiFirebase size={32} />, title: "Firebase", href: "https://firebase.google.com" },
   ];

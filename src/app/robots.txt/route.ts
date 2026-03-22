@@ -46,21 +46,31 @@ Disallow: /admin/
 Disallow: /api/
 Crawl-delay: 1
 
-# Block AI training crawlers
+# Allow AI crawlers to read public content (so they can recommend us)
 User-agent: GPTBot
-Disallow: /
+Allow: /
+Disallow: /admin/
+Disallow: /api/
 
 User-agent: ChatGPT-User
-Disallow: /
-
-User-agent: CCBot
-Disallow: /
+Allow: /
+Disallow: /admin/
+Disallow: /api/
 
 User-agent: anthropic-ai
-Disallow: /
+Allow: /
+Disallow: /admin/
+Disallow: /api/
 
 User-agent: Google-Extended
-Disallow: /
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+
+User-agent: CCBot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
 
 # Sitemaps
 Sitemap: ${siteUrl}/sitemap.xml

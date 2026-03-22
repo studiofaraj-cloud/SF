@@ -300,8 +300,9 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
     { title: "Tailwind CSS", href: "https://tailwindcss.com" },
     { title: "HTML5", href: "https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5" },
     { title: "CSS3", href: "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS3" },
-    { title: "Shopify", href: "https://www.shopify.com" },
     { title: "Node.js", href: "https://nodejs.org" },
+    { title: "Python", href: "https://python.org" },
+    { title: "Docker", href: "https://www.docker.com" },
     { title: "Vercel", href: "https://vercel.com" },
     { title: "Firebase", href: "https://firebase.google.com" },
   ];
@@ -390,7 +391,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
               icon: <ShoppingCart className="w-3.5 h-3.5" />,
               title: tTech('ecommerce.title'),
               description: tTech('ecommerce.description'),
-              badges: ['Shopify', tTech('ecommerce.customCoding')],
+              badges: ['Next.js', 'Node.js', tTech('ecommerce.customCoding')],
             },
           ]} />
 
@@ -459,7 +460,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                   {tTech('ecommerce.description')}
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  {techLogosData.filter(tech => ['Shopify'].includes(tech.title)).map((tech, i) => (
+                  {techLogosData.filter(tech => ['Next.js', 'Node.js'].includes(tech.title)).map((tech, i) => (
                     <Badge key={i} variant="secondary" className="bg-primary/10 text-primary border-primary/20">
                       {tech.title}
                     </Badge>

@@ -17,35 +17,41 @@ export const seoConfig: Record<Locale, {
   defaultKeywords: string[];
 }> = {
   it: {
-    description: 'Sviluppo Web Professionale e Soluzioni Digitali a Sciacca, Sicilia. Siti web personalizzati, e-commerce, design UI/UX, SEO e molto altro.',
+    description: 'Sviluppatori full-stack a Sciacca, Sicilia. Creiamo siti web, e-commerce e applicazioni interamente con codice personalizzato — nessun template, nessuna piattaforma terza. SEO, hosting gestito, AI e automazione.',
     locale: 'it_IT',
-    defaultTitle: 'Studio Faraj - Sviluppo Web Professionale | Sciacca, Sicilia',
+    defaultTitle: 'Studio Faraj - Sviluppo Web Full-Stack su Misura | Sciacca, Sicilia',
     defaultKeywords: [
       'sviluppo web Sciacca',
-      'siti web Sicilia',
-      'e-commerce Sciacca',
-      'web development Sicilia',
+      'sviluppatori full-stack Sicilia',
+      'siti web personalizzati',
+      'e-commerce custom',
       'agenzia web Sciacca',
-      'creazione siti web',
-      'design UI/UX',
+      'sviluppo web su misura',
       'SEO Sicilia',
+      'hosting gestito',
+      'AI automazione',
+      'design UI/UX',
       'marketing digitale',
+      'consulenza IT',
     ],
   },
   en: {
-    description: 'Professional Web Development and Digital Solutions in Sciacca, Sicily. Custom websites, e-commerce, UI/UX design, SEO and much more.',
+    description: 'Full-stack developers in Sciacca, Sicily. We build websites, e-commerce and applications entirely with custom code — no templates, no third-party platforms. SEO, managed hosting, AI and automation.',
     locale: 'en_US',
-    defaultTitle: 'Studio Faraj - Professional Web Development | Sciacca, Sicily',
+    defaultTitle: 'Studio Faraj - Custom Full-Stack Web Development | Sciacca, Sicily',
     defaultKeywords: [
       'web development Sciacca',
-      'websites Sicily',
-      'e-commerce Sciacca',
-      'web development Sicily',
+      'full-stack developers Sicily',
+      'custom websites',
+      'custom e-commerce',
       'web agency Sciacca',
-      'website creation',
-      'UI/UX design',
+      'bespoke web development',
       'SEO Sicily',
+      'managed hosting',
+      'AI automation',
+      'UI/UX design',
       'digital marketing',
+      'IT consulting',
     ],
   },
 };
@@ -257,20 +263,22 @@ export function generateStructuredDataProfessionalService(locale: Locale = 'it')
     ],
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
-      name: locale === 'it' ? 'Servizi di Sviluppo Web' : 'Web Development Services',
+      name: locale === 'it' ? 'Servizi di Sviluppo Web Full-Stack' : 'Full-Stack Web Development Services',
       itemListElement: [
         {
           '@type': 'Offer',
           itemOffered: {
             '@type': 'Service',
-            name: locale === 'it' ? 'Sviluppo Web' : 'Web Development',
+            name: locale === 'it' ? 'Sviluppo Web Full-Stack su Misura' : 'Custom Full-Stack Web Development',
+            description: locale === 'it' ? 'Siti web e applicazioni sviluppati interamente con codice personalizzato' : 'Websites and applications built entirely with custom code',
           },
         },
         {
           '@type': 'Offer',
           itemOffered: {
             '@type': 'Service',
-            name: 'E-Commerce',
+            name: locale === 'it' ? 'E-Commerce Personalizzato' : 'Custom E-Commerce',
+            description: locale === 'it' ? 'Piattaforme e-commerce sviluppate da zero senza template o piattaforme terze' : 'E-commerce platforms built from scratch without templates or third-party platforms',
           },
         },
         {
@@ -284,7 +292,8 @@ export function generateStructuredDataProfessionalService(locale: Locale = 'it')
           '@type': 'Offer',
           itemOffered: {
             '@type': 'Service',
-            name: locale === 'it' ? 'SEO e Marketing' : 'SEO & Marketing',
+            name: locale === 'it' ? 'SEO e Web Marketing' : 'SEO & Web Marketing',
+            description: locale === 'it' ? 'Strategie SEO, abbonamenti di ottimizzazione continua e campagne di marketing digitale' : 'SEO strategies, ongoing optimization subscriptions and digital marketing campaigns',
           },
         },
         {
@@ -292,6 +301,28 @@ export function generateStructuredDataProfessionalService(locale: Locale = 'it')
           itemOffered: {
             '@type': 'Service',
             name: locale === 'it' ? 'AI e Automazione' : 'AI & Automation',
+          },
+        },
+        {
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: locale === 'it' ? 'Hosting Gestito e Cloud' : 'Managed Hosting & Cloud',
+            description: locale === 'it' ? 'Infrastruttura cloud ad alte prestazioni con supporto 24/7' : 'High-performance cloud infrastructure with 24/7 support',
+          },
+        },
+        {
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: locale === 'it' ? 'Manutenzione e Supporto' : 'Maintenance & Support',
+          },
+        },
+        {
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: locale === 'it' ? 'Consulenza IT Strategica' : 'Strategic IT Consulting',
           },
         },
       ],
@@ -375,6 +406,17 @@ export function generateStructuredDataLocalBusiness(locale: Locale = 'it') {
       { '@type': 'Country', name: 'United Kingdom' },
     ],
     availableLanguage: ['Italian', 'English'],
+    knowsAbout: [
+      'Full-Stack Web Development',
+      'Custom E-Commerce Development',
+      'React', 'Next.js', 'TypeScript', 'Node.js', 'Python',
+      'UI/UX Design',
+      'SEO & Web Marketing',
+      'Cloud Hosting & Infrastructure',
+      'AI & Automation',
+      'Firebase', 'Vercel', 'Docker',
+      'REST API', 'Headless CMS',
+    ],
     sameAs: [
       'https://www.instagram.com/studiofaraj',
       'https://www.linkedin.com/company/studiofaraj',

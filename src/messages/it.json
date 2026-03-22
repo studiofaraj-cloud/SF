@@ -182,11 +182,11 @@
         "badge": "Piattaforme",
         "title": "Tecnologie",
         "titleHighlight": "Supportate",
-        "shopify": "Soluzione completa per e-commerce di ogni dimensione",
-        "woocommerce": "Flessibilità totale su WordPress",
-        "custom": "Soluzioni su misura con Next.js e headless CMS",
-        "magento": "Per enterprise e cataloghi complessi",
-        "subtitle": "Scegliamo la piattaforma più adatta alle tue esigenze, dal piccolo negozio all'enterprise."
+        "nextjs": "Storefront ad alte prestazioni con rendering server-side e SEO nativo",
+        "nodejs": "Backend personalizzati, gateway di pagamento e integrazioni API su misura",
+        "custom": "Soluzioni e-commerce scritte interamente da zero, senza template o piattaforme terze",
+        "headless": "Gestione contenuti flessibile con Sanity, Strapi o Firebase per massima scalabilità",
+        "subtitle": "Sviluppiamo ogni e-commerce con codice proprietario — nessun template, nessuna piattaforma preconfezionata. Solo codice pulito, performante e interamente tuo."
       },
       "benefits": {
         "badge": "Vantaggi",
@@ -958,7 +958,7 @@
       },
       "ecommerce": {
         "title": "Soluzioni E-commerce",
-        "description": "E-commerce sviluppati con codice personalizzato e integrazione Shopify. Creiamo piattaforme di vendita online complete, dall'esperienza utente alla gestione del magazzino e dei pagamenti."
+        "description": "E-commerce sviluppati interamente con codice personalizzato. Creiamo piattaforme di vendita online complete e su misura, dall'esperienza utente alla gestione del magazzino e dei pagamenti — senza template, senza piattaforme terze."
       },
       "designUIUX": {
         "title": "Design Responsivo e UI/UX",
@@ -1003,8 +1003,8 @@
       },
       "ecommerce": {
         "title": "E-commerce",
-        "description": "E-commerce sviluppati con codice personalizzato e integrazione Shopify per negozi online performanti e scalabili.",
-        "customCoding": "Codice Personalizzato"
+        "description": "E-commerce sviluppati interamente con codice proprietario per negozi online performanti, scalabili e completamente personalizzati.",
+        "customCoding": "Codice Proprietario"
       },
       "trust": {
         "secure": "Sicure",

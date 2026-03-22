@@ -42,7 +42,7 @@ export default function HostingCloudPage() {
   const nonIndexedExamples = [
     "progetto.lovable.app",
     "progetto.web.app",
-    "negozio.myshopify.com",
+    "negozio.esempio.com",
     "sito.netlify.app",
     "progetto.vercel.app"
   ];

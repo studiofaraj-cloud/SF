@@ -182,11 +182,11 @@
         "badge": "Platforms",
         "title": "Supported",
         "titleHighlight": "Technologies",
-        "shopify": "Complete solution for e-commerce of any size",
-        "woocommerce": "Total flexibility on WordPress",
-        "custom": "Custom solutions with Next.js and headless CMS",
-        "magento": "For enterprise and complex catalogs",
-        "subtitle": "We choose the platform best suited to your needs, from small shops to enterprise."
+        "nextjs": "High-performance storefront with server-side rendering and native SEO",
+        "nodejs": "Custom backends, payment gateways and tailor-made API integrations",
+        "custom": "E-commerce solutions built entirely from scratch — no templates, no third-party platforms",
+        "headless": "Flexible content management with Sanity, Strapi or Firebase for maximum scalability",
+        "subtitle": "We build every e-commerce with proprietary code — no templates, no pre-packaged platforms. Just clean, performant code that is entirely yours."
       },
       "benefits": {
         "badge": "Benefits",
@@ -958,7 +958,7 @@
       },
       "ecommerce": {
         "title": "E-commerce Solutions",
-        "description": "E-commerce developed with custom code and Shopify integration. We create complete online sales platforms, from user experience to inventory and payment management."
+        "description": "E-commerce built entirely with custom code. We create complete, tailor-made online sales platforms — from user experience to inventory and payment management — no templates, no third-party platforms."
       },
       "designUIUX": {
         "title": "Responsive Design & UI/UX",
@@ -1003,8 +1003,8 @@
       },
       "ecommerce": {
         "title": "E-commerce",
-        "description": "E-commerce developed with custom code and Shopify integration for performant and scalable online stores.",
-        "customCoding": "Custom Coding"
+        "description": "E-commerce built entirely with proprietary code for performant, scalable and fully customized online stores.",
+        "customCoding": "Proprietary Code"
       },
       "trust": {
         "secure": "Secure",
