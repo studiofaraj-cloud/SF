@@ -35,10 +35,10 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   };
 
   const content = seoContent[currentLocale] || seoContent.it;
-  const baseUrl = `${siteConfig.url}${currentLocale === 'it' ? '' : `/${currentLocale}`}/servizi/ai-automazione`;
+  const baseUrl = `${siteConfig.url}/${currentLocale}/servizi/ai-automazione`;
   const alternateUrls = {
-    it: currentLocale === 'it' ? baseUrl : baseUrl.replace(`/${currentLocale}`, '/it').replace(/^\/en/, '/it'),
-    en: currentLocale === 'en' ? baseUrl : baseUrl.replace(`/${currentLocale}`, '/en').replace(/^\/it/, '/en'),
+    it: baseUrl.replace(`/${currentLocale}/`, '/it/'),
+    en: baseUrl.replace(`/${currentLocale}/`, '/en/'),
   };
 
   return generateSEOMetadata({
@@ -68,14 +68,14 @@ export default async function AIAutomazioneLayout({
     currentLocale === 'it'
       ? 'Integrazione intelligenza artificiale e automazione per migliorare i processi aziendali. Chatbot, sistemi di raccomandazione e automazione intelligente.'
       : 'Artificial intelligence and automation integration to improve business processes. Chatbots, recommendation systems and intelligent automation.',
-    `${siteConfig.url}${currentLocale === 'it' ? '' : `/${currentLocale}`}/servizi/ai-automazione`,
+    `${siteConfig.url}/${currentLocale}/servizi/ai-automazione`,
     currentLocale
   );
 
   const breadcrumbData = generateStructuredDataBreadcrumbList([
-    { name: currentLocale === 'it' ? 'Home' : 'Home', url: `${siteConfig.url}${currentLocale === 'it' ? '' : `/${currentLocale}`}` },
-    { name: currentLocale === 'it' ? 'Servizi' : 'Services', url: `${siteConfig.url}${currentLocale === 'it' ? '' : `/${currentLocale}`}/servizi` },
-    { name: currentLocale === 'it' ? 'AI e Automazione' : 'AI & Automation', url: `${siteConfig.url}${currentLocale === 'it' ? '' : `/${currentLocale}`}/servizi/ai-automazione` },
+    { name: currentLocale === 'it' ? 'Home' : 'Home', url: `${siteConfig.url}/${currentLocale}` },
+    { name: currentLocale === 'it' ? 'Servizi' : 'Services', url: `${siteConfig.url}/${currentLocale}/servizi` },
+    { name: currentLocale === 'it' ? 'AI e Automazione' : 'AI & Automation', url: `${siteConfig.url}/${currentLocale}/servizi/ai-automazione` },
   ]);
 
   return (

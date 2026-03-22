@@ -7,10 +7,10 @@ import { setRequestLocale } from 'next-intl/server';
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   const currentLocale = locale as 'it' | 'en';
-  const baseUrl = `${siteConfig.url}${currentLocale === 'it' ? '' : `/${currentLocale}`}/servizi/e-commerce`;
+  const baseUrl = `${siteConfig.url}/${currentLocale}/servizi/e-commerce`;
   const alternateUrls = {
-    it: currentLocale === 'it' ? baseUrl : baseUrl.replace(`/${currentLocale}`, '/it').replace(/^\/en/, '/it'),
-    en: currentLocale === 'en' ? baseUrl : baseUrl.replace(`/${currentLocale}`, '/en').replace(/^\/it/, '/en'),
+    it: baseUrl.replace(`/${currentLocale}/`, '/it/'),
+    en: baseUrl.replace(`/${currentLocale}/`, '/en/'),
   };
   
   const seoContent = currentLocale === 'it' ? {
@@ -47,14 +47,14 @@ export default async function ECommerceLayout({
     currentLocale === 'it'
       ? 'Soluzioni e-commerce complete per vendere online. Creiamo negozi digitali performanti con integrazione pagamenti, gestione ordini e marketing.'
       : 'Complete e-commerce solutions for selling online. We create high-performance digital stores with payment integration, order management and marketing.',
-    `${siteConfig.url}${currentLocale === 'it' ? '' : `/${currentLocale}`}/servizi/e-commerce`,
+    `${siteConfig.url}/${currentLocale}/servizi/e-commerce`,
     currentLocale
   );
 
   const breadcrumbData = generateStructuredDataBreadcrumbList([
-    { name: currentLocale === 'it' ? 'Home' : 'Home', url: `${siteConfig.url}${currentLocale === 'it' ? '' : `/${currentLocale}`}` },
-    { name: currentLocale === 'it' ? 'Servizi' : 'Services', url: `${siteConfig.url}${currentLocale === 'it' ? '' : `/${currentLocale}`}/servizi` },
-    { name: currentLocale === 'it' ? 'E-Commerce' : 'E-Commerce', url: `${siteConfig.url}${currentLocale === 'it' ? '' : `/${currentLocale}`}/servizi/e-commerce` },
+    { name: currentLocale === 'it' ? 'Home' : 'Home', url: `${siteConfig.url}/${currentLocale}` },
+    { name: currentLocale === 'it' ? 'Servizi' : 'Services', url: `${siteConfig.url}/${currentLocale}/servizi` },
+    { name: currentLocale === 'it' ? 'E-Commerce' : 'E-Commerce', url: `${siteConfig.url}/${currentLocale}/servizi/e-commerce` },
   ]);
 
   return (

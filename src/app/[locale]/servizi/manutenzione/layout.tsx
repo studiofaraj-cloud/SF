@@ -35,10 +35,10 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   };
 
   const content = seoContent[currentLocale] || seoContent.it;
-  const baseUrl = `${siteConfig.url}${currentLocale === 'it' ? '' : `/${currentLocale}`}/servizi/manutenzione`;
+  const baseUrl = `${siteConfig.url}/${currentLocale}/servizi/manutenzione`;
   const alternateUrls = {
-    it: currentLocale === 'it' ? baseUrl : baseUrl.replace(`/${currentLocale}`, '/it').replace(/^\/en/, '/it'),
-    en: currentLocale === 'en' ? baseUrl : baseUrl.replace(`/${currentLocale}`, '/en').replace(/^\/it/, '/en'),
+    it: baseUrl.replace(`/${currentLocale}/`, '/it/'),
+    en: baseUrl.replace(`/${currentLocale}/`, '/en/'),
   };
 
   return generateSEOMetadata({
@@ -68,14 +68,14 @@ export default async function ManutenzioneLayout({
     currentLocale === 'it'
       ? 'Servizi di manutenzione e supporto per siti web. Aggiornamenti, backup, sicurezza e ottimizzazione delle performance. Supporto continuo per il tuo sito.'
       : 'Website maintenance and support services. Updates, backups, security and performance optimization. Continuous support for your website.',
-    `${siteConfig.url}${currentLocale === 'it' ? '' : `/${currentLocale}`}/servizi/manutenzione`,
+    `${siteConfig.url}/${currentLocale}/servizi/manutenzione`,
     currentLocale
   );
 
   const breadcrumbData = generateStructuredDataBreadcrumbList([
-    { name: currentLocale === 'it' ? 'Home' : 'Home', url: `${siteConfig.url}${currentLocale === 'it' ? '' : `/${currentLocale}`}` },
-    { name: currentLocale === 'it' ? 'Servizi' : 'Services', url: `${siteConfig.url}${currentLocale === 'it' ? '' : `/${currentLocale}`}/servizi` },
-    { name: currentLocale === 'it' ? 'Manutenzione' : 'Maintenance', url: `${siteConfig.url}${currentLocale === 'it' ? '' : `/${currentLocale}`}/servizi/manutenzione` },
+    { name: currentLocale === 'it' ? 'Home' : 'Home', url: `${siteConfig.url}/${currentLocale}` },
+    { name: currentLocale === 'it' ? 'Servizi' : 'Services', url: `${siteConfig.url}/${currentLocale}/servizi` },
+    { name: currentLocale === 'it' ? 'Manutenzione' : 'Maintenance', url: `${siteConfig.url}/${currentLocale}/servizi/manutenzione` },
   ]);
 
   return (

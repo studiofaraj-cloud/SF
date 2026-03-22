@@ -44,7 +44,6 @@ export async function GET() {
       .map((page) => {
         const url = generateUrl(page.url, locale);
         const alternateUrls = locales
-          .filter(l => l !== locale)
           .map(l => `<xhtml:link rel="alternate" hreflang="${l}" href="${generateUrl(page.url, l)}" />`)
           .join('\n      ');
         return `
@@ -65,7 +64,6 @@ export async function GET() {
       .map((page) => {
         const url = generateUrl(page.url, locale);
         const alternateUrls = locales
-          .filter(l => l !== locale)
           .map(l => `<xhtml:link rel="alternate" hreflang="${l}" href="${generateUrl(page.url, l)}" />`)
           .join('\n      ');
         return `
@@ -87,7 +85,6 @@ export async function GET() {
       return locales.map(locale => {
         const url = generateUrl(`/blog/${slug}`, locale);
         const alternateUrls = locales
-          .filter(l => l !== locale)
           .map(l => `<xhtml:link rel="alternate" hreflang="${l}" href="${generateUrl(`/blog/${slug}`, l)}" />`)
           .join('\n      ');
         return `
@@ -109,7 +106,6 @@ export async function GET() {
       return locales.map(locale => {
         const url = generateUrl(`/projects/${slug}`, locale);
         const alternateUrls = locales
-          .filter(l => l !== locale)
           .map(l => `<xhtml:link rel="alternate" hreflang="${l}" href="${generateUrl(`/projects/${slug}`, l)}" />`)
           .join('\n      ');
         return `

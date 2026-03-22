@@ -27,10 +27,10 @@ export async function generateServiceMetadata(
   const currentLocale = (locale === 'it' || locale === 'en') ? locale : 'it';
   
   const seoData = content[currentLocale] || content.it;
-  const baseUrl = `${siteConfig.url}${currentLocale === 'it' ? '' : `/${currentLocale}`}${path}`;
+  const baseUrl = `${siteConfig.url}/${currentLocale}${path}`;
   const alternateUrls = {
-    it: currentLocale === 'it' ? baseUrl : baseUrl.replace(`/${currentLocale}`, '/it').replace(/^\/en/, '/it'),
-    en: currentLocale === 'en' ? baseUrl : baseUrl.replace(`/${currentLocale}`, '/en').replace(/^\/it/, '/en'),
+    it: baseUrl.replace(`/${currentLocale}/`, '/it/'),
+    en: baseUrl.replace(`/${currentLocale}/`, '/en/'),
   };
   
   return generateSEOMetadata({

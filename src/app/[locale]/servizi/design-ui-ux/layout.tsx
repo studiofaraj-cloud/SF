@@ -35,10 +35,10 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   };
 
   const content = seoContent[currentLocale] || seoContent.it;
-  const baseUrl = `${siteConfig.url}${currentLocale === 'it' ? '' : `/${currentLocale}`}/servizi/design-ui-ux`;
+  const baseUrl = `${siteConfig.url}/${currentLocale}/servizi/design-ui-ux`;
   const alternateUrls = {
-    it: currentLocale === 'it' ? baseUrl : baseUrl.replace(`/${currentLocale}`, '/it').replace(/^\/en/, '/it'),
-    en: currentLocale === 'en' ? baseUrl : baseUrl.replace(`/${currentLocale}`, '/en').replace(/^\/it/, '/en'),
+    it: baseUrl.replace(`/${currentLocale}/`, '/it/'),
+    en: baseUrl.replace(`/${currentLocale}/`, '/en/'),
   };
 
   return generateSEOMetadata({
@@ -68,14 +68,14 @@ export default async function DesignUIUXLayout({
     currentLocale === 'it'
       ? 'Design UI/UX moderno e user-friendly per siti web e applicazioni. Creiamo interfacce intuitive che migliorano l\'esperienza utente e aumentano le conversioni.'
       : 'Modern and user-friendly UI/UX design for websites and applications. We create intuitive interfaces that improve user experience and increase conversions.',
-    `${siteConfig.url}${currentLocale === 'it' ? '' : `/${currentLocale}`}/servizi/design-ui-ux`,
+    `${siteConfig.url}/${currentLocale}/servizi/design-ui-ux`,
     currentLocale
   );
 
   const breadcrumbData = generateStructuredDataBreadcrumbList([
-    { name: currentLocale === 'it' ? 'Home' : 'Home', url: `${siteConfig.url}${currentLocale === 'it' ? '' : `/${currentLocale}`}` },
-    { name: currentLocale === 'it' ? 'Servizi' : 'Services', url: `${siteConfig.url}${currentLocale === 'it' ? '' : `/${currentLocale}`}/servizi` },
-    { name: currentLocale === 'it' ? 'Design UI/UX' : 'UI/UX Design', url: `${siteConfig.url}${currentLocale === 'it' ? '' : `/${currentLocale}`}/servizi/design-ui-ux` },
+    { name: currentLocale === 'it' ? 'Home' : 'Home', url: `${siteConfig.url}/${currentLocale}` },
+    { name: currentLocale === 'it' ? 'Servizi' : 'Services', url: `${siteConfig.url}/${currentLocale}/servizi` },
+    { name: currentLocale === 'it' ? 'Design UI/UX' : 'UI/UX Design', url: `${siteConfig.url}/${currentLocale}/servizi/design-ui-ux` },
   ]);
 
   return (

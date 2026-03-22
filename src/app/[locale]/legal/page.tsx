@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { generateMetadata as generateSEOMetadata } from '@/lib/seo';
+import { generateMetadata as generateSEOMetadata, siteConfig } from '@/lib/seo';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -17,7 +17,7 @@ export const metadata: Metadata = generateSEOMetadata({
     'regolamento europeo',
     'diritti privacy',
   ],
-  url: 'https://www.studiofaraj.it/legal',
+  url: `${siteConfig.url}/it/legal`,
   noindex: true,
 });
 

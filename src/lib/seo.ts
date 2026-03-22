@@ -3,8 +3,8 @@ import type { Locale } from '@/i18n/config';
 
 export const siteConfig = {
   name: 'Studio Faraj',
-  url: 'https://www.studiofaraj.it',
-  ogImage: 'https://www.studiofaraj.it/assets/og-image.jpg',
+  url: 'https://studiofaraj.it',
+  ogImage: 'https://studiofaraj.it/assets/og-image.jpg',
   twitterHandle: '@studiofaraj',
   type: 'website',
 };
@@ -182,7 +182,7 @@ export function generateMetadata({
 }
 
 export function generateStructuredDataOrganization(locale: Locale = 'it') {
-  const baseUrl = `${siteConfig.url}${locale === 'it' ? '' : `/${locale}`}`;
+  const baseUrl = `${siteConfig.url}/${locale}`;
   return {
     '@context': 'https://schema.org',
     '@type': 'Organization',
@@ -224,7 +224,7 @@ export function generateStructuredDataOrganization(locale: Locale = 'it') {
 }
 
 export function generateStructuredDataProfessionalService(locale: Locale = 'it') {
-  const baseUrl = `${siteConfig.url}${locale === 'it' ? '' : `/${locale}`}`;
+  const baseUrl = `${siteConfig.url}/${locale}`;
   return {
     '@context': 'https://schema.org',
     '@type': 'ProfessionalService',
@@ -312,7 +312,7 @@ export function generateStructuredDataProfessionalService(locale: Locale = 'it')
 }
 
 export function generateStructuredDataWebSite(locale: Locale = 'it') {
-  const baseUrl = `${siteConfig.url}${locale === 'it' ? '' : `/${locale}`}`;
+  const baseUrl = `${siteConfig.url}/${locale}`;
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
@@ -332,7 +332,7 @@ export function generateStructuredDataWebSite(locale: Locale = 'it') {
 }
 
 export function generateStructuredDataLocalBusiness(locale: Locale = 'it') {
-  const baseUrl = `${siteConfig.url}${locale === 'it' ? '' : `/${locale}`}`;
+  const baseUrl = `${siteConfig.url}/${locale}`;
   return {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
@@ -391,7 +391,7 @@ export function generateStructuredDataService(name: string, description: string,
     provider: {
       '@type': 'LocalBusiness',
       name: siteConfig.name,
-      url: `${siteConfig.url}${locale === 'it' ? '' : `/${locale}`}`,
+      url: `${siteConfig.url}/${locale}`,
     },
     areaServed: [
       {
@@ -445,6 +445,8 @@ export function generateStructuredDataBlogPosting(
       logo: {
         '@type': 'ImageObject',
         url: `${siteConfig.url}/assets/logo.png`,
+        width: 512,
+        height: 512,
       },
     },
     mainEntityOfPage: {
@@ -481,6 +483,8 @@ export function generateStructuredDataArticle(
       logo: {
         '@type': 'ImageObject',
         url: `${siteConfig.url}/assets/logo.png`,
+        width: 512,
+        height: 512,
       },
     },
     mainEntityOfPage: {
@@ -572,6 +576,8 @@ export function generateStructuredDataCreativeWork(
       logo: {
         '@type': 'ImageObject',
         url: `${siteConfig.url}/assets/logo.png`,
+        width: 512,
+        height: 512,
       },
     },
   };

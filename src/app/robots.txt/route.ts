@@ -6,13 +6,13 @@ export function GET() {
   const siteUrl = siteConfig.url;
 
   const robotsTxt = `# Studio Faraj - robots.txt
-# https://www.studiofaraj.it
+# https://studiofaraj.it
 
 User-agent: *
 Allow: /
 Disallow: /admin/
 Disallow: /api/
-Disallow: /_next/
+Disallow: /_next/data/
 Disallow: /search?*
 Disallow: /*?utm_*
 Disallow: /*?ref=*

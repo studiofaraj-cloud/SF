@@ -36,10 +36,10 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   };
   
   const content = seoContent[currentLocale] || seoContent.it;
-  const baseUrl = `${siteConfig.url}${currentLocale === 'it' ? '' : `/${currentLocale}`}/servizi/sviluppo-web`;
+  const baseUrl = `${siteConfig.url}/${currentLocale}/servizi/sviluppo-web`;
   const alternateUrls = {
-    it: currentLocale === 'it' ? baseUrl : baseUrl.replace(`/${currentLocale}`, '/it').replace(/^\/en/, '/it'),
-    en: currentLocale === 'en' ? baseUrl : baseUrl.replace(`/${currentLocale}`, '/en').replace(/^\/it/, '/en'),
+    it: baseUrl.replace(`/${currentLocale}/`, '/it/'),
+    en: baseUrl.replace(`/${currentLocale}/`, '/en/'),
   };
   
   return generateSEOMetadata({
@@ -70,14 +70,14 @@ export default async function SviluppoWebLayout({
     currentLocale === 'it'
       ? 'Sviluppo web professionale e personalizzato a Sciacca, Sicilia. Creiamo siti web moderni, responsive e performanti con le tecnologie più avanzate.'
       : 'Professional and customized web development in Sciacca, Sicily. We create modern, responsive and high-performance websites with the most advanced technologies.',
-    `${siteConfig.url}${currentLocale === 'it' ? '' : `/${currentLocale}`}/servizi/sviluppo-web`,
+    `${siteConfig.url}/${currentLocale}/servizi/sviluppo-web`,
     currentLocale
   );
 
   const breadcrumbData = generateStructuredDataBreadcrumbList([
-    { name: currentLocale === 'it' ? 'Home' : 'Home', url: `${siteConfig.url}${currentLocale === 'it' ? '' : `/${currentLocale}`}` },
-    { name: currentLocale === 'it' ? 'Servizi' : 'Services', url: `${siteConfig.url}${currentLocale === 'it' ? '' : `/${currentLocale}`}/servizi` },
-    { name: currentLocale === 'it' ? 'Sviluppo Web' : 'Web Development', url: `${siteConfig.url}${currentLocale === 'it' ? '' : `/${currentLocale}`}/servizi/sviluppo-web` },
+    { name: currentLocale === 'it' ? 'Home' : 'Home', url: `${siteConfig.url}/${currentLocale}` },
+    { name: currentLocale === 'it' ? 'Servizi' : 'Services', url: `${siteConfig.url}/${currentLocale}/servizi` },
+    { name: currentLocale === 'it' ? 'Sviluppo Web' : 'Web Development', url: `${siteConfig.url}/${currentLocale}/servizi/sviluppo-web` },
   ]);
 
   return (

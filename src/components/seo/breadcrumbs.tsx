@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { ChevronRight, Home } from 'lucide-react';
 import { StructuredData } from './structured-data';
-import { generateStructuredDataBreadcrumbList } from '@/lib/seo';
+import { generateStructuredDataBreadcrumbList, siteConfig } from '@/lib/seo';
 
 interface BreadcrumbItem {
   label: string;
@@ -24,7 +24,7 @@ export function Breadcrumbs({ items, className = '' }: BreadcrumbsProps) {
   const structuredData = generateStructuredDataBreadcrumbList(
     allItems.map(item => ({
       name: item.label,
-      url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://www.studiofaraj.it'}${item.href}`,
+      url: `${siteConfig.url}${item.href}`,
     }))
   );
 

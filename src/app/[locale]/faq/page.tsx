@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/accordion"
 import { Badge } from "@/components/ui/badge";
 import { Metadata } from 'next';
-import { generateMetadata as generateSEOMetadata } from '@/lib/seo';
+import { generateMetadata as generateSEOMetadata, siteConfig } from '@/lib/seo';
 import { StructuredDataServer } from '@/components/seo/structured-data-server';
 import { generateStructuredDataFAQPage } from '@/lib/seo';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
@@ -44,12 +44,17 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   };
   
   const content = seoContent[currentLocale] || seoContent.it;
-  const baseUrl = `https://www.studiofaraj.it${currentLocale === 'it' ? '' : `/${currentLocale}`}/faq`;
-  
+  const baseUrl = `${siteConfig.url}/${currentLocale}/faq`;
+  const alternateUrls = {
+    it: `${siteConfig.url}/it/faq`,
+    en: `${siteConfig.url}/en/faq`,
+  };
+
   return generateSEOMetadata({
     ...content,
     url: baseUrl,
     locale: currentLocale,
+    alternateUrls,
   });
 }
 

@@ -35,10 +35,10 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   };
 
   const content = seoContent[currentLocale] || seoContent.it;
-  const baseUrl = `${siteConfig.url}${currentLocale === 'it' ? '' : `/${currentLocale}`}/servizi/hosting-cloud`;
+  const baseUrl = `${siteConfig.url}/${currentLocale}/servizi/hosting-cloud`;
   const alternateUrls = {
-    it: currentLocale === 'it' ? baseUrl : baseUrl.replace(`/${currentLocale}`, '/it').replace(/^\/en/, '/it'),
-    en: currentLocale === 'en' ? baseUrl : baseUrl.replace(`/${currentLocale}`, '/en').replace(/^\/it/, '/en'),
+    it: baseUrl.replace(`/${currentLocale}/`, '/it/'),
+    en: baseUrl.replace(`/${currentLocale}/`, '/en/'),
   };
 
   return generateSEOMetadata({
@@ -68,14 +68,14 @@ export default async function HostingCloudLayout({
     currentLocale === 'it'
       ? 'Servizi di hosting e cloud per siti web e applicazioni. Hosting veloce, sicuro e scalabile con supporto tecnico dedicato.'
       : 'Hosting and cloud services for websites and applications. Fast, secure and scalable hosting with dedicated technical support.',
-    `${siteConfig.url}${currentLocale === 'it' ? '' : `/${currentLocale}`}/servizi/hosting-cloud`,
+    `${siteConfig.url}/${currentLocale}/servizi/hosting-cloud`,
     currentLocale
   );
 
   const breadcrumbData = generateStructuredDataBreadcrumbList([
-    { name: currentLocale === 'it' ? 'Home' : 'Home', url: `${siteConfig.url}${currentLocale === 'it' ? '' : `/${currentLocale}`}` },
-    { name: currentLocale === 'it' ? 'Servizi' : 'Services', url: `${siteConfig.url}${currentLocale === 'it' ? '' : `/${currentLocale}`}/servizi` },
-    { name: currentLocale === 'it' ? 'Hosting e Cloud' : 'Hosting & Cloud', url: `${siteConfig.url}${currentLocale === 'it' ? '' : `/${currentLocale}`}/servizi/hosting-cloud` },
+    { name: currentLocale === 'it' ? 'Home' : 'Home', url: `${siteConfig.url}/${currentLocale}` },
+    { name: currentLocale === 'it' ? 'Servizi' : 'Services', url: `${siteConfig.url}/${currentLocale}/servizi` },
+    { name: currentLocale === 'it' ? 'Hosting e Cloud' : 'Hosting & Cloud', url: `${siteConfig.url}/${currentLocale}/servizi/hosting-cloud` },
   ]);
 
   return (
