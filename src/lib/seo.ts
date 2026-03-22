@@ -107,7 +107,9 @@ export function generateMetadata({
   
   // Add hreflang tags for internationalization
   if (alternateUrls) {
-    alternates.languages = {};
+    alternates.languages = {
+      'x-default': alternateUrls['it'] || Object.values(alternateUrls)[0],
+    };
     Object.entries(alternateUrls).forEach(([loc, altUrl]) => {
       alternates.languages![loc] = altUrl;
     });

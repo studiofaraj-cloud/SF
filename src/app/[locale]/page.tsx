@@ -323,6 +323,11 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
 
   return (
     <div className="bg-background text-foreground" suppressHydrationWarning>
+      <h1 className="sr-only">
+        {currentLocale === 'it'
+          ? 'Studio Faraj - Sviluppo Web Professionale a Sciacca, Sicilia'
+          : 'Studio Faraj - Professional Web Development in Sciacca, Sicily'}
+      </h1>
       <Suspense>
         <HomepageClient heroSlides={heroSlides} />
       </Suspense>
