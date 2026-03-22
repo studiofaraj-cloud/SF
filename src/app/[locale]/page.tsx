@@ -116,14 +116,13 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   };
   
   const content = seoContent[currentLocale] || seoContent.it;
-  const baseUrl = `${siteConfig.url}${currentLocale === 'it' ? '' : `/${currentLocale}`}`;
+  const baseUrl = `${siteConfig.url}/${currentLocale}`;
   const alternateUrls = {
-    it: currentLocale === 'it' ? baseUrl : baseUrl.replace(`/${currentLocale}`, '/it').replace(/^\/en/, '/it'),
-    en: currentLocale === 'en' ? baseUrl : baseUrl.replace(`/${currentLocale}`, '/en').replace(/^\/it/, '/en'),
+    it: `${siteConfig.url}/it`,
+    en: `${siteConfig.url}/en`,
   };
-  
+
   return generateSEOMetadata({
-    title: content.title,
     description: content.description,
     keywords: content.keywords,
     url: baseUrl,

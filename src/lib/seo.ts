@@ -98,7 +98,7 @@ export function generateMetadata({
   const allImages = images && images.length > 0 
     ? [ogImage, ...images].filter(Boolean).slice(0, 10) // Limit to 10 images for OG
     : [ogImage];
-  const canonicalUrl = url || `${siteConfig.url}/${locale === 'it' ? '' : locale}`;
+  const canonicalUrl = url || `${siteConfig.url}/${locale}`;
   
   // Build hreflang alternates
   const alternates: Metadata['alternates'] = {
@@ -113,10 +113,12 @@ export function generateMetadata({
     });
   } else {
     // Auto-generate alternate URLs if not provided
+    // Extract path after locale prefix (e.g. /it/servizi -> /servizi)
+    const pathAfterLocale = canonicalUrl.replace(siteConfig.url, '').replace(new RegExp(`^/${locale}`), '');
     alternates.languages = {
-      'it': locale === 'it' ? canonicalUrl : canonicalUrl.replace(`/${locale}`, '/it').replace(/^\/en/, '/it'),
-      'en': locale === 'en' ? canonicalUrl : canonicalUrl.replace(`/${locale}`, '/en').replace(/^\/it/, '/en'),
-      'x-default': locale === 'it' ? canonicalUrl.replace('/it', '') : canonicalUrl,
+      'it': `${siteConfig.url}/it${pathAfterLocale}`,
+      'en': `${siteConfig.url}/en${pathAfterLocale}`,
+      'x-default': `${siteConfig.url}/it${pathAfterLocale}`,
     };
   }
   

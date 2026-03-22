@@ -150,15 +150,15 @@ export default function HomepageClient({ heroSlides: heroSlidesProp }: HomepageC
                   </div>
                   
                   {/* Animated Gradient Title */}
-                  <div className="mb-4 md:mb-6" suppressHydrationWarning>
-                    <GradientText 
+                  <h1 className="mb-4 md:mb-6" suppressHydrationWarning>
+                    <GradientText
                       colors={['#3b82f6', '#8b5cf6', '#3b82f6']}
                       animationSpeed={4}
                       className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight"
                   >
                       {heroSlides[activeSlide].title}
                     </GradientText>
-                  </div>
+                  </h1>
                   
                   {/* Description */}
                   <p 
