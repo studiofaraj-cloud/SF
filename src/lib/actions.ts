@@ -315,9 +315,10 @@ export async function createBlog(prevState: { message: string; errors?: any }, f
         return { message: userMessage, errors: {} };
     }
 
-    // Invalidate data cache + page cache
+    // Invalidate data cache + page cache + sitemap
     revalidateTag('blogs');
     revalidatePath('/admin/blogs');
+    revalidatePath('/sitemap.xml');
     for (const locale of ['it', 'en']) {
         revalidatePath(`/${locale}`);
         revalidatePath(`/${locale}/blog`);
@@ -386,11 +387,12 @@ export async function updateBlog(id: string, prevState: { message: string; error
         return { message: userMessage, errors: {} };
     }
 
-    // Invalidate data cache + page cache
+    // Invalidate data cache + page cache + sitemap
     revalidateTag('blogs');
     revalidateTag(`blog-${validatedFields.data.slug}`);
     revalidatePath('/admin/blogs');
     revalidatePath(`/admin/blogs/edit/${validatedFields.data.slug}`);
+    revalidatePath('/sitemap.xml');
     for (const locale of ['it', 'en']) {
         revalidatePath(`/${locale}`);
         revalidatePath(`/${locale}/blog`);
@@ -409,6 +411,7 @@ export async function deleteBlog(id: string) {
         await deleteBlogData(id);
         revalidateTag('blogs');
         revalidatePath('/admin/blogs');
+        revalidatePath('/sitemap.xml');
         for (const locale of ['it', 'en']) {
             revalidatePath(`/${locale}`);
             revalidatePath(`/${locale}/blog`);
@@ -513,9 +516,10 @@ export async function createProject(prevState: { message: string; errors?: any }
         return { message: userMessage, errors: {} };
     }
 
-    // Invalidate data cache + page cache
+    // Invalidate data cache + page cache + sitemap
     revalidateTag('projects');
     revalidatePath('/admin/projects');
+    revalidatePath('/sitemap.xml');
     for (const locale of ['it', 'en']) {
         revalidatePath(`/${locale}`);
         revalidatePath(`/${locale}/projects`);
@@ -600,11 +604,12 @@ export async function updateProject(id: string, prevState: { message: string; er
         return { message: userMessage, errors: {} };
     }
 
-    // Invalidate data cache + page cache
+    // Invalidate data cache + page cache + sitemap
     revalidateTag('projects');
     revalidateTag(`project-${validatedFields.data.slug}`);
     revalidatePath('/admin/projects');
     revalidatePath(`/admin/projects/edit/${validatedFields.data.slug}`);
+    revalidatePath('/sitemap.xml');
     for (const locale of ['it', 'en']) {
         revalidatePath(`/${locale}`);
         revalidatePath(`/${locale}/projects`);
@@ -623,6 +628,7 @@ export async function deleteProject(id: string) {
         await deleteProjectData(id);
         revalidateTag('projects');
         revalidatePath('/admin/projects');
+        revalidatePath('/sitemap.xml');
         for (const locale of ['it', 'en']) {
             revalidatePath(`/${locale}`);
             revalidatePath(`/${locale}/projects`);

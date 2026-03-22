@@ -2,7 +2,7 @@ import { getBlogsAction, getProjectsAction } from '@/lib/actions';
 import { siteConfig } from '@/lib/seo';
 import { locales } from '@/i18n/config';
 
-export const dynamic = 'force-static';
+export const revalidate = 3600; // Regenerate sitemap every hour
 
 const staticPages = [
   { url: '', priority: '1.0', changefreq: 'daily' },
