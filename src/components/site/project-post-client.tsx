@@ -52,7 +52,7 @@ export function ProjectPostClient({
     <div className="bg-background text-foreground overflow-x-hidden">
 
       {/* ── Hero ── */}
-      <section className="relative min-h-[60svh] sm:min-h-[65svh] flex flex-col justify-end overflow-x-hidden pt-20">
+      <section className="relative min-h-[60vh] min-h-[60svh] sm:min-h-[65vh] sm:min-h-[65svh] flex flex-col justify-end overflow-x-hidden pt-20">
         <div className="absolute inset-0 z-0">
           <RippleGrid
             gridColor="#8b5cf6"

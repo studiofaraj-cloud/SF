@@ -354,7 +354,7 @@ export default function ChiSiamoPage() {
       {/* ============================================
           1. HERO SECTION - Digital Dimension Portal
           ============================================ */}
-      <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[100vh] min-h-[100svh] flex items-center justify-center overflow-hidden">
         {/* WebGL RippleGrid Background */}
         <div className="absolute inset-0 z-0">
           <RippleGrid

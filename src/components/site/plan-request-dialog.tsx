@@ -104,15 +104,15 @@ export function PlanRequestDialog({
         </Button>
       </DialogTrigger>
       
-      <DialogContent className="sm:max-w-md !rounded-3xl bg-card backdrop-blur-xl border-primary/20 shadow-2xl flex flex-col p-6 sm:p-8">
+      <DialogContent className="sm:max-w-md !rounded-2xl sm:!rounded-3xl bg-card backdrop-blur-xl border-primary/20 shadow-2xl flex flex-col p-4 sm:p-8">
         {!isSuccess ? (
           <>
-            <DialogHeader className="mb-4">
-              <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-primary/60 text-primary-foreground mb-4 shadow-lg shadow-primary/20 mx-auto">
-                <CreditCard className="w-7 h-7" />
+            <DialogHeader className="mb-3 sm:mb-4">
+              <div className="flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-primary to-primary/60 text-primary-foreground mb-3 sm:mb-4 shadow-lg shadow-primary/20 mx-auto">
+                <CreditCard className="w-6 h-6 sm:w-7 sm:h-7" />
               </div>
-              <DialogTitle className="text-2xl font-bold text-center">{t('title', { planName })}</DialogTitle>
-              <DialogDescription className="text-center text-base mt-2">
+              <DialogTitle className="text-xl sm:text-2xl font-bold text-center">{t('title', { planName })}</DialogTitle>
+              <DialogDescription className="text-center text-sm sm:text-base mt-1.5 sm:mt-2">
                 {t.rich('description', {
                   serviceName,
                   serviceNameTag: (chunks) => <span className="font-semibold text-primary">{chunks}</span>
@@ -120,7 +120,7 @@ export function PlanRequestDialog({
               </DialogDescription>
             </DialogHeader>
 
-            <div className="bg-primary/5 rounded-2xl p-4 flex items-center justify-between border border-primary/10 mb-6">
+            <div className="bg-primary/5 rounded-2xl p-3 sm:p-4 flex items-center justify-between border border-primary/10 mb-4 sm:mb-6">
               <span className="text-sm font-medium text-muted-foreground">{t('priceLabel')}</span>
               <span className="text-xl font-bold text-foreground">€{planPrice}</span>
             </div>

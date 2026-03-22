@@ -115,7 +115,7 @@ export default function SeoMarketingPage() {
   return (
     <div className="bg-background text-foreground overflow-x-hidden">
       {/* Hero Section */}
-      <section className="relative min-h-[80svh] flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[80vh] min-h-[80svh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <RippleGrid
             gridColor="#14b8a6"

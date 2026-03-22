@@ -89,7 +89,7 @@ export default function QuoteDialog({ open, onOpenChange }: QuoteDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        className="p-0 border-0 bg-transparent w-full max-w-full h-[100dvh] max-h-[100dvh] rounded-none overflow-hidden left-0 top-0 translate-x-0 translate-y-0 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:slide-out-to-left-full data-[state=open]:slide-in-from-left-full duration-700 ease-out"
+        className="p-0 border-0 bg-transparent w-full max-w-full h-[100vh] h-[100dvh] max-h-[100vh] max-h-[100dvh] rounded-none overflow-hidden left-0 top-0 translate-x-0 translate-y-0 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:slide-out-to-left-full data-[state=open]:slide-in-from-left-full duration-700 ease-out"
       >
         <VisuallyHidden>
           <DialogHeader>

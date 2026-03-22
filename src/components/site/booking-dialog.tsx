@@ -21,10 +21,10 @@ export function BookingDialog({ open, onOpenChange }: BookingDialogProps) {
         className={cn(
           // Mobile: fullscreen sheet
           "!fixed !inset-0 !translate-x-0 !translate-y-0 !left-0 !top-0",
-          "p-0 border-0 gap-0 w-full h-[100dvh] max-w-full max-h-[100dvh] rounded-none",
+          "p-0 border-0 gap-0 w-full h-[100vh] h-[100dvh] max-w-full max-h-[100vh] max-h-[100dvh] rounded-none",
           // Desktop: centered modal
           "sm:!inset-auto sm:!left-[50%] sm:!top-[50%] sm:!-translate-x-1/2 sm:!-translate-y-1/2",
-          "sm:w-full sm:max-w-[600px] sm:h-auto sm:max-h-[90dvh] sm:rounded-3xl",
+          "sm:w-full sm:max-w-[600px] sm:h-auto sm:max-h-[90vh] sm:max-h-[90dvh] sm:rounded-3xl",
           // Shared
           "bg-card backdrop-blur-xl sm:border-2 sm:border-primary/20",
           "shadow-none sm:shadow-2xl sm:shadow-primary/10",

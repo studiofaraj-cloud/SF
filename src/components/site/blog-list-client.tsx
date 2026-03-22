@@ -82,7 +82,7 @@ export function BlogListClient({ blogs: initialBlogs }: BlogListClientProps) {
     <div className="bg-background text-foreground overflow-x-hidden">
 
       {/* ── Hero ── */}
-      <section className="relative min-h-[65svh] flex flex-col justify-end overflow-hidden pt-20">
+      <section className="relative min-h-[65vh] min-h-[65svh] flex flex-col justify-end overflow-hidden pt-20">
         <div className="absolute inset-0 z-0">
           <RippleGrid
             gridColor="#10b981"

@@ -7,7 +7,7 @@ export function BlogDetailSkeleton() {
   return (
     <div className="bg-background text-foreground overflow-x-hidden">
       {/* Hero Section Skeleton */}
-      <section className="relative min-h-[70svh] flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[70vh] min-h-[70svh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/50 to-background z-10" />
         <div className="relative z-20 container px-4 sm:px-6 md:px-8 text-center">
           <div className="max-w-3xl mx-auto space-y-4">
@@ -74,7 +74,7 @@ export function BlogListSkeleton() {
   return (
     <div className="bg-background text-foreground overflow-x-hidden">
       {/* Hero Section Skeleton */}
-      <section className="relative min-h-[80svh] flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[80vh] min-h-[80svh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/50 to-background z-10" />
         <div className="relative z-20 container px-4 sm:px-6 md:px-8 text-center">
           <div className="max-w-3xl mx-auto space-y-4">

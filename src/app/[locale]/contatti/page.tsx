@@ -85,7 +85,7 @@ export default function ContattiPage() {
       {/* ============================================
           1. HERO SECTION - Connection Portal
           ============================================ */}
-      <section className="relative min-h-[70svh] sm:min-h-[80svh] flex items-center justify-center overflow-hidden pt-20 sm:pt-24 md:pt-28">
+      <section className="relative min-h-[70vh] min-h-[70svh] sm:min-h-[80vh] sm:min-h-[80svh] flex items-center justify-center overflow-hidden pt-20 sm:pt-24 md:pt-28">
         {/* WebGL RippleGrid Background */}
         <div className="absolute inset-0 z-0">
           <RippleGrid
