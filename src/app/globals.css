@@ -1825,13 +1825,32 @@
     }
   }
 
-  /* Disable backdrop-filter on mobile - expensive GPU operation */
+  /* Disable backdrop-filter on mobile for content cards */
   .glass,
-  .glass-card,
-  .header-modern-angled {
+  .glass-card {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
     background: hsl(var(--card) / 0.95);
+  }
+
+  /* Floating capsule header on mobile */
+  .header-modern-angled {
+    border-radius: 20px !important;
+    background: hsl(var(--background) / 0.88) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border-color: hsl(var(--primary) / 0.12) !important;
+    box-shadow:
+      0 4px 24px rgba(0, 0, 0, 0.06),
+      0 0 0 1px hsl(var(--primary) / 0.06),
+      inset 0 1px 0 0 hsla(0, 0%, 100%, 0.06) !important;
+  }
+
+  /* Hide angular accents on mobile — capsule doesn't need them */
+  .header-angle-accent,
+  .header-modern-angled-right,
+  .header-modern-angled::after {
+    display: none !important;
   }
 
   /* Preserve background opacity for holographic cards on mobile for better contrast */
