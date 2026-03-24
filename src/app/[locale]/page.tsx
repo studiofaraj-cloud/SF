@@ -1,6 +1,5 @@
 
 import React, { Suspense } from 'react';
-import dynamic from 'next/dynamic';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -48,13 +47,15 @@ import { getLocalizedPath } from '@/lib/i18n-helpers';
 import { getHeroSlidesAction } from '@/lib/actions';
 import type { HeroSlide } from '@/lib/definitions';
 
-// Client components — lazy loaded
-const TechLogosClient = dynamic(() => import('@/components/site/tech-logos-client'));
-const ProcessTimeline = dynamic(() => import('@/components/site/process-timeline'));
-const ContactSection = dynamic(() => import('@/components/site/contact-section'));
-const HomepageClient = dynamic(() => import('@/components/site/homepage-client'));
-const TestimonialsSection = dynamic(() => import('@/components/site/testimonials-section'));
-const StatsSection = dynamic(() => import('@/components/site/stats-section'));
+// Client components — direct imports prevent React error #130 during
+// client-side navigation in production. HomepageClient uses a thin 'use client'
+// wrapper with dynamic() + ssr:false for lazy-loading without breaking chunk resolution.
+import TechLogosClient from '@/components/site/tech-logos-client';
+import ProcessTimeline from '@/components/site/process-timeline';
+import HomepageClientDynamic from '@/components/site/homepage-client-dynamic';
+import ContactSection from '@/components/site/contact-section';
+import TestimonialsSection from '@/components/site/testimonials-section';
+import StatsSection from '@/components/site/stats-section';
 import ScrollFadeIn from '@/components/site/scroll-fade-in';
 import { TechSectionMobile } from '@/components/site/tech-section-mobile';
 import { ServiceAccordionMobile } from '@/components/site/service-accordion-mobile';
@@ -331,7 +332,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           : 'Studio Faraj - Professional Web Development in Sciacca, Sicily'}
       </h1>
       <Suspense>
-        <HomepageClient heroSlides={heroSlides} />
+        <HomepageClientDynamic heroSlides={heroSlides} />
       </Suspense>
 
       {/* Stats Section */}

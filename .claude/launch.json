@@ -7,6 +7,13 @@
       "runtimeArgs": ["node_modules/next/dist/bin/next", "dev", "--turbopack"],
       "port": 3000,
       "autoPort": false
+    },
+    {
+      "name": "prod",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["node_modules/next/dist/bin/next", "start", "--port", "3199"],
+      "port": 3199,
+      "autoPort": false
     }
   ]
 }

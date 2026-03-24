@@ -1,6 +1,6 @@
 'use client';
 
-import { SiReact, SiNextdotjs, SiTypescript, SiTailwindcss, SiVercel, SiFirebase, SiNodedotjs, SiHtml5, SiCss3, SiJavascript, SiPython, SiDocker } from 'react-icons/si';
+import { SiReact, SiNextdotjs, SiTypescript, SiTailwindcss, SiVercel, SiFirebase, SiNodedotjs, SiHtml5, SiCss3, SiJavascript, SiPython, SiDocker } from '@/components/site/tech-icons';
 import { LogoLoop, type LogoItem } from '@/components/LogoLoop';
 
 export default function TechLogosClient() {

@@ -117,7 +117,7 @@ export default function ProcessTimeline({ steps }: ProcessTimelineProps) {
                         }
                       `}
                     >
-                      {React.cloneElement(step.icon as React.ReactElement, { className: 'w-5 h-5' })}
+                      <span className="w-5 h-5 [&>svg]:w-full [&>svg]:h-full">{step.icon}</span>
                     </div>
                     <h3 className={`font-bold text-base transition-colors duration-500 ${isVisible ? 'text-foreground' : 'text-muted-foreground'}`}>
                       {step.title}
@@ -223,7 +223,7 @@ export default function ProcessTimeline({ steps }: ProcessTimelineProps) {
                         {/* Icon with hexagonal-style background */}
                         <div className={`mb-4 inline-flex ${isRightSide ? 'mr-auto' : 'ml-auto'}`}>
                           <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center text-primary group-hover:from-primary group-hover:to-primary/80 group-hover:text-primary-foreground transition-all duration-500 shadow-lg group-hover:shadow-primary/40">
-                            {React.cloneElement(step.icon as React.ReactElement, { className: 'w-7 h-7' })}
+                            <span className="w-7 h-7 [&>svg]:w-full [&>svg]:h-full">{step.icon}</span>
                           </div>
                         </div>
                         
