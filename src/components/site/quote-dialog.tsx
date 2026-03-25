@@ -1,9 +1,6 @@
 
 'use client';
 
-// Ghost import to satisfy Turbopack HMR module resolution - as per lib/data.ts
-import '@/lib/data';
-
 import { useActionState, useState, useTransition } from 'react';
 import { Mail, MapPin } from 'lucide-react';
 import RippleGrid from '@/components/RippleGrid';
