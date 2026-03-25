@@ -68,20 +68,22 @@ export function BlogPostClient({ blog, related, locale, readingTime = 1, formatt
         {/* Hero text content */}
         <div className="relative z-20 pt-28 sm:pt-32 md:pt-36 pb-10 sm:pb-12 md:pb-14">
           <div className="container px-4 sm:px-6 md:px-8 max-w-4xl mx-auto text-center">
+            {/* Badge */}
+            <div className="mb-3">
+              <Badge className="badge-futuristic bg-primary/20 text-primary border-primary/30">
+                <BookOpen className="w-3.5 h-3.5 mr-1.5" />
+                {locale === 'it' ? 'Articolo' : 'Article'}
+              </Badge>
+            </div>
+
             {/* Breadcrumb */}
-            <nav aria-label="breadcrumb" className="inline-flex items-center justify-center flex-wrap gap-x-1.5 gap-y-1 text-xs text-white/40 mb-6">
+            <nav aria-label="breadcrumb" className="inline-flex items-center justify-center flex-nowrap gap-x-1.5 text-xs text-white/40 mb-6">
               <Link href={`/${locale}`} className="hover:text-white/70 transition-colors whitespace-nowrap">Home</Link>
               <ChevronRight className="h-3 w-3 shrink-0" />
               <Link href={`/${locale}/blog`} className="hover:text-white/70 transition-colors whitespace-nowrap">Blog</Link>
               <ChevronRight className="h-3 w-3 shrink-0" />
               <span className="text-white/30 truncate max-w-[140px] sm:max-w-[200px]">{blog.title}</span>
             </nav>
-
-            {/* Badge */}
-            <Badge className="badge-futuristic mb-5 sm:mb-6 bg-primary/20 text-primary border-primary/30">
-              <BookOpen className="w-3.5 h-3.5 mr-1.5" />
-              {locale === 'it' ? 'Articolo' : 'Article'}
-            </Badge>
 
             {/* Title */}
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white mb-5 sm:mb-6 leading-[1.15]">

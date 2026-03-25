@@ -1,9 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Facebook, Instagram, Linkedin, Mail, Phone, MapPin, ArrowRight, Shield, Award, Zap, Settings } from 'lucide-react';
-import { useContext } from 'react';
-import { CookieContext } from '@/contexts/cookie-context';
+import { Facebook, Instagram, Linkedin, Mail, Phone, MapPin, ArrowRight, Shield, Award, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Image from 'next/image';
@@ -53,9 +51,6 @@ function NewsletterForm() {
 
 
 export function SiteFooter() {
-  // Safely get cookie preferences, fallback if provider is not available
-  const cookieContext = useContext(CookieContext);
-  const openPreferences = cookieContext?.openPreferences || (() => {});
   
   const locale = useLocale();
   const t = useTranslations('footer');
@@ -299,14 +294,6 @@ export function SiteFooter() {
             <Link href={getLocalizedPath('/legal', locale as any)} className="text-muted-foreground hover:text-primary transition-colors">
               {t('cookiePolicy')}
             </Link>
-            <button
-              onClick={openPreferences}
-              className="text-muted-foreground hover:text-primary transition-colors flex items-center gap-1"
-              aria-label={t('cookieSettings')}
-            >
-              <Settings className="w-4 h-4" />
-              {t('cookie')}
-            </button>
           </div>
         </div>
       </div>

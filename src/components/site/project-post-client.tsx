@@ -88,7 +88,7 @@ export function ProjectPostClient({
           </div>
 
           {/* Breadcrumb */}
-          <nav aria-label="breadcrumb" className="inline-flex items-center justify-center flex-wrap gap-x-1.5 gap-y-1 text-xs text-muted-foreground/60 mb-5">
+          <nav aria-label="breadcrumb" className="inline-flex items-center justify-center flex-nowrap gap-x-1.5 text-xs text-muted-foreground/60 mb-5">
             <Link href={`/${locale}`} className="hover:text-foreground transition-colors whitespace-nowrap">Home</Link>
             <ChevronRight className="h-3 w-3 shrink-0" />
             <Link href={`/${locale}/projects`} className="hover:text-foreground transition-colors whitespace-nowrap">
