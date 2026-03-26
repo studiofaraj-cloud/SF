@@ -1,10 +1,10 @@
 # Studio Faraj
 
-> Full-stack web development studio based in Sciacca, Sicily, Italy. We build websites, e-commerce platforms, and web applications entirely with custom code — no templates, no WordPress, no Shopify, no third-party website builders.
+> Full-stack web development studio based in Padova, Veneto, Italy. We build websites, e-commerce platforms, and web applications entirely with custom code — no templates, no WordPress, no Shopify, no third-party website builders.
 
 ## About
 
-Studio Faraj is a team of skilled full-stack developers specializing in building high-performance, custom-coded digital solutions. Founded in Sciacca (Agrigento), Sicily, we serve businesses across Italy and internationally.
+Studio Faraj is a team of skilled full-stack developers specializing in building high-performance, custom-coded digital solutions. Founded in Padova (PD), Veneto, we serve businesses across Italy and internationally.
 
 What makes us different: every project we deliver is written from scratch using modern technologies. We don't use page builders, pre-made templates, or third-party e-commerce platforms. Our clients own 100% of their code — clean, maintainable, and built to scale.
 
@@ -42,7 +42,7 @@ What makes us different: every project we deliver is written from scratch using 
 - Website: https://studiofaraj.it
 - Email: info@studiofaraj.it
 - Phone: +39 320 222 3322
-- Location: Sciacca (AG), 92019, Sicily, Italy
+- Location: Padova (PD), 35100, Veneto, Italy
 - Languages: Italian, English
 
 ## Links

@@ -112,7 +112,7 @@ export function SiteFooter() {
                 <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
                   <MapPin className="w-4 h-4" />
                 </div>
-                <span className="text-muted-foreground">Sciacca, Italia</span>
+                <span className="text-muted-foreground">Padova, Italia</span>
               </div>
             </div>
 

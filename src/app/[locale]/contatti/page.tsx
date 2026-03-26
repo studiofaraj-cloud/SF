@@ -331,7 +331,7 @@ export default function ContattiPage() {
                   </a>
                   <span className="flex items-center justify-center gap-2">
                     <MapPin className="w-3 h-3 sm:w-4 sm:h-4" />
-                    Sciacca, Italia
+                    Padova, Italia
                   </span>
                 </div>
               </div>

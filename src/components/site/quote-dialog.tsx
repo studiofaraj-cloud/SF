@@ -198,7 +198,7 @@ export default function QuoteDialog({ open, onOpenChange }: QuoteDialogProps) {
                         </div>
                         <div className="text-foreground">
                           <p className="font-medium text-sm">{t('operationalHQ')}</p>
-                          <p className="text-xs text-foreground/60">Sciacca (AG), Sicilia</p>
+                          <p className="text-xs text-foreground/60">Padova (PD), Veneto</p>
                           <p className="text-xs text-foreground/60">{t('operatesIn')}</p>
                         </div>
                       </div>
@@ -293,7 +293,7 @@ export default function QuoteDialog({ open, onOpenChange }: QuoteDialogProps) {
                         </a>
                         <span className="flex items-center gap-1.5 text-xs text-foreground/60 min-h-[44px]">
                           <MapPin className="w-3.5 h-3.5" />
-                          Sciacca, Sicilia
+                          Padova, Veneto
                         </span>
                       </div>
                     </form>

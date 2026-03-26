@@ -10,24 +10,30 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   
   const seoContent = {
     it: {
-      title: 'Sviluppo Web su Misura - Studio Faraj | Sciacca, Sicilia',
-      description: 'Sviluppo web professionale e personalizzato a Sciacca, Sicilia. Creiamo siti web moderni, responsive e performanti con le tecnologie più avanzate. Preventivo gratuito.',
+      title: 'Sviluppo Web su Misura - Studio Faraj | Padova, Veneto',
+      description: 'Sviluppo web professionale e personalizzato a Padova, Veneto. Creiamo siti web moderni, responsive e performanti con le tecnologie più avanzate. Preventivo gratuito.',
       keywords: [
+        'realizzazione siti web Veneto',
+        'sviluppatore React Next.js Padova',
+        'sito web personalizzato senza template Veneto',
         'sviluppo web',
         'siti web personalizzati',
-        'sviluppo web Sciacca',
+        'sviluppo web Padova',
         'creazione siti web',
         'web development',
         'siti responsive',
       ],
     },
     en: {
-      title: 'Custom Web Development - Studio Faraj | Sciacca, Sicily',
-      description: 'Professional and customized web development in Sciacca, Sicily. We create modern, responsive and high-performance websites with the most advanced technologies. Free quote.',
+      title: 'Custom Web Development - Studio Faraj | Padova, Veneto',
+      description: 'Professional and customized web development in Padova, Veneto. We create modern, responsive and high-performance websites with the most advanced technologies. Free quote.',
       keywords: [
+        'realizzazione siti web Veneto',
+        'sviluppatore React Next.js Padova',
+        'sito web personalizzato senza template Veneto',
         'web development',
         'custom websites',
-        'web development Sciacca',
+        'web development Padova',
         'website creation',
         'web development',
         'responsive websites',
@@ -68,8 +74,8 @@ export default async function SviluppoWebLayout({
   const serviceData = generateStructuredDataService(
     currentLocale === 'it' ? 'Sviluppo Web' : 'Web Development',
     currentLocale === 'it'
-      ? 'Sviluppo web professionale e personalizzato a Sciacca, Sicilia. Creiamo siti web moderni, responsive e performanti con le tecnologie più avanzate.'
-      : 'Professional and customized web development in Sciacca, Sicily. We create modern, responsive and high-performance websites with the most advanced technologies.',
+      ? 'Sviluppo web professionale e personalizzato a Padova, Veneto. Creiamo siti web moderni, responsive e performanti con le tecnologie più avanzate.'
+      : 'Professional and customized web development in Padova, Veneto. We create modern, responsive and high-performance websites with the most advanced technologies.',
     `${siteConfig.url}/${currentLocale}/servizi/sviluppo-web`,
     currentLocale
   );

@@ -10,25 +10,29 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const seoContent = {
     it: {
       title: 'Hosting e Cloud - Studio Faraj | Soluzioni di Hosting Professionale',
-      description: 'Servizi di hosting e cloud per siti web e applicazioni. Hosting veloce, sicuro e scalabile con supporto tecnico dedicato. Sciacca, Sicilia.',
+      description: 'Servizi di hosting e cloud per siti web e applicazioni. Hosting veloce, sicuro e scalabile con supporto tecnico dedicato. Padova, Veneto.',
       keywords: [
+        'sviluppo web Triveneto',
+        'manutenzione sito web professionale Veneto',
         'hosting',
         'cloud hosting',
         'hosting web',
         'server cloud',
-        'hosting Sicilia',
+        'hosting Veneto',
         'cloud computing',
       ],
     },
     en: {
       title: 'Hosting and Cloud - Studio Faraj | Professional Hosting Solutions',
-      description: 'Hosting and cloud services for websites and applications. Fast, secure and scalable hosting with dedicated technical support. Sciacca, Sicily.',
+      description: 'Hosting and cloud services for websites and applications. Fast, secure and scalable hosting with dedicated technical support. Padova, Veneto.',
       keywords: [
+        'sviluppo web Triveneto',
+        'manutenzione sito web professionale Veneto',
         'hosting',
         'cloud hosting',
         'web hosting',
         'cloud server',
-        'hosting Sicily',
+        'hosting Veneto',
         'cloud computing',
       ],
     },

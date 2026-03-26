@@ -10,26 +10,26 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const seoContent = {
     it: {
       title: 'Contatti - Studio Faraj | Richiedi un Preventivo Gratuito',
-      description: 'Contatta Studio Faraj a Sciacca, Sicilia. Richiedi un preventivo gratuito per il tuo progetto web. Siamo disponibili per consulenze e collaborazioni.',
+      description: 'Contatta Studio Faraj a Padova, Veneto. Richiedi un preventivo gratuito per il tuo progetto web. Siamo disponibili per consulenze e collaborazioni.',
       keywords: [
         'contatti',
         'preventivo',
         'consulenza web',
         'studio faraj contatti',
-        'Sciacca',
-        'Sicilia',
+        'Padova',
+        'Veneto',
       ],
     },
     en: {
       title: 'Contact - Studio Faraj | Request a Free Quote',
-      description: 'Contact Studio Faraj in Sciacca, Sicily. Request a free quote for your web project. We are available for consultations and collaborations.',
+      description: 'Contact Studio Faraj in Padova, Veneto. Request a free quote for your web project. We are available for consultations and collaborations.',
       keywords: [
         'contact',
         'quote',
         'web consultation',
         'studio faraj contact',
-        'Sciacca',
-        'Sicily',
+        'Padova',
+        'Veneto',
       ],
     },
   };

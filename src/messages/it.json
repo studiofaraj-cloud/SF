@@ -42,11 +42,11 @@
     "webDevelopment": {
       "label": "Sviluppo Web",
       "badge": "Sviluppo Web",
-      "title": "Sviluppo Web",
-      "titleHighlight": "su Misura",
+      "title": "Sviluppo Siti Web",
+      "titleHighlight": "Padova",
       "subtitle": "Realizziamo siti web e applicazioni web",
       "subtitleHighlight": "performanti, sicuri e scalabili",
-      "subtitleEnd": ", perfettamente allineati con le tue esigenze di business.",
+      "subtitleEnd": ", dal Veneto a tutto il Nord Est Italia.",
       "ctaQuote": "Richiedi Preventivo",
       "ctaProjects": "Vedi Progetti",
       "features": {
@@ -142,8 +142,8 @@
     "ecommerce": {
       "label": "E-commerce",
       "badge": "E-commerce",
-      "title": "Soluzioni",
-      "titleHighlight": "E-commerce",
+      "title": "E-commerce su Misura",
+      "titleHighlight": "Padova",
       "subtitle": "Piattaforme di vendita online complete con",
       "subtitleHighlight": "esperienza utente ottimizzata",
       "subtitleEnd": " e gestione avanzata di prodotti, ordini e pagamenti.",
@@ -357,8 +357,8 @@
     "seoMarketing": {
       "label": "SEO & Marketing",
       "badge": "SEO & Marketing",
-      "title": "SEO &",
-      "titleHighlight": "Web Marketing",
+      "title": "Agenzia Web",
+      "titleHighlight": "Venezia e Verona",
       "subtitle": "Strategie digitali per aumentare la visibilità online e generare lead qualificati.",
       "ctaQuote": "Richiedi Preventivo",
       "ctaProjects": "Vedi Progetti",
@@ -509,12 +509,30 @@
         "title": "Applicazioni",
         "titleHighlight": "Pratiche",
         "items": [
-          { "title": "Customer Support", "description": "Risposte immediate alle domande frequenti" },
-          { "title": "Lead Generation", "description": "Qualificazione automatica dei prospect" },
-          { "title": "Content Creation", "description": "Generazione di contenuti assistita da AI" },
-          { "title": "Data Analysis", "description": "Analisi automatica di grandi dataset" },
-          { "title": "Email Automation", "description": "Sequenze email personalizzate intelligenti" },
-          { "title": "Inventory Management", "description": "Previsioni di stock e riordini automatici" }
+          {
+            "title": "Customer Support",
+            "description": "Risposte immediate alle domande frequenti"
+          },
+          {
+            "title": "Lead Generation",
+            "description": "Qualificazione automatica dei prospect"
+          },
+          {
+            "title": "Content Creation",
+            "description": "Generazione di contenuti assistita da AI"
+          },
+          {
+            "title": "Data Analysis",
+            "description": "Analisi automatica di grandi dataset"
+          },
+          {
+            "title": "Email Automation",
+            "description": "Sequenze email personalizzate intelligenti"
+          },
+          {
+            "title": "Inventory Management",
+            "description": "Previsioni di stock e riordini automatici"
+          }
         ]
       },
       "benefits": {
@@ -950,7 +968,7 @@
     "services": {
       "badge": "Servizi",
       "title": "Soluzioni Digitali per",
-      "titleHighlight": "la Tua Crescita",
+      "titleHighlight": "Web Agency Padova",
       "subtitle": "Offriamo una gamma completa di servizi per costruire, lanciare e far crescere la tua presenza online.",
       "webDevelopment": {
         "title": "Sviluppo Web su Misura",
@@ -991,7 +1009,7 @@
     "technologies": {
       "badge": "Stack Tecnologico",
       "title": "Tecnologie Moderne",
-      "titleHighlight": "per Risultati Eccellenti",
+      "titleHighlight": "Sviluppatore React Next.js Padova",
       "subtitle": "Utilizziamo solo le tecnologie più moderne, performanti e affidabili del settore per garantirti soluzioni all'avanguardia e future-proof.",
       "frontend": {
         "title": "Frontend",
@@ -1076,7 +1094,7 @@
     "process": {
       "badge": "Il Nostro Metodo",
       "title": "Un Processo Semplice",
-      "titleHighlight": "ed Efficace",
+      "titleHighlight": "Sviluppo Siti Web Veneto",
       "subtitle": "Seguiamo un approccio collaudato in 4 fasi per garantire risultati eccellenti, sempre.",
       "steps": {
         "analysis": {
@@ -1247,7 +1265,7 @@
       },
       "location": {
         "title": "Sede Operativa",
-        "text": "Lavoriamo in tutta Italia, operando principalmente da Sciacca.",
+        "text": "Lavoriamo in tutta Italia, operando principalmente da Padova.",
         "metric": "Italia",
         "metricLabel": "Wide"
       }
@@ -1342,7 +1360,7 @@
       "title": "Dove i Sogni Digitali",
       "titleHighlight": "Prendono il Volo",
       "subtitle": "Da",
-      "subtitleLocation": "Sciacca, Sicilia",
+      "subtitleLocation": "Padova, Veneto",
       "subtitleText": ", trasformiamo visioni digitali in realtà misurabili. Sviluppo web, integrazione AI e soluzioni IT per aziende che vogliono dominare il futuro.",
       "locationCoordinates": "37°30'N 13°05'E",
       "operationalArea": "Operativi in tutta Italia",
@@ -1356,7 +1374,7 @@
       "subtitle": "Un team di sviluppatori, designer e professionisti IT uniti dalla missione di trasformare il panorama digitale italiano.",
       "foundingYear": "2020",
       "foundingLabel": "Anno di Fondazione",
-      "foundingLocation": "Sciacca, Sicilia",
+      "foundingLocation": "Padova, Veneto",
       "mission": {
         "badge": "La Nostra Missione",
         "title": "Rendere il Tuo Business Migliore",
@@ -1410,7 +1428,7 @@
     "timeline": {
       "2020": {
         "title": "La Nascita",
-        "description": "Studio Faraj nasce da una visione: democratizzare l'accesso a soluzioni digitali di qualità per le imprese siciliane e italiane."
+        "description": "Studio Faraj nasce da una visione: democratizzare l'accesso a soluzioni digitali di qualità per le imprese venete e italiane."
       },
       "2021": {
         "title": "Primi Successi",
@@ -1426,7 +1444,7 @@
       },
       "2024": {
         "title": "Espansione Nazionale",
-        "description": "Da Sciacca all'Italia intera: i nostri servizi raggiungono clienti in tutta la penisola con un approccio full-remote."
+        "description": "Da Padova all'Italia intera: i nostri servizi raggiungono clienti in tutta la penisola con un approccio full-remote."
       },
       "2025": {
         "title": "Verso il Futuro",
@@ -1515,7 +1533,7 @@
       },
       "global": {
         "title": "Visione Globale",
-        "description": "Radici locali a Sciacca, ma competenze e visione che abbracciano i mercati internazionali.",
+        "description": "Radici locali a Padova, ma competenze e visione che abbracciano i mercati internazionali.",
         "metric": "50+",
         "metricLabel": "Progetti Completati"
       },
@@ -1674,7 +1692,7 @@
       },
       "location": {
         "title": "Sede Operativa",
-        "text": "Lavoriamo in tutta Italia, operando principalmente da Sciacca.",
+        "text": "Lavoriamo in tutta Italia, operando principalmente da Padova.",
         "metric": "100%",
         "metricLabel": "Remote"
       },

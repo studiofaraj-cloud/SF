@@ -10,26 +10,28 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const seoContent = {
     it: {
       title: 'Consulenza Digitale - Studio Faraj | Strategia e Pianificazione',
-      description: 'Consulenza digitale per aziende e professionisti. Analisi, strategia e pianificazione per progetti web di successo. Consulenza personalizzata a Sciacca, Sicilia.',
+      description: 'Consulenza digitale per aziende e professionisti. Analisi, strategia e pianificazione per progetti web di successo. Consulenza personalizzata a Padova, Veneto.',
       keywords: [
+        'consulenza strategica digitale PMI Veneto',
         'consulenza digitale',
         'consulenza web',
         'strategia digitale',
         'consulenza IT',
         'pianificazione web',
-        'consulenza Sicilia',
+        'consulenza Veneto',
       ],
     },
     en: {
       title: 'Digital Consulting - Studio Faraj | Strategy and Planning',
-      description: 'Digital consulting for companies and professionals. Analysis, strategy and planning for successful web projects. Personalized consulting in Sciacca, Sicily.',
+      description: 'Digital consulting for companies and professionals. Analysis, strategy and planning for successful web projects. Personalized consulting in Padova, Veneto.',
       keywords: [
+        'consulenza strategica digitale PMI Veneto',
         'digital consulting',
         'web consulting',
         'digital strategy',
         'IT consulting',
         'web planning',
-        'consulting Sicily',
+        'consulting Veneto',
       ],
     },
   };

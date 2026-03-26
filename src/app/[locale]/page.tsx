@@ -83,34 +83,44 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   // Locale-specific SEO content
   const seoContent = {
     it: {
-      title: 'Studio Faraj - Sviluppo Web Professionale | Sciacca, Sicilia',
-      description: 'Sviluppo web professionale a Sciacca, Sicilia. Creiamo siti web personalizzati, e-commerce, applicazioni web moderne e soluzioni digitali innovative per far crescere il tuo business online.',
+      title: 'Studio Faraj - Sviluppo Web Professionale | Padova, Veneto',
+      description: 'Sviluppo web professionale a Padova, Veneto. Creiamo siti web personalizzati, e-commerce, applicazioni web moderne e soluzioni digitali innovative per far crescere il tuo business online.',
       keywords: [
-        'sviluppo web Sciacca',
-        'siti web Sicilia',
-        'e-commerce Sciacca',
-        'web development Sicilia',
-        'agenzia web Sciacca',
+        'agenzia web Padova',
+        'sviluppo siti web Padova',
+        'realizzazione siti web Veneto',
+        'sviluppo web full stack Veneto',
+        'web agency Padova',
+        'sviluppo web Padova',
+        'siti web Veneto',
+        'e-commerce Padova',
+        'web development Veneto',
+        'agenzia web Padova',
         'creazione siti web',
         'design UI/UX',
-        'SEO Sicilia',
+        'SEO Veneto',
         'marketing digitale',
       ],
     },
     en: {
-      title: 'Studio Faraj - Professional Web Development | Sciacca, Sicily',
-      description: 'Professional web development in Sciacca, Sicily. We create custom websites, e-commerce, modern web applications and innovative digital solutions to grow your online business.',
+      title: 'Studio Faraj - Professional Web Development | Padova, Veneto',
+      description: 'Professional web development in Padova, Veneto. We create custom websites, e-commerce, modern web applications and innovative digital solutions to grow your online business.',
       keywords: [
-        'web development Sciacca',
-        'websites Sicily',
-        'e-commerce Sciacca',
-        'web development Sicily',
-        'web agency Sciacca',
+        'agenzia web Padova',
+        'sviluppo siti web Padova',
+        'realizzazione siti web Veneto',
+        'sviluppo web full stack Veneto',
+        'web agency Padova',
+        'web development Padova',
+        'websites Veneto',
+        'e-commerce Padova',
+        'web development Veneto',
+        'web agency Padova',
         'website creation',
         'UI/UX design',
-        'SEO Sicily',
+        'SEO Veneto',
         'digital marketing',
-        'web design Sicily',
+        'web design Veneto',
         'custom websites',
         'responsive design',
       ],
@@ -328,8 +338,8 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
     <div className="bg-background text-foreground" suppressHydrationWarning>
       <h1 className="sr-only">
         {currentLocale === 'it'
-          ? 'Studio Faraj - Sviluppo Web Professionale a Sciacca, Sicilia'
-          : 'Studio Faraj - Professional Web Development in Sciacca, Sicily'}
+          ? 'Studio Faraj - Agenzia Web Padova | Sviluppo Siti Web Veneto'
+          : 'Studio Faraj - Web Agency Italy English | Custom Web Development'}
       </h1>
       <Suspense>
         <HomepageClientDynamic heroSlides={heroSlides} />

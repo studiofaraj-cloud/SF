@@ -12,24 +12,26 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       title: 'AI e Automazione - Studio Faraj | Soluzioni Intelligenti',
       description: 'Integrazione intelligenza artificiale e automazione per migliorare i processi aziendali. Chatbot, sistemi di raccomandazione e automazione intelligente.',
       keywords: [
+        'integrazione AI automazione siti web',
         'intelligenza artificiale',
         'AI',
         'automazione',
         'chatbot',
         'machine learning',
-        'AI Sicilia',
+        'AI Veneto',
       ],
     },
     en: {
       title: 'AI & Automation - Studio Faraj | Intelligent Solutions',
       description: 'Artificial intelligence and automation integration to improve business processes. Chatbots, recommendation systems and intelligent automation.',
       keywords: [
+        'integrazione AI automazione siti web',
         'artificial intelligence',
         'AI',
         'automation',
         'chatbot',
         'machine learning',
-        'AI Sicily',
+        'AI Veneto',
       ],
     },
   };

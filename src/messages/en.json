@@ -509,12 +509,30 @@
         "title": "Practical",
         "titleHighlight": "Applications",
         "items": [
-          { "title": "Customer Support", "description": "Immediate answers to frequently asked questions" },
-          { "title": "Lead Generation", "description": "Automatic qualification of prospects" },
-          { "title": "Content Creation", "description": "AI-assisted content generation" },
-          { "title": "Data Analysis", "description": "Automatic analysis of large datasets" },
-          { "title": "Email Automation", "description": "Intelligent personalized email sequences" },
-          { "title": "Inventory Management", "description": "Stock forecasts and automatic reorders" }
+          {
+            "title": "Customer Support",
+            "description": "Immediate answers to frequently asked questions"
+          },
+          {
+            "title": "Lead Generation",
+            "description": "Automatic qualification of prospects"
+          },
+          {
+            "title": "Content Creation",
+            "description": "AI-assisted content generation"
+          },
+          {
+            "title": "Data Analysis",
+            "description": "Automatic analysis of large datasets"
+          },
+          {
+            "title": "Email Automation",
+            "description": "Intelligent personalized email sequences"
+          },
+          {
+            "title": "Inventory Management",
+            "description": "Stock forecasts and automatic reorders"
+          }
         ]
       },
       "benefits": {
@@ -950,7 +968,7 @@
     "services": {
       "badge": "Services",
       "title": "Digital Solutions for",
-      "titleHighlight": "Your Growth",
+      "titleHighlight": "Web Agency Italy English",
       "subtitle": "We offer a complete range of services to build, launch and grow your online presence.",
       "webDevelopment": {
         "title": "Custom Web Development",
@@ -991,7 +1009,7 @@
     "technologies": {
       "badge": "Tech Stack",
       "title": "Modern Technologies",
-      "titleHighlight": "for Excellent Results",
+      "titleHighlight": "Custom Web Development Italy",
       "subtitle": "We use only the most modern, performant and reliable technologies in the industry to guarantee you cutting-edge and future-proof solutions.",
       "frontend": {
         "title": "Frontend",
@@ -1076,7 +1094,7 @@
     "process": {
       "badge": "Our Method",
       "title": "A Simple",
-      "titleHighlight": "and Effective Process",
+      "titleHighlight": "Sviluppo Web per Aziende Svizzere",
       "subtitle": "We follow a proven 4-phase approach to guarantee excellent results, always.",
       "steps": {
         "analysis": {
@@ -1247,7 +1265,7 @@
       },
       "location": {
         "title": "Operational Headquarters",
-        "text": "We work throughout Italy, operating mainly from Sciacca.",
+        "text": "We work throughout Italy, operating mainly from Padova.",
         "metric": "Italy",
         "metricLabel": "Wide"
       }
@@ -1342,7 +1360,7 @@
       "title": "Where Digital Dreams",
       "titleHighlight": "Take Flight",
       "subtitle": "From",
-      "subtitleLocation": "Sciacca, Sicily",
+      "subtitleLocation": "Padova, Veneto",
       "subtitleText": ", we transform digital visions into measurable realities. Web development, AI integration, and IT solutions for companies that want to dominate the future.",
       "locationCoordinates": "37°30'N 13°05'E",
       "operationalArea": "Operating throughout Italy",
@@ -1356,7 +1374,7 @@
       "subtitle": "A team of developers, designers, and IT professionals united by the mission to transform the Italian digital landscape.",
       "foundingYear": "2020",
       "foundingLabel": "Year Founded",
-      "foundingLocation": "Sciacca, Sicily",
+      "foundingLocation": "Padova, Veneto",
       "mission": {
         "badge": "Our Mission",
         "title": "Make Your Business Better",
@@ -1410,7 +1428,7 @@
     "timeline": {
       "2020": {
         "title": "The Birth",
-        "description": "Studio Faraj was born from a vision: to democratize access to quality digital solutions for Sicilian and Italian businesses."
+        "description": "Studio Faraj was born from a vision: to democratize access to quality digital solutions for Veneto and Italian businesses."
       },
       "2021": {
         "title": "First Successes",
@@ -1426,7 +1444,7 @@
       },
       "2024": {
         "title": "National Expansion",
-        "description": "From Sciacca to all of Italy: our services reach clients throughout the peninsula with a full-remote approach."
+        "description": "From Padova to all of Italy: our services reach clients throughout the peninsula with a full-remote approach."
       },
       "2025": {
         "title": "Towards the Future",
@@ -1515,7 +1533,7 @@
       },
       "global": {
         "title": "Global Vision",
-        "description": "Local roots in Sciacca, but skills and vision that embrace international markets.",
+        "description": "Local roots in Padova, but skills and vision that embrace international markets.",
         "metric": "50+",
         "metricLabel": "Projects Completed"
       },
@@ -1674,7 +1692,7 @@
       },
       "location": {
         "title": "Operational Headquarters",
-        "text": "We work throughout Italy, operating mainly from Sciacca.",
+        "text": "We work throughout Italy, operating mainly from Padova.",
         "metric": "100%",
         "metricLabel": "Remote"
       },

@@ -9,7 +9,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
   const seoContent = {
     it: {
-      title: 'Design UI/UX Professionale - Studio Faraj | Sciacca',
+      title: 'Design UI/UX Professionale - Studio Faraj | Padova',
       description: 'Design UI/UX moderno e user-friendly per siti web e applicazioni. Creiamo interfacce intuitive che migliorano l\'esperienza utente e aumentano le conversioni.',
       keywords: [
         'design UI/UX',
@@ -17,11 +17,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
         'user interface',
         'design web',
         'UX design',
-        'UI design Sicilia',
+        'UI design Veneto',
       ],
     },
     en: {
-      title: 'Professional UI/UX Design - Studio Faraj | Sciacca',
+      title: 'Professional UI/UX Design - Studio Faraj | Padova',
       description: 'Modern and user-friendly UI/UX design for websites and applications. We create intuitive interfaces that improve user experience and increase conversions.',
       keywords: [
         'UI/UX design',
@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
         'user interface',
         'web design',
         'UX design',
-        'UI design Sicily',
+        'UI design Veneto',
       ],
     },
   };

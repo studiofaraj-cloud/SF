@@ -98,7 +98,7 @@ export default function LegalPage() {
                       <p className="text-lg font-semibold">Studio Faraj</p>
                       <p className="flex items-center gap-2">
                         <Globe className="w-4 h-4 text-muted-foreground" />
-                        Sciacca, Italia
+                        Padova, Italia
                       </p>
                       <p className="flex items-center gap-2">
                         <Mail className="w-4 h-4 text-muted-foreground" />
@@ -1166,7 +1166,7 @@ export default function LegalPage() {
                       </p>
                       <p className="flex items-center gap-2 text-sm">
                         <Globe className="w-4 h-4 text-muted-foreground" />
-                        <strong>Indirizzo:</strong> Studio Faraj, Sciacca, Italia
+                        <strong>Indirizzo:</strong> Studio Faraj, Padova, Italia
                       </p>
                     </div>
                   </CardContent>

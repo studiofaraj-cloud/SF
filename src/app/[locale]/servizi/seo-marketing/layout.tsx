@@ -10,27 +10,31 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   
   const seoContent = {
     it: {
-      title: 'SEO e Marketing Digitale - Studio Faraj | Sciacca',
+      title: 'SEO e Marketing Digitale - Studio Faraj | Padova',
       description: 'Servizi SEO e marketing digitale per aumentare la visibilità online. Ottimizzazione per motori di ricerca, content marketing e campagne pubblicitarie efficaci.',
       keywords: [
+        'web agency Verona',
+        'agenzia web Venezia',
         'SEO',
         'marketing digitale',
         'ottimizzazione SEO',
         'posizionamento Google',
         'marketing online',
-        'SEO Sicilia',
+        'SEO Veneto',
       ],
     },
     en: {
-      title: 'SEO and Digital Marketing - Studio Faraj | Sciacca',
+      title: 'SEO and Digital Marketing - Studio Faraj | Padova',
       description: 'SEO and digital marketing services to increase online visibility. Search engine optimization, content marketing and effective advertising campaigns.',
       keywords: [
+        'web agency Verona',
+        'agenzia web Venezia',
         'SEO',
         'digital marketing',
         'SEO optimization',
         'Google ranking',
         'online marketing',
-        'SEO Sicily',
+        'SEO Veneto',
       ],
     },
   };

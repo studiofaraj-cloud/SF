@@ -9,7 +9,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
   const seoContent = {
     it: {
-      title: 'Manutenzione e Supporto Web - Studio Faraj | Sciacca',
+      title: 'Manutenzione e Supporto Web - Studio Faraj | Padova',
       description: 'Servizi di manutenzione e supporto per siti web. Aggiornamenti, backup, sicurezza e ottimizzazione delle performance. Supporto continuo per il tuo sito.',
       keywords: [
         'manutenzione siti web',
@@ -17,11 +17,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
         'aggiornamenti sito',
         'backup sito web',
         'sicurezza web',
-        'manutenzione Sicilia',
+        'manutenzione Veneto',
       ],
     },
     en: {
-      title: 'Website Maintenance and Support - Studio Faraj | Sciacca',
+      title: 'Website Maintenance and Support - Studio Faraj | Padova',
       description: 'Website maintenance and support services. Updates, backups, security and performance optimization. Continuous support for your website.',
       keywords: [
         'website maintenance',
@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
         'website updates',
         'website backup',
         'web security',
-        'maintenance Sicily',
+        'maintenance Veneto',
       ],
     },
   };

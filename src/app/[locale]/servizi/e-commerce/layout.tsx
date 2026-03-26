@@ -14,13 +14,17 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   };
   
   const seoContent = currentLocale === 'it' ? {
-    title: 'E-commerce e Piattaforme Online - Studio Faraj | Sciacca',
-    description: 'Soluzioni e-commerce complete per vendere online. Creiamo negozi digitali performanti con integrazione pagamenti, gestione ordini e marketing. Sciacca, Sicilia.',
-    keywords: ['e-commerce', 'negozio online', 'vendita online', 'piattaforma e-commerce', 'shop online', 'e-commerce Sicilia'],
+    title: 'E-commerce e Piattaforme Online - Studio Faraj | Padova',
+    description: 'Soluzioni e-commerce complete per vendere online. Creiamo negozi digitali performanti con integrazione pagamenti, gestione ordini e marketing. Padova, Veneto.',
+    keywords: [
+        'sviluppo e-commerce su misura Padova',
+        'creazione sito web Vicenza','e-commerce', 'negozio online', 'vendita online', 'piattaforma e-commerce', 'shop online', 'e-commerce Veneto'],
   } : {
-    title: 'E-commerce and Online Platforms - Studio Faraj | Sciacca',
-    description: 'Complete e-commerce solutions for selling online. We create high-performance digital stores with payment integration, order management and marketing. Sciacca, Sicily.',
-    keywords: ['e-commerce', 'online store', 'online sales', 'e-commerce platform', 'online shop', 'e-commerce Sicily'],
+    title: 'E-commerce and Online Platforms - Studio Faraj | Padova',
+    description: 'Complete e-commerce solutions for selling online. We create high-performance digital stores with payment integration, order management and marketing. Padova, Veneto.',
+    keywords: [
+        'sviluppo e-commerce su misura Padova',
+        'creazione sito web Vicenza','e-commerce', 'online store', 'online sales', 'e-commerce platform', 'online shop', 'e-commerce Veneto'],
   };
   
   return generateSEOMetadata({
