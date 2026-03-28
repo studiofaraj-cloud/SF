@@ -3,6 +3,7 @@
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { createMessageData } from './firestore-data';
+import { sendFormSubmitEmail } from './formsubmit';
 
 // Explicit server action export to help Turbopack module resolution
 
@@ -53,6 +54,23 @@ export async function createMessage(prevState: { message: string | null, success
             console.log('[createMessage] Attempting to save message to database...');
             const messageId = await createMessageData(validatedFields.data as any);
             console.log('[createMessage] Message saved successfully with ID:', messageId);
+
+            // Fire-and-forget email notification
+            sendFormSubmitEmail({
+                _subject: validatedFields.data.source === 'quote-dialog'
+                    ? `Nuova Richiesta Preventivo da ${validatedFields.data.name}`
+                    : `Nuovo Messaggio di Contatto da ${validatedFields.data.name}`,
+                _template: 'table',
+                _captcha: 'false',
+                _replyto: validatedFields.data.email,
+                Nome: validatedFields.data.name,
+                Email: validatedFields.data.email,
+                Telefono: validatedFields.data.phone || 'Non fornito',
+                Servizio: validatedFields.data.service || 'Non specificato',
+                Budget: validatedFields.data.budget || 'Non specificato',
+                Fonte: validatedFields.data.source === 'quote-dialog' ? 'Richiesta Preventivo' : 'Form Contatto',
+                Messaggio: validatedFields.data.message,
+            }).catch(() => {});
         } catch (error) {
             console.error('[createMessage] Error creating message:', error);
             // Provide more specific error messages
@@ -148,7 +166,20 @@ export async function submitPlanRequest(prevState: { message: string | null, suc
         };
 
         await createMessageData(messageDto as any);
-        
+
+        // Fire-and-forget email notification
+        sendFormSubmitEmail({
+            _subject: `Richiesta Pagamento Piano: ${validatedFields.data.planName}`,
+            _template: 'table',
+            _captcha: 'false',
+            _replyto: validatedFields.data.email,
+            'Email Cliente': validatedFields.data.email,
+            'Piano Richiesto': validatedFields.data.planName,
+            'Prezzo Piano': `€${validatedFields.data.planPrice}`,
+            Servizio: validatedFields.data.serviceName,
+            'Azione Richiesta': 'Inviare link di pagamento al cliente',
+        }).catch(() => {});
+
         revalidatePath('/admin/messages');
         return { success: true, message: 'successPlanRequest' };
 

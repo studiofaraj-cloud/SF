@@ -32,6 +32,7 @@ import {
     type HeroSlideData,
 } from './firestore-data';
 import { Timestamp } from 'firebase/firestore';
+import { sendFormSubmitEmail } from './formsubmit';
 import { redirect } from 'next/navigation';
 import { uploadFile, type ImageMetadata } from './storage';
 import { logError, getFirebaseErrorMessage } from './error-logger';
@@ -655,6 +656,16 @@ export async function createSubscriber(prevState: { message: string | null, succ
 
   try {
     await createSubscriberData({ email: validatedFields.data.email, active: true });
+
+    // Fire-and-forget email notification
+    sendFormSubmitEmail({
+      _subject: 'Nuova Iscrizione Newsletter',
+      _template: 'box',
+      _captcha: 'false',
+      _replyto: validatedFields.data.email,
+      Email: validatedFields.data.email,
+      Tipo: 'Iscrizione Newsletter',
+    }).catch(() => {});
   } catch (error) {
     return { message: (error as Error).message, success: false };
   }
@@ -726,6 +737,26 @@ export async function createBooking(prevState: { message: string | null, success
     };
 
     await createBookingData(bookingData);
+
+    // Fire-and-forget email notification
+    const timeDisplay = Array.isArray(validatedFields.data.selectedTime)
+      ? validatedFields.data.selectedTime.join(', ')
+      : validatedFields.data.selectedTime || 'Non specificato';
+
+    sendFormSubmitEmail({
+      _subject: `Nuova Prenotazione da ${validatedFields.data.name}`,
+      _template: 'table',
+      _captcha: 'false',
+      _replyto: validatedFields.data.email || undefined,
+      Nome: validatedFields.data.name,
+      Email: validatedFields.data.email || 'Non fornito',
+      Telefono: validatedFields.data.phone,
+      'Data Selezionata': validatedFields.data.selectedDate,
+      'Orario Selezionato': timeDisplay,
+      Messaggio: validatedFields.data.message || 'Nessun messaggio',
+      Fonte: validatedFields.data.source || 'booking-form',
+    }).catch(() => {});
+
     revalidatePath('/admin/bookings');
     revalidatePath('/admin');
     
