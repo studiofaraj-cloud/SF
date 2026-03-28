@@ -26,6 +26,12 @@ env:
       - BUILD
       - RUNTIME
 
+  # FormSubmit email notifications
+  - variable: FORMSUBMIT_ENDPOINT
+    value: https://formsubmit.co/ajax/info@studiofaraj.it
+    availability:
+      - RUNTIME
+
   # ----- SECRETS (stored in Firebase Secret Manager) -----
   # Create each secret once before deploying:
   #   firebase apphosting:secrets:set SESSION_SECRET
