@@ -7,6 +7,7 @@ interface FormSubmitPayload {
 }
 
 const FORMSUBMIT_ENDPOINT = process.env.FORMSUBMIT_ENDPOINT;
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://studiofarajnext.web.app';
 
 export async function sendFormSubmitEmail(payload: FormSubmitPayload): Promise<void> {
   if (!FORMSUBMIT_ENDPOINT) {
@@ -20,6 +21,8 @@ export async function sendFormSubmitEmail(payload: FormSubmitPayload): Promise<v
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
+        'Origin': SITE_URL,
+        'Referer': SITE_URL,
       },
       body: JSON.stringify(payload),
     });
