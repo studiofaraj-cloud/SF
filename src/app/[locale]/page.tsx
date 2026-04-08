@@ -498,24 +498,20 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
 
           {/* Trust Indicators with Neon Effect */}
           <ScrollFadeIn animation="scale" delay={400}>
-          <div className="mt-8 md:mt-12 text-center">
-              <div className="inline-flex flex-col sm:flex-row items-center gap-2 sm:gap-4 px-4 sm:px-6 py-2.5 rounded-xl holographic-card neon-border">
-              <div className="flex items-center gap-1.5">
-                <ShieldCheck className="w-4 h-4 text-primary" />
-                <span className="text-xs font-medium text-foreground">{tTech('trust.secure')}</span>
+            <div className="mt-8 md:mt-12 flex flex-wrap justify-center gap-3 sm:gap-4">
+              <div className="flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 rounded-full holographic-card neon-border bg-background/40 hover:bg-background/60 transition-colors">
+                <ShieldCheck className="w-4 h-4 sm:w-4 sm:h-4 text-primary" />
+                <span className="text-xs sm:text-sm font-medium text-foreground">{tTech('trust.secure')}</span>
               </div>
-                <div className="hidden sm:block h-4 w-px bg-primary/30" />
-              <div className="flex items-center gap-1.5">
-                <Zap className="w-4 h-4 text-primary" />
-                <span className="text-xs font-medium text-foreground">{tTech('trust.performant')}</span>
+              <div className="flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 rounded-full holographic-card neon-border bg-background/40 hover:bg-background/60 transition-colors">
+                <Zap className="w-4 h-4 sm:w-4 sm:h-4 text-primary" />
+                <span className="text-xs sm:text-sm font-medium text-foreground">{tTech('trust.performant')}</span>
               </div>
-                <div className="hidden sm:block h-4 w-px bg-primary/30" />
-              <div className="flex items-center gap-1.5">
-                <Award className="w-4 h-4 text-primary" />
-                <span className="text-xs font-medium text-foreground">{tTech('trust.cuttingEdge')}</span>
+              <div className="flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 rounded-full holographic-card neon-border bg-background/40 hover:bg-background/60 transition-colors">
+                <Award className="w-4 h-4 sm:w-4 sm:h-4 text-primary" />
+                <span className="text-xs sm:text-sm font-medium text-foreground">{tTech('trust.cuttingEdge')}</span>
               </div>
             </div>
-          </div>
           </ScrollFadeIn>
         </div>
       </section>
