@@ -77,7 +77,7 @@ export function BlogPostClient({ blog, related, locale, readingTime = 1, formatt
             </div>
 
             {/* Breadcrumb */}
-            <nav aria-label="breadcrumb" className="inline-flex items-center justify-center flex-nowrap gap-x-1.5 text-xs text-white/40 mb-6">
+            <nav aria-label="breadcrumb" className="hidden md:inline-flex items-center justify-center flex-nowrap gap-x-1.5 text-xs text-white/40 mb-6">
               <Link href={`/${locale}`} className="hover:text-white/70 transition-colors whitespace-nowrap">Home</Link>
               <ChevronRight className="h-3 w-3 shrink-0" />
               <Link href={`/${locale}/blog`} className="hover:text-white/70 transition-colors whitespace-nowrap">Blog</Link>
