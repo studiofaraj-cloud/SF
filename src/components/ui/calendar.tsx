@@ -20,7 +20,7 @@ function Calendar({
       showOutsideDays={showOutsideDays}
       weekStartsOn={weekStartsOn}
       locale={props.locale}
-      className={cn("p-3 sm:p-5 w-full", className)}
+      className={cn("p-2 sm:p-5 w-full", className)}
       formatters={{
         formatWeekdayName: (day) =>
           day.toLocaleDateString(props.locale ? undefined : "it-IT", { weekday: "short" }),
@@ -49,7 +49,7 @@ function Calendar({
         /* Weekday header row — <thead> <tr> */
         weekdays: "",
         weekday:
-          "text-center text-[11px] sm:text-xs font-semibold uppercase tracking-widest text-primary/60 py-2 px-0",
+          "text-center text-[10px] sm:text-xs font-semibold uppercase tracking-[0.12em] sm:tracking-widest text-primary/60 py-2 px-0",
 
         /* Weeks container (<tbody>) & individual week rows (<tr>) */
         weeks: "",
@@ -57,11 +57,11 @@ function Calendar({
 
         /* Day cell (<td>) — spans full width, centers the button */
         day:
-          "text-center p-1 relative focus-within:z-20",
+          "text-center p-0.5 sm:p-1 relative focus-within:z-20",
 
         /* Day button — the clickable circle, smaller than the cell */
         day_button:
-          "inline-flex items-center justify-center h-10 w-10 rounded-full text-sm font-medium transition-all duration-200 hover:bg-primary/15 hover:text-primary hover:scale-110 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 cursor-pointer",
+          "inline-flex items-center justify-center h-8 w-8 sm:h-10 sm:w-10 rounded-full text-sm font-medium transition-all duration-200 hover:bg-primary/15 hover:text-primary hover:scale-110 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 cursor-pointer",
 
         /* Selection state — selected day */
         selected:
