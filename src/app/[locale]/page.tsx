@@ -807,17 +807,6 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
             })}
             </div>
 
-          {/* CTA */}
-          <ScrollFadeIn animation="fade-up" delay={400}>
-          <div className="mt-10 md:mt-16 text-center">
-              <Button size="lg" asChild className="group neon-glow w-full sm:w-auto">
-              <Link href="/#services">
-                {tResponsive('cta')}
-                <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </Link>
-            </Button>
-          </div>
-          </ScrollFadeIn>
         </div>
       </section>
 
