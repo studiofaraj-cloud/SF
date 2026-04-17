@@ -98,7 +98,7 @@ export default function ContactSection() {
     ];
 
   return (
-    <section className="relative py-12 sm:py-20 md:py-24 lg:py-32 overflow-hidden">
+    <section className="relative py-16 sm:py-20 md:py-24 lg:py-32 overflow-hidden">
         {/* Modern gradient background */}
         <div className="absolute inset-0 bg-gradient-to-br from-background via-primary/3 to-secondary/20" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,hsl(var(--primary)/0.1),transparent_50%)]" />
@@ -115,23 +115,23 @@ export default function ContactSection() {
         
         <div className="container relative z-10 px-4 md:px-6 lg:px-8">
             {/* Header Section */}
-            <div className="text-center max-w-3xl mx-auto mb-10 md:mb-16">
-                <Badge className="badge-futuristic mb-3 md:mb-6 inline-flex items-center gap-2">
+            <div className="text-center max-w-3xl mx-auto mb-12 md:mb-16">
+                <Badge className="badge-futuristic mb-4 md:mb-6 inline-flex items-center gap-2">
                   <MessageCircle className="w-3 h-3" />
                   {t('badge')}
                 </Badge>
-                <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-3 md:mb-6">
+                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4 md:mb-6">
                   <span className="text-foreground">{t('title')}</span>
                   <span className="block text-primary mt-1 md:mt-2 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
                     {t('titleHighlight')}
                   </span>
                 </h2>
-                <p className="text-sm md:text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto mb-5 md:mb-6 px-2">
+                <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto mb-6 px-2">
                   {t('subtitle')}
                 </p>
                 
                 {/* Trust Indicators */}
-                <div className="hidden sm:flex flex-wrap items-center justify-center gap-3 md:gap-6">
+                <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6">
                   <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-primary/5 border border-primary/20">
                     <Clock className="w-4 h-4 text-primary" />
                     <span className="text-sm font-medium text-foreground">{t('trust.response24h')}</span>
@@ -148,11 +148,11 @@ export default function ContactSection() {
             </div>
             
             {/* Split Layout: Form + Contact Info */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 md:gap-8 lg:gap-12 max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 lg:gap-12 max-w-7xl mx-auto">
               
               {/* Left Side: Contact Form */}
               <div className="order-2 lg:order-1">
-                <div className="relative p-4 sm:p-6 md:p-8 lg:p-10 rounded-3xl bg-card/60 backdrop-blur-xl border border-primary/20 shadow-2xl shadow-primary/5">
+                <div className="relative p-6 md:p-8 lg:p-10 rounded-3xl bg-card/60 backdrop-blur-xl border border-primary/20 shadow-2xl shadow-primary/5">
                   {/* Animated border gradient */}
                   <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-primary/20 via-primary/10 to-primary/20 opacity-0 hover:opacity-100 transition-opacity duration-500 -z-10 blur-xl" />
                   
@@ -162,24 +162,24 @@ export default function ContactSection() {
                   </div>
                   
                   <div className="relative z-10">
-                    <div className="mb-4 md:mb-8">
-                      <Badge className="hidden sm:inline-flex badge-futuristic mb-3 md:mb-4 w-fit">
+                    <div className="mb-6 md:mb-8">
+                      <Badge className="badge-futuristic mb-3 md:mb-4 w-fit">
                         <Send className="w-3 h-3 mr-1.5 sm:mr-2" />
                         {t('badge')}
                       </Badge>
-                      <h3 className="text-xl md:text-3xl font-bold text-primary mb-1.5 md:mb-2">
+                      <h3 className="text-2xl md:text-3xl font-bold text-primary mb-2">
                         {t('form.formTitle')}
                       </h3>
-                      <p className="text-xs sm:text-sm md:text-base text-muted-foreground">
+                      <p className="text-sm md:text-base text-muted-foreground">
                         {t('form.formSubtitle')}
                       </p>
                     </div>
                     
-                    <form id="contact-section-form" onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
+                    <form id="contact-section-form" onSubmit={handleSubmit} className="space-y-5 md:space-y-6">
                       <input type="hidden" name="source" value="contact-form" />
                       
                       {/* Name and Email Row */}
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-5">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
                         <div className="space-y-2 relative">
                           <Label htmlFor="name" className="text-sm font-medium text-foreground">
                             {t('form.name')}
@@ -191,7 +191,7 @@ export default function ContactSection() {
                             required
                             onFocus={() => setFocusedField('name')}
                             onBlur={() => setFocusedField(null)}
-                            className={`h-11 sm:h-12 bg-background/80 backdrop-blur-sm border-2 transition-all duration-300 placeholder:text-muted-foreground/50 text-sm ${
+                            className={`h-12 bg-background/80 backdrop-blur-sm border-2 transition-all duration-300 placeholder:text-muted-foreground/50 text-sm ${
                               focusedField === 'name' 
                                 ? 'border-primary shadow-lg shadow-primary/20' 
                                 : 'border-primary/20 hover:border-primary/40'
@@ -215,7 +215,7 @@ export default function ContactSection() {
                             required
                             onFocus={() => setFocusedField('email')}
                             onBlur={() => setFocusedField(null)}
-                            className={`h-11 sm:h-12 bg-background/80 backdrop-blur-sm border-2 transition-all duration-300 placeholder:text-muted-foreground/50 text-sm ${
+                            className={`h-12 bg-background/80 backdrop-blur-sm border-2 transition-all duration-300 placeholder:text-muted-foreground/50 text-sm ${
                               focusedField === 'email' 
                                 ? 'border-primary shadow-lg shadow-primary/20' 
                                 : 'border-primary/20 hover:border-primary/40'
@@ -239,7 +239,7 @@ export default function ContactSection() {
                             id="service"
                             onFocus={() => setFocusedField('service')}
                             onBlur={() => setFocusedField(null)}
-                            className={`h-11 sm:h-12 bg-background/80 backdrop-blur-sm border-2 transition-all duration-300 text-sm ${
+                            className={`h-12 bg-background/80 backdrop-blur-sm border-2 transition-all duration-300 text-sm ${
                               focusedField === 'service' 
                                 ? 'border-primary shadow-lg shadow-primary/20' 
                                 : 'border-primary/20 hover:border-primary/40'
@@ -277,7 +277,7 @@ export default function ContactSection() {
                           placeholder={t('form.messagePlaceholder')}
                           onFocus={() => setFocusedField('message')}
                           onBlur={() => setFocusedField(null)}
-                          className={`min-h-[120px] sm:min-h-32 bg-background/80 backdrop-blur-sm border-2 transition-all duration-300 resize-none placeholder:text-muted-foreground/50 text-sm ${
+                          className={`min-h-32 bg-background/80 backdrop-blur-sm border-2 transition-all duration-300 resize-none placeholder:text-muted-foreground/50 text-sm ${
                             focusedField === 'message' 
                               ? 'border-primary shadow-lg shadow-primary/20' 
                               : 'border-primary/20 hover:border-primary/40'
@@ -292,17 +292,17 @@ export default function ContactSection() {
                       </div>
                       
                       {/* Privacy Checkbox */}
-                      <div className="pt-1">
+                      <div className="pt-2">
                         <Label 
                           htmlFor="terms" 
-                          className="flex items-start gap-2.5 p-2.5 sm:p-3 rounded-lg hover:bg-primary/5 transition-colors cursor-pointer"
+                          className="flex items-start gap-2.5 sm:gap-3 p-2 sm:p-3 rounded-lg hover:bg-primary/5 transition-colors cursor-pointer"
                         >
                           <Checkbox 
                             id="terms" 
                             required
-                            className="mt-0.5 h-5 w-5 border-2 border-primary/30 data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+                            className="mt-0.5 h-4 w-4 min-h-4 min-w-4 max-h-4 max-w-4 shrink-0 rounded-sm border border-primary/40 data-[state=checked]:bg-primary data-[state=checked]:border-primary [&_svg]:h-3 [&_svg]:w-3"
                           />
-                          <span className="text-sm text-muted-foreground leading-relaxed flex-1">
+                          <span className="text-sm text-muted-foreground leading-relaxed flex-1 min-w-0">
                             {t('form.privacy')}
                           </span>
                         </Label>
@@ -312,8 +312,7 @@ export default function ContactSection() {
                       <Button 
                         type="submit" 
                         disabled={isPending}
-                        className="w-full h-11 sm:h-12 md:h-14 text-sm sm:text-base font-semibold group relative overflow-hidden bg-gradient-to-r from-primary to-primary/90 hover:from-primary hover:to-primary text-primary-foreground shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all duration-300"
-                        size="lg"
+                        className="w-full h-11 md:h-14 text-sm md:text-base font-semibold group relative overflow-hidden bg-gradient-to-r from-primary to-primary/90 hover:from-primary hover:to-primary text-primary-foreground shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all duration-300 px-4 md:px-8"
                       >
                         <span className="relative z-10 flex items-center justify-center gap-2">
                           {isPending ? (
@@ -329,7 +328,7 @@ export default function ContactSection() {
                           )}
                         </span>
                         {/* Shimmer effect */}
-                        <div className="hidden sm:block absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                        <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
                       </Button>
                       
                       {/* Success/Status Indicators */}
@@ -343,7 +342,7 @@ export default function ContactSection() {
                       )}
                       
                       {/* Trust Indicators */}
-                      <div className="hidden sm:flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 mt-4 text-xs text-muted-foreground">
+                      <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 mt-4 text-xs text-muted-foreground">
                         <span className="flex items-center gap-1.5">
                           <CheckCircle2 className="w-3 h-3 text-green-500" />
                           {t('trustIndicators.dataProtected')}
@@ -359,7 +358,7 @@ export default function ContactSection() {
                       </div>
                       
                       {/* Availability Status */}
-                      <div className="flex items-center justify-center gap-2 pt-1">
+                      <div className="flex items-center justify-center gap-2 pt-2">
                         <span className="relative flex h-2.5 w-2.5">
                           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                           <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>

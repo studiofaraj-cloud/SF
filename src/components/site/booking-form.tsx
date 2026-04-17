@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useActionState, useTransition } from 'react';
-import { Calendar, Clock, Mail, Phone, User, MessageSquare, CheckCircle2, X } from 'lucide-react';
+import { Calendar, Clock, Mail, Phone, User, MessageSquare, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -43,7 +43,6 @@ export function BookingForm({ onSuccess, className, source = 'booking-form' }: B
     { value: '16:00', label: '16:00 - 17:00' },
     { value: '17:00', label: '17:00 - 18:00' },
   ];
-  const specificTimeSlots = timeSlots.filter((slot) => slot.value !== 'anytime');
 
   useEffect(() => {
     if (state.success) {
@@ -150,72 +149,29 @@ export function BookingForm({ onSuccess, className, source = 'booking-form' }: B
             </div>
 
             {/* Time Selection */}
-            <div className="space-y-2.5">
+            <div className="space-y-2">
               <Label htmlFor="time" className="text-sm font-semibold flex items-center gap-2 text-foreground">
                 <Clock className="w-4 h-4 text-primary" />
                 {t('form.time')}
               </Label>
-              <div className="rounded-2xl border border-primary/20 bg-background/70 backdrop-blur-sm p-3 sm:p-4 space-y-3">
-                <div className="flex items-center justify-between gap-3">
-                  <p className="text-xs sm:text-sm text-muted-foreground">
-                    {selectedTimes.length === 0
-                      ? t('form.selectedAnytime')
-                      : selectedTimes.includes('anytime')
-                        ? t('form.selectedAnytime')
-                        : t('form.selectedTimes', { count: selectedTimes.length })}
-                  </p>
-                  {selectedTimes.length > 0 && (
-                    <button
-                      type="button"
-                      onClick={() => setSelectedTimes([])}
-                      className="inline-flex items-center gap-1 rounded-md border border-primary/20 px-2 py-1 text-xs text-muted-foreground hover:text-foreground hover:border-primary/40 transition-colors"
-                    >
-                      <X className="w-3 h-3" />
-                      Clear
-                    </button>
-                  )}
-                </div>
-
-                <div className="grid grid-cols-1 gap-2">
-                  {timeSlots
-                    .filter((slot) => slot.value === 'anytime')
-                    .map((slot) => {
-                      const isChecked = selectedTimes.includes(slot.value);
-                      const handleAnytimeToggle = () => {
-                        setSelectedTimes(isChecked ? [] : ['anytime']);
-                      };
-
-                      return (
-                        <button
-                          key={slot.value}
-                          type="button"
-                          onClick={handleAnytimeToggle}
-                          aria-pressed={isChecked}
-                          className={cn(
-                            "flex items-center justify-center gap-2 px-3 py-3 rounded-xl text-sm font-semibold transition-all duration-200 min-h-[44px] sm:min-h-[46px] active:scale-[0.98] select-none border",
-                            isChecked
-                              ? "bg-primary/95 text-primary-foreground shadow-md shadow-primary/20 border-primary ring-1 ring-primary/30"
-                              : "bg-background border-primary/20 hover:border-primary/40 text-foreground"
-                          )}
-                        >
-                          {isChecked && <CheckCircle2 className="w-4 h-4 flex-shrink-0" />}
-                          {slot.label}
-                        </button>
-                      );
-                    })}
-                </div>
-
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
-                {specificTimeSlots.map((slot) => {
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                {timeSlots.map((slot) => {
                   const isChecked = selectedTimes.includes(slot.value);
+                  const isAnytime = slot.value === 'anytime';
+
                   const handleTimeToggle = () => {
-                    setSelectedTimes((prev) => {
-                      const filtered = prev.filter(t => t !== 'anytime');
-                      if (isChecked) {
-                        return filtered.filter(t => t !== slot.value);
-                      }
-                      return [...filtered, slot.value];
-                    });
+                    if (isAnytime) {
+                      setSelectedTimes(isChecked ? [] : ['anytime']);
+                    } else {
+                      setSelectedTimes((prev) => {
+                        const filtered = prev.filter(t => t !== 'anytime');
+                        if (isChecked) {
+                          return filtered.filter(t => t !== slot.value);
+                        } else {
+                          return [...filtered, slot.value];
+                        }
+                      });
+                    }
                   };
 
                   return (
@@ -223,12 +179,12 @@ export function BookingForm({ onSuccess, className, source = 'booking-form' }: B
                       key={slot.value}
                       type="button"
                       onClick={handleTimeToggle}
-                      aria-pressed={isChecked}
                       className={cn(
-                        "flex items-center justify-center gap-2 px-2.5 sm:px-3 py-2.5 sm:py-3 rounded-xl text-sm font-medium transition-all duration-200 min-h-[44px] sm:min-h-[46px] active:scale-[0.98] select-none border",
+                        "flex items-center justify-center gap-2 px-3 py-3 rounded-xl text-sm font-medium transition-all duration-200 min-h-[48px] active:scale-[0.96] select-none",
+                        isAnytime && "col-span-2 sm:col-span-4",
                         isChecked
-                          ? "bg-primary/10 text-primary border-primary shadow-sm shadow-primary/10 ring-1 ring-primary/20"
-                          : "bg-background border-primary/20 hover:border-primary/40 text-foreground"
+                          ? "bg-primary text-primary-foreground shadow-md shadow-primary/20 border-2 border-primary"
+                          : "bg-background/80 backdrop-blur-sm border-2 border-primary/20 hover:border-primary/40 text-foreground"
                       )}
                     >
                       {isChecked && (
@@ -238,8 +194,15 @@ export function BookingForm({ onSuccess, className, source = 'booking-form' }: B
                     </button>
                   );
                 })}
-                </div>
               </div>
+              {selectedTimes.length > 0 && (
+                <p className="text-xs text-muted-foreground">
+                  {selectedTimes.length === 1 && selectedTimes[0] === 'anytime'
+                    ? t('form.selectedAnytime')
+                    : t('form.selectedTimes', { count: selectedTimes.length })
+                  }
+                </p>
+              )}
             </div>
 
             {/* Name + Email */}
