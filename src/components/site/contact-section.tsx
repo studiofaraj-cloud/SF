@@ -427,7 +427,7 @@ export default function ContactSection() {
                       <p className="text-base text-muted-foreground mb-6 leading-relaxed">{t('bookCallCard.description')}</p>
 
                       {/* Benefits List */}
-                      <div className="space-y-4 mb-6 flex-1">
+                      <div className="hidden md:block space-y-4 mb-6 md:flex-1">
                         <div className="flex items-start gap-4">
                           <div className="w-10 h-10 rounded-lg bg-primary/15 flex items-center justify-center flex-shrink-0 mt-0.5">
                             <Users className="w-5 h-5 text-primary" />
