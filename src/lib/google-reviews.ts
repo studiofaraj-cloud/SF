@@ -84,7 +84,7 @@ async function fetchFromPlacesAPI(locale = 'it'): Promise<{ reviews: GoogleRevie
   if (!apiKey) return { reviews: [], rating: 5, totalRatings: 0 };
 
   try {
-    const url = `https://places.googleapis.com/v1/places/${encodeURIComponent(placeId)}?languageCode=${langCode}`;
+    const url = `https://places.googleapis.com/v1/places/${encodeURIComponent(placeId)}?languageCode=${langCode}&_cb=1`;
     const res = await fetch(url, {
       headers: {
         'X-Goog-Api-Key': apiKey,
