@@ -7,7 +7,7 @@ import {
   Handshake, ShieldCheck, PenTool, CheckCircle,
   Briefcase, MapPin, Calendar, Code, Zap,
   Users, Target, ArrowRight, Sparkles,
-  Linkedin, Github, Mail, Star, Camera,
+  Linkedin, Mail, Star, Camera,
 } from 'lucide-react';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
@@ -318,9 +318,8 @@ export default function ChiSiamoPage() {
                 {/* Social */}
                 <div className="flex gap-3">
                   {[
-                    { href: 'https://www.linkedin.com/in/studio-faraj-47923b389/', icon: <Linkedin className="w-4 h-4" />, label: 'LinkedIn' },
-                    { href: 'https://github.com/husseinfaraj', icon: <Github className="w-4 h-4" />, label: 'GitHub' },
-                    { href: 'mailto:hussein@studiofaraj.com', icon: <Mail className="w-4 h-4" />, label: 'Email' },
+                    { href: 'https://www.linkedin.com/in/hussein-faraj-9572b72b5/', icon: <Linkedin className="w-4 h-4" />, label: 'LinkedIn' },
+                    { href: 'mailto:husseinfaraj101@gmail.com', icon: <Mail className="w-4 h-4" />, label: 'Email' },
                   ].map(({ href, icon, label }) => (
                     <a
                       key={label}
