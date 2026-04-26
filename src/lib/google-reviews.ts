@@ -81,7 +81,11 @@ async function fetchFromPlacesAPI(locale = 'it'): Promise<{ reviews: GoogleRevie
   const placeId = process.env.GOOGLE_PLACE_ID ?? 'ChIJV_YxeITzBAERefznEKaDrkc';
   const langCode = locale === 'en' ? 'en' : 'it';
 
-  if (!apiKey) return { reviews: [], rating: 5, totalRatings: 0 };
+  console.log('[GoogleReviews] Fetching from Places API. API Key present:', !!apiKey, 'Place ID:', placeId);
+  if (!apiKey) {
+    console.warn('[GoogleReviews] Missing API Key. Falling back.');
+    return { reviews: [], rating: 5, totalRatings: 0 };
+  }
 
   try {
     const url = `https://places.googleapis.com/v1/places/${encodeURIComponent(placeId)}?languageCode=${langCode}`;
@@ -141,11 +145,13 @@ export async function fetchGoogleReviews(locale = 'it'): Promise<PlaceSummary> {
 
   // 2. Firestore empty → fall back to live Places API (max 5)
   const { reviews, rating, totalRatings } = await fetchFromPlacesAPI(locale);
+  console.log('[GoogleReviews] Places API response count:', reviews.length);
   if (reviews.length > 0) {
     return { name: 'Studio Faraj', rating, totalRatings, reviews, isLive: true };
   }
 
   // 3. Total failure → hardcoded data
+  console.warn('[GoogleReviews] ALL fetches failed. Falling back to hardcoded data.');
   return hardcodedFallback();
 }
 
