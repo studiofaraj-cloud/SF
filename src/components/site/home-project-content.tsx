@@ -52,7 +52,7 @@ export function HomeProjectContent({ projects }: HomeProjectContentProps) {
           <div className="space-y-6 md:space-y-8">
             {/* Featured Project - First item */}
             <ScrollFadeIn animation="fade-up" delay={100}>
-              <Link href={`/${locale}/projects/${projects[0]?.slug || ''}`} className="block group">
+              <Link href={`/${locale}/projects/${projects[0]?.slug || ''}`} className="block group" aria-label={projects[0]?.title}>
                 <Card className="relative overflow-hidden holographic-card neon-border transition-all duration-700 hover:shadow-2xl hover:shadow-primary/20">
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
                     {/* Image Side */}
@@ -115,7 +115,7 @@ export function HomeProjectContent({ projects }: HomeProjectContentProps) {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
                 {projects.slice(1).map((project, index) => (
                   <ScrollFadeIn key={project.id || project.slug || index} animation="fade-up" delay={(index + 1) * 100}>
-                    <Link href={`/${locale}/projects/${project.slug}`} className="block group">
+                    <Link href={`/${locale}/projects/${project.slug}`} className="block group" aria-label={project.title}>
                       <Card className="relative overflow-hidden h-[300px] md:h-[400px] holographic-card neon-border transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 md:hover:-translate-y-2">
                         {/* Background Image */}
                         {project.featuredImage && (
@@ -146,9 +146,9 @@ export function HomeProjectContent({ projects }: HomeProjectContentProps) {
                         <div className="relative z-10 h-full flex flex-col justify-end p-5 md:p-8 text-white">
                           {/* Bottom content */}
                           <div className="relative transition-transform duration-500 ease-out md:group-hover:-translate-y-4">
-                            <h3 className="text-xl md:text-2xl font-bold mb-0">
+                            <p className="text-xl md:text-2xl font-bold mb-0">
                               {project.title}
-                            </h3>
+                            </p>
 
                             <div className="max-h-0 overflow-hidden opacity-0 group-hover:max-h-24 group-hover:opacity-100 transition-all duration-500 ease-out">
                               <p className="text-white/80 text-sm mt-2 mb-2">

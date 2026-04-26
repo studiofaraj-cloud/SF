@@ -105,9 +105,22 @@
     overflow-x: hidden;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
     overflow-x: hidden;
     touch-action: pan-y pinch-zoom;
+    /* Poppins renders best with slightly tighter tracking */
+    letter-spacing: -0.01em;
+    font-feature-settings: 'kern' 1, 'liga' 1;
+  }
+  /* Headings — Poppins semi-bold looks crisp at display sizes */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-poppins), system-ui, sans-serif;
+    font-feature-settings: 'kern' 1;
+    letter-spacing: -0.02em;
+  }
+  /* Paragraphs and body copy inherit Poppins via body */
+  p, li, span, a, button, input, textarea {
+    font-family: inherit;
   }
   /* Ensure SVG icons inherit text color from their parent (currentColor) */
   svg {
@@ -116,6 +129,15 @@
 }
 
 @layer utilities {
+  /* Service detail panel — fast fade+slide used on service switch */
+  .service-panel-enter {
+    animation: service-panel-in 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  @keyframes service-panel-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
   .animate-fade-in-up {
     animation: fade-in-up 0.8s ease-in-out forwards;
   }
@@ -1729,20 +1751,48 @@
 
 /* Hero section viewport height — shorter on mobile so users see content below */
 .hero-section-mobile {
-  min-height: 85vh;
+  min-height: 80vh;
   min-height: -webkit-fill-available;
 }
 
-@supports (min-height: 85svh) {
+@supports (min-height: 80svh) {
   .hero-section-mobile {
-    min-height: 85svh;
+    min-height: 80svh;
   }
 }
 
-@supports (min-height: 85dvh) {
+@supports (min-height: 80dvh) {
   .hero-section-mobile {
-    min-height: 85dvh;
+    min-height: 80dvh;
   }
+}
+
+/* Ken Burns slow zoom on hero image, restarted per slide via key */
+.hero-kenburns {
+  animation: hero-kenburns 5s ease-out forwards;
+  will-change: transform;
+}
+@keyframes hero-kenburns {
+  from { transform: scale(1.06); }
+  to   { transform: scale(1); }
+}
+
+/* Mobile hero progress bar fill — animates over slide duration (5s) */
+.hero-progress-fill {
+  width: 0;
+  animation: hero-progress 5s linear forwards;
+}
+@keyframes hero-progress {
+  from { width: 0; }
+  to   { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-kenburns,
+  .hero-progress-fill {
+    animation: none;
+  }
+  .hero-progress-fill { width: 100%; }
 }
 
 /* Full-height hero on tablets and up */

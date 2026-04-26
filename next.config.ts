@@ -65,6 +65,13 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      // Google reviewer profile photos (Google Places API)
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
   // Enforce trailing slash for consistent canonical URLs

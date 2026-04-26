@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { ArrowRight, ChevronDown, Sparkles } from 'lucide-react';
+import { ArrowRight, ChevronDown, Sparkles, MapPin, Star, Circle } from 'lucide-react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import type { HeroSlide } from '@/lib/definitions';
@@ -97,26 +97,30 @@ export default function HomepageClient({ heroSlides: heroSlidesProp }: HomepageC
         <QuoteDialog open={isQuoteDialogOpen} onOpenChange={setQuoteDialogOpen} />
         {/* Hero Section - 2050 Futuristic Design */}
         <section className="relative w-full min-h-screen hero-section-mobile overflow-hidden flex items-center justify-center">
-          {/* Dark Blue Aligned Background Image */}
+          {/* Background Image with Ken Burns zoom on slide change */}
           <div className="absolute inset-0 z-0">
-            <FirebaseImage
-              src={heroSlides[activeSlide].imageUrl}
-              alt={heroSlides[activeSlide].imageHint}
-              fill
-              priority
-              className="object-cover transition-all duration-1000"
-              data-ai-hint={heroSlides[activeSlide].imageHint}
-            />
+            <div key={`bg-${activeSlide}`} className="absolute inset-0 hero-kenburns">
+              <FirebaseImage
+                src={heroSlides[activeSlide].imageUrl}
+                alt={heroSlides[activeSlide].imageHint}
+                fill
+                priority
+                className="object-cover"
+                data-ai-hint={heroSlides[activeSlide].imageHint}
+              />
+            </div>
           </div>
-          
-          {/* Dark Blue Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0a1628]/95 via-[#0d1f3c]/90 to-background/20 z-10" />
-          
-          {/* Bottom Fade Overlay - 50% transparency */}
-          <div className="absolute inset-0 bg-gradient-to-t from-background/50 via-transparent to-transparent z-10 pointer-events-none" suppressHydrationWarning />
-          
-          {/* Floating Geometric Shapes - Reduced on mobile */}
-          {/* Use mounted check to prevent hydration mismatch */}
+
+          {/* Dark Blue Gradient Overlay - stronger on mobile for AAA contrast */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0a1628]/95 via-[#0d1f3c]/90 to-background/60 md:to-background/20 z-10" />
+
+          {/* Bottom Fade Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-background/70 md:from-background/50 via-transparent to-transparent z-10 pointer-events-none" suppressHydrationWarning />
+
+          {/* Decorative grid overlay (cohesive single texture) */}
+          <div className="absolute inset-0 z-10 pointer-events-none opacity-30 md:opacity-40 bg-constellation" suppressHydrationWarning />
+
+          {/* Floating Geometric Shapes — desktop only */}
           {mounted && !isMobileSafe && (
             <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden" suppressHydrationWarning>
               <div className="floating-shape absolute top-[15%] left-[8%] w-28 h-28 md:w-36 md:h-36 border-2 border-primary/30 rotate-45" style={{ animationDelay: '0s' }} />
@@ -126,98 +130,148 @@ export default function HomepageClient({ heroSlides: heroSlidesProp }: HomepageC
               <div className="floating-shape absolute bottom-[40%] right-[30%] w-12 h-12 border-2 border-primary/15 rounded-lg rotate-[30deg]" style={{ animationDelay: '3s' }} />
             </div>
           )}
-          {/* Mobile: Show only 1-2 simple shapes */}
-          {mounted && isMobileSafe && (
-            <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden" suppressHydrationWarning>
-              <div className="floating-shape absolute top-[20%] left-[10%] w-20 h-20 border-2 border-primary/20 rotate-45" style={{ animationDelay: '0s' }} />
-              <div className="floating-shape absolute bottom-[30%] right-[15%] w-16 h-16 border-2 border-primary/15 rounded-full" style={{ animationDelay: '2s' }} />
-            </div>
-          )}
-          
+
           {/* Decorative gradient orbs */}
           <div className="absolute top-1/4 left-1/4 w-48 h-48 md:w-96 md:h-96 bg-primary/20 rounded-full blur-[100px] md:blur-[150px] z-10 pointer-events-none animate-pulse" />
           <div className="absolute bottom-1/4 right-1/4 w-32 h-32 md:w-64 md:h-64 bg-primary/10 rounded-full blur-[80px] md:blur-[120px] z-10 pointer-events-none animate-pulse" style={{ animationDelay: '1.5s' }} />
-          
+
           {/* Hero Content */}
-          <div className={`relative z-20 container mx-auto flex flex-col justify-center items-center px-4 md:px-8 py-20 transition-all duration-1000 ${heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-              <div className="max-w-4xl text-center">
-                  {/* Futuristic Badge */}
-                  <div className="mb-4 md:mb-6">
+          <div className={`relative z-20 container mx-auto flex flex-col justify-center items-center px-5 md:px-8 py-16 md:py-20 transition-all duration-1000 ${heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+              <div className="max-w-4xl text-center w-full">
+                  {/* Trust strip — mobile only (compact, builds credibility) */}
+                  <div className="flex md:hidden items-center justify-center gap-2 mb-4 text-xs text-white/80">
+                    <span className="inline-flex items-center gap-1.5">
+                      <span className="relative flex h-1.5 w-1.5">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                        <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
+                      </span>
+                      {t('trustAvailability')}
+                    </span>
+                    <span className="text-white/30">·</span>
+                    <span className="inline-flex items-center gap-1">
+                      <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                      {t('trustRating')}
+                    </span>
+                    <span className="text-white/30">·</span>
+                    <span className="inline-flex items-center gap-1">
+                      <MapPin className="w-3 h-3 text-primary" />
+                      {t('trustLocation')}
+                    </span>
+                  </div>
+
+                  {/* Futuristic Badge - desktop / hidden on mobile (replaced by trust strip) */}
+                  <div className="hidden md:block mb-4 md:mb-6">
                     <Badge className="badge-futuristic px-4 py-2 text-sm">
                       <Sparkles className="w-4 h-4 mr-2" />
                       {t('badge')}
                     </Badge>
                   </div>
-                  
+
                   {/* Animated Gradient Title */}
-                  <p className="mb-4 md:mb-6" suppressHydrationWarning aria-hidden="true">
+                  <div className="mb-3 md:mb-6" suppressHydrationWarning aria-hidden="true">
                     <GradientText
                       colors={['#3b82f6', '#8b5cf6', '#3b82f6']}
                       animationSpeed={4}
-                      className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight"
+                      className="text-[2.5rem] leading-[1.05] sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight"
                   >
                       {heroSlides[activeSlide].title}
                     </GradientText>
-                  </p>
-                  
-                  {/* Description */}
-                  <p 
-                    key={`desc-${activeSlide}`} 
-                    className="mt-4 md:mt-6 text-base md:text-lg lg:text-xl leading-relaxed text-muted-foreground max-w-2xl mx-auto px-2 animate-fade-in-from-right" 
+                  </div>
+
+                  {/* Description - clamped on mobile to prevent layout shift on slide change */}
+                  <p
+                    key={`desc-${activeSlide}`}
+                    className="mt-3 md:mt-6 text-[15px] md:text-lg lg:text-xl leading-relaxed text-white/85 md:text-muted-foreground max-w-2xl mx-auto px-2 animate-fade-in-from-right line-clamp-3 md:line-clamp-none"
                     style={{ animationDelay: '0.3s' }}
                   >
                       {heroSlides[activeSlide].description}
                   </p>
-                  
-                  {/* CTA Buttons */}
-                  <div className="mt-8 md:mt-10 flex flex-col md:flex-row items-center justify-center gap-3 md:gap-4 px-4 md:px-0">
-                      <Button 
-                        size="lg" 
+
+                  {/* CTA stack — mobile: primary button + secondary text link / desktop: two buttons */}
+                  <div className="mt-7 md:mt-10 flex flex-col md:flex-row items-center justify-center gap-3 md:gap-4 px-2 md:px-0">
+                      <Button
+                        size="lg"
                         onClick={() => setQuoteDialogOpen(true)}
-                        className="group relative overflow-hidden neon-glow-intense font-semibold px-6 md:px-8 py-5 md:py-6 text-sm md:text-base w-auto max-w-[280px] md:w-auto min-h-[44px]"
+                        className="group relative overflow-hidden neon-glow-intense font-semibold px-6 md:px-8 py-5 md:py-6 text-sm md:text-base w-full md:w-auto max-w-[360px] md:max-w-none min-h-[52px] md:min-h-[44px]"
                       >
                         <span className="relative z-10 flex items-center justify-center gap-2">
                           {t('ctaQuote')}
                           <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                         </span>
                       </Button>
-                      <Button 
-                        size="lg" 
-                        variant="outline" 
-                        className="border-2 border-primary/50 bg-white/10 backdrop-blur-md text-white hover:border-primary hover:text-primary font-semibold px-6 md:px-8 py-5 md:py-6 text-sm md:text-base transition-all duration-300 w-auto max-w-[280px] md:w-auto min-h-[44px]" 
+
+                      {/* Mobile: subtle text link */}
+                      <Link
+                        href={getLocalizedPath('/projects', locale as any)}
+                        className="md:hidden inline-flex items-center gap-1.5 text-sm font-medium text-white/80 hover:text-primary transition-colors mt-1 py-2 min-h-[40px]"
+                      >
+                        {t('ctaProjects')}
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </Link>
+
+                      {/* Desktop: full secondary button */}
+                      <Button
+                        size="lg"
+                        variant="outline"
+                        className="hidden md:inline-flex border-2 border-primary/50 bg-white/10 backdrop-blur-md text-white hover:border-primary hover:text-primary font-semibold px-6 md:px-8 py-5 md:py-6 text-sm md:text-base transition-all duration-300 w-auto min-h-[44px]"
                         asChild
                       >
                           <Link href={getLocalizedPath('/projects', locale as any)}>{t('ctaProjects')}</Link>
                       </Button>
                   </div>
-                  
-                  {/* Scroll Indicator - Positioned below buttons */}
-                  <div className="mt-8 md:mt-10 flex justify-center">
-                    <div className="animate-bounce-slow md:animate-bounce">
+
+                  {/* Scroll Indicator - desktop only (mobile uses peek of next section) */}
+                  <div className="hidden md:flex mt-8 md:mt-10 justify-center">
+                    <div className="animate-bounce">
                       <ChevronDown className="w-8 h-8 text-primary/50" />
                     </div>
                   </div>
-                  
-                  {/* Slide Indicators - Positioned at the bottom */}
-                  <div className="flex items-center justify-center gap-2.5 md:gap-2 mt-8 md:mt-10">
+
+                  {/* Slide Indicators - desktop dots */}
+                  <div className="hidden md:flex items-center justify-center gap-2 mt-8 md:mt-10">
                     {heroSlides.map((_, index) => (
                       <button
                         key={index}
                         onClick={() => setActiveSlide(index)}
                         aria-label={`Slide ${index + 1}`}
-                        className="relative p-1.5 md:p-0 -m-1.5 md:m-0 flex items-center justify-center"
+                        className="relative p-0 m-0 flex items-center justify-center"
                       >
                         <span
-                          className={`block h-2.5 md:h-2 rounded-full transition-all duration-700 ease-in-out ${
+                          className={`block h-2 rounded-full transition-all duration-700 ease-in-out ${
                             index === activeSlide
-                              ? 'w-10 md:w-8 bg-primary shadow-[0_0_8px_rgba(var(--primary-rgb,59,130,246),0.5)]'
-                              : 'w-2.5 md:w-2 bg-white/30 hover:bg-white/50'
+                              ? 'w-8 bg-primary shadow-[0_0_8px_rgba(var(--primary-rgb,59,130,246),0.5)]'
+                              : 'w-2 bg-white/30 hover:bg-white/50'
                           }`}
                         />
                       </button>
                     ))}
                   </div>
               </div>
+          </div>
+
+          {/* Mobile slide progress bar — pinned to bottom edge of hero */}
+          <div className="md:hidden absolute bottom-3 left-0 right-0 z-20 px-6">
+            <div className="flex items-center justify-center gap-1.5">
+              {heroSlides.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setActiveSlide(index)}
+                  aria-label={`Slide ${index + 1}`}
+                  className="relative flex-1 max-w-[60px] h-[3px] rounded-full bg-white/20 overflow-hidden"
+                >
+                  <span
+                    className={`absolute inset-y-0 left-0 rounded-full bg-primary shadow-[0_0_8px_rgba(var(--primary-rgb,59,130,246),0.6)] ${
+                      index === activeSlide
+                        ? 'hero-progress-fill'
+                        : index < activeSlide
+                          ? 'w-full'
+                          : 'w-0'
+                    }`}
+                    key={`fill-${index}-${activeSlide}`}
+                  />
+                </button>
+              ))}
+            </div>
           </div>
       </section>
     </>

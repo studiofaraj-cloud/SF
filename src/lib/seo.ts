@@ -17,52 +17,60 @@ export const seoConfig: Record<Locale, {
   defaultKeywords: string[];
 }> = {
   it: {
-    description: 'Sviluppatori full-stack a Padova, Veneto. Creiamo siti web, e-commerce e applicazioni interamente con codice personalizzato — nessun template, nessuna piattaforma terza. SEO, hosting gestito, AI e automazione.',
+    description: 'Sviluppo web su misura a Padova. Realizziamo siti, e-commerce e applicazioni con codice personalizzato — clienti in Veneto, Italia ed Europa.',
     locale: 'it_IT',
-    defaultTitle: 'Studio Faraj - Agenzia Web Padova | Sviluppo Siti Web Veneto',
+    defaultTitle: 'Studio Faraj — Agenzia Web a Padova | Sviluppo Siti Web',
     defaultKeywords: [
+      // City + provincia
       'agenzia web Padova',
       'sviluppo siti web Padova',
-      'realizzazione siti web Veneto',
-      'sviluppo web full stack Veneto',
-      'web agency Nord Est Italia',
-      'sviluppatore React Next.js Padova',
-      'consulenza strategica digitale PMI Veneto',
-      'sviluppo web Padova',
-      'sviluppatori full-stack Veneto',
+      'web designer Padova',
+      'sviluppatore full-stack Padova',
+      // Veneto
+      'web agency Veneto',
+      'sviluppo web Verona',
+      'sviluppo web Venezia',
+      'sviluppo web Treviso',
+      'sviluppo web Vicenza',
+      // Nazionale
+      'agenzia web Italia',
+      'sviluppo web Italia',
+      'siti web professionali Italia',
+      // Europa
+      'web agency Europa',
+      'sviluppo web Europa',
+      // Servizi
       'siti web personalizzati',
-      'e-commerce custom',
-      'agenzia web Padova',
-      'sviluppo web su misura',
-      'SEO Veneto',
-      'hosting gestito',
-      'AI automazione',
-      'design UI/UX',
-      'marketing digitale',
-      'consulenza IT',
+      'e-commerce su misura',
+      'SEO Padova Veneto',
+      'consulenza digitale PMI',
+      'AI e automazione',
     ],
   },
   en: {
-    description: 'Full-stack developers in Padova, Veneto. We build websites, e-commerce and applications entirely with custom code — no templates, no third-party platforms. SEO, managed hosting, AI and automation.',
+    description: 'Custom web development from Padova, Italy. We build websites, e-commerce and apps with bespoke code — serving clients across Italy and Europe.',
     locale: 'en_US',
-    defaultTitle: 'Studio Faraj - Web Agency Italy English | Custom Web Development',
+    defaultTitle: 'Studio Faraj — Web Agency in Padova, Italy',
     defaultKeywords: [
-      'web agency Italy English',
-      'custom web development Italy',
-      'sviluppo web per aziende svizzere',
-      'agenzia web Italia per aziende europee',
-      'web development Padova',
-      'full-stack developers Veneto',
-      'custom websites',
-      'custom e-commerce',
+      // City + region
       'web agency Padova',
-      'bespoke web development',
-      'SEO Veneto',
+      'web development Padova',
+      'web agency Veneto',
+      // Country
+      'web agency Italy',
+      'custom web development Italy',
+      'full-stack development Italy',
+      // Europe
+      'European web development',
+      'bespoke websites Europe',
+      'web agency Europe',
+      // Services
+      'custom websites',
+      'custom e-commerce Italy',
+      'SEO Italy',
+      'AI automation Italy',
       'managed hosting',
-      'AI automation',
       'UI/UX design',
-      'digital marketing',
-      'IT consulting',
     ],
   },
 };
@@ -106,40 +114,42 @@ export function generateMetadata({
     ? `${title} | ${siteConfig.name}`
     : config.defaultTitle;
   
-  // Optimize description length (150-160 chars for SEO)
-  const fullDescription = description 
-    ? (description.length > 160 ? description.substring(0, 157) + '...' : description)
+  // Optimize description length (target ~155 chars; safety margin under 1000px)
+  const fullDescription = description
+    ? (description.length > 155 ? description.substring(0, 152) + '...' : description)
     : config.description;
   
   const ogImage = image || siteConfig.ogImage;
-  const allImages = images && images.length > 0 
+  const allImages = images && images.length > 0
     ? [ogImage, ...images].filter(Boolean).slice(0, 10) // Limit to 10 images for OG
     : [ogImage];
-  const canonicalUrl = url || `${siteConfig.url}/${locale}`;
-  
-  // Build hreflang alternates
+
+  // Normalize: no trailing slashes, no query strings on canonical
+  const stripTrailing = (u: string) => u.replace(/\/+$/, '');
+  const canonicalUrl = stripTrailing(url || `${siteConfig.url}/${locale}`);
+
+  // Resolve hreflang URLs (BCP-47 codes — Google prefers regional like `it-IT`)
+  let itHref: string;
+  let enHref: string;
+  if (alternateUrls) {
+    itHref = stripTrailing(alternateUrls.it);
+    enHref = stripTrailing(alternateUrls.en);
+  } else {
+    const pathAfterLocale = canonicalUrl
+      .replace(siteConfig.url, '')
+      .replace(new RegExp(`^/${locale}`), '');
+    itHref = stripTrailing(`${siteConfig.url}/it${pathAfterLocale}`);
+    enHref = stripTrailing(`${siteConfig.url}/en${pathAfterLocale}`);
+  }
+
   const alternates: Metadata['alternates'] = {
     canonical: canonicalUrl,
+    languages: {
+      'it-IT': itHref,
+      'en-US': enHref,
+      'x-default': itHref,
+    },
   };
-  
-  // Add hreflang tags for internationalization
-  if (alternateUrls) {
-    alternates.languages = {
-      'x-default': alternateUrls['it'] || Object.values(alternateUrls)[0],
-    };
-    Object.entries(alternateUrls).forEach(([loc, altUrl]) => {
-      alternates.languages![loc] = altUrl;
-    });
-  } else {
-    // Auto-generate alternate URLs if not provided
-    // Extract path after locale prefix (e.g. /it/servizi -> /servizi)
-    const pathAfterLocale = canonicalUrl.replace(siteConfig.url, '').replace(new RegExp(`^/${locale}`), '');
-    alternates.languages = {
-      'it': `${siteConfig.url}/it${pathAfterLocale}`,
-      'en': `${siteConfig.url}/en${pathAfterLocale}`,
-      'x-default': `${siteConfig.url}/it${pathAfterLocale}`,
-    };
-  }
   
   const metadata: Metadata = {
     title: fullTitle,
@@ -217,7 +227,7 @@ export function generateStructuredDataOrganization(locale: Locale = 'it') {
       '@type': 'ContactPoint',
       telephone: '+39-320-222-3322',
       contactType: 'customer service',
-      areaServed: ['IT', 'EU', 'US'],
+      areaServed: ['IT', 'EU'],
       availableLanguage: locale === 'it' ? ['Italian', 'English'] : ['English', 'Italian'],
     },
     address: {
@@ -260,8 +270,8 @@ export function generateStructuredDataProfessionalService(locale: Locale = 'it')
     },
     geo: {
       '@type': 'GeoCoordinates',
-      latitude: '37.5069',
-      longitude: '13.0886',
+      latitude: '45.4064',
+      longitude: '11.8768',
     },
     priceRange: '$$',
     openingHoursSpecification: [
@@ -339,9 +349,10 @@ export function generateStructuredDataProfessionalService(locale: Locale = 'it')
       ],
     },
     areaServed: [
+      { '@type': 'City', name: 'Padova' },
+      { '@type': 'AdministrativeArea', name: 'Veneto' },
       { '@type': 'Country', name: locale === 'it' ? 'Italia' : 'Italy' },
-      { '@type': 'Country', name: 'United States' },
-      { '@type': 'Country', name: 'United Kingdom' },
+      { '@type': 'Place', name: locale === 'it' ? 'Unione Europea' : 'European Union' },
     ],
     availableLanguage: ['Italian', 'English'],
     aggregateRating: {
@@ -373,11 +384,17 @@ export function generateStructuredDataWebSite(locale: Locale = 'it') {
   };
 }
 
+/**
+ * Combined LocalBusiness + ProfessionalService schema for the homepage.
+ * Schema.org allows multi-type via array; this merges what was previously two
+ * separate JSON-LD blocks (LocalBusiness on home + ProfessionalService on every
+ * page in the layout) into one node — saves ~3KB on every HTML response.
+ */
 export function generateStructuredDataLocalBusiness(locale: Locale = 'it') {
   const baseUrl = `${siteConfig.url}/${locale}`;
   return {
     '@context': 'https://schema.org',
-    '@type': 'LocalBusiness',
+    '@type': ['LocalBusiness', 'ProfessionalService'],
     '@id': `${siteConfig.url}#localbusiness`,
     name: siteConfig.name,
     image: [
@@ -397,8 +414,8 @@ export function generateStructuredDataLocalBusiness(locale: Locale = 'it') {
     },
     geo: {
       '@type': 'GeoCoordinates',
-      latitude: '37.5069',
-      longitude: '13.0886',
+      latitude: '45.4064',
+      longitude: '11.8768',
     },
     openingHoursSpecification: [
       {
@@ -412,9 +429,10 @@ export function generateStructuredDataLocalBusiness(locale: Locale = 'it') {
     currenciesAccepted: 'EUR',
     paymentAccepted: locale === 'it' ? 'Bonifico Bancario, PayPal' : 'Bank Transfer, PayPal',
     areaServed: [
+      { '@type': 'City', name: 'Padova' },
+      { '@type': 'AdministrativeArea', name: 'Veneto' },
       { '@type': 'Country', name: locale === 'it' ? 'Italia' : 'Italy' },
-      { '@type': 'Country', name: 'United States' },
-      { '@type': 'Country', name: 'United Kingdom' },
+      { '@type': 'Place', name: locale === 'it' ? 'Unione Europea' : 'European Union' },
     ],
     availableLanguage: ['Italian', 'English'],
     knowsAbout: [
@@ -433,6 +451,26 @@ export function generateStructuredDataLocalBusiness(locale: Locale = 'it') {
       'https://www.linkedin.com/company/studiofaraj',
       'https://www.facebook.com/studiofaraj',
     ],
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: '5',
+      reviewCount: '12',
+      bestRating: '5',
+    },
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: locale === 'it' ? 'Servizi di Sviluppo Web Full-Stack' : 'Full-Stack Web Development Services',
+      itemListElement: [
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: locale === 'it' ? 'Sviluppo Web Full-Stack su Misura' : 'Custom Full-Stack Web Development' } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: locale === 'it' ? 'E-Commerce Personalizzato' : 'Custom E-Commerce' } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: locale === 'it' ? 'Design UI/UX' : 'UI/UX Design' } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: locale === 'it' ? 'SEO e Web Marketing' : 'SEO & Web Marketing' } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: locale === 'it' ? 'AI e Automazione' : 'AI & Automation' } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: locale === 'it' ? 'Hosting Gestito e Cloud' : 'Managed Hosting & Cloud' } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: locale === 'it' ? 'Manutenzione e Supporto' : 'Maintenance & Support' } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: locale === 'it' ? 'Consulenza IT Strategica' : 'Strategic IT Consulting' } },
+      ],
+    },
   };
 }
 
@@ -447,18 +485,10 @@ export function generateStructuredDataService(name: string, description: string,
       url: `${siteConfig.url}/${locale}`,
     },
     areaServed: [
-      {
-        '@type': 'Country',
-        name: locale === 'it' ? 'Italia' : 'Italy',
-      },
-      {
-        '@type': 'Country',
-        name: 'United States',
-      },
-      {
-        '@type': 'Country',
-        name: 'United Kingdom',
-      },
+      { '@type': 'City', name: 'Padova' },
+      { '@type': 'AdministrativeArea', name: 'Veneto' },
+      { '@type': 'Country', name: locale === 'it' ? 'Italia' : 'Italy' },
+      { '@type': 'Place', name: locale === 'it' ? 'Unione Europea' : 'European Union' },
     ],
     description: description,
     url: url,

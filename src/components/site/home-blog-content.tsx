@@ -56,7 +56,7 @@ export function HomeBlogContent({ blogs }: HomeBlogContentProps) {
           <div className="space-y-6 md:space-y-8">
             {/* Featured Blog Post - First item */}
             <ScrollFadeIn animation="fade-up" delay={100}>
-              <Link href={`/${locale}/blog/${blogs[0]?.slug || ''}`} className="block group">
+              <Link href={`/${locale}/blog/${blogs[0]?.slug || ''}`} className="block group" aria-label={blogs[0]?.title}>
                 <Card className="relative overflow-hidden holographic-card neon-border transition-all duration-700 hover:shadow-2xl hover:shadow-primary/20">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
                     {/* Image Side */}
@@ -133,7 +133,7 @@ export function HomeBlogContent({ blogs }: HomeBlogContentProps) {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
                 {blogs.slice(1).map((blog, index) => (
                   <ScrollFadeIn key={blog.id || blog.slug || index} animation="fade-up" delay={(index + 1) * 100}>
-                    <Link href={`/${locale}/blog/${blog.slug}`} className="block group">
+                    <Link href={`/${locale}/blog/${blog.slug}`} className="block group" aria-label={blog.title}>
                       <Card className="relative overflow-hidden h-full holographic-card neon-border transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 md:hover:-translate-y-2">
                         {/* Image */}
                         <div className="relative aspect-video overflow-hidden">
@@ -177,9 +177,9 @@ export function HomeBlogContent({ blogs }: HomeBlogContentProps) {
                           </div>
                           
                           {/* Title */}
-                          <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3 text-foreground group-hover:text-primary transition-colors line-clamp-2">
+                          <p className="text-lg md:text-xl font-bold mb-2 md:mb-3 text-foreground group-hover:text-primary transition-colors line-clamp-2">
                             {blog.title}
-                          </h3>
+                          </p>
                           
                           {/* Excerpt */}
                           <p className="text-sm text-muted-foreground line-clamp-2 mb-3 md:mb-4">

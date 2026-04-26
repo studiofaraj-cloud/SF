@@ -11,6 +11,7 @@ import {
   Settings,
   Calendar,
   ExternalLink,
+  Star,
 } from 'lucide-react';
 import { Sidebar, SidebarHeader, SidebarContent, SidebarFooter } from '@/components/ui/sidebar';
 import Image from 'next/image';
@@ -23,6 +24,7 @@ const menuItems = [
   { href: '/admin/messages',    label: 'Messages',     icon: MessageSquare },
   { href: '/admin/subscribers', label: 'Subscribers',  icon: Users },
   { href: '/admin/bookings',    label: 'Bookings',     icon: Calendar },
+  { href: '/admin/reviews',     label: 'Reviews',      icon: Star },
 ];
 
 export function AdminSidebar() {

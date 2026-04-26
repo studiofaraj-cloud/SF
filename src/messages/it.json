@@ -955,7 +955,10 @@
       "adminArea": "Area Amministrativa Inclusa",
       "adminAreaDesc": "Gestisci il tuo sito in autonomia con un pannello di controllo intuitivo e potente.",
       "ctaQuote": "Richiedi un preventivo",
-      "ctaProjects": "Scopri i nostri lavori"
+      "ctaProjects": "Scopri i nostri lavori",
+      "trustLocation": "Padova, IT",
+      "trustRating": "5.0",
+      "trustAvailability": "Disponibili"
     },
     "stats": {
       "title": "I Nostri Numeri",
@@ -1072,23 +1075,24 @@
       "title": "Il Partner Ideale per",
       "titleHighlight": "la Tua Crescita Digitale",
       "subtitle": "Non siamo solo un'agenzia. Siamo il tuo team strategico dedicato al successo digitale, con un approccio personalizzato e risultati misurabili.",
-      "fastDelivery": {
-        "title": "Consegna Rapida",
-        "description": "Lavoriamo in modo efficiente per consegnare il tuo progetto nei tempi concordati, senza compromettere la qualità.",
-        "metric": "48h",
-        "metricLabel": "Risposta Media"
+      "topRanked": {
+        "badge": "SEO Ranking",
+        "title": "Top 10 su Google",
+        "description": "I nostri progetti raggiungono la prima pagina di Google. Ottimizzazione SEO professionale per portare il tuo sito tra i primi 10 risultati di ricerca.",
+        "metric": "#10",
+        "metricLabel": "Posizione Google"
       },
-      "support": {
-        "title": "Supporto 24/7",
-        "description": "Il nostro team è sempre a tua disposizione per risolvere qualsiasi problema e rispondere a ogni tua domanda.",
-        "metric": "24/7",
-        "metricLabel": "Disponibilità"
+      "quality": {
+        "title": "Qualità Senza Compromessi",
+        "description": "Ogni pixel, ogni riga di codice rispetta gli standard più alti. Test rigorosi, accessibilità AAA, performance da 90+ Lighthouse.",
+        "metric": "AAA",
+        "metricLabel": "Standard"
       },
-      "transparency": {
-        "title": "Trasparenza Totale",
-        "description": "Crediamo in una comunicazione chiara e onesta. Sarai sempre aggiornato sullo stato del tuo progetto.",
+      "cleanCode": {
+        "title": "Codice Pulito",
+        "description": "Codice manutenibile, tipizzato e documentato. Niente debito tecnico, niente sorprese. Il tuo progetto rimane veloce da evolvere nel tempo.",
         "metric": "100%",
-        "metricLabel": "Trasparenza"
+        "metricLabel": "TypeScript"
       }
     },
     "process": {

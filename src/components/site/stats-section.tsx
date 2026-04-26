@@ -113,30 +113,37 @@ export default function StatsSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative py-10 md:py-16 overflow-hidden">
+    <section ref={sectionRef} className="relative pt-6 pb-10 md:py-16 overflow-hidden">
       {/* Subtle gradient bg */}
       <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-background to-primary/5" />
+
+      {/* Soft primary glow — continuity with hero */}
+      <div className="md:hidden absolute top-0 left-1/2 -translate-x-1/2 w-64 h-32 bg-primary/10 rounded-full blur-[80px] pointer-events-none" />
 
       <div className="container relative z-10 px-4 md:px-8">
         {/* Single row strip */}
         <div className="relative rounded-2xl border border-border/50 bg-card/50 backdrop-blur-sm overflow-hidden">
           {/* Subtle top accent line */}
-          <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+          <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent shadow-[0_0_8px_rgba(var(--primary-rgb,59,130,246),0.4)]" />
 
-          {/* Mobile: horizontal scroll */}
-          <div className="md:hidden overflow-x-auto snap-x snap-mandatory scrollbar-hide -mx-4 px-4">
-            <div className="flex gap-0">
-              {stats.map((stat, index) => (
+          {/* Mobile: 2x2 grid */}
+          <div className="md:hidden grid grid-cols-2">
+            {stats.map((stat, index) => {
+              const isRightCol = index % 2 === 1;
+              const isBottomRow = index >= 2;
+              return (
                 <div
                   key={`m-${index}`}
-                  className={`min-w-[40vw] snap-center shrink-0 transition-all duration-700 ${
+                  className={`relative transition-all duration-700 ${
+                    !isRightCol ? 'border-r border-border/50' : ''
+                  } ${!isBottomRow ? 'border-b border-border/50' : ''} ${
                     isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
                   }`}
                   style={{ transitionDelay: `${index * 120}ms` }}
                 >
                   <div className="flex flex-col items-center text-center px-3 py-5">
                     <div
-                      className="w-9 h-9 rounded-lg flex items-center justify-center text-white shadow-lg mb-2"
+                      className="w-10 h-10 rounded-lg flex items-center justify-center text-white shadow-lg mb-2"
                       style={{
                         backgroundColor: stat.iconColor,
                         boxShadow: `0 4px 14px 0 ${stat.iconShadow}`,
@@ -144,14 +151,14 @@ export default function StatsSection() {
                     >
                       {stat.icon}
                     </div>
-                    <div className="text-2xl font-bold text-foreground mb-0.5 tracking-tight">
-                      <AnimatedCounter target={stat.value} suffix={stat.suffix} isVisible={isVisible} skipAnimation={isMobile} />
+                    <div className="text-3xl font-bold text-foreground mb-1 tracking-tight">
+                      <AnimatedCounter target={stat.value} suffix={stat.suffix} isVisible={isVisible} />
                     </div>
-                    <p className="text-[10px] text-muted-foreground font-medium leading-tight">{stat.label}</p>
+                    <p className="text-xs text-muted-foreground font-medium leading-tight">{stat.label}</p>
                   </div>
                 </div>
-              ))}
-            </div>
+              );
+            })}
           </div>
 
           {/* Desktop: grid layout */}

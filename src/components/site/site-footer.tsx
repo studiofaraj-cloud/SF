@@ -150,7 +150,7 @@ export function SiteFooter() {
           
           {/* Navigation Links */}
           <div className="col-span-1 md:col-span-1 lg:col-span-2">
-            <h4 className="font-bold text-foreground mb-4 md:mb-6 text-sm md:text-base">{t('navigation')}</h4>
+            <p className="font-bold text-foreground mb-4 md:mb-6 text-sm md:text-base">{t('navigation')}</p>
             <ul className="space-y-3">
               <li>
                 <Link href={getLocalizedPath('/chi-siamo', locale as any)} className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group">
@@ -181,7 +181,7 @@ export function SiteFooter() {
 
           {/* Services Links */}
           <div className="col-span-1 md:col-span-1 lg:col-span-2">
-            <h4 className="font-bold text-foreground mb-4 md:mb-6 text-sm md:text-base">{t('services')}</h4>
+            <p className="font-bold text-foreground mb-4 md:mb-6 text-sm md:text-base">{t('services')}</p>
             <ul className="space-y-3">
               <li>
                 <Link href={getLocalizedPath('/servizi/sviluppo-web', locale as any)} className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group">
@@ -224,7 +224,7 @@ export function SiteFooter() {
 
           {/* Legal & Support */}
           <div className="col-span-2 md:col-span-1 lg:col-span-2">
-            <h4 className="font-bold text-foreground mb-4 md:mb-6 text-sm md:text-base">{t('support')}</h4>
+            <p className="font-bold text-foreground mb-4 md:mb-6 text-sm md:text-base">{t('support')}</p>
             <ul className="space-y-3">
               <li>
                 <Link href={getLocalizedPath('/servizi/hosting-cloud', locale as any)} className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group">
@@ -258,7 +258,7 @@ export function SiteFooter() {
             <div className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl p-4 md:p-6">
               <div className="flex items-center gap-2 mb-3">
                 <Zap className="w-5 h-5 text-primary" />
-                <h4 className="font-bold text-foreground text-base">{t('newsletter.title')}</h4>
+                <p className="font-bold text-foreground text-base">{t('newsletter.title')}</p>
               </div>
               <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
                 {t('newsletter.description')}

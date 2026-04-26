@@ -119,9 +119,9 @@ export default function ProcessTimeline({ steps }: ProcessTimelineProps) {
                     >
                       <span className="w-5 h-5 [&>svg]:w-full [&>svg]:h-full">{step.icon}</span>
                     </div>
-                    <h3 className={`font-bold text-base transition-colors duration-500 ${isVisible ? 'text-foreground' : 'text-muted-foreground'}`}>
+                    <p className={`font-bold text-base transition-colors duration-500 ${isVisible ? 'text-foreground' : 'text-muted-foreground'}`}>
                       {step.title}
-                    </h3>
+                    </p>
                   </div>
 
                   <p className="text-sm text-muted-foreground leading-relaxed pl-12">
@@ -227,7 +227,7 @@ export default function ProcessTimeline({ steps }: ProcessTimelineProps) {
                           </div>
                         </div>
                         
-                        <h3 className="font-bold text-xl text-primary mb-2">{step.title}</h3>
+                        <p className="font-bold text-xl text-primary mb-2">{step.title}</p>
                         <p className="text-sm text-muted-foreground leading-relaxed">{step.description}</p>
                       </div>
                     </Card>

@@ -13,9 +13,9 @@ import {
   DraftingCompass,
   Eye,
   Wrench,
-  Clock,
-  MessagesSquare,
   ShieldCheck,
+  Trophy,
+  Code2,
   Monitor,
   Tablet,
   Smartphone as SmartphoneIcon,
@@ -54,11 +54,12 @@ import TechLogosClient from '@/components/site/tech-logos-client';
 import ProcessTimeline from '@/components/site/process-timeline';
 import HomepageClientDynamic from '@/components/site/homepage-client-dynamic';
 import ContactSection from '@/components/site/contact-section';
-import TestimonialsSection from '@/components/site/testimonials-section';
+import { TestimonialsServer } from '@/components/site/testimonials-server';
 import StatsSection from '@/components/site/stats-section';
 import ScrollFadeIn from '@/components/site/scroll-fade-in';
 import { TechSectionMobile } from '@/components/site/tech-section-mobile';
 import { ServiceAccordionMobile } from '@/components/site/service-accordion-mobile';
+import { ServicesDesktop } from '@/components/site/services-desktop';
 // Server Components
 import { HomeProjectSection } from '@/components/site/home-project-section';
 import { HomeBlogSection } from '@/components/site/home-blog-section';
@@ -71,63 +72,9 @@ export const revalidate = 3600;
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   const currentLocale = locale as 'it' | 'en';
-  
-  // Get translations for SEO content
-  let t: any;
-  try {
-    t = await getTranslations('home');
-  } catch {
-    t = (key: string) => key;
-  }
-  
-  // Locale-specific SEO content
-  const seoContent = {
-    it: {
-      title: 'Studio Faraj - Sviluppo Web Professionale | Padova, Veneto',
-      description: 'Sviluppo web professionale a Padova, Veneto. Creiamo siti web personalizzati, e-commerce, applicazioni web moderne e soluzioni digitali innovative per far crescere il tuo business online.',
-      keywords: [
-        'agenzia web Padova',
-        'sviluppo siti web Padova',
-        'realizzazione siti web Veneto',
-        'sviluppo web full stack Veneto',
-        'web agency Padova',
-        'sviluppo web Padova',
-        'siti web Veneto',
-        'e-commerce Padova',
-        'web development Veneto',
-        'agenzia web Padova',
-        'creazione siti web',
-        'design UI/UX',
-        'SEO Veneto',
-        'marketing digitale',
-      ],
-    },
-    en: {
-      title: 'Studio Faraj - Professional Web Development | Padova, Veneto',
-      description: 'Professional web development in Padova, Veneto. We create custom websites, e-commerce, modern web applications and innovative digital solutions to grow your online business.',
-      keywords: [
-        'agenzia web Padova',
-        'sviluppo siti web Padova',
-        'realizzazione siti web Veneto',
-        'sviluppo web full stack Veneto',
-        'web agency Padova',
-        'web development Padova',
-        'websites Veneto',
-        'e-commerce Padova',
-        'web development Veneto',
-        'web agency Padova',
-        'website creation',
-        'UI/UX design',
-        'SEO Veneto',
-        'digital marketing',
-        'web design Veneto',
-        'custom websites',
-        'responsive design',
-      ],
-    },
-  };
-  
-  const content = seoContent[currentLocale] || seoContent.it;
+
+  // Defer to seoConfig defaults in src/lib/seo.ts (single source of truth for
+  // title, description, keywords). Only the canonical/alternate URLs are page-specific.
   const baseUrl = `${siteConfig.url}/${currentLocale}`;
   const alternateUrls = {
     it: `${siteConfig.url}/it`,
@@ -135,8 +82,6 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   };
 
   return generateSEOMetadata({
-    description: content.description,
-    keywords: content.keywords,
     url: baseUrl,
     locale: currentLocale,
     alternateUrls,
@@ -254,25 +199,29 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
 
   const values = [
     {
-      icon: <Clock className="w-7 h-7" />,
-      title: tValues('fastDelivery.title'),
-      description: tValues('fastDelivery.description'),
-      metric: tValues('fastDelivery.metric'),
-      metricLabel: tValues('fastDelivery.metricLabel'),
+      icon: <Trophy className="w-8 h-8" />,
+      title: tValues('topRanked.title'),
+      description: tValues('topRanked.description'),
+      metric: tValues('topRanked.metric'),
+      metricLabel: tValues('topRanked.metricLabel'),
+      badge: tValues('topRanked.badge'),
+      featured: true,
     },
     {
-      icon: <MessagesSquare className="w-7 h-7" />,
-      title: tValues('support.title'),
-      description: tValues('support.description'),
-      metric: tValues('support.metric'),
-      metricLabel: tValues('support.metricLabel'),
+      icon: <Sparkles className="w-7 h-7" />,
+      title: tValues('quality.title'),
+      description: tValues('quality.description'),
+      metric: tValues('quality.metric'),
+      metricLabel: tValues('quality.metricLabel'),
+      featured: false,
     },
     {
-      icon: <ShieldCheck className="w-7 h-7" />,
-      title: tValues('transparency.title'),
-      description: tValues('transparency.description'),
-      metric: tValues('transparency.metric'),
-      metricLabel: tValues('transparency.metricLabel'),
+      icon: <Code2 className="w-7 h-7" />,
+      title: tValues('cleanCode.title'),
+      description: tValues('cleanCode.description'),
+      metric: tValues('cleanCode.metric'),
+      metricLabel: tValues('cleanCode.metricLabel'),
+      featured: false,
     },
   ];
 
@@ -545,115 +494,17 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           </div>
           </ScrollFadeIn>
 
-          {/* ── Mobile: Accordion List ── */}
+          {/* ── Mobile: Accordion List (unchanged) ── */}
           <ServiceAccordionMobile services={services} learnMoreLabel={tServices('learnMore')} />
 
-          {/* ── Desktop: Bento Grid ── */}
-          <div className="hidden md:block">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
-              {services.map((service, index) => {
-                /* Bento span assignments:
-                   0 = hero (2col×2row), 4 = tall (1col×2row),
-                   5 = wide (2col), 7 = full-width banner (4col) */
-                const isHero   = index === 0;
-                const isTall   = index === 4;
-                const isWide   = index === 5;
-                const isBanner = index === 7;
-
-                const bentoSpan =
-                  isHero   ? 'md:col-span-2 lg:row-span-2' :
-                  isTall   ? 'lg:row-span-2' :
-                  isWide   ? 'md:col-span-2' :
-                  isBanner ? 'md:col-span-2 lg:col-span-4' :
-                  '';
-
-                return (
-                  <ScrollFadeIn
-                    key={index}
-                    animation="fade-up"
-                    delay={index * 75}
-                    className={bentoSpan}
-                  >
-                    <Link
-                      href={`/${locale}/servizi/${service.slug}`}
-                      className="block group h-full"
-                    >
-                      <Card className={`h-full relative overflow-hidden holographic-card service-card-glow neon-border transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 md:hover:-translate-y-1 ${isBanner ? 'bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5' : ''}`}>
-                        {/* Floating orbs */}
-                        <div className={`card-orb card-orb-1 ${service.orbColor}`} />
-                        <div className={`card-orb card-orb-2 ${service.orbColor}`} />
-                        {/* Gradient background on hover */}
-                        <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-
-                        {/* Top accent line */}
-                        <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary/50 via-primary to-primary/50 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left ${isBanner ? 'h-[2px]' : ''}`} />
-
-                        {/* ── Card inner layout ── */}
-                        <div className={`relative z-10 flex h-full ${
-                          isHero   ? 'flex-col justify-between p-6 md:p-8 lg:p-10' :
-                          isTall   ? 'flex-col justify-between p-5 md:p-7' :
-                          isBanner ? 'flex-row items-center p-5 md:p-6 lg:p-8 gap-5 md:gap-8' :
-                          isWide   ? 'flex-col sm:flex-row sm:items-center p-4 md:p-6' :
-                          'flex-col p-4 md:p-6'
-                        }`}>
-
-                          {/* Icon */}
-                          <div className={`shrink-0 rounded-xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center text-primary group-hover:from-primary group-hover:to-primary/80 group-hover:text-primary-foreground transition-all duration-500 shadow-lg group-hover:shadow-primary/40 ${
-                            isHero   ? 'w-16 h-16 md:w-20 md:h-20 mb-6' :
-                            isTall   ? 'w-14 h-14 md:w-16 md:h-16 mb-5' :
-                            isBanner ? 'w-14 h-14 md:w-16 md:h-16' :
-                            'w-12 h-12 md:w-14 md:h-14 mb-4 sm:mb-0'
-                          } ${isWide ? 'sm:mr-5' : ''}`}>
-                            {(isHero || isTall)
-                              ? React.cloneElement(service.icon as React.ReactElement, { className: isHero ? 'w-9 h-9 md:w-11 md:h-11' : 'w-8 h-8 md:w-9 md:h-9' })
-                              : service.icon}
-                          </div>
-
-                          {/* Text */}
-                          <div className={`flex flex-col ${
-                            isHero   ? 'gap-3 md:gap-4' :
-                            isTall   ? 'gap-2 md:gap-3' :
-                            isBanner ? 'flex-1 gap-1' :
-                            'gap-2'
-                          } ${isWide ? 'flex-1' : ''}`}>
-                            <h3 className={`font-bold text-primary group-hover:text-primary transition-colors ${
-                              isHero   ? 'text-xl md:text-2xl lg:text-3xl' :
-                              isTall   ? 'text-lg md:text-xl' :
-                              isBanner ? 'text-lg md:text-xl lg:text-2xl' :
-                              'text-base md:text-lg'
-                            }`}>
-                              {service.title}
-                            </h3>
-                            <p className={`text-muted-foreground leading-relaxed ${
-                              isHero   ? 'text-sm md:text-base lg:text-lg max-w-md' :
-                              isTall   ? 'text-sm md:text-base' :
-                              isBanner ? 'text-sm md:text-base max-w-2xl' :
-                              'text-sm'
-                            }`}>
-                              {service.description}
-                            </p>
-                            <span className={`inline-flex items-center font-medium text-primary transition-opacity duration-300 ${
-                              isBanner ? 'opacity-100 text-base' : 'opacity-0 group-hover:opacity-100'
-                            } ${isHero ? 'text-base mt-2' : 'text-sm'}`}>
-                              {tServices('requestInfo')}
-                              <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
-                            </span>
-                          </div>
-
-                          {/* Banner: extra arrow on right */}
-                          {isBanner && (
-                            <div className="shrink-0 w-10 h-10 md:w-12 md:h-12 rounded-full bg-primary/10 group-hover:bg-primary flex items-center justify-center transition-all duration-500">
-                              <ArrowRight className="w-5 h-5 md:w-6 md:h-6 text-primary group-hover:text-primary-foreground transition-colors group-hover:translate-x-0.5" />
-                            </div>
-                          )}
-                        </div>
-                      </Card>
-                    </Link>
-                  </ScrollFadeIn>
-                );
-              })}
-            </div>
-          </div>
+          {/* ── Desktop: Elegant sidebar + detail panel ── */}
+          <ServicesDesktop
+            services={services}
+            locale={locale}
+            requestInfo={tServices('requestInfo')}
+            cta={tServices('cta')}
+            ctaHref={getLocalizedPath('/contatti', locale as any)}
+          />
 
           <ScrollFadeIn animation="fade-up" delay={600}>
           <div className="text-center mt-12">
@@ -799,7 +650,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                     <div className="w-10 h-10 md:w-11 md:h-11 lg:w-12 lg:h-12 rounded-xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center mb-3 md:mb-4 group-hover:from-primary group-hover:to-primary/80 group-hover:text-primary-foreground transition-all duration-500 shadow-lg group-hover:shadow-primary/40 flex-shrink-0">
                       <FeatureIcon className="w-5 h-5 md:w-5 md:h-5 lg:w-6 lg:h-6 text-primary group-hover:text-primary-foreground transition-colors" />
                     </div>
-                    <h3 className="font-semibold text-sm md:text-base lg:text-lg mb-2 flex-shrink-0">{feature.title}</h3>
+                    <p className="font-semibold text-sm md:text-base lg:text-lg mb-2 flex-shrink-0">{feature.title}</p>
                     <p className="text-xs md:text-sm text-muted-foreground flex-1">{feature.description}</p>
                   </div>
                 </ScrollFadeIn>
@@ -860,38 +711,49 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
             <div className="space-y-4 md:space-y-6">
               {values.map((value, index) => (
                 <ScrollFadeIn key={value.title} animation="fade-right" delay={index * 100}>
-                  <Card className="group relative overflow-hidden holographic-card neon-border transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 lg:hover:-translate-x-2">
-                  <CardContent className="relative z-10 p-4 md:p-6">
-                    <div className="flex items-start gap-4 md:gap-5">
-                      {/* Icon with animated background */}
-                      <div className="relative flex-shrink-0">
-                        <div className="absolute inset-0 bg-primary/10 rounded-2xl blur-xl group-hover:bg-primary/20 transition-all duration-500 scale-0 group-hover:scale-100" />
+                  <Card className={`group relative overflow-hidden holographic-card transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 lg:hover:-translate-x-2 ${
+                    value.featured ? 'animated-gradient-border' : 'neon-border'
+                  }`}>
+                    {value.featured && (
+                      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-primary/5 pointer-events-none" />
+                    )}
+                    <CardContent className="relative z-10 p-4 md:p-6">
+                      {value.featured && value.badge && (
+                        <Badge variant="secondary" className="mb-3 bg-primary/15 text-primary border-primary/30 text-xs">
+                          <Trophy className="w-3 h-3 mr-1.5" />
+                          {value.badge}
+                        </Badge>
+                      )}
+                      <div className="flex items-start gap-4 md:gap-5">
+                        {/* Icon with animated background */}
+                        <div className="relative flex-shrink-0">
+                          <div className="absolute inset-0 bg-primary/10 rounded-2xl blur-xl group-hover:bg-primary/20 transition-all duration-500 scale-0 group-hover:scale-100" />
                           <div className="relative w-12 h-12 md:w-14 md:h-14 rounded-xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center text-primary shrink-0 group-hover:from-primary group-hover:to-primary/80 group-hover:text-primary-foreground transition-all duration-500 shadow-lg group-hover:shadow-primary/40">
-                          {value.icon}
+                            {value.icon}
+                          </div>
                         </div>
-                      </div>
-                      
-                      {/* Content */}
-                      <div className="flex-1">
+
+                        {/* Content */}
+                        <div className="flex-1">
                           <div className="flex items-start justify-between mb-2">
                             <CardTitle className="text-lg md:text-xl font-bold text-foreground group-hover:text-primary transition-colors duration-300">
-                          {value.title}
-                        </CardTitle>
+                              {value.title}
+                            </CardTitle>
                             <div className="text-right ml-4">
                               <div className="text-lg md:text-xl font-bold text-primary metric-glow">{value.metric}</div>
                               <div className="text-xs text-muted-foreground">{value.metricLabel}</div>
                             </div>
                           </div>
-                        <p className="text-muted-foreground leading-relaxed text-sm">
-                          {value.description}
-                        </p>
-                        
+                          <p className="text-muted-foreground leading-relaxed text-sm">
+                            {value.description}
+                          </p>
+
                           {/* Decorative line */}
-                        <div className="hidden md:block mt-4 h-1 w-0 bg-gradient-to-r from-primary to-transparent group-hover:w-full transition-all duration-500 rounded-full" />
+                          <div className="hidden md:block mt-4 h-1 w-0 bg-gradient-to-r from-primary to-transparent group-hover:w-full transition-all duration-500 rounded-full" />
+                        </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                    </CardContent>
+                  </Card>
                 </ScrollFadeIn>
               ))}
             </div>
@@ -900,30 +762,40 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
             <ScrollFadeIn animation="fade-left" delay={200}>
             <div className="relative mt-8 lg:mt-0">
               <div className="relative">
-                  {/* Decorative frame */}
+                {/* Decorative frame */}
                 <div className="absolute -inset-3 md:-inset-6 bg-gradient-to-br from-primary/20 via-primary/10 to-transparent rounded-3xl blur-2xl opacity-50" />
-                  <div className="relative rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl neon-border">
+                <div className="relative rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl neon-border">
                   <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent z-10" />
-                <Image
+                  <Image
                     alt="Un team che collabora a un progetto"
                     className="w-full h-auto object-cover"
                     data-ai-hint="collaborative team"
                     height={600}
-                    src="/assets/yu.png"
+                    src="/assets/studio-faraj-sviluppo-web-padova.webp"
                     width={1200}
-                />
+                  />
+                </div>
+
+                {/* Floating badges — Google ranking + clean code */}
+                <div className="hidden md:flex absolute -top-4 -left-4 holographic-card neon-border rounded-2xl p-3 md:p-4 shadow-xl backdrop-blur-sm items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center text-primary shrink-0">
+                    <Trophy className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <div className="text-xl md:text-2xl font-bold text-primary metric-glow leading-none">#10</div>
+                    <div className="text-xs text-muted-foreground mt-1">{tValues('topRanked.metricLabel')}</div>
+                  </div>
+                </div>
+                <div className="hidden md:flex absolute -bottom-4 -right-4 holographic-card neon-border rounded-2xl p-3 md:p-4 shadow-xl backdrop-blur-sm items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center text-primary shrink-0">
+                    <Sparkles className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <div className="text-xl md:text-2xl font-bold text-primary metric-glow leading-none">AAA</div>
+                    <div className="text-xs text-muted-foreground mt-1">{tValues('quality.metricLabel')}</div>
+                  </div>
+                </div>
               </div>
-                
-                  {/* Floating stats badges */}
-                  <div className="hidden md:block absolute -top-4 -left-4 holographic-card neon-border rounded-2xl p-3 md:p-4 shadow-xl backdrop-blur-sm">
-                    <div className="text-2xl md:text-3xl font-bold text-primary metric-glow">100%</div>
-                  <div className="text-xs md:text-sm text-muted-foreground">{t('stats.title')}</div>
-            </div>
-                  <div className="hidden md:block absolute -bottom-4 -right-4 holographic-card neon-border rounded-2xl p-3 md:p-4 shadow-xl backdrop-blur-sm">
-                    <div className="text-2xl md:text-3xl font-bold text-primary metric-glow">24/7</div>
-                  <div className="text-xs md:text-sm text-muted-foreground">{t('stats.support')}</div>
-                  </div>
-                  </div>
             </div>
             </ScrollFadeIn>
           </div>
@@ -1157,7 +1029,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
         <HomeBlogSection />
       </Suspense>
 
-      <TestimonialsSection />
+      <TestimonialsServer />
       
       <ContactSection />
       <StructuredDataServer data={localBusinessData} />

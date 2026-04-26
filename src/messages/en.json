@@ -955,7 +955,10 @@
       "adminArea": "Admin Area Included",
       "adminAreaDesc": "Manage your site independently with an intuitive and powerful control panel.",
       "ctaQuote": "Request a Quote",
-      "ctaProjects": "Discover Our Work"
+      "ctaProjects": "Discover Our Work",
+      "trustLocation": "Padova, IT",
+      "trustRating": "5.0",
+      "trustAvailability": "Available"
     },
     "stats": {
       "title": "Our Numbers",
@@ -1072,23 +1075,24 @@
       "title": "The Ideal Partner for",
       "titleHighlight": "Your Digital Growth",
       "subtitle": "We're not just an agency. We're your dedicated strategic team for digital success, with a personalized approach and measurable results.",
-      "fastDelivery": {
-        "title": "Fast Delivery",
-        "description": "We work efficiently to deliver your project on time, without compromising quality.",
-        "metric": "48h",
-        "metricLabel": "Average Response"
+      "topRanked": {
+        "badge": "SEO Ranking",
+        "title": "Top 10 on Google",
+        "description": "Our projects reach the first page of Google. Professional SEO optimization to get your site among the top 10 search results.",
+        "metric": "#10",
+        "metricLabel": "Google Position"
       },
-      "support": {
-        "title": "24/7 Support",
-        "description": "Our team is always at your disposal to solve any problem and answer every question.",
-        "metric": "24/7",
-        "metricLabel": "Availability"
+      "quality": {
+        "title": "Uncompromising Quality",
+        "description": "Every pixel and every line of code meets the highest standards. Rigorous testing, AAA accessibility, 90+ Lighthouse performance.",
+        "metric": "AAA",
+        "metricLabel": "Standard"
       },
-      "transparency": {
-        "title": "Total Transparency",
-        "description": "We believe in clear and honest communication. You'll always be updated on your project's status.",
+      "cleanCode": {
+        "title": "Clean Code",
+        "description": "Maintainable, typed and documented code. No technical debt, no surprises. Your project stays fast to evolve over time.",
         "metric": "100%",
-        "metricLabel": "Transparency"
+        "metricLabel": "TypeScript"
       }
     },
     "process": {

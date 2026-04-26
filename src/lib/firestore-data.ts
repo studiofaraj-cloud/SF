@@ -119,7 +119,72 @@ const COLLECTIONS = {
   SUBSCRIBERS: 'subscribers',
   BOOKINGS: 'bookings',
   SETTINGS: 'settings',
+  REVIEWS: 'reviews',
 } as const;
+
+// ─── Reviews ──────────────────────────────────────────────────────────────────
+
+export interface ReviewDocument {
+  id?: string;
+  authorDisplayName: string;
+  authorPhotoUri: string;
+  authorUri: string;
+  rating: number;
+  text: string;
+  relativeTime: string;
+  publishTime: string; // ISO 8601 — used for sorting
+  source: 'google' | 'manual';
+  visible: boolean;
+  createdAt: Timestamp;
+}
+
+export async function getReviews(onlyVisible = false): Promise<ReviewDocument[]> {
+  try {
+    const ref = collection(db, COLLECTIONS.REVIEWS);
+    const constraints: QueryConstraint[] = [orderBy('publishTime', 'desc')];
+    if (onlyVisible) constraints.unshift(where('visible', '==', true));
+    const snap = await getDocs(query(ref, ...constraints));
+    return snap.docs.map((d) => ({ id: d.id, ...d.data() } as ReviewDocument));
+  } catch (err) {
+    console.error('Error fetching reviews:', err);
+    return [];
+  }
+}
+
+export async function upsertReview(review: Omit<ReviewDocument, 'id' | 'createdAt'>): Promise<string> {
+  // Deduplicate by (authorDisplayName + publishTime)
+  const ref = collection(db, COLLECTIONS.REVIEWS);
+  const existing = await getDocs(
+    query(ref,
+      where('authorDisplayName', '==', review.authorDisplayName),
+      where('publishTime', '==', review.publishTime)
+    )
+  );
+  if (!existing.empty) {
+    const docRef = existing.docs[0].ref;
+    await updateDoc(docRef, { ...review });
+    return existing.docs[0].id;
+  }
+  const newDoc = await addDoc(ref, {
+    ...review,
+    createdAt: Timestamp.now(),
+  });
+  return newDoc.id;
+}
+
+export async function addReview(review: Omit<ReviewDocument, 'id' | 'createdAt'>): Promise<string> {
+  const ref = collection(db, COLLECTIONS.REVIEWS);
+  const newDoc = await addDoc(ref, { ...review, createdAt: Timestamp.now() });
+  return newDoc.id;
+}
+
+export async function updateReview(id: string, data: Partial<ReviewDocument>): Promise<void> {
+  await updateDoc(doc(db, COLLECTIONS.REVIEWS, id), data);
+}
+
+export async function deleteReview(id: string): Promise<void> {
+  await deleteDoc(doc(db, COLLECTIONS.REVIEWS, id));
+}
 
 // ─── Hero Slides ───────────────────────────────────────────────────────────────
 

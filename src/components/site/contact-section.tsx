@@ -395,9 +395,9 @@ export default function ContactSection() {
                           </div>
                           <div className="flex-1 flex flex-col">
                             <div className="flex items-center justify-between mb-1">
-                              <h4 className="text-base md:text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
+                              <p className="text-base md:text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
                                 {method.title}
-                              </h4>
+                              </p>
                               <ArrowRight className="w-4 h-4 text-primary/40 group-hover:text-primary group-hover:translate-x-1 transition-all flex-shrink-0" />
                             </div>
                             <p className="text-sm text-muted-foreground mb-3 line-clamp-2 flex-1">{method.text}</p>
@@ -423,7 +423,7 @@ export default function ContactSection() {
                       <Calendar className="w-6 h-6" />
                     </div>
                     <div className="flex-1 flex flex-col">
-                      <h4 className="text-xl md:text-2xl font-bold text-foreground mb-2">{t('bookCall')}</h4>
+                      <p className="text-xl md:text-2xl font-bold text-foreground mb-2">{t('bookCall')}</p>
                       <p className="text-base text-muted-foreground mb-6 leading-relaxed">{t('bookCallCard.description')}</p>
 
                       {/* Benefits List */}

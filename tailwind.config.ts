@@ -22,11 +22,15 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['var(--font-inter)', 'var(--font-open-sans)', 'sans-serif'],
-        brand: ['var(--font-tomorrow)'],
-        body: ['Inter', 'Open Sans', 'sans-serif'],
-        headline: ['var(--font-inter)'],
-        'open-sans': ['var(--font-open-sans)', 'sans-serif'],
+        // Poppins is now the primary UI font — geometric, clean, modern
+        sans: ['var(--font-poppins)', 'system-ui', 'sans-serif'],
+        body: ['var(--font-poppins)', 'system-ui', 'sans-serif'],
+        headline: ['var(--font-poppins)', 'system-ui', 'sans-serif'],
+        // Lora — elegant serif for testimonial quotes and pull-quotes
+        serif: ['var(--font-lora)', 'Georgia', 'serif'],
+        quote: ['var(--font-lora)', 'Georgia', 'serif'],
+        // Tomorrow — kept for brand/techy accent elements
+        brand: ['var(--font-tomorrow)', 'sans-serif'],
         code: ['monospace'],
       },
       transitionDuration: {
