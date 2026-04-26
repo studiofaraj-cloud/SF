@@ -3,12 +3,11 @@
 import { useRef, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
 import {
   Handshake, ShieldCheck, PenTool, CheckCircle,
-  Briefcase, Rocket, MapPin, Calendar, Code, Zap,
-  Users, Target, Award, ArrowRight, Sparkles, Globe,
-  Linkedin, Github, Mail, Star, TrendingUp, Clock, Camera,
+  Briefcase, MapPin, Calendar, Code, Zap,
+  Users, Target, ArrowRight, Sparkles,
+  Linkedin, Github, Mail, Star, Camera,
 } from 'lucide-react';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
@@ -16,6 +15,7 @@ import ScrollFadeIn from '@/components/site/scroll-fade-in';
 import GradientText from '@/components/GradientText';
 import { useTranslations, useLocale } from 'next-intl';
 import { getLocalizedPath } from '@/lib/i18n-helpers';
+import { Rocket } from 'lucide-react';
 
 // ─── Animated Counter ────────────────────────────────────────────────────────
 function AnimatedCounter({
@@ -28,6 +28,7 @@ function AnimatedCounter({
   isVisible: boolean;
 }) {
   const [count, setCount] = useState(0);
+
   useEffect(() => {
     if (!isVisible) return;
     const steps = 60;
@@ -35,17 +36,22 @@ function AnimatedCounter({
     let current = 0;
     const timer = setInterval(() => {
       current += increment;
-      if (current >= target) { setCount(target); clearInterval(timer); }
-      else setCount(Math.floor(current));
+      if (current >= target) {
+        setCount(target);
+        clearInterval(timer);
+      } else {
+        setCount(Math.floor(current));
+      }
     }, 2000 / steps);
     return () => clearInterval(timer);
   }, [isVisible, target]);
+
   return <span className="tabular-nums">{count}{suffix}</span>;
 }
 
-// ─── Founder image placeholder / real photo ──────────────────────────────────
-// To use a real photo: place the image in /public/images/founder.jpg (or .png)
-// and set FOUNDER_PHOTO below. Leave as '' for the elegant placeholder.
+// ─── Founder image ─────────────────────────────────────────────────────────
+// To use a real photo: place it at /public/images/founder.jpg
+// then change FOUNDER_PHOTO to '/images/founder.jpg'
 const FOUNDER_PHOTO = ''; // e.g. '/images/founder.jpg'
 
 function FounderImage() {
@@ -64,12 +70,12 @@ function FounderImage() {
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-primary/10 via-primary/5 to-background">
       {/* Decorative rings */}
-      <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full border border-primary/10" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 rounded-full border border-primary/15" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full border border-primary/20" />
       </div>
-      {/* Initials */}
+      {/* Initials circle */}
       <div className="relative z-10 w-24 h-24 rounded-full bg-primary/20 border-2 border-primary/30 flex items-center justify-center mb-4">
         <span className="text-3xl font-bold text-primary">HF</span>
       </div>
@@ -82,21 +88,51 @@ function FounderImage() {
   );
 }
 
+// ─── Co-founder photo placeholder ─────────────────────────────────────────
+const COFOUNDER_PHOTO = ''; // e.g. '/images/cofounder.jpg'
+
+function CoFounderImage() {
+  if (COFOUNDER_PHOTO) {
+    return (
+      <Image
+        src={COFOUNDER_PHOTO}
+        alt="Maria Elisa Midulla — Co-Founder di Studio Faraj"
+        fill
+        className="object-cover object-top"
+        sizes="(max-width: 768px) 100vw, 33vw"
+      />
+    );
+  }
+  return (
+    <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-violet-500/10 via-violet-500/5 to-background">
+      <div className="w-16 h-16 rounded-full bg-violet-500/20 border-2 border-violet-500/30 flex items-center justify-center">
+        <span className="text-xl font-bold text-violet-500">ME</span>
+      </div>
+    </div>
+  );
+}
+
 // ─── Timeline item ────────────────────────────────────────────────────────────
 function TimelineItem({
-  year, title, description, isLast,
+  year,
+  title,
+  description,
+  isLast = false,
 }: {
-  year: string; title: string; description: string; isLast?: boolean;
+  year: string;
+  title: string;
+  description: string;
+  isLast?: boolean;
 }) {
   return (
     <div className="relative flex gap-6 md:gap-8">
-      {/* Line + dot */}
+      {/* Dot + vertical line */}
       <div className="flex flex-col items-center">
         <div className="w-3 h-3 rounded-full bg-primary border-2 border-background ring-2 ring-primary/30 shrink-0 mt-1" />
         {!isLast && <div className="w-px flex-1 bg-border/60 mt-2" />}
       </div>
       {/* Content */}
-      <div className={`pb-8 ${isLast ? '' : ''}`}>
+      <div className={isLast ? 'pb-0' : 'pb-8'}>
         <span className="inline-block font-mono text-xs font-semibold text-primary bg-primary/10 px-2.5 py-0.5 rounded-full mb-2">
           {year}
         </span>
@@ -124,10 +160,10 @@ export default function ChiSiamoPage() {
   }, []);
 
   const stats = [
-    { value: 50, suffix: '+', label: t('identity.stats.projects'), icon: <Briefcase className="w-5 h-5" /> },
-    { value: 40, suffix: '+', label: t('identity.stats.clients'), icon: <Users className="w-5 h-5" /> },
-    { value: 5,  suffix: '+', label: t('identity.stats.years'),   icon: <Calendar className="w-5 h-5" /> },
-    { value: 12, suffix: '+', label: t('identity.stats.technologies'), icon: <Code className="w-5 h-5" /> },
+    { value: 50, suffix: '+', label: t('identity.stats.projects') },
+    { value: 40, suffix: '+', label: t('identity.stats.clients') },
+    { value: 5,  suffix: '+', label: t('identity.stats.years') },
+    { value: 12, suffix: '+', label: t('identity.stats.technologies') },
   ];
 
   const philosophy = [
@@ -157,11 +193,13 @@ export default function ChiSiamoPage() {
     { year: '2025+', title: t('timeline.2025.title'), description: t('timeline.2025.description') },
   ];
 
+  const localeParam = locale as 'it' | 'en';
+
   return (
     <div className="bg-background text-foreground overflow-x-hidden">
 
       {/* ══════════════════════════════════════════
-          1. HERO — Clean, minimal
+          1. HERO
           ══════════════════════════════════════════ */}
       <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
         {/* Soft gradient blobs */}
@@ -169,7 +207,7 @@ export default function ChiSiamoPage() {
           <div className="absolute -top-32 -left-32 w-[500px] h-[500px] bg-primary/8 rounded-full blur-[120px]" />
           <div className="absolute -bottom-32 -right-32 w-[400px] h-[400px] bg-primary/6 rounded-full blur-[100px]" />
         </div>
-        <div className="absolute inset-0 bg-gradient-to-b from-background/0 via-background/0 to-background" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background pointer-events-none" />
 
         <div className="relative z-10 container px-4 sm:px-6 text-center">
           <ScrollFadeIn animation="fade-up">
@@ -198,14 +236,14 @@ export default function ChiSiamoPage() {
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-              <Button size="lg" className="px-8 w-full sm:w-auto" asChild>
-                <Link href={getLocalizedPath('/contatti', locale as any)}>
+              <Button size="lg" className="px-8 w-full sm:w-auto group" asChild>
+                <Link href={getLocalizedPath('/contatti', localeParam)}>
                   {t('hero.ctaStart')}
                   <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
                 </Link>
               </Button>
               <Button size="lg" variant="outline" className="border-border w-full sm:w-auto" asChild>
-                <Link href={getLocalizedPath('/projects', locale as any)}>
+                <Link href={getLocalizedPath('/projects', localeParam)}>
                   {t('hero.ctaExplore')}
                 </Link>
               </Button>
@@ -215,7 +253,7 @@ export default function ChiSiamoPage() {
       </section>
 
       {/* ══════════════════════════════════════════
-          2. FOUNDER — Photo + Bio
+          2. FOUNDER SPOTLIGHT
           ══════════════════════════════════════════ */}
       <section className="py-20 md:py-28 lg:py-32">
         <div className="container px-4 sm:px-6">
@@ -224,14 +262,14 @@ export default function ChiSiamoPage() {
             {/* Photo */}
             <ScrollFadeIn animation="fade-right">
               <div className="relative mx-auto lg:mx-0 max-w-md lg:max-w-none">
-                {/* Decorative border offset */}
+                {/* Offset shadow border */}
                 <div className="absolute -inset-0 rounded-3xl bg-gradient-to-br from-primary/20 to-primary/5 translate-x-3 translate-y-3" />
                 <div className="relative aspect-[4/5] rounded-3xl overflow-hidden border border-border/60 bg-secondary/50 shadow-2xl shadow-primary/10">
                   <FounderImage />
                 </div>
-                {/* Floating badge */}
-                <div className="absolute -bottom-4 -right-4 bg-card border border-border/60 rounded-2xl px-4 py-3 shadow-lg flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+                {/* Floating experience badge */}
+                <div className="absolute -bottom-5 -right-5 bg-card border border-border/60 rounded-2xl px-4 py-3 shadow-xl flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-full bg-primary/15 flex items-center justify-center">
                     <Star className="w-4 h-4 text-primary fill-primary" />
                   </div>
                   <div className="leading-tight">
@@ -250,12 +288,12 @@ export default function ChiSiamoPage() {
                   Fondatore · Padova, Italia
                 </Badge>
 
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-2 tracking-tight">
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-1 tracking-tight">
                   {t('team.hussein.name')}
                 </h2>
                 <p className="text-primary font-medium mb-6">{t('team.hussein.role')}</p>
 
-                <blockquote className="relative pl-5 mb-6 border-l-2 border-primary/40">
+                <blockquote className="pl-5 mb-6 border-l-2 border-primary/40">
                   <p className="font-quote italic text-lg text-foreground/80 leading-relaxed">
                     &ldquo;{t('team.hussein.quote')}&rdquo;
                   </p>
@@ -265,7 +303,7 @@ export default function ChiSiamoPage() {
                   {t('team.hussein.bio')}
                 </p>
 
-                {/* Key skills as clean pills */}
+                {/* Skill pills */}
                 <div className="flex flex-wrap gap-2 mb-8">
                   {['React / Next.js', 'Node.js', 'AI Integration', 'System Architecture', 'UI/UX Design'].map((skill) => (
                     <span
@@ -277,42 +315,85 @@ export default function ChiSiamoPage() {
                   ))}
                 </div>
 
-                {/* Social links */}
+                {/* Social */}
                 <div className="flex gap-3">
+                  {[
+                    { href: 'https://www.linkedin.com/in/studio-faraj-47923b389/', icon: <Linkedin className="w-4 h-4" />, label: 'LinkedIn' },
+                    { href: 'https://github.com/husseinfaraj', icon: <Github className="w-4 h-4" />, label: 'GitHub' },
+                    { href: 'mailto:hussein@studiofaraj.com', icon: <Mail className="w-4 h-4" />, label: 'Email' },
+                  ].map(({ href, icon, label }) => (
+                    <a
+                      key={label}
+                      href={href}
+                      target={href.startsWith('mailto') ? undefined : '_blank'}
+                      rel={href.startsWith('mailto') ? undefined : 'noopener noreferrer'}
+                      aria-label={label}
+                      className="w-10 h-10 rounded-xl border border-border/60 bg-secondary hover:bg-primary hover:border-primary hover:text-primary-foreground flex items-center justify-center text-muted-foreground transition-all duration-200"
+                    >
+                      {icon}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </ScrollFadeIn>
+          </div>
+
+          {/* ── Co-founder card ─────────────────────────────────────────────── */}
+          <ScrollFadeIn animation="fade-up" delay={100}>
+            <div className="mt-16 max-w-6xl mx-auto">
+              <div className="flex flex-col sm:flex-row items-start gap-6 p-6 md:p-8 rounded-3xl border border-border/60 bg-card hover:border-primary/20 transition-colors duration-300">
+                {/* Photo */}
+                <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden border border-border/60 shrink-0 bg-secondary/50">
+                  <CoFounderImage />
+                </div>
+                {/* Info */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex flex-wrap items-center gap-3 mb-1">
+                    <h3 className="text-xl font-bold text-foreground">{t('team.maria.name')}</h3>
+                    <Badge variant="outline" className="text-[10px] border-violet-500/30 text-violet-500">
+                      Co-Founder
+                    </Badge>
+                  </div>
+                  <p className="text-sm text-primary font-medium mb-3">{t('team.maria.role')}</p>
+                  <blockquote className="text-sm text-muted-foreground italic mb-3 border-l-2 border-violet-500/30 pl-3">
+                    {t('team.maria.quote')}
+                  </blockquote>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{t('team.maria.bio')}</p>
+                  {/* Skills */}
+                  <div className="flex flex-wrap gap-1.5 mt-4">
+                    {['Frontend / CSS', 'UI/UX Design', 'Digital Marketing', 'Brand Strategy'].map((s) => (
+                      <span key={s} className="text-[11px] font-medium px-2.5 py-1 rounded-full bg-secondary border border-border/60 text-foreground/70">
+                        {s}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                {/* Social */}
+                <div className="flex sm:flex-col gap-2 shrink-0">
                   <a
                     href="https://www.linkedin.com/in/studio-faraj-47923b389/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-10 h-10 rounded-xl border border-border/60 bg-secondary hover:bg-primary hover:border-primary hover:text-primary-foreground flex items-center justify-center text-muted-foreground transition-all duration-200"
+                    target="_blank" rel="noopener noreferrer"
                     aria-label="LinkedIn"
+                    className="w-9 h-9 rounded-xl border border-border/60 bg-secondary hover:bg-violet-500 hover:border-violet-500 hover:text-white flex items-center justify-center text-muted-foreground transition-all duration-200"
                   >
                     <Linkedin className="w-4 h-4" />
                   </a>
                   <a
-                    href="https://github.com/husseinfaraj"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-10 h-10 rounded-xl border border-border/60 bg-secondary hover:bg-primary hover:border-primary hover:text-primary-foreground flex items-center justify-center text-muted-foreground transition-all duration-200"
-                    aria-label="GitHub"
-                  >
-                    <Github className="w-4 h-4" />
-                  </a>
-                  <a
-                    href="mailto:hussein@studiofaraj.com"
-                    className="w-10 h-10 rounded-xl border border-border/60 bg-secondary hover:bg-primary hover:border-primary hover:text-primary-foreground flex items-center justify-center text-muted-foreground transition-all duration-200"
+                    href="mailto:mariaelisa@studiofaraj.com"
                     aria-label="Email"
+                    className="w-9 h-9 rounded-xl border border-border/60 bg-secondary hover:bg-violet-500 hover:border-violet-500 hover:text-white flex items-center justify-center text-muted-foreground transition-all duration-200"
                   >
                     <Mail className="w-4 h-4" />
                   </a>
                 </div>
               </div>
-            </ScrollFadeIn>
-          </div>
+            </div>
+          </ScrollFadeIn>
         </div>
       </section>
 
       {/* ══════════════════════════════════════════
-          3. STATS — Large numbers, clean
+          3. STATS
           ══════════════════════════════════════════ */}
       <section ref={statsRef} className="py-16 md:py-20 border-y border-border/40 bg-secondary/30">
         <div className="container px-4 sm:px-6">
@@ -332,14 +413,15 @@ export default function ChiSiamoPage() {
       </section>
 
       {/* ══════════════════════════════════════════
-          4. PHILOSOPHY — 3 horizontal pillars
+          4. PHILOSOPHY — 3 pillars
           ══════════════════════════════════════════ */}
       <section className="py-20 md:py-28">
         <div className="container px-4 sm:px-6">
-          {/* Section header */}
           <ScrollFadeIn animation="fade-up">
             <div className="text-center max-w-2xl mx-auto mb-14">
-              <p className="text-xs font-semibold tracking-widest text-primary uppercase mb-4">{t('philosophy.badge')}</p>
+              <p className="text-xs font-semibold tracking-widest text-primary uppercase mb-4">
+                {t('philosophy.badge')}
+              </p>
               <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
                 {t('philosophy.title')}{' '}
                 <span className="text-primary">{t('philosophy.titleHighlight')}</span>
@@ -348,17 +430,16 @@ export default function ChiSiamoPage() {
             </div>
           </ScrollFadeIn>
 
-          {/* Pillars */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {philosophy.map((item, i) => (
               <ScrollFadeIn key={item.title} animation="fade-up" delay={i * 120}>
-                <div className="group relative flex flex-col gap-4 p-7 rounded-2xl border border-border/60 bg-card hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300">
-                  {/* Number */}
-                  <span className="absolute top-5 right-6 font-mono text-5xl font-black text-foreground/[0.04] select-none">
+                <div className="group relative flex flex-col gap-4 p-7 rounded-2xl border border-border/60 bg-card hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 h-full">
+                  {/* Ghost number */}
+                  <span aria-hidden className="absolute top-5 right-6 font-mono text-5xl font-black text-foreground/[0.04] select-none pointer-events-none">
                     {String(i + 1).padStart(2, '0')}
                   </span>
                   {/* Icon */}
-                  <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
+                  <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 shrink-0">
                     {item.icon}
                   </div>
                   <div>
@@ -373,16 +454,18 @@ export default function ChiSiamoPage() {
       </section>
 
       {/* ══════════════════════════════════════════
-          5. TIMELINE — Clean vertical left-rail
+          5. TIMELINE — sticky left header + rail
           ══════════════════════════════════════════ */}
       <section className="py-20 md:py-28 bg-secondary/30">
         <div className="container px-4 sm:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start max-w-5xl mx-auto">
 
-            {/* Left: header */}
+            {/* Left: header (sticky on desktop) */}
             <ScrollFadeIn animation="fade-right">
               <div className="lg:sticky lg:top-32">
-                <p className="text-xs font-semibold tracking-widest text-primary uppercase mb-4">{t('timeline.badge')}</p>
+                <p className="text-xs font-semibold tracking-widest text-primary uppercase mb-4">
+                  {t('timeline.badge')}
+                </p>
                 <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
                   {t('timeline.title')}{' '}
                   <span className="text-primary">{t('timeline.titleHighlight')}</span>
@@ -391,9 +474,9 @@ export default function ChiSiamoPage() {
                   {t('timeline.subtitle')}
                 </p>
                 {/* Founding card */}
-                <div className="inline-flex items-center gap-3 px-5 py-3 rounded-2xl border border-border/60 bg-card">
+                <div className="inline-flex items-center gap-3 px-5 py-4 rounded-2xl border border-border/60 bg-card">
                   <div className="text-3xl font-bold text-primary">{t('identity.foundingYear')}</div>
-                  <div>
+                  <div className="border-l border-border/60 pl-3">
                     <p className="text-xs text-muted-foreground">{t('identity.foundingLabel')}</p>
                     <p className="text-xs text-foreground/80 flex items-center gap-1 mt-0.5">
                       <MapPin className="w-3 h-3 text-primary" />
@@ -404,7 +487,7 @@ export default function ChiSiamoPage() {
               </div>
             </ScrollFadeIn>
 
-            {/* Right: timeline */}
+            {/* Right: timeline items */}
             <ScrollFadeIn animation="fade-left">
               <div className="pt-1">
                 {timeline.map((item, i) => (
@@ -423,15 +506,17 @@ export default function ChiSiamoPage() {
       </section>
 
       {/* ══════════════════════════════════════════
-          6. MISSION — Two-column with accent
+          6. MISSION + IDENTITY card
           ══════════════════════════════════════════ */}
       <section className="py-20 md:py-28">
         <div className="container px-4 sm:px-6">
           <div className="max-w-5xl mx-auto">
             <ScrollFadeIn animation="fade-up">
               <div className="rounded-3xl border border-border/60 bg-card overflow-hidden">
-                <div className="h-1 w-full bg-gradient-to-r from-blue-500 to-violet-500" />
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-0 divide-y md:divide-y-0 md:divide-x divide-border/60">
+                {/* Top accent bar */}
+                <div className="h-1 w-full bg-gradient-to-r from-blue-500 via-primary to-violet-500" />
+                <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-border/60">
+
                   {/* Mission */}
                   <div className="p-8 md:p-10 lg:p-12">
                     <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-5">
@@ -441,16 +526,19 @@ export default function ChiSiamoPage() {
                       {t('identity.mission.badge')}
                     </Badge>
                     <h3 className="text-2xl font-bold text-foreground mb-3">{t('identity.mission.title')}</h3>
-                    <p className="text-muted-foreground leading-relaxed">
+                    <p className="text-muted-foreground leading-relaxed text-sm">
                       {t('identity.mission.description')}{' '}
                       <span className="text-primary font-medium">{t('identity.mission.descriptionHighlight')}</span>{' '}
                       {t('identity.mission.descriptionEnd')}
                     </p>
                   </div>
-                  {/* Identity snapshot */}
+
+                  {/* Identity */}
                   <div className="p-8 md:p-10 lg:p-12 flex flex-col justify-between gap-6">
                     <div>
-                      <p className="text-xs font-semibold tracking-widest text-primary uppercase mb-5">{t('identity.badge')}</p>
+                      <p className="text-xs font-semibold tracking-widest text-primary uppercase mb-4">
+                        {t('identity.badge')}
+                      </p>
                       <h3 className="text-2xl font-bold text-foreground mb-3">
                         {t('identity.title')}{' '}
                         <span className="text-primary">{t('identity.titleHighlight')}</span>
@@ -459,18 +547,19 @@ export default function ChiSiamoPage() {
                     </div>
                     {/* Trust chips */}
                     <div className="flex flex-wrap gap-2">
-                      <span className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full bg-secondary border border-border/60 text-foreground/70">
-                        <CheckCircle className="w-3 h-3 text-green-500" />
-                        Garanzia Soddisfazione
-                      </span>
-                      <span className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full bg-secondary border border-border/60 text-foreground/70">
-                        <ShieldCheck className="w-3 h-3 text-blue-500" />
-                        GDPR Compliant
-                      </span>
-                      <span className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full bg-secondary border border-border/60 text-foreground/70">
-                        <Zap className="w-3 h-3 text-yellow-500" />
-                        Tecnologie Moderne
-                      </span>
+                      {[
+                        { icon: <CheckCircle className="w-3 h-3 text-green-500" />, label: 'Garanzia Soddisfazione' },
+                        { icon: <ShieldCheck className="w-3 h-3 text-blue-500" />, label: 'GDPR Compliant' },
+                        { icon: <Zap className="w-3 h-3 text-yellow-500" />, label: 'Tecnologie Moderne' },
+                      ].map(({ icon, label }) => (
+                        <span
+                          key={label}
+                          className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full bg-secondary border border-border/60 text-foreground/70"
+                        >
+                          {icon}
+                          {label}
+                        </span>
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -503,7 +592,7 @@ export default function ChiSiamoPage() {
                 insieme il futuro digitale del tuo business.
               </p>
 
-              {/* Availability */}
+              {/* Availability indicator */}
               <div className="flex items-center justify-center gap-2 mb-8 text-sm text-muted-foreground">
                 <span className="relative flex h-2.5 w-2.5">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
@@ -514,20 +603,23 @@ export default function ChiSiamoPage() {
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                 <Button size="lg" className="px-8 w-full sm:w-auto group" asChild>
-                  <Link href={getLocalizedPath('/contatti', locale as any)}>
+                  <Link href={getLocalizedPath('/contatti', localeParam)}>
                     Richiedi Consulenza Gratuita
                     <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
                   </Link>
                 </Button>
                 <Button size="lg" variant="outline" className="border-border w-full sm:w-auto" asChild>
-                  <Link href={getLocalizedPath('/projects', locale as any)}>
+                  <Link href={getLocalizedPath('/projects', localeParam)}>
                     Vedi Portfolio
                   </Link>
                 </Button>
               </div>
 
               <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4 text-sm text-muted-foreground">
-                <a href="mailto:info@studiofaraj.it" className="flex items-center justify-center gap-2 hover:text-primary transition-colors">
+                <a
+                  href="mailto:info@studiofaraj.it"
+                  className="flex items-center justify-center gap-2 hover:text-primary transition-colors"
+                >
                   <Mail className="w-4 h-4" />
                   info@studiofaraj.it
                 </a>
