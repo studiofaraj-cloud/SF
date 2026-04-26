@@ -141,12 +141,18 @@ export interface ReviewDocument {
 export async function getReviews(onlyVisible = false): Promise<ReviewDocument[]> {
   try {
     const ref = collection(db, COLLECTIONS.REVIEWS);
-    const constraints: QueryConstraint[] = [orderBy('publishTime', 'desc')];
-    if (onlyVisible) constraints.unshift(where('visible', '==', true));
-    const snap = await getDocs(query(ref, ...constraints));
-    return snap.docs.map((d) => ({ id: d.id, ...d.data() } as ReviewDocument));
+    // Use only a single-field filter to avoid needing a composite Firestore index.
+    // Sorting is done in memory so no (visible + publishTime) composite index is required.
+    const snap = await getDocs(
+      onlyVisible ? query(ref, where('visible', '==', true)) : query(ref)
+    );
+    const docs = snap.docs.map((d) => ({ id: d.id, ...d.data() } as ReviewDocument));
+    // Sort newest-first in memory
+    return docs.sort((a, b) =>
+      new Date(b.publishTime || 0).getTime() - new Date(a.publishTime || 0).getTime()
+    );
   } catch (err) {
-    console.error('Error fetching reviews:', err);
+    console.error('Error fetching reviews from Firestore:', err);
     return [];
   }
 }
