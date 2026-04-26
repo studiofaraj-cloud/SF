@@ -859,14 +859,14 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           </ScrollFadeIn>
 
           {/* Main: founder photo + content */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center max-w-6xl mx-auto mb-12 md:mb-16">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch max-w-6xl mx-auto mb-10 md:mb-14">
 
             {/* Founder photo */}
             <ScrollFadeIn animation="fade-right" className="lg:col-span-5">
-              <div className="relative mx-auto lg:mx-0 max-w-sm lg:max-w-none">
+              <div className="relative mx-auto lg:mx-0 max-w-sm lg:max-w-none h-full">
                 {/* Offset decorative shadow */}
                 <div className="absolute -inset-0 rounded-3xl bg-gradient-to-br from-primary/20 to-primary/5 translate-x-3 translate-y-3" />
-                <div className="relative aspect-[4/5] rounded-3xl overflow-hidden border border-border/60 bg-secondary/50 shadow-2xl shadow-primary/10">
+                <div className="relative aspect-[4/5] lg:aspect-auto lg:h-full rounded-3xl overflow-hidden border border-border/60 bg-secondary/50 shadow-2xl shadow-primary/10">
                   <Image
                     src="/assets/founder.png"
                     alt={`${tTeam('ceo.title')} — ${tTeam('ceo.role')}`}
@@ -876,8 +876,8 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                   />
                 </div>
                 {/* Floating badge */}
-                <div className="absolute -bottom-5 -right-5 bg-card border border-border/60 rounded-2xl px-4 py-3 shadow-xl flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-primary/15 flex items-center justify-center">
+                <div className="absolute -bottom-4 -right-4 bg-card border border-border/60 rounded-2xl px-4 py-2.5 shadow-xl flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-primary/15 flex items-center justify-center">
                     <Sparkles className="w-4 h-4 text-primary" />
                   </div>
                   <div className="leading-tight">
@@ -889,30 +889,30 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
             </ScrollFadeIn>
 
             {/* Right column: founder intro + value props */}
-            <div className="lg:col-span-7 space-y-5">
+            <div className="lg:col-span-7 flex flex-col gap-4">
               {/* Founder name + role */}
-              <ScrollFadeIn animation="fade-left" delay={0}>
-                <div className="p-6 md:p-7 rounded-2xl border border-border/60 bg-card">
-                  <Badge variant="outline" className="mb-3 border-primary/30 text-primary text-xs">
+              <ScrollFadeIn animation="fade-left" delay={0} className="flex-1">
+                <div className="h-full p-5 md:p-6 rounded-2xl border border-border/60 bg-card">
+                  <Badge variant="outline" className="mb-2 border-primary/30 text-primary text-xs">
                     {tTeam('ceo.role')}
                   </Badge>
-                  <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
+                  <h3 className="text-xl md:text-2xl font-bold text-foreground mb-1.5">
                     {tTeam('ceo.title')}
                   </h3>
-                  <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
+                  <p className="text-sm text-muted-foreground leading-relaxed">
                     {tTeam('ceo.description')}
                   </p>
                 </div>
               </ScrollFadeIn>
 
               {/* Value props — Vision + Availability */}
-              <ScrollFadeIn animation="fade-left" delay={100}>
-                <div className="p-6 md:p-7 rounded-2xl border border-border/60 bg-card flex items-start gap-4">
-                  <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center text-primary shrink-0">
+              <ScrollFadeIn animation="fade-left" delay={100} className="flex-1">
+                <div className="h-full p-5 md:p-6 rounded-2xl border border-border/60 bg-card flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary shrink-0">
                     <Target className="w-5 h-5" />
                   </div>
                   <div>
-                    <h4 className="text-base md:text-lg font-bold text-foreground mb-1.5">
+                    <h4 className="text-base md:text-lg font-bold text-foreground mb-1">
                       {tTeam('vision.title')}
                     </h4>
                     <p className="text-sm text-muted-foreground leading-relaxed">
@@ -922,13 +922,13 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                 </div>
               </ScrollFadeIn>
 
-              <ScrollFadeIn animation="fade-left" delay={150}>
-                <div className="p-6 md:p-7 rounded-2xl border border-border/60 bg-card flex items-start gap-4">
-                  <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center text-primary shrink-0">
+              <ScrollFadeIn animation="fade-left" delay={150} className="flex-1">
+                <div className="h-full p-5 md:p-6 rounded-2xl border border-border/60 bg-card flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary shrink-0">
                     <Zap className="w-5 h-5" />
                   </div>
                   <div>
-                    <h4 className="text-base md:text-lg font-bold text-foreground mb-1.5">
+                    <h4 className="text-base md:text-lg font-bold text-foreground mb-1">
                       {tTeam('available247.title')}
                     </h4>
                     <p className="text-sm text-muted-foreground leading-relaxed">
