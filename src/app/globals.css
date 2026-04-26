@@ -129,6 +129,18 @@
 }
 
 @layer utilities {
+  /* Infinite marquee for reviews strip */
+  @keyframes marquee-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  .marquee-track {
+    animation: marquee-scroll var(--marquee-duration, 40s) linear infinite;
+  }
+  .marquee-track:hover {
+    animation-play-state: paused;
+  }
+
   /* Service detail panel — fast fade+slide used on service switch */
   .service-panel-enter {
     animation: service-panel-in 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
