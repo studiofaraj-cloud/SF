@@ -831,185 +831,144 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       </section>
 
       {/* ============================================
-          CHI SIAMO - Constellation Background
+          CHI SIAMO — Elegant founder + studio intro
           ============================================ */}
-      <section className="relative py-10 sm:py-16 md:py-32 lg:py-40 overflow-hidden">
-        {/* Constellation Background */}
+      <section className="relative py-16 sm:py-20 md:py-28 lg:py-32 overflow-hidden">
+        {/* Soft background */}
         <div className="absolute inset-0 bg-gradient-to-b from-background via-secondary/30 to-background" />
-        <div className="absolute inset-0 bg-constellation" />
-        
-        {/* Glowing Orbs */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 right-0 w-48 h-48 md:w-96 md:h-96 bg-primary/15 rounded-full blur-[100px] animate-pulse" />
-          <div className="absolute bottom-1/4 left-0 w-48 h-48 md:w-96 md:h-96 bg-primary/10 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '1.5s' }} />
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-1/4 right-0 w-72 md:w-[500px] h-72 md:h-[500px] bg-primary/8 rounded-full blur-[120px]" />
+          <div className="absolute bottom-1/4 left-0 w-64 md:w-[400px] h-64 md:h-[400px] bg-primary/6 rounded-full blur-[100px]" />
         </div>
 
         <div className="container relative z-10 px-4 md:px-8">
-          {/* Header */}
+          {/* Section header */}
           <ScrollFadeIn animation="fade-up">
-          <div className="text-center max-w-4xl mx-auto mb-10 md:mb-20">
-              <Badge className="badge-futuristic mb-4 md:mb-6">
-                <Users className="w-3 h-3 mr-2" />
-              {tTeam('badge')}
-            </Badge>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4 md:mb-6">
-              <span className="text-foreground">{tTeam('title')}</span>
-              <span className="block text-primary mt-1 md:mt-2">{tTeam('titleHighlight')}</span>
-                </h2>
-            <p className="text-base md:text-lg lg:text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto px-2">
-              {tTeam('subtitle')}
-            </p>
-                </div>
+            <div className="text-center max-w-3xl mx-auto mb-12 md:mb-16">
+              <p className="text-xs font-semibold tracking-widest text-primary uppercase mb-4">
+                {tTeam('badge')}
+              </p>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4">
+                <span className="text-foreground">{tTeam('title')} </span>
+                <span className="text-primary">{tTeam('titleHighlight')}</span>
+              </h2>
+              <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
+                {tTeam('subtitle')}
+              </p>
+            </div>
           </ScrollFadeIn>
 
-          {/* Main Content Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-16 items-center mb-10 md:mb-16">
-            {/* Left: Team Info Cards */}
-            <div className="space-y-4 md:space-y-6">
-              {/* Team Skills Card */}
-              <ScrollFadeIn animation="fade-right" delay={0}>
-                <Card className="group relative overflow-hidden holographic-card neon-border transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 lg:hover:-translate-x-2">
-                <CardContent className="relative z-10 p-4 md:p-8">
-                  <div className="flex items-start gap-4 md:gap-6">
-                    <div className="relative flex-shrink-0">
-                      <div className="absolute inset-0 bg-primary/10 rounded-2xl blur-xl group-hover:bg-primary/20 transition-all duration-500 scale-0 group-hover:scale-100" />
-                        <div className="relative w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center text-primary group-hover:from-primary group-hover:to-primary/80 group-hover:text-primary-foreground transition-all duration-500 shadow-lg group-hover:shadow-primary/40">
-                        <Code className="w-6 h-6 md:w-8 md:h-8" />
-            </div>
-                  </div>
-                    <div className="flex-1">
-                      <CardTitle className="text-lg md:text-2xl font-bold mb-2 md:mb-3 text-foreground group-hover:text-primary transition-colors">
-                        {tTeam('expertDevelopers.title')}
-                      </CardTitle>
-                      <p className="text-sm md:text-base text-muted-foreground leading-relaxed mb-3 md:mb-4">
-                        {tTeam('expertDevelopers.description')}
-                      </p>
-                      <div className="flex flex-wrap gap-2 md:gap-3">
-                        {['React', 'Next.js', 'TypeScript', 'Node.js'].map((tech, i) => (
-                          <Badge key={i} variant="secondary" className="bg-primary/10 text-primary border-primary/20 text-xs md:text-sm">
-                            {tech}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-              </ScrollFadeIn>
+          {/* Main: founder photo + content */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center max-w-6xl mx-auto mb-12 md:mb-16">
 
-              {/* Availability Card */}
-              <ScrollFadeIn animation="fade-right" delay={100}>
-                <Card className="group relative overflow-hidden holographic-card neon-border transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 lg:hover:-translate-x-2">
-                <CardContent className="relative z-10 p-4 md:p-8">
-                  <div className="flex items-start gap-4 md:gap-6">
-                    <div className="relative flex-shrink-0">
-                      <div className="absolute inset-0 bg-primary/10 rounded-2xl blur-xl group-hover:bg-primary/20 transition-all duration-500 scale-0 group-hover:scale-100" />
-                        <div className="relative w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center text-primary group-hover:from-primary group-hover:to-primary/80 group-hover:text-primary-foreground transition-all duration-500 shadow-lg group-hover:shadow-primary/40">
-                        <Zap className="w-6 h-6 md:w-8 md:h-8" />
-                      </div>
-                    </div>
-                    <div className="flex-1">
-                      <CardTitle className="text-lg md:text-2xl font-bold mb-2 md:mb-3 text-foreground group-hover:text-primary transition-colors">
-                        {tTeam('available247.title')}
-                      </CardTitle>
-                      <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
-                        {tTeam('available247.description')}
-                      </p>
-                    </div>
+            {/* Founder photo */}
+            <ScrollFadeIn animation="fade-right" className="lg:col-span-5">
+              <div className="relative mx-auto lg:mx-0 max-w-sm lg:max-w-none">
+                {/* Offset decorative shadow */}
+                <div className="absolute -inset-0 rounded-3xl bg-gradient-to-br from-primary/20 to-primary/5 translate-x-3 translate-y-3" />
+                <div className="relative aspect-[4/5] rounded-3xl overflow-hidden border border-border/60 bg-secondary/50 shadow-2xl shadow-primary/10">
+                  <Image
+                    src="/assets/founder.png"
+                    alt={`${tTeam('ceo.title')} — ${tTeam('ceo.role')}`}
+                    fill
+                    className="object-cover object-top"
+                    sizes="(max-width: 1024px) 100vw, 40vw"
+                  />
                 </div>
-                </CardContent>
-              </Card>
-              </ScrollFadeIn>
-            </div>
+                {/* Floating badge */}
+                <div className="absolute -bottom-5 -right-5 bg-card border border-border/60 rounded-2xl px-4 py-3 shadow-xl flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-full bg-primary/15 flex items-center justify-center">
+                    <Sparkles className="w-4 h-4 text-primary" />
+                  </div>
+                  <div className="leading-tight">
+                    <p className="text-xs font-semibold text-foreground">{tTeam('stats.experience.value')}</p>
+                    <p className="text-[10px] text-muted-foreground">{tTeam('stats.experience.label')}</p>
+                  </div>
+                </div>
+              </div>
+            </ScrollFadeIn>
 
-            {/* Right: CEO & Vision */}
-            <div className="space-y-4 md:space-y-6">
-              {/* CEO Card */}
+            {/* Right column: founder intro + value props */}
+            <div className="lg:col-span-7 space-y-5">
+              {/* Founder name + role */}
               <ScrollFadeIn animation="fade-left" delay={0}>
-                <Card className="group relative overflow-hidden holographic-card animated-gradient-border transition-all duration-500 hover:shadow-2xl hover:shadow-primary/30">
-                  <CardContent className="relative z-10 p-4 md:p-8 bg-card">
-                  <div className="flex items-start gap-4 md:gap-6 mb-4 md:mb-6">
-                    <div className="relative flex-shrink-0">
-                      <div className="absolute inset-0 bg-primary/20 rounded-full blur-xl group-hover:bg-primary/30 transition-all duration-500" />
-                        <div className="relative w-16 h-16 md:w-20 md:h-20 rounded-full bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center text-primary-foreground shadow-xl neon-glow">
-                        <User className="w-8 h-8 md:w-10 md:h-10" />
-                      </div>
-                    </div>
-                    <div className="flex-1">
-                      <Badge variant="secondary" className="mb-1 md:mb-2 bg-primary/20 text-primary border-primary/30 text-xs md:text-sm">
-                        {tTeam('ceo.role')}
-                      </Badge>
-                        <CardTitle className="text-2xl md:text-3xl font-bold mb-1 md:mb-2 text-primary glitch-text" data-text={tTeam('ceo.title')}>
-                        {tTeam('ceo.title')}
-                      </CardTitle>
-                      <p className="text-sm md:text-base text-muted-foreground">
-                        {tTeam('ceo.description')}
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+                <div className="p-6 md:p-7 rounded-2xl border border-border/60 bg-card">
+                  <Badge variant="outline" className="mb-3 border-primary/30 text-primary text-xs">
+                    {tTeam('ceo.role')}
+                  </Badge>
+                  <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
+                    {tTeam('ceo.title')}
+                  </h3>
+                  <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
+                    {tTeam('ceo.description')}
+                  </p>
+                </div>
               </ScrollFadeIn>
 
-              {/* Vision Card */}
+              {/* Value props — Vision + Availability */}
               <ScrollFadeIn animation="fade-left" delay={100}>
-                <Card className="group relative overflow-hidden holographic-card neon-border transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20">
-                <CardContent className="relative z-10 p-4 md:p-8">
-                  <div className="flex items-start gap-4 md:gap-6">
-                    <div className="relative flex-shrink-0">
-                      <div className="absolute inset-0 bg-primary/10 rounded-2xl blur-xl group-hover:bg-primary/20 transition-all duration-500 scale-0 group-hover:scale-100" />
-                        <div className="relative w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center text-primary group-hover:from-primary group-hover:to-primary/80 group-hover:text-primary-foreground transition-all duration-500 shadow-lg group-hover:shadow-primary/40">
-                        <Target className="w-6 h-6 md:w-8 md:h-8" />
-                      </div>
-                    </div>
-                    <div className="flex-1">
-                      <CardTitle className="text-lg md:text-2xl font-bold mb-2 md:mb-3 text-foreground group-hover:text-primary transition-colors">
-                        {tTeam('vision.title')}
-                      </CardTitle>
-                      <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
-                        {tTeam('vision.description')}
-                      </p>
-                    </div>
+                <div className="p-6 md:p-7 rounded-2xl border border-border/60 bg-card flex items-start gap-4">
+                  <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                    <Target className="w-5 h-5" />
                   </div>
-                </CardContent>
-              </Card>
+                  <div>
+                    <h4 className="text-base md:text-lg font-bold text-foreground mb-1.5">
+                      {tTeam('vision.title')}
+                    </h4>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      {tTeam('vision.description')}
+                    </p>
+                  </div>
+                </div>
+              </ScrollFadeIn>
+
+              <ScrollFadeIn animation="fade-left" delay={150}>
+                <div className="p-6 md:p-7 rounded-2xl border border-border/60 bg-card flex items-start gap-4">
+                  <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                    <Zap className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="text-base md:text-lg font-bold text-foreground mb-1.5">
+                      {tTeam('available247.title')}
+                    </h4>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      {tTeam('available247.description')}
+                    </p>
+                  </div>
+                </div>
               </ScrollFadeIn>
             </div>
           </div>
 
-          {/* Stats Row */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-            {[
-              { icon: Award, label: tTeam('stats.experience.label'), value: tTeam('stats.experience.value') },
-              { icon: Users, label: tTeam('stats.clients.label'), value: tTeam('stats.clients.value') },
-              { icon: TrendingUp, label: tTeam('stats.projects.label'), value: tTeam('stats.projects.value') },
-            ].map((stat, index) => {
-              const StatIcon = stat.icon;
-              return (
-                <ScrollFadeIn key={index} animation="scale" delay={index * 100}>
-                  <Card className="text-center card-3d-tilt neon-border holographic-card">
-                    <CardContent className="p-4 md:p-8">
-                      <div className="w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center mx-auto mb-3 md:mb-4">
-                        <StatIcon className="w-6 h-6 md:w-8 md:h-8 text-primary" />
-                      </div>
-                      <div className="text-3xl md:text-4xl font-bold text-primary mb-1 md:mb-2 metric-glow">{stat.value}</div>
-                      <div className="text-sm md:text-base text-muted-foreground">{stat.label}</div>
-                    </CardContent>
-                  </Card>
-                </ScrollFadeIn>
-              );
-            })}
-          </div>
+          {/* Stats strip */}
+          <ScrollFadeIn animation="fade-up">
+            <div className="max-w-4xl mx-auto py-8 md:py-10 px-6 rounded-3xl border-y border-border/40 bg-secondary/30 grid grid-cols-3 gap-4 md:gap-8 mb-10 md:mb-12">
+              {[
+                { label: tTeam('stats.experience.label'), value: tTeam('stats.experience.value') },
+                { label: tTeam('stats.clients.label'),    value: tTeam('stats.clients.value') },
+                { label: tTeam('stats.projects.label'),   value: tTeam('stats.projects.value') },
+              ].map((stat, i) => (
+                <div key={i} className="text-center">
+                  <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary mb-1">
+                    {stat.value}
+                  </div>
+                  <div className="text-xs sm:text-sm text-muted-foreground font-medium">
+                    {stat.label}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </ScrollFadeIn>
 
           {/* CTA */}
-          <ScrollFadeIn animation="fade-up" delay={300}>
-          <div className="mt-10 md:mt-16 text-center">
-              <Button size="lg" asChild className="group neon-glow w-full sm:w-auto">
-              <Link href={getLocalizedPath('/chi-siamo', locale as any)}>
-                {tTeam('cta')}
-                <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </Link>
-            </Button>
+          <ScrollFadeIn animation="fade-up" delay={100}>
+            <div className="text-center">
+              <Button size="lg" asChild className="group w-full sm:w-auto px-8">
+                <Link href={getLocalizedPath('/chi-siamo', locale as any)}>
+                  {tTeam('cta')}
+                  <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
+                </Link>
+              </Button>
             </div>
           </ScrollFadeIn>
         </div>
