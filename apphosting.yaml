@@ -101,9 +101,11 @@ env:
   - variable: GOOGLE_PLACES_API_KEY
     secret: GOOGLE_PLACES_API_KEY
     availability:
+      - BUILD
       - RUNTIME
 
   - variable: GOOGLE_PLACE_ID
     secret: GOOGLE_PLACE_ID
     availability:
+      - BUILD
       - RUNTIME
