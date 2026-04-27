@@ -2,7 +2,8 @@ import { getBlogsAction, getProjectsAction } from '@/lib/actions';
 import { siteConfig } from '@/lib/seo';
 import { locales } from '@/i18n/config';
 
-export const revalidate = 3600; // Regenerate sitemap every hour
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 const staticPages = [
   { url: '', priority: '1.0', changefreq: 'daily' },
@@ -127,6 +128,7 @@ export async function GET() {
   return new Response(sitemap, {
     headers: {
       'Content-Type': 'application/xml',
+      'Cache-Control': 'public, max-age=0, s-maxage=600, stale-while-revalidate=3600',
     },
   });
 }
