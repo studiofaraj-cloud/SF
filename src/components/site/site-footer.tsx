@@ -283,15 +283,36 @@ export function SiteFooter() {
         <Separator className="my-8 bg-border/50" />
 
         {/* Bottom Bar */}
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="text-sm text-muted-foreground">
-            &copy; 2026 <span className="font-semibold text-foreground">Studio Faraj</span>. {t('copyright')} <span className="mx-1">·</span> P.IVA 05783550287
+        <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-5 md:gap-4 text-center md:text-left">
+          {/* Copyright + P.IVA */}
+          <div className="flex flex-col md:flex-row md:items-center gap-1 md:gap-2 text-sm text-muted-foreground order-2 md:order-1">
+            <span>
+              &copy; 2026 <span className="font-semibold text-foreground">Studio Faraj</span>. {t('copyright')}
+            </span>
+            <span className="hidden md:inline text-border" aria-hidden="true">·</span>
+            <span className="text-xs md:text-sm tracking-wide">
+              <span className="md:hidden inline-flex items-center gap-2 text-muted-foreground/80">
+                <span className="h-px w-6 bg-border/60" aria-hidden="true" />
+                P.IVA 05783550287
+                <span className="h-px w-6 bg-border/60" aria-hidden="true" />
+              </span>
+              <span className="hidden md:inline">P.IVA 05783550287</span>
+            </span>
           </div>
-          <div className="flex items-center gap-6 text-sm">
-            <Link href={getLocalizedPath('/legal', locale as any)} className="text-muted-foreground hover:text-primary transition-colors">
+
+          {/* Legal Links */}
+          <div className="flex items-center justify-center gap-5 md:gap-6 text-sm order-1 md:order-2">
+            <Link
+              href={getLocalizedPath('/legal', locale as any)}
+              className="text-muted-foreground hover:text-primary transition-colors py-1"
+            >
               {t('privacy')}
             </Link>
-            <Link href={getLocalizedPath('/legal', locale as any)} className="text-muted-foreground hover:text-primary transition-colors">
+            <span className="h-3 w-px bg-border/60" aria-hidden="true" />
+            <Link
+              href={getLocalizedPath('/legal', locale as any)}
+              className="text-muted-foreground hover:text-primary transition-colors py-1"
+            >
               {t('cookiePolicy')}
             </Link>
           </div>
