@@ -285,7 +285,7 @@ export function SiteFooter() {
         {/* Bottom Bar */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="text-sm text-muted-foreground">
-            &copy; 2026 <span className="font-semibold text-foreground">Studio Faraj</span>. {t('copyright')}
+            &copy; 2026 <span className="font-semibold text-foreground">Studio Faraj</span>. {t('copyright')} <span className="mx-1">·</span> P.IVA 05783550287
           </div>
           <div className="flex items-center gap-6 text-sm">
             <Link href={getLocalizedPath('/legal', locale as any)} className="text-muted-foreground hover:text-primary transition-colors">
