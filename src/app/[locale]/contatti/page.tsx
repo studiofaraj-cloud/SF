@@ -17,6 +17,7 @@ import GradientText from '@/components/GradientText';
 import { useTranslations, useLocale } from 'next-intl';
 import { getLocalizedPath } from '@/lib/i18n-helpers';
 import ContactSection from '@/components/site/contact-section';
+import ContattiQuickStrip from '@/components/site/contatti-quick-strip';
 
 export default function ContattiPage() {
   const locale = useLocale();
@@ -85,9 +86,13 @@ export default function ContattiPage() {
       {/* ============================================
           1. HERO SECTION - Connection Portal
           ============================================ */}
-      <section className="relative min-h-[70vh] min-h-[70svh] sm:min-h-[80vh] sm:min-h-[80svh] flex items-center justify-center overflow-hidden pt-20 sm:pt-24 md:pt-28">
-        {/* WebGL RippleGrid Background */}
-        <div className="absolute inset-0 z-0">
+      <section className="relative min-h-[58vh] min-h-[58svh] sm:min-h-[80vh] sm:min-h-[80svh] flex items-center justify-center overflow-hidden pt-20 sm:pt-24 md:pt-28">
+        {/* Mobile: lightweight CSS-only background */}
+        <div className="sm:hidden absolute inset-0 z-0 bg-gradient-to-b from-background via-secondary/30 to-background" />
+        <div className="sm:hidden absolute inset-0 z-0 bg-constellation opacity-40 pointer-events-none" />
+
+        {/* Desktop: WebGL RippleGrid Background */}
+        <div className="hidden sm:block absolute inset-0 z-0">
           <RippleGrid
             gridColor="#3b82f6"
             rippleIntensity={0.06}
@@ -106,11 +111,11 @@ export default function ContattiPage() {
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/50 to-background z-10" />
 
-        {/* Floating Geometric Shapes */}
-        <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden">
-          <div className="floating-shape absolute top-[20%] left-[10%] w-16 h-16 sm:w-24 sm:h-24 md:w-32 md:h-32 border-2 border-primary/30 rotate-45 hidden sm:block" style={{ animationDelay: '0s' }} />
+        {/* Floating Geometric Shapes — desktop only */}
+        <div className="hidden sm:block absolute inset-0 z-10 pointer-events-none overflow-hidden">
+          <div className="floating-shape absolute top-[20%] left-[10%] w-16 h-16 sm:w-24 sm:h-24 md:w-32 md:h-32 border-2 border-primary/30 rotate-45" style={{ animationDelay: '0s' }} />
           <div className="floating-shape absolute top-[60%] right-[15%] w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 border-2 border-primary/20 rounded-full" style={{ animationDelay: '2s' }} />
-          <div className="floating-shape absolute bottom-[30%] left-[20%] w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-primary/10 rotate-12 hidden sm:block" style={{ animationDelay: '4s' }} />
+          <div className="floating-shape absolute bottom-[30%] left-[20%] w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-primary/10 rotate-12" style={{ animationDelay: '4s' }} />
         </div>
 
         {/* Hero Content */}
@@ -123,27 +128,30 @@ export default function ContattiPage() {
             </Badge>
 
             {/* Main Title with Gradient */}
-            <div className="mb-4 sm:mb-6">
-              <GradientText 
+            <div className="mb-3 sm:mb-6">
+              <GradientText
                 colors={['#3b82f6', '#8b5cf6', '#3b82f6']}
                 animationSpeed={4}
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight"
+                className="text-[2.25rem] leading-[1.05] sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight"
               >
                 {getTranslation('hero.title', 'Start a Conversation')}
               </GradientText>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-foreground mt-1 sm:mt-2">
+              <h1 className="text-[2.25rem] leading-[1.05] sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-foreground mt-1 sm:mt-2">
                 {getTranslation('hero.titleHighlight', 'with Us')}
               </h1>
             </div>
 
-            {/* Subtitle */}
-            <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-6 sm:mb-8 leading-relaxed px-2">
+            {/* Subtitle — short on mobile, full on desktop */}
+            <p className="hidden sm:block text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-6 sm:mb-8 leading-relaxed px-2">
               {getTranslation('hero.subtitle', 'We\'re here to help you transform your ideas into')}{' '}<span className="text-primary font-semibold">{getTranslation('hero.subtitleHighlight', 'successful digital solutions')}</span>.{' '}
               {getTranslation('hero.subtitleEnd', 'Tell us about your project and we\'ll respond within 24 hours.')}
-                </p>
+            </p>
+            <p className="sm:hidden text-[15px] text-muted-foreground max-w-md mx-auto mb-5 leading-relaxed px-2">
+              {getTranslation('hero.subtitleEnd', 'Tell us about your project and we\'ll respond within 24 hours.')}
+            </p>
 
-            {/* Availability Indicator */}
-            <div className="flex items-center justify-center gap-2 mb-8 sm:mb-10">
+            {/* Availability Indicator — single source of truth on the page */}
+            <div className="flex items-center justify-center gap-2 mb-6 sm:mb-10">
               <span className="relative flex h-2.5 w-2.5 sm:h-3 sm:w-3">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 sm:h-3 sm:w-3 bg-green-500"></span>
@@ -153,24 +161,32 @@ export default function ContattiPage() {
               </span>
             </div>
 
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 px-4 sm:px-0">
+            {/* CTA — mobile: single primary + small phone link; desktop: 2 buttons */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 px-4 sm:px-0">
               <Button size="lg" className="group neon-glow px-6 sm:px-8 w-full sm:w-auto" asChild>
                 <a href="#contact-form">
                   {getTranslation('hero.writeNow', 'Write to Us Now')}
                   <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
                 </a>
               </Button>
-              <Button size="lg" variant="outline" className="border-primary/50 hover:bg-primary/10 w-full sm:w-auto" asChild>
+              <Button size="lg" variant="outline" className="hidden sm:inline-flex border-primary/50 hover:bg-primary/10 w-full sm:w-auto" asChild>
                 <a href="tel:+393202223322">
                   <Phone className="w-4 h-4 mr-2" />
                   {getTranslation('hero.callUs', 'Call Us')}
                 </a>
               </Button>
+              {/* Mobile: subtle text link instead of a second heavy button */}
+              <a
+                href="tel:+393202223322"
+                className="sm:hidden inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-primary transition-colors py-2 min-h-[40px]"
+              >
+                <Phone className="w-3.5 h-3.5 text-primary" />
+                {getTranslation('hero.callUs', 'Call Us')} · 320 222 33 22
+              </a>
             </div>
-            
-            {/* Scroll Indicator - Positioned below buttons */}
-            <div className="mt-6 sm:mt-8 flex justify-center">
+
+            {/* Scroll Indicator - desktop only (mobile uses the quick-strip below) */}
+            <div className="hidden sm:flex mt-6 sm:mt-8 justify-center">
               <div className="animate-bounce">
                 <ChevronDown className="w-6 h-6 sm:w-8 sm:h-8 text-primary/50" />
               </div>
@@ -179,12 +195,17 @@ export default function ContattiPage() {
         </div>
       </section>
 
+      {/* ============================================
+          2. QUICK CONTACT STRIP — mobile only
+          ============================================ */}
+      <ContattiQuickStrip />
+
 
       {/* ============================================
           3. CONTACT FORM - Message Portal
           ============================================ */}
       <div id="contact-form">
-        <ContactSection />
+        <ContactSection hideMobileHeader />
       </div>
 
       {/* ============================================
@@ -212,12 +233,40 @@ export default function ContattiPage() {
           </ScrollFadeIn>
 
           <ScrollFadeIn animation="fade-up" delay={100}>
-            <Card className="holographic-card neon-border overflow-hidden">
+            {/* Mobile: plain bordered list (lighter feel) */}
+            <div className="sm:hidden rounded-2xl border border-border/60 bg-card/60 backdrop-blur-sm px-4">
+              <Accordion type="single" collapsible className="w-full">
+                {faqs.map((faq, index) => (
+                  <AccordionItem
+                    value={`m-item-${index}`}
+                    key={index}
+                    className="border-b border-border/40 last:border-0"
+                  >
+                    <AccordionTrigger className="text-left py-4 hover:no-underline group">
+                      <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                          {faq.icon}
+                        </div>
+                        <span className="text-[15px] font-medium text-foreground leading-snug">
+                          {faq.question}
+                        </span>
+                      </div>
+                    </AccordionTrigger>
+                    <AccordionContent className="text-[14px] text-muted-foreground pb-4 pl-12 leading-relaxed">
+                      {faq.answer}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </div>
+
+            {/* Desktop: holographic card */}
+            <Card className="hidden sm:block holographic-card neon-border overflow-hidden">
               <CardContent className="p-4 sm:p-6">
                 <Accordion type="single" collapsible className="w-full">
                     {faqs.map((faq, index) => (
-                    <AccordionItem 
-                      value={`item-${index}`} 
+                    <AccordionItem
+                      value={`item-${index}`}
                       key={index}
                       className="border-b border-primary/10 last:border-0"
                     >
@@ -260,8 +309,30 @@ export default function ContattiPage() {
 
       {/* ============================================
           5. CTA SECTION - Final Connection
+          Mobile: collapsed into a quiet handoff card to avoid duplicating
+          the form/footer. Desktop: full card with availability + buttons.
           ============================================ */}
-      <section className="relative py-16 sm:py-20 md:py-24 lg:py-32 overflow-hidden">
+      {/* Mobile: minimal handoff */}
+      <section className="sm:hidden relative py-10 px-4">
+        <Link
+          href="#contact-form"
+          className="block max-w-md mx-auto rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/8 to-primary/4 p-5 text-center active:scale-[0.99] transition-transform"
+        >
+          <p className="text-base font-bold text-foreground mb-1">
+            {getContactTranslation('cta.title', 'Pronti a iniziare?')}{' '}
+            <span className="text-primary">
+              {getContactTranslation('cta.titleHighlight', 'Trasforma la tua idea')}
+            </span>
+          </p>
+          <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary mt-2">
+            {getContactTranslation('cta.startProject', 'Inizia il tuo progetto')}
+            <ArrowRight className="w-4 h-4" />
+          </span>
+        </Link>
+      </section>
+
+      {/* Desktop: full CTA */}
+      <section className="hidden sm:block relative py-16 sm:py-20 md:py-24 lg:py-32 overflow-hidden">
         {/* Animated Gradient Background */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-primary/10" />
         <div className="absolute inset-0">

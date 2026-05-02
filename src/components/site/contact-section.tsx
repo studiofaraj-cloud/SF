@@ -34,7 +34,16 @@ const serviceValueToKey: Record<string, string> = {
   'altro': 'other',
 };
 
-export default function ContactSection() {
+interface ContactSectionProps {
+  /**
+   * When true, hides the big section header (badge + title + subtitle + trust pills)
+   * on mobile only. Use this when the parent page already establishes the context
+   * (e.g. the /contatti page hero). Desktop is unaffected.
+   */
+  hideMobileHeader?: boolean;
+}
+
+export default function ContactSection({ hideMobileHeader = false }: ContactSectionProps = {}) {
     const { toast } = useToast();
     const locale = useLocale();
     const t = useTranslations('contact');
@@ -98,7 +107,7 @@ export default function ContactSection() {
     ];
 
   return (
-    <section className="relative py-16 sm:py-20 md:py-24 lg:py-32 overflow-hidden">
+    <section className={`relative ${hideMobileHeader ? 'py-6 sm:py-20' : 'py-16 sm:py-20'} md:py-24 lg:py-32 overflow-hidden`}>
         {/* Modern gradient background */}
         <div className="absolute inset-0 bg-gradient-to-br from-background via-primary/3 to-secondary/20" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,hsl(var(--primary)/0.1),transparent_50%)]" />
@@ -115,7 +124,7 @@ export default function ContactSection() {
         
         <div className="container relative z-10 px-4 md:px-6 lg:px-8">
             {/* Header Section */}
-            <div className="text-center max-w-3xl mx-auto mb-12 md:mb-16">
+            <div className={`text-center max-w-3xl mx-auto mb-12 md:mb-16 ${hideMobileHeader ? 'hidden sm:block' : ''}`}>
                 <Badge className="badge-futuristic mb-4 md:mb-6 inline-flex items-center gap-2">
                   <MessageCircle className="w-3 h-3" />
                   {t('badge')}
@@ -130,8 +139,8 @@ export default function ContactSection() {
                   {t('subtitle')}
                 </p>
                 
-                {/* Trust Indicators */}
-                <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6">
+                {/* Trust Indicators — desktop only on mobile we have a single line under the submit button */}
+                <div className="hidden sm:flex flex-wrap items-center justify-center gap-4 md:gap-6">
                   <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-primary/5 border border-primary/20">
                     <Clock className="w-4 h-4 text-primary" />
                     <span className="text-sm font-medium text-foreground">{t('trust.response24h')}</span>
@@ -152,25 +161,26 @@ export default function ContactSection() {
               
               {/* Left Side: Contact Form */}
               <div className="order-2 lg:order-1">
-                <div className="relative p-6 md:p-8 lg:p-10 rounded-3xl bg-card/60 backdrop-blur-xl border border-primary/20 shadow-2xl shadow-primary/5">
+                <div className="relative p-5 sm:p-6 md:p-8 lg:p-10 rounded-2xl sm:rounded-3xl bg-card/60 backdrop-blur-xl border border-primary/20 shadow-xl sm:shadow-2xl shadow-primary/5">
                   {/* Animated border gradient */}
                   <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-primary/20 via-primary/10 to-primary/20 opacity-0 hover:opacity-100 transition-opacity duration-500 -z-10 blur-xl" />
-                  
-                  {/* Decorative elements */}
-                  <div className="absolute top-4 right-4 text-primary/10">
+
+                  {/* Decorative element — desktop only */}
+                  <div className="hidden sm:block absolute top-4 right-4 text-primary/10">
                     <Sparkles className="w-8 h-8" />
                   </div>
-                  
+
                   <div className="relative z-10">
-                    <div className="mb-6 md:mb-8">
-                      <Badge className="badge-futuristic mb-3 md:mb-4 w-fit">
+                    <div className="mb-5 sm:mb-6 md:mb-8">
+                      {/* Form badge — desktop only; mobile uses the page hero */}
+                      <Badge className="hidden sm:inline-flex badge-futuristic mb-3 md:mb-4 w-fit">
                         <Send className="w-3 h-3 mr-1.5 sm:mr-2" />
                         {t('badge')}
                       </Badge>
-                      <h3 className="text-2xl md:text-3xl font-bold text-primary mb-2">
+                      <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-primary mb-2 tracking-tight">
                         {t('form.formTitle')}
                       </h3>
-                      <p className="text-sm md:text-base text-muted-foreground">
+                      <p className="text-[14px] sm:text-sm md:text-base text-muted-foreground leading-relaxed">
                         {t('form.formSubtitle')}
                       </p>
                     </div>
@@ -191,7 +201,7 @@ export default function ContactSection() {
                             required
                             onFocus={() => setFocusedField('name')}
                             onBlur={() => setFocusedField(null)}
-                            className={`h-12 bg-background/80 backdrop-blur-sm border-2 transition-all duration-300 placeholder:text-muted-foreground/50 text-sm ${
+                            className={`h-12 rounded-xl bg-background/80 backdrop-blur-sm border sm:border-2 transition-all duration-300 placeholder:text-muted-foreground/50 text-base sm:text-sm ${
                               focusedField === 'name' 
                                 ? 'border-primary shadow-lg shadow-primary/20' 
                                 : 'border-primary/20 hover:border-primary/40'
@@ -215,7 +225,7 @@ export default function ContactSection() {
                             required
                             onFocus={() => setFocusedField('email')}
                             onBlur={() => setFocusedField(null)}
-                            className={`h-12 bg-background/80 backdrop-blur-sm border-2 transition-all duration-300 placeholder:text-muted-foreground/50 text-sm ${
+                            className={`h-12 rounded-xl bg-background/80 backdrop-blur-sm border sm:border-2 transition-all duration-300 placeholder:text-muted-foreground/50 text-base sm:text-sm ${
                               focusedField === 'email' 
                                 ? 'border-primary shadow-lg shadow-primary/20' 
                                 : 'border-primary/20 hover:border-primary/40'
@@ -239,7 +249,7 @@ export default function ContactSection() {
                             id="service"
                             onFocus={() => setFocusedField('service')}
                             onBlur={() => setFocusedField(null)}
-                            className={`h-12 bg-background/80 backdrop-blur-sm border-2 transition-all duration-300 text-sm ${
+                            className={`h-12 rounded-xl bg-background/80 backdrop-blur-sm border sm:border-2 transition-all duration-300 text-base sm:text-sm ${
                               focusedField === 'service' 
                                 ? 'border-primary shadow-lg shadow-primary/20' 
                                 : 'border-primary/20 hover:border-primary/40'
@@ -277,7 +287,7 @@ export default function ContactSection() {
                           placeholder={t('form.messagePlaceholder')}
                           onFocus={() => setFocusedField('message')}
                           onBlur={() => setFocusedField(null)}
-                          className={`min-h-32 bg-background/80 backdrop-blur-sm border-2 transition-all duration-300 resize-none placeholder:text-muted-foreground/50 text-sm ${
+                          className={`min-h-32 rounded-xl bg-background/80 backdrop-blur-sm border sm:border-2 transition-all duration-300 resize-none placeholder:text-muted-foreground/50 text-base sm:text-sm ${
                             focusedField === 'message' 
                               ? 'border-primary shadow-lg shadow-primary/20' 
                               : 'border-primary/20 hover:border-primary/40'
@@ -341,8 +351,8 @@ export default function ContactSection() {
                         </div>
                       )}
                       
-                      {/* Trust Indicators */}
-                      <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 mt-4 text-xs text-muted-foreground">
+                      {/* Trust Indicators — single quiet line on mobile, 3-up row on desktop */}
+                      <div className="hidden sm:flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 mt-4 text-xs text-muted-foreground">
                         <span className="flex items-center gap-1.5">
                           <CheckCircle2 className="w-3 h-3 text-green-500" />
                           {t('trustIndicators.dataProtected')}
@@ -356,9 +366,12 @@ export default function ContactSection() {
                           {t('trustIndicators.quickResponse')}
                         </span>
                       </div>
-                      
-                      {/* Availability Status */}
-                      <div className="flex items-center justify-center gap-2 pt-2">
+                      <p className="sm:hidden text-center text-[12px] text-muted-foreground mt-3">
+                        {t('trust.response24h')} · {t('trust.gdprCompliant')} · {t('trustIndicators.dataProtected')}
+                      </p>
+
+                      {/* Availability Status — desktop only (mobile already shows it in the hero) */}
+                      <div className="hidden sm:flex items-center justify-center gap-2 pt-2">
                         <span className="relative flex h-2.5 w-2.5">
                           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                           <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
@@ -367,13 +380,24 @@ export default function ContactSection() {
                           {t('availability.status')}
                         </span>
                       </div>
+
+                      {/* Mobile-only: slim book-a-call link (replaces the hidden right column card) */}
+                      <button
+                        type="button"
+                        onClick={() => setIsBookingDialogOpen(true)}
+                        className="sm:hidden mt-3 w-full inline-flex items-center justify-center gap-2 text-sm font-medium text-primary py-2.5 rounded-xl border border-dashed border-primary/30 hover:bg-primary/5 transition-colors"
+                      >
+                        <Calendar className="w-4 h-4" />
+                        {t('bookCall')}
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
                     </form>
                   </div>
                 </div>
               </div>
 
-              {/* Right Side: Contact Methods + Booking Card */}
-              <div className="order-1 lg:order-2 flex flex-col">
+              {/* Right Side: Contact Methods + Booking Card — hidden on mobile (replaced by the quick strip + the slim book-a-call link inside the form) */}
+              <div className="hidden sm:flex order-1 lg:order-2 flex-col">
                 {/* Contact Methods Section */}
                 <div className="mb-6">
                   <h3 className="text-xl md:text-2xl font-bold text-foreground mb-6">{t('methods.directContact')}</h3>
