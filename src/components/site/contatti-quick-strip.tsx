@@ -85,7 +85,7 @@ export default function ContattiQuickStrip() {
   return (
     <>
       {/* 3-up tile strip — mobile only */}
-      <section className="sm:hidden relative -mt-6 px-4 pb-2 z-30">
+      <section className="sm:hidden relative mt-8 px-4 pb-4">
         <div className="grid grid-cols-3 gap-2.5">
           {tiles.map((tile) => {
             const inner = (

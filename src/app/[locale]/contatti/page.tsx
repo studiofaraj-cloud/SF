@@ -86,7 +86,7 @@ export default function ContattiPage() {
       {/* ============================================
           1. HERO SECTION - Connection Portal
           ============================================ */}
-      <section className="relative min-h-[58vh] min-h-[58svh] sm:min-h-[80vh] sm:min-h-[80svh] flex items-center justify-center overflow-hidden pt-20 sm:pt-24 md:pt-28">
+      <section className="relative min-h-[58vh] min-h-[58svh] sm:min-h-[80vh] sm:min-h-[80svh] flex items-center justify-center overflow-hidden pt-20 sm:pt-24 md:pt-28 pb-6 sm:pb-0">
         {/* Mobile: lightweight CSS-only background */}
         <div className="sm:hidden absolute inset-0 z-0 bg-gradient-to-b from-background via-secondary/30 to-background" />
         <div className="sm:hidden absolute inset-0 z-0 bg-constellation opacity-40 pointer-events-none" />
