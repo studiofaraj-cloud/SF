@@ -97,18 +97,36 @@ export default function HomepageClient({ heroSlides: heroSlidesProp }: HomepageC
         <QuoteDialog open={isQuoteDialogOpen} onOpenChange={setQuoteDialogOpen} />
         {/* Hero Section - 2050 Futuristic Design */}
         <section className="relative w-full min-h-screen hero-section-mobile overflow-hidden flex items-center justify-center">
-          {/* Background Image with Ken Burns zoom on slide change */}
+          {/* Background Images — stacked layers crossfade between slides */}
           <div className="absolute inset-0 z-0">
-            <div key={`bg-${activeSlide}`} className="absolute inset-0 hero-kenburns">
-              <FirebaseImage
-                src={heroSlides[activeSlide].imageUrl}
-                alt={heroSlides[activeSlide].imageHint}
-                fill
-                priority
-                className="object-cover"
-                data-ai-hint={heroSlides[activeSlide].imageHint}
-              />
-            </div>
+            {heroSlides.map((slide, index) => {
+              const isActive = index === activeSlide;
+              return (
+                <div
+                  key={slide.id ?? index}
+                  className="absolute inset-0"
+                  style={{
+                    opacity: isActive ? 1 : 0,
+                    transition: 'opacity 1200ms cubic-bezier(0.22, 1, 0.36, 1)',
+                  }}
+                  aria-hidden={!isActive}
+                >
+                  <div
+                    key={isActive ? `kb-${activeSlide}` : `idle-${index}`}
+                    className={`absolute inset-0 ${isActive ? 'hero-kenburns' : ''}`}
+                  >
+                    <FirebaseImage
+                      src={slide.imageUrl}
+                      alt={slide.imageHint}
+                      fill
+                      priority={index === 0}
+                      className="object-cover"
+                      data-ai-hint={slide.imageHint}
+                    />
+                  </div>
+                </div>
+              );
+            })}
           </div>
 
           {/* Dark Blue Gradient Overlay - stronger on mobile for AAA contrast */}
@@ -168,7 +186,12 @@ export default function HomepageClient({ heroSlides: heroSlidesProp }: HomepageC
                   </div>
 
                   {/* Animated Gradient Title */}
-                  <div className="mb-3 md:mb-6" suppressHydrationWarning aria-hidden="true">
+                  <div
+                    key={`title-${activeSlide}`}
+                    className="mb-3 md:mb-6 hero-text-in"
+                    suppressHydrationWarning
+                    aria-hidden="true"
+                  >
                     <GradientText
                       colors={['#3b82f6', '#8b5cf6', '#3b82f6']}
                       animationSpeed={4}
@@ -181,8 +204,8 @@ export default function HomepageClient({ heroSlides: heroSlidesProp }: HomepageC
                   {/* Description - clamped on mobile to prevent layout shift on slide change */}
                   <p
                     key={`desc-${activeSlide}`}
-                    className="mt-3 md:mt-6 text-[15px] md:text-lg lg:text-xl leading-relaxed text-white/85 md:text-muted-foreground max-w-2xl mx-auto px-2 animate-fade-in-from-right line-clamp-3 md:line-clamp-none"
-                    style={{ animationDelay: '0.3s' }}
+                    className="mt-3 md:mt-6 text-[15px] md:text-lg lg:text-xl leading-relaxed text-white/85 md:text-muted-foreground max-w-2xl mx-auto px-2 hero-text-in line-clamp-3 md:line-clamp-none"
+                    style={{ animationDelay: '180ms' }}
                   >
                       {heroSlides[activeSlide].description}
                   </p>
@@ -228,23 +251,35 @@ export default function HomepageClient({ heroSlides: heroSlidesProp }: HomepageC
                   </div>
 
                   {/* Slide Indicators - desktop dots */}
-                  <div className="hidden md:flex items-center justify-center gap-2 mt-8 md:mt-10">
-                    {heroSlides.map((_, index) => (
-                      <button
-                        key={index}
-                        onClick={() => setActiveSlide(index)}
-                        aria-label={`Slide ${index + 1}`}
-                        className="relative p-0 m-0 flex items-center justify-center"
-                      >
-                        <span
-                          className={`block h-2 rounded-full transition-all duration-700 ease-in-out ${
-                            index === activeSlide
-                              ? 'w-8 bg-primary shadow-[0_0_8px_rgba(var(--primary-rgb,59,130,246),0.5)]'
-                              : 'w-2 bg-white/30 hover:bg-white/50'
-                          }`}
-                        />
-                      </button>
-                    ))}
+                  <div className="hidden md:flex items-center justify-center gap-2.5 mt-8 md:mt-10">
+                    {heroSlides.map((_, index) => {
+                      const isActive = index === activeSlide;
+                      return (
+                        <button
+                          key={index}
+                          onClick={() => setActiveSlide(index)}
+                          aria-label={`Slide ${index + 1}`}
+                          aria-current={isActive ? 'true' : undefined}
+                          className="group relative p-1.5 -m-1.5 flex items-center justify-center focus:outline-none focus-visible:outline-none"
+                        >
+                          <span
+                            style={{
+                              transition:
+                                'width 700ms cubic-bezier(0.22, 1, 0.36, 1), background-color 500ms ease, box-shadow 500ms ease, transform 400ms ease',
+                            }}
+                            className={`relative block h-[6px] rounded-full overflow-hidden ${
+                              isActive
+                                ? 'w-9 bg-gradient-to-r from-primary via-primary to-primary/70 shadow-[0_0_14px_-2px_rgba(var(--primary-rgb,59,130,246),0.55),inset_0_1px_0_0_rgba(255,255,255,0.25)]'
+                                : 'w-[6px] bg-white/25 group-hover:bg-white/55 group-hover:scale-110'
+                            }`}
+                          >
+                            {isActive && (
+                              <span className="pointer-events-none absolute inset-x-0 top-0 h-px bg-white/40" />
+                            )}
+                          </span>
+                        </button>
+                      );
+                    })}
                   </div>
               </div>
           </div>
@@ -257,10 +292,10 @@ export default function HomepageClient({ heroSlides: heroSlidesProp }: HomepageC
                   key={index}
                   onClick={() => setActiveSlide(index)}
                   aria-label={`Slide ${index + 1}`}
-                  className="relative flex-1 max-w-[60px] h-[3px] rounded-full bg-white/20 overflow-hidden"
+                  className="relative flex-1 max-w-[60px] h-[3px] rounded-full bg-white/15 overflow-hidden"
                 >
                   <span
-                    className={`absolute inset-y-0 left-0 rounded-full bg-primary shadow-[0_0_8px_rgba(var(--primary-rgb,59,130,246),0.6)] ${
+                    className={`absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-primary to-primary/70 shadow-[0_0_8px_rgba(var(--primary-rgb,59,130,246),0.55)] ${
                       index === activeSlide
                         ? 'hero-progress-fill'
                         : index < activeSlide
