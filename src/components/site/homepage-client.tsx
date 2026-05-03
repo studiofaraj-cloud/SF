@@ -204,7 +204,7 @@ export default function HomepageClient({ heroSlides: heroSlidesProp }: HomepageC
                   {/* Description - clamped on mobile to prevent layout shift on slide change */}
                   <p
                     key={`desc-${activeSlide}`}
-                    className="mt-3 md:mt-6 text-[15px] md:text-lg lg:text-xl leading-relaxed text-white/85 md:text-muted-foreground max-w-2xl mx-auto px-2 hero-text-in line-clamp-3 md:line-clamp-none"
+                    className="mt-3 md:mt-6 text-[15px] md:text-lg lg:text-xl leading-relaxed text-white max-w-2xl mx-auto px-2 hero-text-in line-clamp-3 md:line-clamp-none drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]"
                     style={{ animationDelay: '180ms' }}
                   >
                       {heroSlides[activeSlide].description}

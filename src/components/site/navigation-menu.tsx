@@ -200,7 +200,7 @@ export function NavigationMenu() {
   const isServicesActive = pathname.includes('/servizi');
 
   return (
-    <nav className="flex items-center space-x-4 md:space-x-6 text-sm font-medium h-full">
+    <nav className="flex items-center gap-3 lg:gap-5 xl:gap-6 text-sm font-medium h-full whitespace-nowrap">
 
       {/* Before Servizi */}
       {navItems.slice(0, 2).map((item, index) => {

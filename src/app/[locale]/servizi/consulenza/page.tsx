@@ -75,7 +75,7 @@ export default function ConsulenzaPage() {
   return (
     <div className="bg-background text-foreground overflow-x-hidden">
       {/* Hero Section */}
-      <section className="relative min-h-[80vh] min-h-[80svh] flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[80vh] min-h-[80svh] flex items-center justify-center overflow-hidden pt-20 sm:pt-24 md:pt-0">
         <div className="absolute inset-0 z-0">
           <RippleGrid
             gridColor="#d946ef"

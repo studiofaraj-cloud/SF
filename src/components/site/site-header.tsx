@@ -60,7 +60,7 @@ function MobileNav({ onSearchOpen }: { onSearchOpen: () => void }) {
     return (
         <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
             <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="lg:hidden hover:bg-primary/10 text-foreground" aria-label="Open mobile menu">
+                <Button variant="ghost" size="icon" className="md:hidden hover:bg-primary/10 text-foreground" aria-label="Open mobile menu">
                     <Menu className="h-6 w-6" />
                 </Button>
             </SheetTrigger>
@@ -208,9 +208,10 @@ function MobileNav({ onSearchOpen }: { onSearchOpen: () => void }) {
 }
 
 function DesktopNav({ onSearchOpen }: { onSearchOpen: () => void }) {
+    const locale = useLocale();
     return (
         <>
-         <div className="hidden flex-1 items-center justify-between lg:flex h-full">
+         <div className="hidden flex-1 items-center justify-between md:flex h-full">
             <Link href="/" className="mr-4 md:mr-6 flex items-center space-x-2 h-full">
               <Image src="/assets/logo.png" alt="Studio Faraj Logo" width={32} height={32} className="md:w-8 md:h-8 lg:w-10 lg:h-10 flex-shrink-0" unoptimized />
               <span className="font-brand text-sm md:text-base lg:text-lg whitespace-nowrap text-foreground">Studio Faraj</span>
@@ -224,6 +225,13 @@ function DesktopNav({ onSearchOpen }: { onSearchOpen: () => void }) {
                 <span className="sr-only">Search</span>
               </Button>
               <LanguageSwitcher />
+              <Link
+                href={getLocalizedPath('/contatti', locale as any)}
+                className="ml-1 hidden xl:inline-flex items-center gap-1.5 h-9 px-4 rounded-full bg-primary text-primary-foreground text-[12.5px] font-bold tracking-wide hover:brightness-110 transition-all duration-200 shadow-md shadow-primary/20 hover:shadow-primary/40 active:scale-[0.98] whitespace-nowrap"
+              >
+                {locale === 'it' ? 'Preventivo' : 'Get a Quote'}
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
             </div>
           </div>
         </>
@@ -234,9 +242,14 @@ function DesktopNav({ onSearchOpen }: { onSearchOpen: () => void }) {
 export function SiteHeader() {
   const [mounted, setMounted] = useState(false);
   const [isSearchOpen, setSearchOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   const handleSearchOpen = () => setSearchOpen(true);
@@ -244,8 +257,20 @@ export function SiteHeader() {
   return (
     <>
       <SearchDialog open={isSearchOpen} onOpenChange={setSearchOpen} />
-      <header className="fixed top-0 z-50 p-3 md:p-4 left-0 right-0 lg:left-[200px] lg:right-[200px] animate-fade-in-up">
-        <div className="header-modern-angled header-angled-border relative flex h-14 md:h-16 items-center justify-between px-4 md:px-6 lg:px-8 animate-fade-in-up">
+      <header
+        className={cn(
+          'fixed top-0 z-50 left-0 right-0 animate-fade-in-up transition-all duration-300',
+          scrolled
+            ? 'p-2 md:p-2.5 lg:left-[120px] lg:right-[120px] xl:left-[200px] xl:right-[200px]'
+            : 'p-3 md:p-4 lg:left-[120px] lg:right-[120px] xl:left-[200px] xl:right-[200px]'
+        )}
+      >
+        <div
+          className={cn(
+            'header-modern-angled header-angled-border relative flex items-center justify-between px-4 md:px-6 lg:px-8 animate-fade-in-up transition-all duration-300',
+            scrolled ? 'h-12 md:h-14' : 'h-14 md:h-16'
+          )}
+        >
           {/* Left angled accent */}
           <div className="header-angle-accent header-angle-accent-top-left"></div>
 
@@ -255,16 +280,16 @@ export function SiteHeader() {
           {/* Right side angle overlay */}
           <div className="header-modern-angled-right"></div>
 
-          <div className="hidden lg:flex flex-1 relative z-10 h-full items-center">
+          <div className="hidden md:flex flex-1 relative z-10 h-full items-center">
             <DesktopNav onSearchOpen={handleSearchOpen} />
           </div>
-          <div className="flex items-center lg:hidden relative z-10 h-full">
+          <div className="flex items-center md:hidden relative z-10 h-full">
             <Link href="/" className="flex items-center space-x-2 h-full">
               <Image src="/assets/logo.png" alt="Studio Faraj Logo" width={32} height={32} className="md:w-8 md:h-8 flex-shrink-0" unoptimized />
               <span className="font-brand text-sm md:text-base whitespace-nowrap text-foreground">Studio Faraj</span>
             </Link>
           </div>
-          <div className="lg:hidden relative z-10 flex items-center h-full gap-2">
+          <div className="md:hidden relative z-10 flex items-center h-full gap-2">
             {mounted ? (
               <>
                 <LanguageSwitcher />
