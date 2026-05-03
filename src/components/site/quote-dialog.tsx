@@ -27,9 +27,16 @@ import { useToast } from '@/hooks/use-toast';
 import { contactServices } from '@/lib/definitions';
 import { useTranslations } from 'next-intl';
 
+export type QuoteDialogPrefill = {
+  service?: string;
+  budget?: string;
+  message?: string;
+};
+
 type QuoteDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  prefill?: QuoteDialogPrefill;
 };
 
 // Map service values to translation keys
@@ -45,7 +52,7 @@ const serviceValueToKey: Record<string, string> = {
   'altro': 'other',
 };
 
-export default function QuoteDialog({ open, onOpenChange }: QuoteDialogProps) {
+export default function QuoteDialog({ open, onOpenChange, prefill }: QuoteDialogProps) {
   const { toast } = useToast();
   const t = useTranslations('quoteDialog');
   const tServices = useTranslations('services');
@@ -53,8 +60,17 @@ export default function QuoteDialog({ open, onOpenChange }: QuoteDialogProps) {
   const initialState = { message: null, errors: {}, success: false };
   const [state, dispatch] = useActionState(createMessage, initialState);
   const [isPending, startTransition] = useTransition();
-  const [serviceValue, setServiceValue] = useState<string>('');
-  const [budgetValue, setBudgetValue] = useState<string>('');
+  const [serviceValue, setServiceValue] = useState<string>(prefill?.service ?? '');
+  const [budgetValue, setBudgetValue] = useState<string>(prefill?.budget ?? '');
+  const [messageValue, setMessageValue] = useState<string>(prefill?.message ?? '');
+
+  useEffect(() => {
+    if (open) {
+      if (prefill?.service !== undefined) setServiceValue(prefill.service);
+      if (prefill?.budget !== undefined) setBudgetValue(prefill.budget);
+      if (prefill?.message !== undefined) setMessageValue(prefill.message);
+    }
+  }, [open, prefill]);
 
   useEffect(() => {
     if(state.success) {
@@ -64,6 +80,7 @@ export default function QuoteDialog({ open, onOpenChange }: QuoteDialogProps) {
         form.reset();
         setServiceValue('');
         setBudgetValue('');
+        setMessageValue('');
       }
       onOpenChange(false);
     }
@@ -258,7 +275,7 @@ export default function QuoteDialog({ open, onOpenChange }: QuoteDialogProps) {
                         <div className="space-y-1.5">
                           <Label htmlFor="budget-dialog" className="sr-only">{t('form.budget')}</Label>
                           <div className="holographic-card rounded-lg px-3 py-1 bg-card/40 backdrop-blur-sm border border-primary/20 focus-within:border-primary/50 transition-all duration-300">
-                            <Input id="budget-dialog" name="budget" placeholder={t('form.budget')} className="bg-transparent border-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-foreground placeholder:text-foreground/50 text-base h-12 min-h-[48px]" />
+                            <Input id="budget-dialog" name="budget" placeholder={t('form.budget')} value={budgetValue} onChange={(e) => setBudgetValue(e.target.value)} className="bg-transparent border-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-foreground placeholder:text-foreground/50 text-base h-12 min-h-[48px]" />
                           </div>
                         </div>
                       </div>
@@ -267,7 +284,7 @@ export default function QuoteDialog({ open, onOpenChange }: QuoteDialogProps) {
                       <div className="space-y-1.5">
                         <Label htmlFor="message-dialog" className="sr-only">{t('form.message')}</Label>
                         <div className="holographic-card rounded-lg px-3 py-2 bg-card/40 backdrop-blur-sm border border-primary/20 focus-within:border-primary/50 transition-all duration-300">
-                          <Textarea id="message-dialog" name="message" placeholder={t('form.message')} required className="bg-transparent border-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-foreground placeholder:text-foreground/50 min-h-[100px] sm:min-h-[110px] md:min-h-[130px] resize-none text-base leading-relaxed" />
+                          <Textarea id="message-dialog" name="message" placeholder={t('form.message')} value={messageValue} onChange={(e) => setMessageValue(e.target.value)} required className="bg-transparent border-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-foreground placeholder:text-foreground/50 min-h-[100px] sm:min-h-[110px] md:min-h-[130px] resize-none text-base leading-relaxed" />
                         </div>
                         {state.errors?.message && <p className="text-xs text-destructive">{state.errors.message[0]}</p>}
                       </div>

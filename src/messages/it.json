@@ -137,6 +137,232 @@
         "button": "Inizia Ora",
         "responseTime": "Risposta in 24h",
         "freeQuote": "Preventivo Gratuito"
+      },
+      "v2": {
+        "hero": {
+          "badge": "Sviluppo Web · Padova",
+          "titleLine1": "Siti e piattaforme",
+          "titleLine2": "scritti riga per riga.",
+          "subtitle": "Niente template, niente no-code. Un team Gen-Z che progetta, sviluppa e consegna piattaforme web 100% codice — performanti, sicure, e tue al 100%.",
+          "ctaQuote": "Richiedi un preventivo",
+          "ctaProjects": "Vedi i progetti",
+          "trust": {
+            "response": "Risposta in 24h",
+            "free": "Preventivo gratuito",
+            "owned": "Codice tuo al 100%",
+            "italy": "Made in Italy"
+          },
+          "codeCardLabel": "componente.tsx"
+        },
+        "differentiators": {
+          "badge": "Perché siamo diversi",
+          "title": "Non siamo un template.",
+          "titleHighlight": "E nemmeno un freelance qualunque.",
+          "subtitle": "Confronto onesto tra le opzioni che hai sul mercato.",
+          "columns": {
+            "feature": "Aspetto",
+            "noCode": "Template / No-code",
+            "freelance": "Freelance generico",
+            "us": "Studio Faraj"
+          },
+          "rows": [
+            {
+              "feature": "Codice sorgente",
+              "noCode": "Chiuso, della piattaforma",
+              "freelance": "Variabile, spesso non documentato",
+              "us": "100% open, consegnato a te"
+            },
+            {
+              "feature": "Performance",
+              "noCode": "Media, dipende dal tema",
+              "freelance": "Variabile",
+              "us": "Lighthouse 95+ garantito"
+            },
+            {
+              "feature": "Dashboard admin",
+              "noCode": "Limitata o assente",
+              "freelance": "Raramente inclusa",
+              "us": "Su misura, multi-utente"
+            },
+            {
+              "feature": "Scalabilità",
+              "noCode": "Vincolata al pricing",
+              "freelance": "Spesso da rifare",
+              "us": "Next.js + cloud, illimitata"
+            },
+            {
+              "feature": "Conoscenza di dominio",
+              "noCode": "Nessuna",
+              "freelance": "Generalista",
+              "us": "Onboarding tecnico del tuo settore"
+            },
+            {
+              "feature": "Supporto",
+              "noCode": "Chatbot",
+              "freelance": "\"Quando posso\"",
+              "us": "Team dedicato, SLA chiari"
+            }
+          ],
+          "cta": "Parla con noi 15 minuti"
+        },
+        "archetypes": {
+          "badge": "Cosa costruiamo",
+          "title": "Tre modi in cui",
+          "titleHighlight": "lavoriamo con te.",
+          "subtitle": "Identifica il tuo scenario e parti da lì. Tutto è personalizzabile.",
+          "vetrina": {
+            "tag": "Sito vetrina",
+            "title": "Vetrina professionale",
+            "description": "Per studi professionali, freelance e PMI che vogliono presenza online seria, veloce e che converte.",
+            "bullets": [
+              "Design custom in linea con il tuo brand",
+              "SEO tecnico + contenuti ottimizzati",
+              "Form richiesta preventivo collegato",
+              "Email transazionali automatiche",
+              "Multilingua (IT/EN o più)"
+            ],
+            "techs": ["Next.js", "TypeScript", "Tailwind", "Resend", "Vercel"],
+            "cta": "Preventivo vetrina"
+          },
+          "dashboard": {
+            "tag": "★ Flagship",
+            "title": "Sito dinamico con dashboard admin",
+            "description": "Gestisci il tuo inventario in totale autonomia. Aggiungi, modifica, archivia: nessuna chiamata allo sviluppatore.",
+            "painLine": "\"Ogni volta devo chiamare lo sviluppatore per pubblicare un nuovo immobile / un'auto / un appartamento.\" Mai più.",
+            "bullets": [
+              "Dashboard admin con autenticazione e ruoli",
+              "CRUD completo: aggiungi, modifica, pubblica, archivia",
+              "Upload immagini, gallerie, schede tecniche",
+              "Filtri pubblici dinamici (prezzo, zona, anno…)",
+              "Notifiche email automatiche al cambio stato"
+            ],
+            "examplesTitle": "Perfetto per:",
+            "examples": [
+              "Immobiliari — appartamenti, case, terreni",
+              "Concessionarie auto — schede veicolo complete",
+              "Noleggi — calendario disponibilità",
+              "Eventi e corsi — sessioni a tempo limitato"
+            ],
+            "techs": ["Next.js", "Firebase", "PostgreSQL", "Stripe", "AWS S3"],
+            "cta": "Voglio gestire il mio inventario"
+          },
+          "platform": {
+            "tag": "Piattaforma completa",
+            "title": "E-commerce, pagamenti & automazioni",
+            "description": "Per chi vende online, gestisce abbonamenti o costruisce un marketplace. Tutto integrato, tutto automatico.",
+            "bullets": [
+              "Pagamenti: Stripe, PayPal, Satispay, Klarna, carte, bonifico",
+              "Email transazionali (ordini, fatture, password)",
+              "Mail marketing automatico con segmentazione",
+              "AI bot per assistenza clienti e qualificazione lead",
+              "Dashboard analytics & KPI"
+            ],
+            "techs": ["Next.js", "Stripe", "OpenAI", "Resend", "PostgreSQL"],
+            "cta": "Costruisci la mia piattaforma"
+          }
+        },
+        "industries": {
+          "badge": "Settori che padroneggiamo",
+          "title": "Parliamo la lingua del",
+          "titleHighlight": "tuo mestiere.",
+          "subtitle": "Prima di scrivere codice, studiamo il tuo dominio. Glossario, normative, flussi reali.",
+          "items": [
+            { "icon": "🏛️", "name": "Architetti", "desc": "Render, tavole, portfolio, area clienti" },
+            { "icon": "🦷", "name": "Dentisti & Medici", "desc": "Prenotazioni, GDPR, area pazienti" },
+            { "icon": "📐", "name": "Geometri & Periti", "desc": "Pratiche, gestione documentale" },
+            { "icon": "🏠", "name": "Immobiliari", "desc": "Gestione immobili, virtual tour, lead" },
+            { "icon": "🚗", "name": "Concessionarie", "desc": "Schede veicolo, finanziamenti" },
+            { "icon": "⚖️", "name": "Studi legali", "desc": "Fascicoli, riservatezza, calendario" },
+            { "icon": "🏗️", "name": "Imprese edili", "desc": "Cantieri, gallerie progetti" },
+            { "icon": "💊", "name": "Farmacie", "desc": "Catalogo, prenotazione ritiro" },
+            { "icon": "🎓", "name": "Formazione", "desc": "Iscrizioni, pagamenti, area studenti" },
+            { "icon": "🏨", "name": "Hospitality", "desc": "Booking engine, multilingua" },
+            { "icon": "🍽️", "name": "Ristoranti", "desc": "Menù dinamico, prenotazioni" },
+            { "icon": "🛠️", "name": "B2B tecnici", "desc": "Cataloghi con specifiche" }
+          ],
+          "footer": "Non vedi il tuo settore? Lo studiamo. Ogni progetto inizia con un'analisi tecnica del tuo dominio.",
+          "cta": "Raccontami il mio settore"
+        },
+        "process": {
+          "badge": "Come lavoriamo",
+          "title": "Un processo trasparente,",
+          "titleHighlight": "passo dopo passo.",
+          "steps": [
+            { "step": "01", "title": "Discovery & analisi tecnica", "duration": "1–2 settimane", "description": "Capiamo dominio, vincoli, obiettivi misurabili. Glossario tecnico del tuo settore." },
+            { "step": "02", "title": "Architettura & wireframe", "duration": "1 settimana", "description": "Modelliamo struttura dati, flussi utente, prototipi a bassa fedeltà." },
+            { "step": "03", "title": "Design UI", "duration": "1–2 settimane", "description": "Moodboard, design system, prototipo cliccabile su Figma." },
+            { "step": "04", "title": "Sviluppo", "duration": "4–10 settimane", "description": "Sprint settimanali, demo live, repository accessibile in qualsiasi momento." },
+            { "step": "05", "title": "QA, performance, SEO, accessibilità", "duration": "1 settimana", "description": "Lighthouse 95+, WCAG AA, test cross-browser, audit di sicurezza." },
+            { "step": "06", "title": "Lancio & formazione admin", "duration": "1 settimana", "description": "Handoff dashboard, manuale d'uso, sessione formazione, supporto post-lancio." }
+          ],
+          "cta": "Inizia il discovery"
+        },
+        "stack": {
+          "badge": "Il nostro stack",
+          "title": "Strumenti scelti uno",
+          "titleHighlight": "per uno.",
+          "subtitle": "Ogni tecnologia giustificata. Nessuna black box.",
+          "groups": [
+            { "name": "Frontend", "items": ["HTML", "CSS", "JavaScript", "TypeScript", "React", "Next.js", "Tailwind"] },
+            { "name": "Backend & Data", "items": ["Node.js", "Firebase", "PostgreSQL", "MongoDB", "Prisma"] },
+            { "name": "Email & Marketing", "items": ["Resend", "SendGrid", "Postmark", "Automazioni custom"] },
+            { "name": "AI", "items": ["OpenAI", "Anthropic", "Embeddings", "RAG", "Chatbot custom"] },
+            { "name": "Pagamenti", "items": ["Stripe", "PayPal", "Satispay", "Klarna"] },
+            { "name": "Cloud & DevOps", "items": ["Vercel", "AWS", "Firebase", "GitHub Actions"] }
+          ]
+        },
+        "kpi": {
+          "badge": "Risultati misurabili",
+          "items": [
+            { "value": "95+", "label": "Lighthouse score medio" },
+            { "value": "<1.5s", "label": "LCP medio" },
+            { "value": "100%", "label": "Codice consegnato a te" },
+            { "value": "24h", "label": "Tempo medio di risposta" }
+          ]
+        },
+        "faq": {
+          "badge": "Domande frequenti",
+          "title": "Le risposte che",
+          "titleHighlight": "ci chiedono di più.",
+          "items": [
+            { "q": "Posso modificare il sito da solo dopo la consegna?", "a": "Sì. Ogni progetto include una dashboard admin su misura e una sessione di formazione. Aggiungi, modifichi e pubblichi contenuti in autonomia." },
+            { "q": "Il codice è mio?", "a": "Sì, al 100%. Ti consegniamo il repository completo, la documentazione e gli accessi a hosting e database. Nessun lock-in." },
+            { "q": "Quanto costa un sito vetrina? E un gestionale?", "a": "Un sito vetrina parte da fasce contenute, un gestionale con dashboard admin dipende da numero di utenti, integrazioni e flussi. Ogni preventivo è dettagliato e senza sorprese." },
+            { "q": "Lavorate fuori da Padova?", "a": "Sì. Siamo basati a Padova ma lavoriamo con clienti in tutta Italia, da remoto o in presenza per progetti strutturati." },
+            { "q": "Potete riscrivere un sito esistente?", "a": "Sì, e spesso è la scelta più sensata. Analizziamo il sito attuale, conserviamo SEO e contenuti, e migriamo su uno stack moderno senza perdita di traffico." },
+            { "q": "Integrate con il mio gestionale (CRM, fatturazione, ERP)?", "a": "Sì. Costruiamo integrazioni custom con la maggior parte dei gestionali italiani (Fatturapro, Aruba, Zoho, HubSpot, Salesforce, ecc.)." },
+            { "q": "Fate manutenzione dopo il lancio?", "a": "Sì. Offriamo piani di manutenzione mensili che coprono aggiornamenti, monitoraggio, backup, sicurezza e piccole evolutive." },
+            { "q": "Quanto tempo serve per un progetto?", "a": "Un sito vetrina richiede 4–6 settimane. Un gestionale completo 8–16 settimane. La timeline esatta la definiamo nella discovery." }
+          ]
+        },
+        "ctaFinal": {
+          "badge": "Parliamone",
+          "title": "Hai un'idea?",
+          "titleHighlight": "Iniziamo a costruirla.",
+          "subtitle": "Due strade. Scegli quella che preferisci.",
+          "pathA": {
+            "title": "Ho un'idea chiara",
+            "description": "Compila il form, ricevi un preventivo dettagliato in 24h.",
+            "cta": "Richiedi un preventivo"
+          },
+          "pathB": {
+            "title": "Voglio prima parlarne",
+            "description": "30 minuti di call gratuita per capire insieme se siamo il match giusto.",
+            "cta": "Prenota una call"
+          },
+          "trustResponse": "Risposta in 24h",
+          "trustFree": "Preventivo gratuito",
+          "trustPiva": "P.IVA 05783550287",
+          "trustHQ": "Sede Padova"
+        },
+        "prefill": {
+          "differentiators": "Vorrei una breve call di 15 minuti per capire come lavorate e se siete la scelta giusta per il mio progetto.",
+          "vetrina": "Sono interessato a un sito vetrina professionale. Vorrei capire meglio cosa includerebbe per la mia attività.",
+          "dashboard": "Sono interessato a un sito dinamico con dashboard admin per gestire il mio inventario in autonomia.",
+          "platform": "Vorrei costruire una piattaforma con pagamenti online e automazioni (mail marketing, AI bot).",
+          "industries": "Lavoro nel settore: [scrivi qui il tuo settore]. Vorrei capire come potete aiutarmi.",
+          "process": "Vorrei iniziare con una fase di discovery per il mio progetto."
+        }
       }
     },
     "ecommerce": {

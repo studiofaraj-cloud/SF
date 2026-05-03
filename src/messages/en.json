@@ -137,6 +137,202 @@
         "button": "Start Now",
         "responseTime": "Response within 24h",
         "freeQuote": "Free Quote"
+      },
+      "v2": {
+        "hero": {
+          "badge": "Web Development · Padova",
+          "titleLine1": "Websites and platforms",
+          "titleLine2": "written line by line.",
+          "subtitle": "No templates, no no-code. A Gen-Z team that designs, builds and ships 100% code platforms — fast, secure, and 100% yours.",
+          "ctaQuote": "Request a quote",
+          "ctaProjects": "View projects",
+          "trust": {
+            "response": "24h response",
+            "free": "Free quote",
+            "owned": "100% your code",
+            "italy": "Made in Italy"
+          },
+          "codeCardLabel": "component.tsx"
+        },
+        "differentiators": {
+          "badge": "Why we're different",
+          "title": "Not a template.",
+          "titleHighlight": "Not a random freelancer.",
+          "subtitle": "Honest comparison of the options on the market.",
+          "columns": {
+            "feature": "Aspect",
+            "noCode": "Template / No-code",
+            "freelance": "Generic freelancer",
+            "us": "Studio Faraj"
+          },
+          "rows": [
+            { "feature": "Source code", "noCode": "Closed, owned by platform", "freelance": "Variable, often undocumented", "us": "100% open, delivered to you" },
+            { "feature": "Performance", "noCode": "Average, theme-dependent", "freelance": "Variable", "us": "Lighthouse 95+ guaranteed" },
+            { "feature": "Admin dashboard", "noCode": "Limited or absent", "freelance": "Rarely included", "us": "Custom, multi-user" },
+            { "feature": "Scalability", "noCode": "Pricing-locked", "freelance": "Often needs rewrite", "us": "Next.js + cloud, unlimited" },
+            { "feature": "Domain knowledge", "noCode": "None", "freelance": "Generalist", "us": "Technical onboarding of your industry" },
+            { "feature": "Support", "noCode": "Chatbot", "freelance": "\"When I can\"", "us": "Dedicated team, clear SLAs" }
+          ],
+          "cta": "Talk to us for 15 minutes"
+        },
+        "archetypes": {
+          "badge": "What we build",
+          "title": "Three ways",
+          "titleHighlight": "we work with you.",
+          "subtitle": "Identify your scenario and start there. Everything is customizable.",
+          "vetrina": {
+            "tag": "Showcase site",
+            "title": "Professional showcase site",
+            "description": "For professionals, freelancers and SMEs who want a serious, fast, converting online presence.",
+            "bullets": [
+              "Custom design aligned with your brand",
+              "Technical SEO + optimized content",
+              "Quote request form connected",
+              "Automatic transactional emails",
+              "Multilingual (IT/EN or more)"
+            ],
+            "techs": ["Next.js", "TypeScript", "Tailwind", "Resend", "Vercel"],
+            "cta": "Showcase quote"
+          },
+          "dashboard": {
+            "tag": "★ Flagship",
+            "title": "Dynamic site with admin dashboard",
+            "description": "Manage your inventory in total autonomy. Add, edit, archive: no calls to the developer.",
+            "painLine": "\"Every time I have to call the developer to publish a new property / car / apartment.\" Never again.",
+            "bullets": [
+              "Admin dashboard with auth and roles",
+              "Full CRUD: add, edit, publish, archive",
+              "Image upload, galleries, technical sheets",
+              "Dynamic public filters (price, area, year…)",
+              "Automatic email notifications on status change"
+            ],
+            "examplesTitle": "Perfect for:",
+            "examples": [
+              "Real estate — apartments, houses, land",
+              "Car dealerships — full vehicle sheets",
+              "Rentals — availability calendar",
+              "Events & courses — limited-time sessions"
+            ],
+            "techs": ["Next.js", "Firebase", "PostgreSQL", "Stripe", "AWS S3"],
+            "cta": "I want to manage my inventory"
+          },
+          "platform": {
+            "tag": "Full platform",
+            "title": "E-commerce, payments & automations",
+            "description": "For online sellers, subscription businesses, marketplaces. Everything integrated, everything automatic.",
+            "bullets": [
+              "Payments: Stripe, PayPal, Satispay, Klarna, cards, bank transfer",
+              "Transactional emails (orders, invoices, password)",
+              "Automated marketing emails with segmentation",
+              "AI bot for customer support and lead qualification",
+              "Analytics & KPI dashboard"
+            ],
+            "techs": ["Next.js", "Stripe", "OpenAI", "Resend", "PostgreSQL"],
+            "cta": "Build my platform"
+          }
+        },
+        "industries": {
+          "badge": "Industries we master",
+          "title": "We speak the language of",
+          "titleHighlight": "your craft.",
+          "subtitle": "Before writing code, we study your domain. Glossary, regulations, real workflows.",
+          "items": [
+            { "icon": "🏛️", "name": "Architects", "desc": "Renders, drawings, portfolio, client area" },
+            { "icon": "🦷", "name": "Dentists & Doctors", "desc": "Bookings, GDPR, patient area" },
+            { "icon": "📐", "name": "Surveyors", "desc": "Cases, document management" },
+            { "icon": "🏠", "name": "Real estate", "desc": "Property mgmt, virtual tours, leads" },
+            { "icon": "🚗", "name": "Car dealers", "desc": "Vehicle sheets, financing" },
+            { "icon": "⚖️", "name": "Law firms", "desc": "Cases, confidentiality, calendar" },
+            { "icon": "🏗️", "name": "Construction", "desc": "Sites, project galleries" },
+            { "icon": "💊", "name": "Pharmacies", "desc": "Catalog, pickup booking" },
+            { "icon": "🎓", "name": "Education", "desc": "Enrollment, payments, student area" },
+            { "icon": "🏨", "name": "Hospitality", "desc": "Booking engine, multilingual" },
+            { "icon": "🍽️", "name": "Restaurants", "desc": "Dynamic menu, bookings" },
+            { "icon": "🛠️", "name": "Technical B2B", "desc": "Catalogs with specifications" }
+          ],
+          "footer": "Don't see your industry? We'll study it. Every project starts with a technical analysis of your domain.",
+          "cta": "Tell me about my industry"
+        },
+        "process": {
+          "badge": "How we work",
+          "title": "A transparent process,",
+          "titleHighlight": "step by step.",
+          "steps": [
+            { "step": "01", "title": "Discovery & technical analysis", "duration": "1–2 weeks", "description": "We understand domain, constraints, measurable goals. Technical glossary of your industry." },
+            { "step": "02", "title": "Architecture & wireframes", "duration": "1 week", "description": "We model data structure, user flows, low-fidelity prototypes." },
+            { "step": "03", "title": "UI Design", "duration": "1–2 weeks", "description": "Moodboard, design system, clickable Figma prototype." },
+            { "step": "04", "title": "Development", "duration": "4–10 weeks", "description": "Weekly sprints, live demos, repository accessible at any time." },
+            { "step": "05", "title": "QA, performance, SEO, accessibility", "duration": "1 week", "description": "Lighthouse 95+, WCAG AA, cross-browser testing, security audit." },
+            { "step": "06", "title": "Launch & admin training", "duration": "1 week", "description": "Dashboard handoff, user manual, training session, post-launch support." }
+          ],
+          "cta": "Start the discovery"
+        },
+        "stack": {
+          "badge": "Our stack",
+          "title": "Tools chosen",
+          "titleHighlight": "one by one.",
+          "subtitle": "Every technology justified. No black boxes.",
+          "groups": [
+            { "name": "Frontend", "items": ["HTML", "CSS", "JavaScript", "TypeScript", "React", "Next.js", "Tailwind"] },
+            { "name": "Backend & Data", "items": ["Node.js", "Firebase", "PostgreSQL", "MongoDB", "Prisma"] },
+            { "name": "Email & Marketing", "items": ["Resend", "SendGrid", "Postmark", "Custom automations"] },
+            { "name": "AI", "items": ["OpenAI", "Anthropic", "Embeddings", "RAG", "Custom chatbot"] },
+            { "name": "Payments", "items": ["Stripe", "PayPal", "Satispay", "Klarna"] },
+            { "name": "Cloud & DevOps", "items": ["Vercel", "AWS", "Firebase", "GitHub Actions"] }
+          ]
+        },
+        "kpi": {
+          "badge": "Measurable results",
+          "items": [
+            { "value": "95+", "label": "Average Lighthouse score" },
+            { "value": "<1.5s", "label": "Average LCP" },
+            { "value": "100%", "label": "Code delivered to you" },
+            { "value": "24h", "label": "Average response time" }
+          ]
+        },
+        "faq": {
+          "badge": "Frequently asked questions",
+          "title": "The answers we",
+          "titleHighlight": "get most often.",
+          "items": [
+            { "q": "Can I edit the site myself after delivery?", "a": "Yes. Every project includes a custom admin dashboard and a training session. You add, edit and publish content autonomously." },
+            { "q": "Is the code mine?", "a": "Yes, 100%. We deliver the full repository, documentation and access to hosting and database. No lock-in." },
+            { "q": "How much does a showcase site cost? A management system?", "a": "A showcase site starts from accessible price ranges, a management platform with admin dashboard depends on number of users, integrations and flows. Every quote is detailed and transparent." },
+            { "q": "Do you work outside Padova?", "a": "Yes. We're based in Padova but work with clients all over Italy, remotely or on-site for structured projects." },
+            { "q": "Can you rewrite an existing site?", "a": "Yes, and often it's the smartest choice. We analyze the current site, preserve SEO and content, and migrate to a modern stack with no traffic loss." },
+            { "q": "Do you integrate with my management system (CRM, billing, ERP)?", "a": "Yes. We build custom integrations with most Italian management systems (Fatturapro, Aruba, Zoho, HubSpot, Salesforce, etc.)." },
+            { "q": "Do you provide maintenance after launch?", "a": "Yes. We offer monthly maintenance plans covering updates, monitoring, backups, security and small evolutions." },
+            { "q": "How long does a project take?", "a": "A showcase site takes 4–6 weeks. A full management platform 8–16 weeks. The exact timeline is defined in the discovery phase." }
+          ]
+        },
+        "ctaFinal": {
+          "badge": "Let's talk",
+          "title": "Got an idea?",
+          "titleHighlight": "Let's start building it.",
+          "subtitle": "Two paths. Pick the one you prefer.",
+          "pathA": {
+            "title": "I have a clear idea",
+            "description": "Fill the form, get a detailed quote within 24h.",
+            "cta": "Request a quote"
+          },
+          "pathB": {
+            "title": "I want to talk first",
+            "description": "30 minutes of free call to figure out together if we're the right match.",
+            "cta": "Book a call"
+          },
+          "trustResponse": "24h response",
+          "trustFree": "Free quote",
+          "trustPiva": "VAT 05783550287",
+          "trustHQ": "Padova HQ"
+        },
+        "prefill": {
+          "differentiators": "I'd like a short 15-minute call to understand how you work and whether you're the right fit for my project.",
+          "vetrina": "I'm interested in a professional showcase site. I'd like to better understand what would be included for my business.",
+          "dashboard": "I'm interested in a dynamic site with admin dashboard to manage my inventory autonomously.",
+          "platform": "I'd like to build a platform with online payments and automations (email marketing, AI bot).",
+          "industries": "I work in the [write your industry here] sector. I'd like to understand how you can help me.",
+          "process": "I'd like to start with a discovery phase for my project."
+        }
       }
     },
     "ecommerce": {
