@@ -18,11 +18,12 @@ const intlMiddleware = createMiddleware({
 export default function middleware(request: NextRequest) {
   const response = intlMiddleware(request);
 
-  // Without an explicit cache-control, Firebase App Hosting's adapter falls
-  // back to `no-store` when middleware runs, which suppresses edge compression
-  // and disables CDN caching for the prerendered locale pages. Set a public,
-  // cacheable policy that matches the page's `revalidate = 3600`.
-  if (response && !response.headers.has('cache-control')) {
+  // Firebase App Hosting's adapter sets `cache-control: no-store` whenever
+  // middleware runs, which suppresses edge Brotli compression and disables
+  // CDN caching of the prerendered locale HTML. Force a public, cacheable
+  // policy that matches the page's `revalidate = 3600`. Always override —
+  // the upstream value is `no-store` so a guarded set would be a no-op.
+  if (response) {
     response.headers.set(
       'cache-control',
       'public, s-maxage=3600, stale-while-revalidate=86400'
