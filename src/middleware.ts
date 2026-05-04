@@ -6,6 +6,11 @@ export default createMiddleware({
   defaultLocale,
   // Always show the locale prefix in the URL (e.g. /it/..., /en/...)
   localePrefix: 'always',
+  // Disable cookie-based locale detection. Locale is fully URL-driven, so the
+  // NEXT_LOCALE cookie is unnecessary — and its presence forces Next.js to mark
+  // responses as `cache-control: private`, which prevents Firebase App Hosting's
+  // edge from applying Brotli/gzip compression to the SSR'd HTML.
+  localeDetection: false,
 });
 
 export const config = {
