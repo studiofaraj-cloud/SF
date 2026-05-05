@@ -15,6 +15,54 @@ const nextConfig: NextConfig = {
   },
   // Enable compression
   compress: true,
+  // Tree-shake commonly-used heavy libs at the import level so Next emits
+  // fewer, smaller chunks instead of one chunk per library entry. Cuts the
+  // number of JS files loaded on the homepage.
+  experimental: {
+    optimizePackageImports: [
+      'lucide-react',
+      'react-icons',
+      'framer-motion',
+      'embla-carousel-react',
+      'recharts',
+      'date-fns',
+      '@radix-ui/react-accordion',
+      '@radix-ui/react-alert-dialog',
+      '@radix-ui/react-avatar',
+      '@radix-ui/react-checkbox',
+      '@radix-ui/react-collapsible',
+      '@radix-ui/react-dialog',
+      '@radix-ui/react-dropdown-menu',
+      '@radix-ui/react-label',
+      '@radix-ui/react-menubar',
+      '@radix-ui/react-popover',
+      '@radix-ui/react-progress',
+      '@radix-ui/react-radio-group',
+      '@radix-ui/react-scroll-area',
+      '@radix-ui/react-select',
+      '@radix-ui/react-separator',
+      '@radix-ui/react-slider',
+      '@radix-ui/react-slot',
+      '@radix-ui/react-switch',
+      '@radix-ui/react-tabs',
+      '@radix-ui/react-toast',
+      '@radix-ui/react-tooltip',
+    ],
+  },
+  // Merge small webpack chunks. Default Next splitChunks creates a chunk per
+  // dynamic import boundary, which inflates request count on routes with many
+  // lazy components (homepage). Coalesce anything small into the shared bundle.
+  webpack: (config, { isServer }) => {
+    if (!isServer && config.optimization?.splitChunks) {
+      config.optimization.splitChunks = {
+        ...config.optimization.splitChunks,
+        minSize: 50000, // raise threshold so tiny chunks merge into shared bundle
+        maxAsyncRequests: 12,
+        maxInitialRequests: 12,
+      };
+    }
+    return config;
+  },
   images: {
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
