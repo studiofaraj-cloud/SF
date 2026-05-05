@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
-import { Star as StarIcon, ExternalLink } from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import type { PlaceSummary, GoogleReview } from '@/lib/google-reviews';
 
@@ -73,7 +73,7 @@ function ReviewCard({ review, compact = false }: { review: GoogleReview; compact
       {/* Stars */}
       <div className="flex gap-0.5">
         {Array.from({ length: review.rating }).map((_, i) => (
-          <StarIcon key={i} className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+          <span key={i} aria-hidden="true" className="text-amber-400 text-sm leading-none select-none">★</span>
         ))}
       </div>
 
@@ -150,7 +150,7 @@ export default function TestimonialsSection({ place }: { place: PlaceSummary }) 
             <div className="inline-flex items-center gap-2 mt-5 px-4 py-2 rounded-full bg-amber-400/10 border border-amber-400/25">
               <div className="flex gap-0.5">
                 {Array.from({ length: 5 }).map((_, i) => (
-                  <StarIcon key={i} className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+                  <span key={i} aria-hidden="true" className="text-amber-400 text-sm leading-none select-none">★</span>
                 ))}
               </div>
               <span className="text-sm font-bold text-foreground">{place.rating.toFixed(1)}</span>

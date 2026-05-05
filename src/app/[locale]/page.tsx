@@ -363,8 +363,8 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
             <ScrollFadeIn animation="fade-right" delay={0}>
               <Card className="holographic-card neon-border overflow-hidden group h-full">
               <CardHeader className="p-4 md:p-6">
-                  <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center mb-3 md:mb-4 group-hover:from-primary group-hover:to-primary/80 group-hover:text-primary-foreground transition-all duration-500 shadow-lg group-hover:shadow-primary/40">
-                    <Monitor className="w-6 h-6 md:w-7 md:h-7 text-primary group-hover:text-primary-foreground transition-colors" />
+                  <div className="icon-tile w-12 h-12 md:w-14 md:h-14 mb-3 md:mb-4">
+                    <Monitor className="w-6 h-6 md:w-7 md:h-7 icon-tile-glyph" />
                 </div>
                 <CardTitle className="text-lg md:text-xl text-primary">{tTech('frontend.title')}</CardTitle>
               </CardHeader>
@@ -374,7 +374,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {techLogosData.filter(tech => ['React', 'Next.js', 'TypeScript', 'JavaScript', 'Tailwind CSS', 'HTML5', 'CSS3'].includes(tech.title)).map((tech, i) => (
-                    <Badge key={i} variant="secondary" className="bg-primary/10 text-primary border-primary/20">
+                    <Badge key={i} variant="secondary" className="tech-badge">
                       {tech.title}
                     </Badge>
                   ))}
@@ -387,8 +387,8 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
             <ScrollFadeIn animation="fade-up" delay={100}>
               <Card className="holographic-card neon-border overflow-hidden group h-full">
               <CardHeader className="p-4 md:p-6">
-                  <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center mb-3 md:mb-4 group-hover:from-primary group-hover:to-primary/80 group-hover:text-primary-foreground transition-all duration-500 shadow-lg group-hover:shadow-primary/40">
-                    <Server className="w-6 h-6 md:w-7 md:h-7 text-primary group-hover:text-primary-foreground transition-colors" />
+                  <div className="icon-tile w-12 h-12 md:w-14 md:h-14 mb-3 md:mb-4">
+                    <Server className="w-6 h-6 md:w-7 md:h-7 icon-tile-glyph" />
                 </div>
                 <CardTitle className="text-lg md:text-xl text-primary">{tTech('backend.title')}</CardTitle>
               </CardHeader>
@@ -398,7 +398,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {techLogosData.filter(tech => ['Node.js', 'Firebase', 'Vercel'].includes(tech.title)).map((tech, i) => (
-                    <Badge key={i} variant="secondary" className="bg-primary/10 text-primary border-primary/20">
+                    <Badge key={i} variant="secondary" className="tech-badge">
                       {tech.title}
                     </Badge>
                   ))}
@@ -411,8 +411,8 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
             <ScrollFadeIn animation="fade-left" delay={200}>
               <Card className="holographic-card neon-border overflow-hidden group h-full">
               <CardHeader className="p-4 md:p-6">
-                  <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center mb-3 md:mb-4 group-hover:from-primary group-hover:to-primary/80 group-hover:text-primary-foreground transition-all duration-500 shadow-lg group-hover:shadow-primary/40">
-                    <ShoppingCart className="w-6 h-6 md:w-7 md:h-7 text-primary group-hover:text-primary-foreground transition-colors" />
+                  <div className="icon-tile w-12 h-12 md:w-14 md:h-14 mb-3 md:mb-4">
+                    <ShoppingCart className="w-6 h-6 md:w-7 md:h-7 icon-tile-glyph" />
                 </div>
                 <CardTitle className="text-lg md:text-xl text-primary">{tTech('ecommerce.title')}</CardTitle>
               </CardHeader>
@@ -422,11 +422,11 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {techLogosData.filter(tech => ['Next.js', 'Node.js'].includes(tech.title)).map((tech, i) => (
-                    <Badge key={i} variant="secondary" className="bg-primary/10 text-primary border-primary/20">
+                    <Badge key={i} variant="secondary" className="tech-badge">
                       {tech.title}
                     </Badge>
                   ))}
-                  <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20">
+                  <Badge variant="secondary" className="tech-badge">
                     {tTech('ecommerce.customCoding')}
                   </Badge>
                 </div>
@@ -448,15 +448,15 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           {/* Trust Indicators with Neon Effect */}
           <ScrollFadeIn animation="scale" delay={400}>
             <div className="mt-8 md:mt-12 flex flex-wrap justify-center gap-3 sm:gap-4">
-              <div className="flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 rounded-full holographic-card neon-border bg-background/40 hover:bg-background/60 transition-colors">
+              <div className="trust-pill px-4 py-2 sm:px-5 sm:py-2.5">
                 <ShieldCheck className="w-4 h-4 sm:w-4 sm:h-4 text-primary" />
                 <span className="text-xs sm:text-sm font-medium text-foreground">{tTech('trust.secure')}</span>
               </div>
-              <div className="flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 rounded-full holographic-card neon-border bg-background/40 hover:bg-background/60 transition-colors">
+              <div className="trust-pill px-4 py-2 sm:px-5 sm:py-2.5">
                 <Zap className="w-4 h-4 sm:w-4 sm:h-4 text-primary" />
                 <span className="text-xs sm:text-sm font-medium text-foreground">{tTech('trust.performant')}</span>
               </div>
-              <div className="flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 rounded-full holographic-card neon-border bg-background/40 hover:bg-background/60 transition-colors">
+              <div className="trust-pill px-4 py-2 sm:px-5 sm:py-2.5">
                 <Award className="w-4 h-4 sm:w-4 sm:h-4 text-primary" />
                 <span className="text-xs sm:text-sm font-medium text-foreground">{tTech('trust.cuttingEdge')}</span>
               </div>
@@ -604,8 +604,8 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                             <div className="absolute inset-0 bg-background/40 group-hover:bg-background/30 transition-colors duration-300" />
                             
                             <CardHeader className="relative z-10 p-4 md:p-6">
-                              <div className="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center mb-3 md:mb-4 group-hover:from-primary group-hover:to-primary/80 group-hover:text-primary-foreground transition-all duration-500 shadow-lg group-hover:shadow-primary/40">
-                                <DeviceIcon className="w-7 h-7 md:w-8 md:h-8 text-primary group-hover:text-primary-foreground transition-colors" />
+                              <div className="icon-tile rounded-2xl w-14 h-14 md:w-16 md:h-16 mb-3 md:mb-4">
+                                <DeviceIcon className="w-7 h-7 md:w-8 md:h-8 icon-tile-glyph" />
                               </div>
                               <CardTitle className="text-xl md:text-2xl">{device.label}</CardTitle>
                               <p className="text-xs md:text-sm text-muted-foreground mt-2">{device.size}</p>
@@ -647,8 +647,8 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
               return (
                 <ScrollFadeIn key={index} animation="fade-up" delay={index * 75}>
                   <div className="h-full p-4 md:p-5 lg:p-6 rounded-2xl holographic-card neon-border transition-all duration-300 hover:shadow-lg group flex flex-col">
-                    <div className="w-10 h-10 md:w-11 md:h-11 lg:w-12 lg:h-12 rounded-xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center mb-3 md:mb-4 group-hover:from-primary group-hover:to-primary/80 group-hover:text-primary-foreground transition-all duration-500 shadow-lg group-hover:shadow-primary/40 flex-shrink-0">
-                      <FeatureIcon className="w-5 h-5 md:w-5 md:h-5 lg:w-6 lg:h-6 text-primary group-hover:text-primary-foreground transition-colors" />
+                    <div className="icon-tile w-10 h-10 md:w-11 md:h-11 lg:w-12 lg:h-12 mb-3 md:mb-4 flex-shrink-0">
+                      <FeatureIcon className="w-5 h-5 md:w-5 md:h-5 lg:w-6 lg:h-6 icon-tile-glyph" />
                     </div>
                     <p className="font-semibold text-sm md:text-base lg:text-lg mb-2 flex-shrink-0">{feature.title}</p>
                     <p className="text-xs md:text-sm text-muted-foreground flex-1">{feature.description}</p>
@@ -728,7 +728,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                         {/* Icon with animated background */}
                         <div className="relative flex-shrink-0">
                           <div className="absolute inset-0 bg-primary/10 rounded-2xl blur-xl group-hover:bg-primary/20 transition-all duration-500 scale-0 group-hover:scale-100" />
-                          <div className="relative w-12 h-12 md:w-14 md:h-14 rounded-xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center text-primary shrink-0 group-hover:from-primary group-hover:to-primary/80 group-hover:text-primary-foreground transition-all duration-500 shadow-lg group-hover:shadow-primary/40">
+                          <div className="icon-tile relative w-12 h-12 md:w-14 md:h-14 text-primary shrink-0">
                             {value.icon}
                           </div>
                         </div>
