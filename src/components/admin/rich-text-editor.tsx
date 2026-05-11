@@ -733,9 +733,7 @@ function nodeToJson(
     }
   });
 
-  if (children.length > 0) {
-    content.content = children;
-  }
+  content.content = children;
 
   return content;
 }

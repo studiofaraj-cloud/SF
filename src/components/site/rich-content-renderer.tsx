@@ -286,12 +286,14 @@ function renderNode(node: TiptapNode, index: number, insideParagraph: boolean = 
 }
 
 export function RichContentRenderer({ content, className }: RichContentRendererProps) {
+  if (!content) return null;
+
   if (isJSONContent(content)) {
     const doc = typeof content === 'string' ? JSON.parse(content) as TiptapDocument : content;
 
     return (
       <div className={cn('max-w-none', className)}>
-        {doc.content.map((node, index) => renderNode(node, index, false))}
+        {(doc.content ?? []).map((node, index) => renderNode(node, index, false))}
         <div className="clear-both" />
       </div>
     );
