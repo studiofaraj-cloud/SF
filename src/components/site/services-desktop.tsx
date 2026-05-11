@@ -165,7 +165,7 @@ export function ServicesDesktop({
               {svc.description}
             </p>
 
-            {/* Footer */}
+            {/* Footer — single link to avoid duplicate anchors on same URL */}
             <div className="mt-8 pt-6 border-t border-border/50 flex items-center justify-between gap-4">
               <Link
                 href={`/${locale}/servizi/${svc.slug}`}
@@ -175,13 +175,13 @@ export function ServicesDesktop({
                 <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover/link:translate-x-1" />
               </Link>
 
-              <Link
-                href={`/${locale}/servizi/${svc.slug}`}
-                className="shrink-0 w-10 h-10 rounded-full border border-primary/30 bg-primary/5 hover:bg-primary hover:border-primary flex items-center justify-center transition-all duration-300 group/btn"
-                aria-label={svc.title}
+              {/* Decorative icon — not a link to avoid duplicate anchor on same URL */}
+              <span
+                className="shrink-0 w-10 h-10 rounded-full border border-primary/30 bg-primary/5 flex items-center justify-center"
+                aria-hidden="true"
               >
-                <ArrowUpRight className="w-4 h-4 text-primary group-hover/btn:text-primary-foreground transition-colors" />
-              </Link>
+                <ArrowUpRight className="w-4 h-4 text-primary" />
+              </span>
             </div>
           </div>
         </div>

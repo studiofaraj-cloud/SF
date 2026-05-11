@@ -118,8 +118,7 @@ export default function TestimonialsSection({ place }: { place: PlaceSummary }) 
   const t = useTranslations('home.testimonials');
   const reviews = place.reviews;
 
-  // Duplicate for seamless infinite loop
-  const marqueeItems = [...reviews, ...reviews];
+  // Speed constant only — doubled array replaced by aria-hidden duplicate set below.
 
   // Speed: ~100px per second regardless of how many cards there are
   // Each card is ~316px (300 + 16 gap). Total track = reviews.length * 316px.
@@ -174,9 +173,15 @@ export default function TestimonialsSection({ place }: { place: PlaceSummary }) 
                 className="marquee-track flex gap-4 w-max py-2"
                 style={{ '--marquee-duration': `${durationSeconds}s` } as React.CSSProperties}
               >
-                {marqueeItems.map((review, i) => (
-                  <ReviewCard key={`${review.authorDisplayName}-${i}`} review={review} compact />
+                {reviews.map((review, i) => (
+                  <ReviewCard key={`a-${review.authorDisplayName}-${i}`} review={review} compact />
                 ))}
+                {/* Duplicate set for seamless loop — hidden from crawlers and screen readers */}
+                <div aria-hidden="true" className="contents">
+                  {reviews.map((review, i) => (
+                    <ReviewCard key={`b-${review.authorDisplayName}-${i}`} review={review} compact />
+                  ))}
+                </div>
               </div>
             </div>
           </div>

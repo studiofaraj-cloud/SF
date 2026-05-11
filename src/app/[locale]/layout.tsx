@@ -10,7 +10,7 @@ import { CookieConsent } from '@/components/site/cookie-consent';
 import { CookieProvider } from '@/contexts/cookie-context';
 import { AppBody } from '@/components/site/app-body';
 import { StructuredDataServer } from '@/components/seo/structured-data-server';
-import { generateStructuredDataOrganization, generateStructuredDataWebSite } from '@/lib/seo';
+import { generateStructuredDataWebSite } from '@/lib/seo';
 import Script from 'next/script';
 
 type Props = {
@@ -80,10 +80,9 @@ export default async function LocaleLayout({ children, params }: Props) {
       }
     }
   }
-  // Site-wide schema: Organization + WebSite only.
-  // ProfessionalService/LocalBusiness are emitted by the homepage to avoid
-  // duplicate JSON-LD on every route (was inflating HTML weight site-wide).
-  const organizationData = generateStructuredDataOrganization(locale);
+  // Site-wide schema: WebSite only.
+  // Organization is emitted by pages that need it (non-home pages) to avoid
+  // overlap with LocalBusiness on the homepage (both share the same fields).
   const websiteData = generateStructuredDataWebSite(locale);
 
   // Update the html lang attribute dynamically via a script
@@ -97,7 +96,7 @@ export default async function LocaleLayout({ children, params }: Props) {
           __html: `document.documentElement.lang = '${locale}';`,
         }}
       />
-      <StructuredDataServer data={[organizationData, websiteData]} />
+      <StructuredDataServer data={websiteData} />
       <ThemeProvider
         attribute="class"
         defaultTheme="system"

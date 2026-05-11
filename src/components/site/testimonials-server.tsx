@@ -1,6 +1,5 @@
 /**
- * Server component — fetches Google reviews at build / ISR time (24h cache)
- * and passes them down to the client carousel.
+ * Server component — fetches Google reviews and passes them to the client carousel.
  */
 import { getLocale } from 'next-intl/server';
 import { fetchGoogleReviews } from '@/lib/google-reviews';

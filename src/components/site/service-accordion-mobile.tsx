@@ -99,6 +99,7 @@ export function ServiceAccordionMobile({
                   className="inline-flex items-center gap-1.5 text-xs font-medium text-primary hover:text-primary/80 transition-colors"
                 >
                   {learnMoreLabel}
+                  <span className="sr-only"> — {service.title}</span>
                   <ArrowRight className="w-3 h-3" />
                 </Link>
               </div>
