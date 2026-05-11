@@ -34,13 +34,12 @@ export default function middleware(request: NextRequest) {
 }
 
 export const config = {
-  // Match all routes except:
-  // - Next.js internals (_next, _vercel)
-  // - Static files (files with an extension like .ico, .png, etc.)
-  // - API routes
-  // - Admin routes (handled separately without locale prefix)
+  // Only intercept routes that don't already carry a locale prefix.
+  // Locale-prefixed paths (/it/*, /en/*) are served directly by Next.js —
+  // bypassing middleware prevents Firebase App Hosting's adapter from
+  // overriding cache-control to no-store on those responses, which in turn
+  // allows the CDN to apply Brotli/gzip compression on the prerendered HTML.
   matcher: [
-    '/((?!api|admin|_next|_vercel|.*\\..*).*)',
-    '/',
+    '/((?!it(?:/|$)|en(?:/|$)|api|admin|_next|_vercel|.*\\..*).*)',
   ],
 };
