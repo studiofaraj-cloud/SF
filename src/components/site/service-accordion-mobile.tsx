@@ -96,6 +96,7 @@ export function ServiceAccordionMobile({
                 </p>
                 <Link
                   href={`/${locale}/servizi/${service.slug}`}
+                  title={service.title}
                   className="inline-flex items-center gap-1.5 text-xs font-medium text-primary hover:text-primary/80 transition-colors"
                 >
                   {learnMoreLabel}

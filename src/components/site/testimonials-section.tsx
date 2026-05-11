@@ -93,6 +93,7 @@ function ReviewCard({ review, compact = false }: { review: GoogleReview; compact
                   href={review.authorUri}
                   target="_blank"
                   rel="noopener noreferrer"
+                  title={review.authorDisplayName}
                   className="hover:text-primary inline-flex items-center gap-1"
                 >
                   {review.authorDisplayName}
@@ -201,6 +202,7 @@ export default function TestimonialsSection({ place }: { place: PlaceSummary }) 
               href="https://www.google.com/maps/place/?q=place_id:ChIJV_YxeITzBAERefznEKaDrkc"
               target="_blank"
               rel="noopener noreferrer"
+              title="Vedi tutte le recensioni di Studio Faraj su Google"
               className="inline-flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground transition-colors"
             >
               <span>Vedi tutte le recensioni su Google</span>

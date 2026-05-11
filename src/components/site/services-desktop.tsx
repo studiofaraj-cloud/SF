@@ -169,6 +169,7 @@ export function ServicesDesktop({
             <div className="mt-8 pt-6 border-t border-border/50 flex items-center justify-between gap-4">
               <Link
                 href={`/${locale}/servizi/${svc.slug}`}
+                title={svc.title}
                 className="inline-flex items-center gap-2 font-semibold text-primary hover:underline underline-offset-4 group/link text-sm lg:text-base"
               >
                 {requestInfo}

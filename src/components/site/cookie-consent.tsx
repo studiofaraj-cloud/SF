@@ -139,7 +139,7 @@ export function CookieConsent() {
                     </div>
                     <p className="text-sm md:text-base text-foreground/90 leading-relaxed">
                         Utilizziamo i cookie per migliorare la tua esperienza di navigazione.
-                        <Link href={getLocalizedPath('/legal', locale as any)} className="underline ml-1 font-medium text-primary hover:text-primary/80 transition-colors">
+                        <Link href={getLocalizedPath('/legal', locale as any)} title="Cookie Policy di Studio Faraj" className="underline ml-1 font-medium text-primary hover:text-primary/80 transition-colors">
                             Leggi la nostra Cookie Policy
                         </Link>.
                     </p>

@@ -52,7 +52,7 @@ export function HomeProjectContent({ projects }: HomeProjectContentProps) {
           <div className="space-y-6 md:space-y-8">
             {/* Featured Project - First item */}
             <ScrollFadeIn animation="fade-up" delay={100}>
-              <Link href={`/${locale}/projects/${projects[0]?.slug || ''}`} className="block group" aria-label={projects[0]?.title}>
+              <Link href={`/${locale}/projects/${projects[0]?.slug || ''}`} title={projects[0]?.title} className="block group" aria-label={projects[0]?.title}>
                 <Card className="relative overflow-hidden holographic-card neon-border transition-all duration-700 hover:shadow-2xl hover:shadow-primary/20">
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
                     {/* Image Side */}
@@ -115,7 +115,7 @@ export function HomeProjectContent({ projects }: HomeProjectContentProps) {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
                 {projects.slice(1).map((project, index) => (
                   <ScrollFadeIn key={project.id || project.slug || index} animation="fade-up" delay={(index + 1) * 100}>
-                    <Link href={`/${locale}/projects/${project.slug}`} className="block group" aria-label={project.title}>
+                    <Link href={`/${locale}/projects/${project.slug}`} title={project.title} className="block group" aria-label={project.title}>
                       <Card className="relative overflow-hidden h-[300px] md:h-[400px] holographic-card neon-border transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 md:hover:-translate-y-2">
                         {/* Background Image */}
                         {project.featuredImage && (
@@ -174,7 +174,7 @@ export function HomeProjectContent({ projects }: HomeProjectContentProps) {
         <ScrollFadeIn animation="fade-up" delay={400}>
           <div className="text-center mt-10 md:mt-16">
             <Button asChild size="lg" className="group neon-glow w-full sm:w-auto">
-              <Link href={`/${locale}/projects`} className="flex items-center justify-center gap-2">
+              <Link href={`/${locale}/projects`} title="Vedi Tutti i Progetti di Studio Faraj" className="flex items-center justify-center gap-2">
                 Vedi Tutti i Progetti
                 <ExternalLink className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Link>

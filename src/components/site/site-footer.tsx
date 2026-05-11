@@ -71,7 +71,7 @@ export function SiteFooter() {
           
           {/* Company Info */}
           <div className="col-span-2 md:col-span-1 lg:col-span-3 space-y-4 md:space-y-6">
-            <Link href="/" className="flex items-center gap-3 group">
+            <Link href="/" title="Studio Faraj — Home" className="flex items-center gap-3 group">
               <div className="relative">
                 <Image 
                   src="/assets/logo.png" 
@@ -96,7 +96,7 @@ export function SiteFooter() {
                 <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
                   <Mail className="w-4 h-4" />
                 </div>
-                <Link href="mailto:info@studiofaraj.it" className="text-muted-foreground hover:text-primary transition-colors">
+                <Link href="mailto:info@studiofaraj.it" title="Invia un'email a Studio Faraj" className="text-muted-foreground hover:text-primary transition-colors">
                   info@studiofaraj.it
                 </Link>
               </div>
@@ -104,7 +104,7 @@ export function SiteFooter() {
                 <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
                   <Phone className="w-4 h-4" />
                 </div>
-                <Link href="tel:+393202223322" className="text-muted-foreground hover:text-primary transition-colors">
+                <Link href="tel:+393202223322" title="Chiama Studio Faraj" className="text-muted-foreground hover:text-primary transition-colors">
                   +39 320 222 3322
                 </Link>
               </div>
@@ -118,29 +118,32 @@ export function SiteFooter() {
 
             {/* Social Media */}
             <div className="flex items-center gap-4 pt-2">
-              <Link 
-                href="https://www.facebook.com/share/18JVysxoGo/?mibextid=wwXIfr" 
+              <Link
+                href="https://www.facebook.com/share/18JVysxoGo/?mibextid=wwXIfr"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-lg bg-secondary border border-border/50 flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary hover:bg-primary/5 transition-all duration-300" 
+                title="Studio Faraj su Facebook"
+                className="w-10 h-10 rounded-lg bg-secondary border border-border/50 flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary hover:bg-primary/5 transition-all duration-300"
                 aria-label="Facebook"
               >
                 <Facebook className="h-5 w-5" />
               </Link>
-              <Link 
+              <Link
                 href="https://instagram.com/studiofaraj.it"
                 target="_blank"
                 rel="noopener noreferrer"
+                title="Studio Faraj su Instagram"
                 className="w-10 h-10 rounded-lg bg-secondary border border-border/50 flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary hover:bg-primary/5 transition-all duration-300"
                 aria-label="Instagram"
               >
                 <Instagram className="h-5 w-5" />
               </Link>
-              <Link 
-                href="https://www.linkedin.com/in/studio-faraj-47923b389/" 
+              <Link
+                href="https://www.linkedin.com/in/studio-faraj-47923b389/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-lg bg-secondary border border-border/50 flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary hover:bg-primary/5 transition-all duration-300" 
+                title="Studio Faraj su LinkedIn"
+                className="w-10 h-10 rounded-lg bg-secondary border border-border/50 flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary hover:bg-primary/5 transition-all duration-300"
                 aria-label="LinkedIn"
               >
                 <Linkedin className="h-5 w-5" />
@@ -153,25 +156,25 @@ export function SiteFooter() {
             <p className="font-bold text-foreground mb-4 md:mb-6 text-sm md:text-base">{t('navigation')}</p>
             <ul className="space-y-3">
               <li>
-                <Link href={getLocalizedPath('/chi-siamo', locale as any)} className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group">
+                <Link href={getLocalizedPath('/chi-siamo', locale as any)} title={tNav('about')} className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group">
                   <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
                   {tNav('about')}
                 </Link>
               </li>
               <li>
-                <Link href={getLocalizedPath('/projects', locale as any)} className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group">
+                <Link href={getLocalizedPath('/projects', locale as any)} title={tNav('projects')} className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group">
                   <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
                   {tNav('projects')}
                 </Link>
               </li>
               <li>
-                <Link href={getLocalizedPath('/blog', locale as any)} className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group">
+                <Link href={getLocalizedPath('/blog', locale as any)} title={tNav('blog')} className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group">
                   <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
                   {tNav('blog')}
                 </Link>
               </li>
               <li>
-                <Link href={getLocalizedPath('/contatti', locale as any)} className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group">
+                <Link href={getLocalizedPath('/contatti', locale as any)} title={tNav('contact')} className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group">
                   <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
                   {tNav('contact')}
                 </Link>
@@ -184,37 +187,37 @@ export function SiteFooter() {
             <p className="font-bold text-foreground mb-4 md:mb-6 text-sm md:text-base">{t('services')}</p>
             <ul className="space-y-3">
               <li>
-                <Link href={getLocalizedPath('/servizi/sviluppo-web', locale as any)} className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group">
+                <Link href={getLocalizedPath('/servizi/sviluppo-web', locale as any)} title={tServices('webDevelopment.label')} className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group">
                   <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
                   {tServices('webDevelopment.label')}
                 </Link>
               </li>
               <li>
-                <Link href={getLocalizedPath('/servizi/e-commerce', locale as any)} className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group">
+                <Link href={getLocalizedPath('/servizi/e-commerce', locale as any)} title={tServices('ecommerce.label')} className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group">
                   <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
                   {tServices('ecommerce.label')}
                 </Link>
               </li>
               <li>
-                <Link href={getLocalizedPath('/servizi/design-ui-ux', locale as any)} className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group">
+                <Link href={getLocalizedPath('/servizi/design-ui-ux', locale as any)} title={tServices('designUIUX.label')} className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group">
                   <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
                   {tServices('designUIUX.label')}
                 </Link>
               </li>
               <li>
-                <Link href={getLocalizedPath('/servizi/seo-marketing', locale as any)} className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group">
+                <Link href={getLocalizedPath('/servizi/seo-marketing', locale as any)} title={tServices('seoMarketing.label')} className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group">
                   <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
                   {tServices('seoMarketing.label')}
                 </Link>
               </li>
               <li>
-                <Link href={getLocalizedPath('/servizi/ai-automazione', locale as any)} className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group">
+                <Link href={getLocalizedPath('/servizi/ai-automazione', locale as any)} title={tServices('aiAutomation.label')} className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group">
                   <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
                   {tServices('aiAutomation.label')}
                 </Link>
               </li>
               <li>
-                <Link href={getLocalizedPath('/servizi/manutenzione', locale as any)} className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group">
+                <Link href={getLocalizedPath('/servizi/manutenzione', locale as any)} title={tServices('maintenance.label')} className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group">
                   <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
                   {tServices('maintenance.label')}
                 </Link>
@@ -227,25 +230,25 @@ export function SiteFooter() {
             <p className="font-bold text-foreground mb-4 md:mb-6 text-sm md:text-base">{t('support')}</p>
             <ul className="space-y-3">
               <li>
-                <Link href={getLocalizedPath('/servizi/hosting-cloud', locale as any)} className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group">
+                <Link href={getLocalizedPath('/servizi/hosting-cloud', locale as any)} title={tServices('hostingCloud.label')} className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group">
                   <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
                   {tServices('hostingCloud.label')}
                 </Link>
               </li>
               <li>
-                <Link href={getLocalizedPath('/servizi/consulenza', locale as any)} className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group">
+                <Link href={getLocalizedPath('/servizi/consulenza', locale as any)} title={tServices('consulting.label')} className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group">
                   <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
                   {tServices('consulting.label')}
                 </Link>
               </li>
               <li>
-                <Link href={getLocalizedPath('/faq', locale as any)} className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group">
+                <Link href={getLocalizedPath('/faq', locale as any)} title="FAQ" className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group">
                   <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
                   FAQ
                 </Link>
               </li>
               <li>
-                <Link href={getLocalizedPath('/legal', locale as any)} className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group">
+                <Link href={getLocalizedPath('/legal', locale as any)} title={t('privacy')} className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group">
                   <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
                   {t('privacy')}
                 </Link>
@@ -304,6 +307,7 @@ export function SiteFooter() {
           <div className="flex items-center justify-center gap-5 md:gap-6 text-sm order-1 md:order-2">
             <Link
               href={getLocalizedPath('/legal', locale as any)}
+              title={t('privacy')}
               className="text-muted-foreground hover:text-primary transition-colors py-1"
             >
               {t('privacy')}
@@ -311,6 +315,7 @@ export function SiteFooter() {
             <span className="h-3 w-px bg-border/60" aria-hidden="true" />
             <Link
               href={getLocalizedPath('/legal', locale as any)}
+              title={t('cookiePolicy')}
               className="text-muted-foreground hover:text-primary transition-colors py-1"
             >
               {t('cookiePolicy')}

@@ -226,6 +226,7 @@ export default function HomepageClient({ heroSlides: heroSlidesProp }: HomepageC
                       {/* Mobile: subtle text link */}
                       <Link
                         href={getLocalizedPath('/projects', locale as any)}
+                        title={t('ctaProjects')}
                         className="md:hidden inline-flex items-center gap-1.5 text-sm font-medium text-white/80 hover:text-primary transition-colors mt-1 py-2 min-h-[40px]"
                       >
                         {t('ctaProjects')}
@@ -239,7 +240,7 @@ export default function HomepageClient({ heroSlides: heroSlidesProp }: HomepageC
                         className="hidden md:inline-flex border-2 border-primary/50 bg-white/10 backdrop-blur-md text-white hover:border-primary hover:text-primary font-semibold px-6 md:px-8 py-5 md:py-6 text-sm md:text-base transition-all duration-300 w-auto min-h-[44px]"
                         asChild
                       >
-                          <Link href={getLocalizedPath('/projects', locale as any)}>{t('ctaProjects')}</Link>
+                          <Link href={getLocalizedPath('/projects', locale as any)} title={t('ctaProjects')}>{t('ctaProjects')}</Link>
                       </Button>
                   </div>
 

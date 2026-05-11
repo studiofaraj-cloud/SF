@@ -509,7 +509,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           <ScrollFadeIn animation="fade-up" delay={600}>
           <div className="text-center mt-12">
               <Button asChild size="lg" className="group neon-glow">
-              <Link href={getLocalizedPath('/contatti', locale as any)} className="flex items-center gap-2">
+              <Link href={getLocalizedPath('/contatti', locale as any)} title={tServices('cta')} className="flex items-center gap-2">
                 {tServices('cta')}
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Link>
@@ -662,7 +662,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           <ScrollFadeIn animation="fade-up" delay={400}>
           <div className="mt-10 md:mt-16 text-center">
               <Button size="lg" asChild className="group neon-glow w-full sm:w-auto">
-              <Link href="/#services">
+              <Link href="/#services" title={tResponsive('cta')}>
                 {tResponsive('cta')}
                 <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Link>
@@ -964,7 +964,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           <ScrollFadeIn animation="fade-up" delay={100}>
             <div className="text-center">
               <Button size="lg" asChild className="group w-full sm:w-auto px-8">
-                <Link href={getLocalizedPath('/chi-siamo', locale as any)}>
+                <Link href={getLocalizedPath('/chi-siamo', locale as any)} title={tTeam('cta')}>
                   {tTeam('cta')}
                   <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </Link>

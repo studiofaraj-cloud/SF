@@ -408,6 +408,7 @@ export default function ContactSection({ hideMobileHeader = false }: ContactSect
                       <Link
                         key={index}
                         href={method.link}
+                        title={method.title}
                         className="group relative block p-5 md:p-6 rounded-2xl bg-card/40 backdrop-blur-sm border border-primary/20 hover:border-primary/40 transition-all duration-300 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1 h-full flex flex-col"
                       >
                         {/* Glassmorphism effect */}

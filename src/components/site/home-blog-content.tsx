@@ -56,7 +56,7 @@ export function HomeBlogContent({ blogs }: HomeBlogContentProps) {
           <div className="space-y-6 md:space-y-8">
             {/* Featured Blog Post - First item */}
             <ScrollFadeIn animation="fade-up" delay={100}>
-              <Link href={`/${locale}/blog/${blogs[0]?.slug || ''}`} className="block group" aria-label={blogs[0]?.title}>
+              <Link href={`/${locale}/blog/${blogs[0]?.slug || ''}`} title={blogs[0]?.title} className="block group" aria-label={blogs[0]?.title}>
                 <Card className="relative overflow-hidden holographic-card neon-border transition-all duration-700 hover:shadow-2xl hover:shadow-primary/20">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
                     {/* Image Side */}
@@ -133,7 +133,7 @@ export function HomeBlogContent({ blogs }: HomeBlogContentProps) {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
                 {blogs.slice(1).map((blog, index) => (
                   <ScrollFadeIn key={blog.id || blog.slug || index} animation="fade-up" delay={(index + 1) * 100}>
-                    <Link href={`/${locale}/blog/${blog.slug}`} className="block group" aria-label={blog.title}>
+                    <Link href={`/${locale}/blog/${blog.slug}`} title={blog.title} className="block group" aria-label={blog.title}>
                       <Card className="relative overflow-hidden h-full holographic-card neon-border transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 md:hover:-translate-y-2">
                         {/* Image */}
                         <div className="relative aspect-video overflow-hidden">
@@ -205,7 +205,7 @@ export function HomeBlogContent({ blogs }: HomeBlogContentProps) {
         <ScrollFadeIn animation="fade-up" delay={400}>
           <div className="text-center mt-10 md:mt-16">
             <Button asChild size="lg" variant="outline" className="group border-2 border-primary/50 hover:bg-primary hover:text-primary-foreground hover:border-primary w-full sm:w-auto neon-border">
-              <Link href={getLocalizedPath('/blog', locale as any)} className="flex items-center justify-center gap-2">
+              <Link href={getLocalizedPath('/blog', locale as any)} title={t('readMore')} className="flex items-center justify-center gap-2">
                 {t('readMore')}
                 <BookOpen className="w-4 h-4 transition-transform group-hover:scale-110" />
               </Link>
