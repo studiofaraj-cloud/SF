@@ -134,11 +134,17 @@ export async function fetchGoogleReviews(locale = 'it'): Promise<PlaceSummary> {
   if (firestoreReviews.length > 0) {
     // Compute aggregate rating from stored reviews
     const avg = firestoreReviews.reduce((s, r) => s + r.rating, 0) / firestoreReviews.length;
+    // Cap at 12 reviews and truncate long texts — each review adds ~1 KB to RSC
+    // flight data (serialized for client hydration) and to the HTML (marquee duplicate).
+    const cappedReviews = firestoreReviews.slice(0, 12).map((r) => ({
+      ...r,
+      text: r.text.length > 320 ? r.text.slice(0, 317) + '…' : r.text,
+    }));
     return {
       name: 'Studio Faraj',
       rating: Math.round(avg * 10) / 10,
       totalRatings: firestoreReviews.length,
-      reviews: firestoreReviews,
+      reviews: cappedReviews,
       isLive: true,
     };
   }
