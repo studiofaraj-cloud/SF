@@ -10,7 +10,7 @@ interface BaseLayoutInput {
 
 const SITE_URL = process.env.EMAIL_SITE_URL || 'https://studiofaraj.it';
 
-const LOGO_URL = `${SITE_URL}/assets/logo.png`;
+const LOGO_URL = `${SITE_URL}/assets/android-chrome-512x512.png`;
 
 const BRAND = {
   bg: '#f5f5f7',
