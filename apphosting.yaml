@@ -38,6 +38,14 @@ env:
     availability:
       - RUNTIME
 
+  # Custom domain used inside email templates (logo URL, footer link, CTAs).
+  # Kept separate from NEXT_PUBLIC_SITE_URL so emails always point at the
+  # public custom domain regardless of where the app is hosted.
+  - variable: EMAIL_SITE_URL
+    value: https://studiofaraj.it
+    availability:
+      - RUNTIME
+
   # ----- SECRETS (stored in Firebase Secret Manager) -----
   # Create each secret once before deploying:
   #   firebase apphosting:secrets:set SESSION_SECRET

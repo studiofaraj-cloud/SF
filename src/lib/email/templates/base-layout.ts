@@ -8,8 +8,7 @@ interface BaseLayoutInput {
   locale?: 'it' | 'en';
 }
 
-const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || 'https://studiofarajnext.web.app';
+const SITE_URL = process.env.EMAIL_SITE_URL || 'https://studiofaraj.it';
 
 const LOGO_URL = `${SITE_URL}/assets/logo.png`;
 
