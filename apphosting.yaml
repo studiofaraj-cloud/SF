@@ -26,9 +26,15 @@ env:
       - BUILD
       - RUNTIME
 
-  # FormSubmit email notifications
+  # FormSubmit email notifications (legacy)
   - variable: FORMSUBMIT_ENDPOINT
     value: https://formsubmit.co/ajax/info@studiofaraj.it
+    availability:
+      - RUNTIME
+
+  # Brevo transactional email — sender address (not secret)
+  - variable: EMAIL_FROM
+    value: Studio Faraj <info@studiofaraj.it>
     availability:
       - RUNTIME
 
@@ -108,4 +114,11 @@ env:
     secret: GOOGLE_PLACE_ID
     availability:
       - BUILD
+      - RUNTIME
+
+  # Brevo API key — stored as secret
+  #   firebase apphosting:secrets:set BREVO_API_KEY
+  - variable: BREVO_API_KEY
+    secret: BREVO_API_KEY
+    availability:
       - RUNTIME
