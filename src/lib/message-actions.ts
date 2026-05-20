@@ -3,7 +3,7 @@
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { createMessageData } from './firestore-data';
-import { sendFormSubmitEmail } from './formsubmit';
+import { sendTransactionalEmails, normalizeLocale } from './email/send';
 
 // Explicit server action export to help Turbopack module resolution
 
@@ -14,6 +14,7 @@ const ContactMessageSchema = z.object({
     service: z.string().optional(),
     budget: z.string().optional(),
     source: z.enum(['contact-form', 'quote-dialog']).optional(),
+    locale: z.string().optional(),
     message: z.string().min(1, 'Message is required'),
 });
 
@@ -55,21 +56,23 @@ export async function createMessage(prevState: { message: string | null, success
             const messageId = await createMessageData(validatedFields.data as any);
             console.log('[createMessage] Message saved successfully with ID:', messageId);
 
-            // Fire-and-forget email notification
-            sendFormSubmitEmail({
-                _subject: validatedFields.data.source === 'quote-dialog'
-                    ? `Nuova Richiesta Preventivo da ${validatedFields.data.name}`
-                    : `Nuovo Messaggio di Contatto da ${validatedFields.data.name}`,
-                _template: 'table',
-                _captcha: 'false',
-                _replyto: validatedFields.data.email,
-                Nome: validatedFields.data.name,
-                Email: validatedFields.data.email,
-                Telefono: validatedFields.data.phone || 'Non fornito',
-                Servizio: validatedFields.data.service || 'Non specificato',
-                Budget: validatedFields.data.budget || 'Non specificato',
-                Fonte: validatedFields.data.source === 'quote-dialog' ? 'Richiesta Preventivo' : 'Form Contatto',
-                Messaggio: validatedFields.data.message,
+            const isQuote = validatedFields.data.source === 'quote-dialog';
+            sendTransactionalEmails({
+                scenario: isQuote ? 'quote' : 'contact',
+                locale: normalizeLocale(validatedFields.data.locale),
+                client: {
+                    name: validatedFields.data.name,
+                    email: validatedFields.data.email,
+                },
+                adminFields: [
+                    { label: 'Nome', value: validatedFields.data.name },
+                    { label: 'Email', value: validatedFields.data.email },
+                    { label: 'Telefono', value: validatedFields.data.phone || 'Non fornito' },
+                    { label: 'Servizio', value: validatedFields.data.service || 'Non specificato' },
+                    { label: 'Budget', value: validatedFields.data.budget || 'Non specificato' },
+                    { label: 'Fonte', value: isQuote ? 'Richiesta Preventivo' : 'Form Contatto' },
+                    { label: 'Messaggio', value: validatedFields.data.message },
+                ],
             }).catch(() => {});
         } catch (error) {
             console.error('[createMessage] Error creating message:', error);
@@ -135,6 +138,7 @@ const PlanRequestSchema = z.object({
     planName: z.string().min(1, 'Nome del piano mancante'),
     planPrice: z.string().min(1, 'Prezzo del piano mancante'),
     serviceName: z.string().min(1, 'Nome del servizio mancante'),
+    locale: z.string().optional(),
 });
 
 export async function submitPlanRequest(prevState: { message: string | null, success: boolean, errors?: any }, formData: FormData) {
@@ -144,6 +148,7 @@ export async function submitPlanRequest(prevState: { message: string | null, suc
             planName: formData.get('planName'),
             planPrice: formData.get('planPrice'),
             serviceName: formData.get('serviceName'),
+            locale: formData.get('locale') ?? undefined,
         });
 
         if (!validatedFields.success) {
@@ -167,17 +172,17 @@ export async function submitPlanRequest(prevState: { message: string | null, suc
 
         await createMessageData(messageDto as any);
 
-        // Fire-and-forget email notification
-        sendFormSubmitEmail({
-            _subject: `Richiesta Pagamento Piano: ${validatedFields.data.planName}`,
-            _template: 'table',
-            _captcha: 'false',
-            _replyto: validatedFields.data.email,
-            'Email Cliente': validatedFields.data.email,
-            'Piano Richiesto': validatedFields.data.planName,
-            'Prezzo Piano': `€${validatedFields.data.planPrice}`,
-            Servizio: validatedFields.data.serviceName,
-            'Azione Richiesta': 'Inviare link di pagamento al cliente',
+        sendTransactionalEmails({
+            scenario: 'plan-request',
+            locale: normalizeLocale(validatedFields.data.locale),
+            client: { email: validatedFields.data.email },
+            adminFields: [
+                { label: 'Email Cliente', value: validatedFields.data.email },
+                { label: 'Piano Richiesto', value: validatedFields.data.planName },
+                { label: 'Prezzo Piano', value: `€${validatedFields.data.planPrice}` },
+                { label: 'Servizio', value: validatedFields.data.serviceName },
+                { label: 'Azione Richiesta', value: 'Inviare link di pagamento al cliente' },
+            ],
         }).catch(() => {});
 
         revalidatePath('/admin/messages');

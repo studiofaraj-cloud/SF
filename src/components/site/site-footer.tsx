@@ -18,6 +18,7 @@ function NewsletterForm() {
     const formRef = useRef<HTMLFormElement>(null);
     const { toast } = useToast();
     const t = useTranslations('footer');
+    const locale = useLocale();
     const [state, formAction] = useActionState(createSubscriber, { message: null, success: false });
 
     useEffect(() => {
@@ -35,9 +36,10 @@ function NewsletterForm() {
 
     return (
         <form ref={formRef} action={formAction} className="flex max-w-md gap-2">
-            <Input 
-                type="email" 
-                name="email" 
+            <input type="hidden" name="locale" value={locale} />
+            <Input
+                type="email"
+                name="email"
                 placeholder={t('newsletter.placeholder')} 
                 className="flex-1 bg-background border-border/50 focus:border-primary focus:ring-primary/20 h-11 min-h-[44px]" 
                 required 

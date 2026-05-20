@@ -25,7 +25,7 @@ import { useEffect } from 'react';
 import { createMessage } from '@/lib/message-actions';
 import { useToast } from '@/hooks/use-toast';
 import { contactServices } from '@/lib/definitions';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 
 export type QuoteDialogPrefill = {
   service?: string;
@@ -55,6 +55,7 @@ const serviceValueToKey: Record<string, string> = {
 export default function QuoteDialog({ open, onOpenChange, prefill }: QuoteDialogProps) {
   const { toast } = useToast();
   const t = useTranslations('quoteDialog');
+  const locale = useLocale();
   const tServices = useTranslations('services');
   const tServer = useTranslations('serverActions');
   const initialState = { message: null, errors: {}, success: false };
@@ -226,6 +227,7 @@ export default function QuoteDialog({ open, onOpenChange, prefill }: QuoteDialog
                   <div className="holographic-card neon-border rounded-xl p-4 sm:p-5 md:p-6 lg:p-8 bg-card/80 backdrop-blur-md border-primary/30">
                     <form id="quote-dialog-form" onSubmit={handleSubmit} className="space-y-4">
                       <input type="hidden" name="source" value="quote-dialog" />
+                      <input type="hidden" name="locale" value={locale} />
 
                       {/* Name */}
                       <div className="space-y-1.5">

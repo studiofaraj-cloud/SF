@@ -32,7 +32,7 @@ import {
     type HeroSlideData,
 } from './firestore-data';
 import { Timestamp } from 'firebase/firestore';
-import { sendFormSubmitEmail } from './formsubmit';
+import { sendTransactionalEmails, normalizeLocale } from './email/send';
 import { redirect } from 'next/navigation';
 import { uploadFile, type ImageMetadata } from './storage';
 import { logError, getFirebaseErrorMessage } from './error-logger';
@@ -642,6 +642,7 @@ export async function deleteProject(id: string) {
 
 const SubscriberSchema = z.object({
   email: z.string().email('Invalid email address'),
+  locale: z.string().optional(),
 });
 
 export async function createSubscriber(prevState: { message: string | null, success: boolean }, formData: FormData) {
@@ -657,14 +658,14 @@ export async function createSubscriber(prevState: { message: string | null, succ
   try {
     await createSubscriberData({ email: validatedFields.data.email, active: true });
 
-    // Fire-and-forget email notification
-    sendFormSubmitEmail({
-      _subject: 'Nuova Iscrizione Newsletter',
-      _template: 'box',
-      _captcha: 'false',
-      _replyto: validatedFields.data.email,
-      Email: validatedFields.data.email,
-      Tipo: 'Iscrizione Newsletter',
+    sendTransactionalEmails({
+      scenario: 'newsletter',
+      locale: normalizeLocale(validatedFields.data.locale),
+      client: { email: validatedFields.data.email },
+      adminFields: [
+        { label: 'Email', value: validatedFields.data.email },
+        { label: 'Tipo', value: 'Iscrizione Newsletter' },
+      ],
     }).catch(() => {});
   } catch (error) {
     return { message: (error as Error).message, success: false };
@@ -683,6 +684,7 @@ const BookingSchema = z.object({
   selectedTime: z.union([z.string(), z.array(z.string())]).optional(),
   message: z.string().optional(),
   source: z.string().optional(),
+  locale: z.string().optional(),
 });
 
 export async function createBooking(prevState: { message: string | null, success: boolean, errors?: any }, formData: FormData) {
@@ -743,18 +745,22 @@ export async function createBooking(prevState: { message: string | null, success
       ? validatedFields.data.selectedTime.join(', ')
       : validatedFields.data.selectedTime || 'Non specificato';
 
-    sendFormSubmitEmail({
-      _subject: `Nuova Prenotazione da ${validatedFields.data.name}`,
-      _template: 'table',
-      _captcha: 'false',
-      _replyto: validatedFields.data.email || undefined,
-      Nome: validatedFields.data.name,
-      Email: validatedFields.data.email || 'Non fornito',
-      Telefono: validatedFields.data.phone,
-      'Data Selezionata': validatedFields.data.selectedDate,
-      'Orario Selezionato': timeDisplay,
-      Messaggio: validatedFields.data.message || 'Nessun messaggio',
-      Fonte: validatedFields.data.source || 'booking-form',
+    sendTransactionalEmails({
+      scenario: 'booking',
+      locale: normalizeLocale(validatedFields.data.locale),
+      client: {
+        name: validatedFields.data.name,
+        email: validatedFields.data.email || undefined,
+      },
+      adminFields: [
+        { label: 'Nome', value: validatedFields.data.name },
+        { label: 'Email', value: validatedFields.data.email || 'Non fornito' },
+        { label: 'Telefono', value: validatedFields.data.phone },
+        { label: 'Data Selezionata', value: validatedFields.data.selectedDate },
+        { label: 'Orario Selezionato', value: timeDisplay },
+        { label: 'Messaggio', value: validatedFields.data.message || 'Nessun messaggio' },
+        { label: 'Fonte', value: validatedFields.data.source || 'booking-form' },
+      ],
     }).catch(() => {});
 
     revalidatePath('/admin/bookings');

@@ -88,6 +88,7 @@ export function BookingForm({ onSuccess, className, source = 'booking-form' }: B
       });
     }
     formData.append('source', source);
+    formData.append('locale', locale);
 
     startTransition(() => {
       dispatch(formData);

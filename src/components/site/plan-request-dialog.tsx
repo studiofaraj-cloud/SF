@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, Mail, CreditCard, Sparkles, CheckCircle } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import {
   Dialog,
   DialogContent,
@@ -42,6 +42,7 @@ export function PlanRequestDialog({
   const { toast } = useToast();
   const t = useTranslations('dialogs.planRequest');
   const tServer = useTranslations('serverActions');
+  const locale = useLocale();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,6 +55,7 @@ export function PlanRequestDialog({
     formData.append('planName', planName);
     formData.append('planPrice', planPrice.toString());
     formData.append('serviceName', serviceName);
+    formData.append('locale', locale);
 
     try {
       const result = await submitPlanRequest({ message: null, success: false }, formData);

@@ -187,6 +187,7 @@ export default function ContactSection({ hideMobileHeader = false }: ContactSect
                     
                     <form id="contact-section-form" onSubmit={handleSubmit} className="space-y-5 md:space-y-6">
                       <input type="hidden" name="source" value="contact-form" />
+                      <input type="hidden" name="locale" value={locale} />
                       
                       {/* Name and Email Row */}
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
