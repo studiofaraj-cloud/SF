@@ -50,10 +50,24 @@ export function renderBaseLayout({
       }</a>`
     : '';
 
-  const footerCopy =
+  const contactBlock = `
+    <div style="margin-top:10px;">
+      <a href="mailto:info@studiofaraj.it" style="color:${BRAND.muted}; text-decoration:none;">info@studiofaraj.it</a>
+      <span style="color:${BRAND.border};">&nbsp;&middot;&nbsp;</span>
+      <a href="tel:+393202223322" style="color:${BRAND.muted}; text-decoration:none;">+39 320 222 3322</a>
+    </div>`;
+
+  const legalLine =
     locale === 'en'
-      ? 'Studio Faraj — Padova, Italy<br/>Web design, development &amp; digital solutions.'
-      : 'Studio Faraj — Padova, Italia<br/>Web design, sviluppo &amp; soluzioni digitali.';
+      ? 'Studio Faraj — Padova, Italy &middot; VAT IT05783550287'
+      : 'Studio Faraj — Padova, Italia &middot; P.IVA IT05783550287';
+
+  const taglineLine =
+    locale === 'en'
+      ? 'Web design, development &amp; digital solutions.'
+      : 'Web design, sviluppo &amp; soluzioni digitali.';
+
+  const footerCopy = `${legalLine}<br/>${taglineLine}${contactBlock}`;
 
   return `<!doctype html>
 <html lang="${locale}">
