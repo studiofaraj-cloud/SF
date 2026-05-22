@@ -276,6 +276,8 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       id: s.id,
       title: s.title,
       description: s.description,
+      titleEn: s.titleEn,
+      descriptionEn: s.descriptionEn,
       imageUrl: s.imageUrl,
       imageHint: s.imageHint,
     }));

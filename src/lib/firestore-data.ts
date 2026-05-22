@@ -198,6 +198,8 @@ export interface HeroSlideData {
   id: string;
   title: string;
   description: string;
+  titleEn?: string;
+  descriptionEn?: string;
   imageUrl: string;
   imageHint: string;
   order: number;

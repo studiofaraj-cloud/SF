@@ -71,6 +71,11 @@ export default function HomepageClient({ heroSlides: heroSlidesProp }: HomepageC
     () => (heroSlidesProp && heroSlidesProp.length > 0 ? heroSlidesProp : FALLBACK_HERO_SLIDES),
     [heroSlidesProp]
   );
+  const isEnglish = locale === 'en';
+  const slideTitle = (slide: HeroSlide) =>
+    isEnglish && slide.titleEn ? slide.titleEn : slide.title;
+  const slideDescription = (slide: HeroSlide) =>
+    isEnglish && slide.descriptionEn ? slide.descriptionEn : slide.description;
   const slideDuration = 5000; // 5 seconds
 
   const [activeSlide, setActiveSlide] = useState(0);
@@ -197,7 +202,7 @@ export default function HomepageClient({ heroSlides: heroSlidesProp }: HomepageC
                       animationSpeed={4}
                       className="text-[2.5rem] leading-[1.05] sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight"
                   >
-                      {heroSlides[activeSlide].title}
+                      {slideTitle(heroSlides[activeSlide])}
                     </GradientText>
                   </div>
 
@@ -207,7 +212,7 @@ export default function HomepageClient({ heroSlides: heroSlidesProp }: HomepageC
                     className="mt-3 md:mt-6 text-[15px] md:text-lg lg:text-xl leading-relaxed text-white max-w-2xl mx-auto px-2 hero-text-in line-clamp-3 md:line-clamp-none drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]"
                     style={{ animationDelay: '180ms' }}
                   >
-                      {heroSlides[activeSlide].description}
+                      {slideDescription(heroSlides[activeSlide])}
                   </p>
 
                   {/* CTA stack — mobile: primary button + secondary text link / desktop: two buttons */}

@@ -164,7 +164,7 @@ export function HeroSlidesEditor({ initialSlides }: HeroSlidesEditorProps) {
               {/* Left: text fields */}
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor={`title-${slide.id}`}>Title</Label>
+                  <Label htmlFor={`title-${slide.id}`}>Title (Italian)</Label>
                   <Input
                     id={`title-${slide.id}`}
                     value={slide.title}
@@ -174,12 +174,33 @@ export function HeroSlidesEditor({ initialSlides }: HeroSlidesEditorProps) {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor={`desc-${slide.id}`}>Description</Label>
+                  <Label htmlFor={`title-en-${slide.id}`}>Title (English)</Label>
+                  <Input
+                    id={`title-en-${slide.id}`}
+                    value={slide.titleEn ?? ''}
+                    onChange={e => updateField(slide.id, 'titleEn', e.target.value)}
+                    placeholder="e.g. Guaranteed Professionalism"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor={`desc-${slide.id}`}>Description (Italian)</Label>
                   <Textarea
                     id={`desc-${slide.id}`}
                     value={slide.description}
                     onChange={e => updateField(slide.id, 'description', e.target.value)}
                     placeholder="Short description shown below the title"
+                    rows={3}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor={`desc-en-${slide.id}`}>Description (English)</Label>
+                  <Textarea
+                    id={`desc-en-${slide.id}`}
+                    value={slide.descriptionEn ?? ''}
+                    onChange={e => updateField(slide.id, 'descriptionEn', e.target.value)}
+                    placeholder="English description shown below the title"
                     rows={3}
                   />
                 </div>

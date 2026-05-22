@@ -77,6 +77,8 @@ export type HeroSlide = {
   id: string;
   title: string;
   description: string;
+  titleEn?: string;
+  descriptionEn?: string;
   imageUrl: string;
   imageHint: string;
 };
