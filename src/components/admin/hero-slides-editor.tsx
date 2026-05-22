@@ -28,8 +28,8 @@ export function HeroSlidesEditor({ initialSlides }: HeroSlidesEditorProps) {
             id: generateId(),
             title: 'Professionalità Garantita',
             description: 'Un team di esperti dedicati per risultati impeccabili e affidabili.',
-            imageUrl: '/assets/hero-1.jpg',
-            imageHint: 'professional workspace',
+            imageUrl: '/assets/studio-faraj-team-sviluppo-web-padova.webp',
+            imageHint: 'Team di sviluppo web Studio Faraj al lavoro a Padova',
             order: 0,
           },
         ]

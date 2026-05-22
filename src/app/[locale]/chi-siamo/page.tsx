@@ -52,7 +52,7 @@ function AnimatedCounter({
 // ─── Founder image ─────────────────────────────────────────────────────────
 // To use a real photo: place it at /public/images/founder.jpg
 // then change FOUNDER_PHOTO to '/images/founder.jpg'
-const FOUNDER_PHOTO = '/assets/founder.png';
+const FOUNDER_PHOTO = '/assets/hussein-faraj-fondatore-studio-faraj.webp';
 
 function FounderImage() {
   if (FOUNDER_PHOTO) {

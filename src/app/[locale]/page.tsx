@@ -53,7 +53,7 @@ import type { HeroSlide } from '@/lib/definitions';
 import TechLogosClient from '@/components/site/tech-logos-client';
 import ProcessTimeline from '@/components/site/process-timeline';
 import HomepageClientDynamic from '@/components/site/homepage-client-dynamic';
-import ContactSection from '@/components/site/contact-section';
+import HomeCtaSection from '@/components/site/home-cta-section';
 import { TestimonialsServer } from '@/components/site/testimonials-server';
 import StatsSection from '@/components/site/stats-section';
 import ScrollFadeIn from '@/components/site/scroll-fade-in';
@@ -562,8 +562,8 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                 description: tResponsive('desktop.description'),
                 size: '1920px',
                 color: 'from-blue-500/20 to-cyan-500/20',
-                imageUrl: '/assets/laptop.jpg',
-                imageHint: 'desktop computer screen'
+                imageUrl: '/assets/sito-web-responsive-desktop.webp',
+                imageHint: 'Sito web responsive Studio Faraj su schermo desktop'
               },
               { 
                 icon: Tablet, 
@@ -571,8 +571,8 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                 description: tResponsive('tablet.description'),
                 size: '768px',
                 color: 'from-purple-500/20 to-pink-500/20',
-                imageUrl: '/assets/ipad.jpg',
-                imageHint: 'tablet device'
+                imageUrl: '/assets/sito-web-responsive-tablet.webp',
+                imageHint: 'Sito web responsive Studio Faraj su tablet'
               },
               { 
                 icon: SmartphoneIcon, 
@@ -580,8 +580,8 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                 description: tResponsive('mobile.description'),
                 size: '375px',
                 color: 'from-emerald-500/20 to-teal-500/20',
-                imageUrl: '/assets/mobile.jpg',
-                imageHint: 'smartphone mobile device'
+                imageUrl: '/assets/sito-web-responsive-mobile.webp',
+                imageHint: 'Sito web responsive Studio Faraj su smartphone'
               },
                     ].map((device, index) => {
                       const DeviceIcon = device.icon;
@@ -592,7 +592,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                             <div className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity duration-300">
                               <Image
                                 src={device.imageUrl}
-                                alt={device.label}
+                                alt={device.imageHint}
                                 fill
                                 className="object-cover"
                                 data-ai-hint={device.imageHint}
@@ -769,7 +769,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                 <div className="relative rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl neon-border">
                   <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent z-10" />
                   <Image
-                    alt="Un team che collabora a un progetto"
+                    alt="Team Studio Faraj che collabora allo sviluppo web a Padova"
                     className="w-full h-auto object-cover"
                     data-ai-hint="collaborative team"
                     height={600}
@@ -870,7 +870,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                 <div className="absolute -inset-0 rounded-3xl bg-gradient-to-br from-primary/20 to-primary/5 translate-x-3 translate-y-3" />
                 <div className="relative aspect-[4/5] lg:aspect-auto lg:h-full rounded-3xl overflow-hidden border border-border/60 bg-secondary/50 shadow-2xl shadow-primary/10">
                   <Image
-                    src="/assets/founder.png"
+                    src="/assets/hussein-faraj-fondatore-studio-faraj.webp"
                     alt={`${tTeam('ceo.title')} — ${tTeam('ceo.role')}`}
                     fill
                     className="object-cover object-top"
@@ -992,7 +992,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
 
       <TestimonialsServer />
       
-      <ContactSection />
+      <HomeCtaSection locale={currentLocale} />
       <StructuredDataServer data={localBusinessData} />
     </div>
   );
