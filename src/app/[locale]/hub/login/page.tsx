@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import { useRouter, useParams, useSearchParams } from 'next/navigation';
 import {
   signInWithEmailAndPassword,
@@ -41,6 +41,20 @@ function mapAuthError(err: any): string {
 }
 
 export default function HubLoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-[70vh] items-center justify-center">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+      }
+    >
+      <HubLoginInner />
+    </Suspense>
+  );
+}
+
+function HubLoginInner() {
   const params = useParams();
   const locale = (params?.locale as string) || 'it';
   const searchParams = useSearchParams();
