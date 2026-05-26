@@ -2,11 +2,16 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useUser } from '@/firebase/provider';
+import { useUser, useRole } from '@/firebase/provider';
 import { Loader2 } from 'lucide-react';
+import type { UserRole } from '@/lib/definitions';
 
 interface AuthGuardProps {
   children: React.ReactNode;
+  /** Role required to view the guarded content. Defaults to 'admin'. */
+  requiredRole?: UserRole;
+  /** Where to send unauthenticated users. Defaults to '/admin/login'. */
+  loginPath?: string;
 }
 
 const Spinner = () => (
@@ -15,8 +20,13 @@ const Spinner = () => (
   </div>
 );
 
-export function AuthGuard({ children }: AuthGuardProps) {
+export function AuthGuard({
+  children,
+  requiredRole = 'admin',
+  loginPath = '/admin/login',
+}: AuthGuardProps) {
   const { user, isUserLoading } = useUser();
+  const { role, isRoleLoading } = useRole();
   const router = useRouter();
   // Don't make any auth decisions until after the first client render
   const [mounted, setMounted] = useState(false);
@@ -26,19 +36,29 @@ export function AuthGuard({ children }: AuthGuardProps) {
   }, []);
 
   useEffect(() => {
-    // Wait until mounted and Firebase has resolved
     if (!mounted || isUserLoading) return;
-    // No user after Firebase resolved → redirect to login
+    // No user after Firebase resolved → send to login
     if (!user) {
-      router.replace('/admin/login');
+      router.replace(loginPath);
+      return;
     }
-  }, [mounted, user, isUserLoading, router]);
+    // User exists but role not yet resolved → wait
+    if (isRoleLoading) return;
+    // Wrong role → redirect: clients hitting admin go to their hub; everyone
+    // else to the appropriate login.
+    if (role !== requiredRole) {
+      if (role === 'client' && requiredRole === 'admin') {
+        router.replace('/hub');
+      } else {
+        router.replace(loginPath);
+      }
+    }
+  }, [mounted, user, isUserLoading, role, isRoleLoading, requiredRole, loginPath, router]);
 
-  // Not yet mounted or Firebase still loading → spinner
-  if (!mounted || isUserLoading) return <Spinner />;
-
-  // Firebase resolved but no user → spinner while redirect fires
-  if (!user) return <Spinner />;
+  // Still resolving auth/role → spinner
+  if (!mounted || isUserLoading || (user && isRoleLoading)) return <Spinner />;
+  // No user, or role mismatch → spinner while redirect fires
+  if (!user || role !== requiredRole) return <Spinner />;
 
   return <>{children}</>;
 }

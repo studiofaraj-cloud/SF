@@ -130,3 +130,36 @@ env:
     secret: BREVO_API_KEY
     availability:
       - RUNTIME
+
+  # ----- Stripe (payments) -----
+  # Create each secret once before deploying (use TEST keys first):
+  #   firebase apphosting:secrets:set STRIPE_SECRET_KEY
+  #   firebase apphosting:secrets:set STRIPE_WEBHOOK_SECRET
+  # Webhook endpoint to register in the Stripe dashboard:
+  #   https://<your-domain>/api/stripe/webhook   (event: checkout.session.completed)
+  - variable: STRIPE_SECRET_KEY
+    secret: STRIPE_SECRET_KEY
+    availability:
+      - RUNTIME
+
+  - variable: STRIPE_WEBHOOK_SECRET
+    secret: STRIPE_WEBHOOK_SECRET
+    availability:
+      - RUNTIME
+
+  # ----- App Check (anti-bot) -----
+  # Public reCAPTCHA v3 site key. App Check stays OFF until this is set.
+  # Setup:
+  #   1) Firebase Console → App Check → register the web app with reCAPTCHA v3
+  #      (this also creates the reCAPTCHA key) and copy the SITE key.
+  #   2) Set it here (it is public, so a plain value is fine):
+  #        NEXT_PUBLIC_RECAPTCHA_SITE_KEY
+  #   3) For local dev, set a debug token: in the browser console the SDK prints
+  #      an App Check debug token — add it under App Check → Apps → Manage debug tokens.
+  #   4) Enforce per service (Firestore, Storage, Authentication) in App Check
+  #      once real traffic shows tokens flowing.
+  # - variable: NEXT_PUBLIC_RECAPTCHA_SITE_KEY
+  #   value: "<your-recaptcha-v3-site-key>"
+  #   availability:
+  #     - BUILD
+  #     - RUNTIME

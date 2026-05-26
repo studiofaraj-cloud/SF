@@ -302,6 +302,26 @@ export default function QuoteDialog({ open, onOpenChange, prefill }: QuoteDialog
                         <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all duration-300 font-semibold h-12 md:h-14 text-base min-h-[48px] rounded-xl active:scale-[0.98]" disabled={isPending}>
                           {isPending ? t('form.submit') + '...' : t('form.submit')}
                         </Button>
+
+                        {/* Alternative: create an account and track the request in the hub */}
+                        <div className="flex items-center gap-3 text-[11px] uppercase tracking-wide text-foreground/40">
+                          <span className="h-px flex-1 bg-primary/15" />
+                          {locale === 'en' ? 'or' : 'oppure'}
+                          <span className="h-px flex-1 bg-primary/15" />
+                        </div>
+                        <Link
+                          href={`/${locale}/hub/login?mode=register&next=${encodeURIComponent(`/${locale}/hub/requests/new`)}`}
+                          className="flex items-center justify-center gap-1.5 w-full h-12 min-h-[48px] rounded-xl border border-primary/30 bg-card/40 text-sm font-semibold text-foreground hover:border-primary/60 hover:text-primary transition-all duration-300"
+                        >
+                          {locale === 'en'
+                            ? 'Create an account & track your request'
+                            : 'Crea un account e segui la tua richiesta'}
+                        </Link>
+                        <p className="text-center text-[11px] text-foreground/50">
+                          {locale === 'en'
+                            ? 'Chat, files, quotes and online payments — all in your client area.'
+                            : 'Chat, file, preventivi e pagamenti online — tutto nella tua area clienti.'}
+                        </p>
                       </div>
 
                       {/* Mobile-only contact quick-links */}

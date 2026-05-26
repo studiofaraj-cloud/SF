@@ -77,7 +77,7 @@ function MobileNav({ onSearchOpen }: { onSearchOpen: () => void }) {
                                 className="relative transition-transform duration-300 group-hover:scale-110" unoptimized />
                         </div>
                         <div>
-                            <p className="font-brand text-lg font-bold text-foreground group-hover:text-primary transition-colors">Studio Faraj</p>
+                            <p className="font-brand text-lg font-bold brand-wordmark transition-colors">Studio Faraj</p>
                             <p className="text-[9px] font-semibold tracking-[0.2em] text-primary/50 uppercase">Web Development Agency</p>
                         </div>
                     </Link>
@@ -203,6 +203,12 @@ function MobileNav({ onSearchOpen }: { onSearchOpen: () => void }) {
                         Inizia un Progetto
                         <ArrowRight className="w-4 h-4" />
                     </Link>
+                    {/* Client area */}
+                    <Link href={`/${locale}/hub/login`} title={locale === 'it' ? 'Area Clienti' : 'Client Area'} onClick={() => setSheetOpen(false)}
+                        className="flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl border border-primary/30 text-[13px] font-semibold text-foreground hover:bg-primary/8 transition-all duration-200 active:scale-[0.98]"
+                    >
+                        {locale === 'it' ? 'Area Clienti' : 'Client Area'}
+                    </Link>
                 </div>
             </SheetContent>
         </Sheet>
@@ -216,7 +222,7 @@ function DesktopNav({ onSearchOpen }: { onSearchOpen: () => void }) {
          <div className="hidden flex-1 items-center justify-between md:flex h-full">
             <Link href="/" title="Studio Faraj — Home" className="mr-4 md:mr-6 flex items-center space-x-2 h-full">
               <Image src="/assets/logo.png" alt="Studio Faraj Logo" width={32} height={32} className="md:w-8 md:h-8 lg:w-10 lg:h-10 flex-shrink-0" unoptimized />
-              <span className="font-brand text-sm md:text-base lg:text-lg whitespace-nowrap text-foreground">Studio Faraj</span>
+              <span className="font-brand font-semibold text-sm md:text-base lg:text-lg whitespace-nowrap brand-wordmark">Studio Faraj</span>
             </Link>
             <div className="flex items-center h-full">
               <NavigationMenu />
@@ -227,6 +233,13 @@ function DesktopNav({ onSearchOpen }: { onSearchOpen: () => void }) {
                 <span className="sr-only">Search</span>
               </Button>
               <LanguageSwitcher />
+              <Link
+                href={`/${locale}/hub/login`}
+                title={locale === 'it' ? 'Accedi alla tua area clienti' : 'Sign in to your client area'}
+                className="ml-1 hidden lg:inline-flex items-center h-9 px-3 rounded-full text-[12.5px] font-semibold text-foreground hover:text-primary transition-colors whitespace-nowrap"
+              >
+                {locale === 'it' ? 'Area Clienti' : 'Client Area'}
+              </Link>
               <Link
                 href={getLocalizedPath('/contatti', locale as any)}
                 title={locale === 'it' ? 'Richiedi un preventivo gratuito' : 'Get a free quote'}
@@ -289,7 +302,7 @@ export function SiteHeader() {
           <div className="flex items-center md:hidden relative z-10 h-full">
             <Link href="/" title="Studio Faraj — Home" className="flex items-center space-x-2 h-full">
               <Image src="/assets/logo.png" alt="Studio Faraj Logo" width={32} height={32} className="md:w-8 md:h-8 flex-shrink-0" unoptimized />
-              <span className="font-brand text-sm md:text-base whitespace-nowrap text-foreground">Studio Faraj</span>
+              <span className="font-brand font-semibold text-sm md:text-base whitespace-nowrap brand-wordmark">Studio Faraj</span>
             </Link>
           </div>
           <div className="md:hidden relative z-10 flex items-center h-full gap-2">

@@ -14,6 +14,7 @@ import {
   where,
   orderBy,
   limit,
+  increment,
   Timestamp,
   DocumentData,
   QueryConstraint,
@@ -120,7 +121,137 @@ const COLLECTIONS = {
   BOOKINGS: 'bookings',
   SETTINGS: 'settings',
   REVIEWS: 'reviews',
+  USERS: 'users',
+  SERVICE_REQUESTS: 'serviceRequests',
+  REQUEST_MESSAGES: 'requestMessages',
+  REQUEST_FILES: 'requestFiles',
+  QUOTES: 'quotes',
+  QUOTE_PAYMENTS: 'quotePayments',
+  CONVERSATIONS: 'conversations',
+  CONVERSATION_MESSAGES: 'conversationMessages',
+  CLIENT_FILES: 'clientFiles',
 } as const;
+
+/** Firestore rejects `undefined` field values; drop them before writing. */
+function stripUndefined<T extends Record<string, any>>(obj: T): T {
+  const out: Record<string, any> = {};
+  for (const [k, v] of Object.entries(obj)) {
+    if (v !== undefined) out[k] = v;
+  }
+  return out as T;
+}
+
+// ─── Users / Roles ──────────────────────────────────────────────────────────
+
+export type UserRole = 'admin' | 'client';
+
+export interface UserProfile {
+  id?: string; // Firebase Auth UID (document id)
+  uid: string;
+  email: string;
+  displayName?: string;
+  photoURL?: string;
+  role: UserRole;
+  company?: string;
+  phone?: string;
+  country?: string;
+  locale?: string;
+  // Billing details (optional — for company-addressed invoices/fatture)
+  vatNumber?: string; // P.IVA
+  taxCode?: string; // Codice Fiscale
+  addressLine?: string;
+  city?: string;
+  province?: string;
+  zip?: string;
+  sdiPec?: string; // Codice SDI o PEC (e-invoicing)
+  stripeCustomerId?: string;
+  disabled?: boolean;
+  createdBy?: string; // uid of admin who created the account, if any
+  createdAt: Timestamp;
+  updatedAt: Timestamp;
+  lastLoginAt?: Timestamp;
+}
+
+/** Fetch a user profile by Firebase UID (the document id). */
+export async function getUserProfile(uid: string): Promise<UserProfile | null> {
+  try {
+    const snap = await getDoc(doc(db, COLLECTIONS.USERS, uid));
+    if (!snap.exists()) return null;
+    return { id: snap.id, ...snap.data() } as UserProfile;
+  } catch (error) {
+    console.error(`Error fetching user profile ${uid}:`, error);
+    return null;
+  }
+}
+
+export async function getUserProfileByEmail(email: string): Promise<UserProfile | null> {
+  try {
+    const ref = collection(db, COLLECTIONS.USERS);
+    const q = query(ref, where('email', '==', email.toLowerCase().trim()), limit(1));
+    const snap = await getDocs(q);
+    if (snap.empty) return null;
+    const d = snap.docs[0];
+    return { id: d.id, ...d.data() } as UserProfile;
+  } catch (error) {
+    console.error(`Error fetching user profile by email ${email}:`, error);
+    return null;
+  }
+}
+
+/**
+ * Create the profile if missing, otherwise merge the provided fields.
+ * The document id is always the Firebase UID so lookups are O(1).
+ */
+export async function upsertUserProfile(
+  uid: string,
+  data: Partial<Omit<UserProfile, 'id' | 'uid' | 'createdAt'>>
+): Promise<UserProfile> {
+  const ref = doc(db, COLLECTIONS.USERS, uid);
+  const existing = await getDoc(ref);
+  const now = Timestamp.now();
+
+  if (!existing.exists()) {
+    const profile = stripUndefined({
+      uid,
+      email: (data.email ?? '').toLowerCase().trim(),
+      role: (data.role ?? 'client') as UserRole,
+      ...data,
+      createdAt: now,
+      updatedAt: now,
+    });
+    await setDoc(ref, profile);
+    return { id: uid, ...profile } as UserProfile;
+  }
+
+  const update = stripUndefined({ ...data, updatedAt: now });
+  if (update.email) update.email = update.email.toLowerCase().trim();
+  await updateDoc(ref, update);
+  return { id: uid, ...existing.data(), ...update } as UserProfile;
+}
+
+export async function setUserRole(uid: string, role: UserRole): Promise<void> {
+  await updateDoc(doc(db, COLLECTIONS.USERS, uid), {
+    role,
+    updatedAt: Timestamp.now(),
+  });
+}
+
+export async function listUsers(filters?: { role?: UserRole }): Promise<UserProfile[]> {
+  try {
+    const ref = collection(db, COLLECTIONS.USERS);
+    const constraints: QueryConstraint[] = [];
+    if (filters?.role) constraints.push(where('role', '==', filters.role));
+    const snap = await getDocs(query(ref, ...constraints));
+    const docs = snap.docs.map((d) => ({ id: d.id, ...d.data() } as UserProfile));
+    // Sort newest-first in memory to avoid a composite index requirement.
+    return docs.sort(
+      (a, b) => (b.createdAt?.toMillis?.() ?? 0) - (a.createdAt?.toMillis?.() ?? 0)
+    );
+  } catch (error) {
+    console.error('Error listing users:', error);
+    return [];
+  }
+}
 
 // ─── Reviews ──────────────────────────────────────────────────────────────────
 
@@ -784,6 +915,531 @@ export async function deleteBookingData(id: string): Promise<void> {
     console.error(`Error deleting booking with id ${id}:`, error);
     throw new Error(`Failed to delete booking: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
+}
+
+// ─── Service Requests ───────────────────────────────────────────────────────
+
+export type ServiceRequestStatus =
+  | 'new'
+  | 'quoted'
+  | 'accepted'
+  | 'in_progress'
+  | 'delivered'
+  | 'closed'
+  | 'cancelled';
+
+export interface ServiceRequest {
+  id?: string;
+  clientId: string; // Firebase UID of the requesting client
+  clientName?: string;
+  clientEmail?: string;
+  type: string; // service type, e.g. 'sviluppo-web'
+  title: string;
+  brief: string;
+  budget?: string;
+  status: ServiceRequestStatus;
+  assignedTo?: string;
+  adminNotes?: string;
+  createdAt: Timestamp;
+  updatedAt: Timestamp;
+}
+
+export async function createServiceRequest(
+  data: Omit<ServiceRequest, 'id' | 'createdAt' | 'updatedAt' | 'status'> & {
+    status?: ServiceRequestStatus;
+  }
+): Promise<string> {
+  const ref = collection(db, COLLECTIONS.SERVICE_REQUESTS);
+  const now = Timestamp.now();
+  const docRef = await addDoc(ref, stripUndefined({
+    ...data,
+    status: data.status ?? 'new',
+    createdAt: now,
+    updatedAt: now,
+  }));
+  return docRef.id;
+}
+
+export async function getServiceRequestById(id: string): Promise<ServiceRequest | null> {
+  try {
+    const snap = await getDoc(doc(db, COLLECTIONS.SERVICE_REQUESTS, id));
+    if (!snap.exists()) return null;
+    return { id: snap.id, ...snap.data() } as ServiceRequest;
+  } catch (error) {
+    console.error(`Error fetching service request ${id}:`, error);
+    return null;
+  }
+}
+
+export async function getServiceRequestsByClient(clientId: string): Promise<ServiceRequest[]> {
+  try {
+    const ref = collection(db, COLLECTIONS.SERVICE_REQUESTS);
+    // Single-field filter + in-memory sort avoids a composite index requirement.
+    const snap = await getDocs(query(ref, where('clientId', '==', clientId)));
+    const docs = snap.docs.map((d) => ({ id: d.id, ...d.data() } as ServiceRequest));
+    return docs.sort(
+      (a, b) => (b.createdAt?.toMillis?.() ?? 0) - (a.createdAt?.toMillis?.() ?? 0)
+    );
+  } catch (error) {
+    console.error(`Error fetching service requests for client ${clientId}:`, error);
+    return [];
+  }
+}
+
+export async function listServiceRequests(filters?: {
+  status?: ServiceRequestStatus;
+}): Promise<ServiceRequest[]> {
+  try {
+    const ref = collection(db, COLLECTIONS.SERVICE_REQUESTS);
+    const constraints: QueryConstraint[] = [];
+    if (filters?.status) constraints.push(where('status', '==', filters.status));
+    const snap = await getDocs(query(ref, ...constraints));
+    const docs = snap.docs.map((d) => ({ id: d.id, ...d.data() } as ServiceRequest));
+    return docs.sort(
+      (a, b) => (b.createdAt?.toMillis?.() ?? 0) - (a.createdAt?.toMillis?.() ?? 0)
+    );
+  } catch (error) {
+    console.error('Error listing service requests:', error);
+    return [];
+  }
+}
+
+export async function updateServiceRequest(
+  id: string,
+  data: Partial<Omit<ServiceRequest, 'id' | 'createdAt'>>
+): Promise<void> {
+  await updateDoc(doc(db, COLLECTIONS.SERVICE_REQUESTS, id), stripUndefined({
+    ...data,
+    updatedAt: Timestamp.now(),
+  }));
+}
+
+// ─── Request Messages (per-request thread) ──────────────────────────────────
+
+export interface RequestMessage {
+  id?: string;
+  requestId: string;
+  senderId: string;
+  senderName?: string;
+  senderRole: 'admin' | 'client';
+  body: string;
+  createdAt: Timestamp;
+}
+
+export async function createRequestMessage(
+  data: Omit<RequestMessage, 'id' | 'createdAt'>
+): Promise<string> {
+  const ref = collection(db, COLLECTIONS.REQUEST_MESSAGES);
+  const docRef = await addDoc(ref, stripUndefined({ ...data, createdAt: Timestamp.now() }));
+  return docRef.id;
+}
+
+export async function getRequestMessages(requestId: string): Promise<RequestMessage[]> {
+  try {
+    const ref = collection(db, COLLECTIONS.REQUEST_MESSAGES);
+    const snap = await getDocs(query(ref, where('requestId', '==', requestId)));
+    const docs = snap.docs.map((d) => ({ id: d.id, ...d.data() } as RequestMessage));
+    // Oldest-first for a chat view; in-memory sort avoids a composite index.
+    return docs.sort(
+      (a, b) => (a.createdAt?.toMillis?.() ?? 0) - (b.createdAt?.toMillis?.() ?? 0)
+    );
+  } catch (error) {
+    console.error(`Error fetching messages for request ${requestId}:`, error);
+    return [];
+  }
+}
+
+// ─── Request Files (per-request attachments) ────────────────────────────────
+
+export interface RequestFile {
+  id?: string;
+  requestId: string;
+  uploaderId: string;
+  uploaderName?: string;
+  uploaderRole: 'admin' | 'client';
+  url: string;
+  storagePath: string;
+  filename: string;
+  size: number;
+  contentType?: string;
+  createdAt: Timestamp;
+}
+
+export async function createRequestFile(
+  data: Omit<RequestFile, 'id' | 'createdAt'>
+): Promise<string> {
+  const ref = collection(db, COLLECTIONS.REQUEST_FILES);
+  const docRef = await addDoc(ref, stripUndefined({ ...data, createdAt: Timestamp.now() }));
+  return docRef.id;
+}
+
+export async function getRequestFiles(requestId: string): Promise<RequestFile[]> {
+  try {
+    const ref = collection(db, COLLECTIONS.REQUEST_FILES);
+    const snap = await getDocs(query(ref, where('requestId', '==', requestId)));
+    const docs = snap.docs.map((d) => ({ id: d.id, ...d.data() } as RequestFile));
+    return docs.sort(
+      (a, b) => (b.createdAt?.toMillis?.() ?? 0) - (a.createdAt?.toMillis?.() ?? 0)
+    );
+  } catch (error) {
+    console.error(`Error fetching files for request ${requestId}:`, error);
+    return [];
+  }
+}
+
+export async function getRequestFileById(id: string): Promise<RequestFile | null> {
+  try {
+    const snap = await getDoc(doc(db, COLLECTIONS.REQUEST_FILES, id));
+    if (!snap.exists()) return null;
+    return { id: snap.id, ...snap.data() } as RequestFile;
+  } catch (error) {
+    console.error(`Error fetching request file ${id}:`, error);
+    return null;
+  }
+}
+
+export async function deleteRequestFile(id: string): Promise<void> {
+  await deleteDoc(doc(db, COLLECTIONS.REQUEST_FILES, id));
+}
+
+// ─── Client Files (standalone client area uploads) ──────────────────────────
+
+export interface ClientFile {
+  id?: string;
+  clientId: string;
+  uploaderId: string;
+  uploaderName?: string;
+  uploaderRole: 'admin' | 'client';
+  url: string;
+  storagePath: string;
+  filename: string;
+  size: number; // bytes
+  contentType?: string;
+  createdAt: Timestamp;
+}
+
+export async function createClientFile(data: Omit<ClientFile, 'id' | 'createdAt'>): Promise<string> {
+  const ref = collection(db, COLLECTIONS.CLIENT_FILES);
+  const docRef = await addDoc(ref, stripUndefined({ ...data, createdAt: Timestamp.now() }));
+  return docRef.id;
+}
+
+export async function getClientFileById(id: string): Promise<ClientFile | null> {
+  try {
+    const snap = await getDoc(doc(db, COLLECTIONS.CLIENT_FILES, id));
+    if (!snap.exists()) return null;
+    return { id: snap.id, ...snap.data() } as ClientFile;
+  } catch (error) {
+    console.error(`Error fetching client file ${id}:`, error);
+    return null;
+  }
+}
+
+export async function getClientFiles(clientId: string): Promise<ClientFile[]> {
+  try {
+    const ref = collection(db, COLLECTIONS.CLIENT_FILES);
+    const snap = await getDocs(query(ref, where('clientId', '==', clientId)));
+    const docs = snap.docs.map((d) => ({ id: d.id, ...d.data() } as ClientFile));
+    return docs.sort(
+      (a, b) => (b.createdAt?.toMillis?.() ?? 0) - (a.createdAt?.toMillis?.() ?? 0)
+    );
+  } catch (error) {
+    console.error(`Error fetching client files for ${clientId}:`, error);
+    return [];
+  }
+}
+
+export async function deleteClientFile(id: string): Promise<void> {
+  await deleteDoc(doc(db, COLLECTIONS.CLIENT_FILES, id));
+}
+
+// ─── Quotes / Invoices ──────────────────────────────────────────────────────
+
+export type QuoteStatus = 'sent' | 'paid' | 'cancelled';
+
+export interface QuoteLineItem {
+  description: string;
+  quantity: number;
+  unitAmount: number; // minor units (cents)
+}
+
+export interface Quote {
+  id?: string;
+  requestId?: string; // optional — quotes/invoices can be standalone
+  clientId: string;
+  clientName?: string;
+  clientEmail?: string;
+  title: string;
+  currency: string; // ISO code, lowercase (e.g. 'eur')
+  lineItems: QuoteLineItem[];
+  taxRate: number; // percent, e.g. 22 for IT VAT
+  subtotal: number; // cents
+  taxAmount: number; // cents
+  total: number; // cents
+  status: QuoteStatus;
+  stripeSessionId?: string;
+  stripePaymentIntentId?: string;
+  paidAt?: Timestamp;
+  createdBy?: string;
+  createdAt: Timestamp;
+  updatedAt: Timestamp;
+}
+
+export async function createQuote(
+  data: Omit<Quote, 'id' | 'createdAt' | 'updatedAt' | 'status'> & { status?: QuoteStatus }
+): Promise<string> {
+  const ref = collection(db, COLLECTIONS.QUOTES);
+  const now = Timestamp.now();
+  const docRef = await addDoc(
+    ref,
+    stripUndefined({ ...data, status: data.status ?? 'sent', createdAt: now, updatedAt: now })
+  );
+  return docRef.id;
+}
+
+export async function getQuoteById(id: string): Promise<Quote | null> {
+  try {
+    const snap = await getDoc(doc(db, COLLECTIONS.QUOTES, id));
+    if (!snap.exists()) return null;
+    return { id: snap.id, ...snap.data() } as Quote;
+  } catch (error) {
+    console.error(`Error fetching quote ${id}:`, error);
+    return null;
+  }
+}
+
+export async function getQuotesByRequest(requestId: string): Promise<Quote[]> {
+  try {
+    const ref = collection(db, COLLECTIONS.QUOTES);
+    const snap = await getDocs(query(ref, where('requestId', '==', requestId)));
+    const docs = snap.docs.map((d) => ({ id: d.id, ...d.data() } as Quote));
+    return docs.sort(
+      (a, b) => (b.createdAt?.toMillis?.() ?? 0) - (a.createdAt?.toMillis?.() ?? 0)
+    );
+  } catch (error) {
+    console.error(`Error fetching quotes for request ${requestId}:`, error);
+    return [];
+  }
+}
+
+export async function listQuotes(filters?: { status?: QuoteStatus }): Promise<Quote[]> {
+  try {
+    const ref = collection(db, COLLECTIONS.QUOTES);
+    const constraints: QueryConstraint[] = [];
+    if (filters?.status) constraints.push(where('status', '==', filters.status));
+    const snap = await getDocs(query(ref, ...constraints));
+    const docs = snap.docs.map((d) => ({ id: d.id, ...d.data() } as Quote));
+    return docs.sort(
+      (a, b) => (b.createdAt?.toMillis?.() ?? 0) - (a.createdAt?.toMillis?.() ?? 0)
+    );
+  } catch (error) {
+    console.error('Error listing quotes:', error);
+    return [];
+  }
+}
+
+export async function getQuotesByClient(clientId: string): Promise<Quote[]> {
+  try {
+    const ref = collection(db, COLLECTIONS.QUOTES);
+    const snap = await getDocs(query(ref, where('clientId', '==', clientId)));
+    const docs = snap.docs.map((d) => ({ id: d.id, ...d.data() } as Quote));
+    return docs.sort(
+      (a, b) => (b.createdAt?.toMillis?.() ?? 0) - (a.createdAt?.toMillis?.() ?? 0)
+    );
+  } catch (error) {
+    console.error(`Error fetching quotes for client ${clientId}:`, error);
+    return [];
+  }
+}
+
+export async function updateQuote(id: string, data: Partial<Omit<Quote, 'id' | 'createdAt'>>): Promise<void> {
+  await updateDoc(doc(db, COLLECTIONS.QUOTES, id), stripUndefined({ ...data, updatedAt: Timestamp.now() }));
+}
+
+// ─── Quote Payments (installments / advance) ────────────────────────────────
+
+export type PaymentStatus = 'pending' | 'paid' | 'cancelled';
+
+export interface QuotePayment {
+  id?: string;
+  quoteId: string;
+  clientId: string;
+  clientName?: string;
+  clientEmail?: string;
+  label: string; // e.g. "Acconto", "Rata 1", "Saldo"
+  amount: number; // cents
+  status: PaymentStatus;
+  dueDate?: Timestamp;
+  stripeSessionId?: string;
+  stripePaymentIntentId?: string;
+  paidAt?: Timestamp;
+  createdBy?: string;
+  createdAt: Timestamp;
+  updatedAt: Timestamp;
+}
+
+export async function createQuotePayment(
+  data: Omit<QuotePayment, 'id' | 'createdAt' | 'updatedAt' | 'status'> & { status?: PaymentStatus }
+): Promise<string> {
+  const ref = collection(db, COLLECTIONS.QUOTE_PAYMENTS);
+  const now = Timestamp.now();
+  const docRef = await addDoc(
+    ref,
+    stripUndefined({ ...data, status: data.status ?? 'pending', createdAt: now, updatedAt: now })
+  );
+  return docRef.id;
+}
+
+export async function getQuotePaymentById(id: string): Promise<QuotePayment | null> {
+  try {
+    const snap = await getDoc(doc(db, COLLECTIONS.QUOTE_PAYMENTS, id));
+    if (!snap.exists()) return null;
+    return { id: snap.id, ...snap.data() } as QuotePayment;
+  } catch (error) {
+    console.error(`Error fetching payment ${id}:`, error);
+    return null;
+  }
+}
+
+export async function getPaymentsByQuote(quoteId: string): Promise<QuotePayment[]> {
+  try {
+    const ref = collection(db, COLLECTIONS.QUOTE_PAYMENTS);
+    const snap = await getDocs(query(ref, where('quoteId', '==', quoteId)));
+    const docs = snap.docs.map((d) => ({ id: d.id, ...d.data() } as QuotePayment));
+    // Oldest-first (advance → installments).
+    return docs.sort(
+      (a, b) => (a.createdAt?.toMillis?.() ?? 0) - (b.createdAt?.toMillis?.() ?? 0)
+    );
+  } catch (error) {
+    console.error(`Error fetching payments for quote ${quoteId}:`, error);
+    return [];
+  }
+}
+
+export async function getPaymentsByClient(clientId: string): Promise<QuotePayment[]> {
+  try {
+    const ref = collection(db, COLLECTIONS.QUOTE_PAYMENTS);
+    const snap = await getDocs(query(ref, where('clientId', '==', clientId)));
+    const docs = snap.docs.map((d) => ({ id: d.id, ...d.data() } as QuotePayment));
+    return docs.sort(
+      (a, b) => (a.createdAt?.toMillis?.() ?? 0) - (b.createdAt?.toMillis?.() ?? 0)
+    );
+  } catch (error) {
+    console.error(`Error fetching payments for client ${clientId}:`, error);
+    return [];
+  }
+}
+
+export async function updateQuotePayment(
+  id: string,
+  data: Partial<Omit<QuotePayment, 'id' | 'createdAt'>>
+): Promise<void> {
+  await updateDoc(doc(db, COLLECTIONS.QUOTE_PAYMENTS, id), stripUndefined({ ...data, updatedAt: Timestamp.now() }));
+}
+
+// ─── Direct Conversations (client ↔ team) ───────────────────────────────────
+
+export type ConversationRole = 'admin' | 'client';
+
+export interface Conversation {
+  id?: string; // = clientId
+  clientId: string;
+  clientName?: string;
+  clientEmail?: string;
+  lastMessage?: string;
+  lastMessageAt?: Timestamp;
+  lastSenderRole?: ConversationRole;
+  unreadForAdmin: number;
+  unreadForClient: number;
+  createdAt: Timestamp;
+  updatedAt: Timestamp;
+}
+
+export interface ConversationMessage {
+  id?: string;
+  conversationId: string; // = clientId
+  senderId: string;
+  senderName?: string;
+  senderRole: ConversationRole;
+  body: string;
+  createdAt: Timestamp;
+}
+
+export async function getConversation(clientId: string): Promise<Conversation | null> {
+  try {
+    const snap = await getDoc(doc(db, COLLECTIONS.CONVERSATIONS, clientId));
+    if (!snap.exists()) return null;
+    return { id: snap.id, ...snap.data() } as Conversation;
+  } catch (error) {
+    console.error(`Error fetching conversation ${clientId}:`, error);
+    return null;
+  }
+}
+
+export async function createConversationMessage(
+  data: Omit<ConversationMessage, 'id' | 'createdAt'>
+): Promise<string> {
+  const ref = collection(db, COLLECTIONS.CONVERSATION_MESSAGES);
+  const docRef = await addDoc(ref, stripUndefined({ ...data, createdAt: Timestamp.now() }));
+  return docRef.id;
+}
+
+/**
+ * Update conversation metadata after a new message and bump the unread counter
+ * for the *recipient* role. Creates the conversation doc on first message.
+ */
+export async function touchConversation(
+  clientId: string,
+  data: {
+    clientName?: string;
+    clientEmail?: string;
+    lastMessage: string;
+    lastSenderRole: ConversationRole;
+    recipient: ConversationRole; // whose unread counter to bump
+  }
+): Promise<void> {
+  const ref = doc(db, COLLECTIONS.CONVERSATIONS, clientId);
+  const snap = await getDoc(ref);
+  const now = Timestamp.now();
+
+  if (!snap.exists()) {
+    await setDoc(
+      ref,
+      stripUndefined({
+        clientId,
+        clientName: data.clientName,
+        clientEmail: data.clientEmail,
+        lastMessage: data.lastMessage,
+        lastMessageAt: now,
+        lastSenderRole: data.lastSenderRole,
+        unreadForAdmin: data.recipient === 'admin' ? 1 : 0,
+        unreadForClient: data.recipient === 'client' ? 1 : 0,
+        createdAt: now,
+        updatedAt: now,
+      })
+    );
+    return;
+  }
+
+  const counterField = data.recipient === 'admin' ? 'unreadForAdmin' : 'unreadForClient';
+  await updateDoc(
+    ref,
+    stripUndefined({
+      clientName: data.clientName,
+      clientEmail: data.clientEmail,
+      lastMessage: data.lastMessage,
+      lastMessageAt: now,
+      lastSenderRole: data.lastSenderRole,
+      [counterField]: increment(1),
+      updatedAt: now,
+    })
+  );
+}
+
+export async function markConversationRead(clientId: string, role: ConversationRole): Promise<void> {
+  const ref = doc(db, COLLECTIONS.CONVERSATIONS, clientId);
+  const field = role === 'admin' ? 'unreadForAdmin' : 'unreadForClient';
+  await updateDoc(ref, { [field]: 0, updatedAt: Timestamp.now() }).catch(() => {});
 }
 
     

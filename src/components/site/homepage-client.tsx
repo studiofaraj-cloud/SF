@@ -228,6 +228,21 @@ export default function HomepageClient({ heroSlides: heroSlidesProp }: HomepageC
                         </span>
                       </Button>
 
+                      {/* Start your project → client hub */}
+                      <Button
+                        asChild
+                        size="lg"
+                        variant="outline"
+                        className="border-2 border-primary/50 bg-white/10 backdrop-blur-md text-white hover:border-primary hover:text-primary font-semibold px-6 md:px-8 py-5 md:py-6 text-sm md:text-base transition-all duration-300 w-full md:w-auto max-w-[360px] md:max-w-none min-h-[52px] md:min-h-[44px]"
+                      >
+                        <Link
+                          href={`/${locale}/inizia`}
+                          title={locale === 'en' ? 'Start your project' : 'Inizia il tuo progetto'}
+                        >
+                          {locale === 'en' ? 'Start your project' : 'Inizia il tuo progetto'}
+                        </Link>
+                      </Button>
+
                       {/* Mobile: subtle text link */}
                       <Link
                         href={getLocalizedPath('/projects', locale as any)}

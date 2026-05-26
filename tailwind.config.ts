@@ -29,8 +29,9 @@ export default {
         // Lora — elegant serif for testimonial quotes and pull-quotes
         serif: ['var(--font-lora)', 'Georgia', 'serif'],
         quote: ['var(--font-lora)', 'Georgia', 'serif'],
-        // Tomorrow — kept for brand/techy accent elements
-        brand: ['var(--font-tomorrow)', 'sans-serif'],
+        // Brand wordmark now uses Poppins to match the rest of the site.
+        // (Tomorrow remains available via --font-tomorrow for techy accents.)
+        brand: ['var(--font-poppins)', 'system-ui', 'sans-serif'],
         code: ['monospace'],
       },
       transitionDuration: {

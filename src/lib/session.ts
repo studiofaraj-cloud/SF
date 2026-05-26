@@ -7,10 +7,14 @@
 
 import { jwtVerify, type JWTPayload } from 'jose';
 
+export type SessionRole = 'admin' | 'client';
+
 export interface SessionPayload extends JWTPayload {
   user: {
     id: string;
     name: string;
+    email?: string;
+    role: SessionRole;
   };
   expires: string;
 }

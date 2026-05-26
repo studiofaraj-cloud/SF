@@ -1,6 +1,7 @@
-import type { NextRequest } from 'next/server';
+import { NextResponse, type NextRequest } from 'next/server';
 import createMiddleware from 'next-intl/middleware';
 import { locales, defaultLocale } from './i18n/config';
+import { getSessionFromCookie } from './lib/session';
 
 const intlMiddleware = createMiddleware({
   locales,
@@ -15,14 +16,57 @@ const intlMiddleware = createMiddleware({
   localeDetection: false,
 });
 
-export default function middleware(request: NextRequest) {
+const HUB_PATH = /^\/(?:(it|en)\/)?hub(?:\/.*)?$/;
+
+function getSessionCookie(request: NextRequest) {
+  return getSessionFromCookie(request.cookies.get('session')?.value);
+}
+
+export default async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
+  // ── Admin area: require an admin session (server-side enforcement) ──────────
+  if (pathname.startsWith('/admin')) {
+    // Public admin routes — login and the diagnostics page stay reachable.
+    if (pathname === '/admin/login' || pathname.startsWith('/admin/system-check')) {
+      return NextResponse.next();
+    }
+    const session = await getSessionCookie(request);
+    if (!session || session.user.role !== 'admin') {
+      const url = request.nextUrl.clone();
+      url.pathname = '/admin/login';
+      url.search = `?next=${encodeURIComponent(pathname)}`;
+      return NextResponse.redirect(url);
+    }
+    return NextResponse.next();
+  }
+
+  // ── Client hub: require any authenticated session ───────────────────────────
+  const hubMatch = pathname.match(HUB_PATH);
+  if (hubMatch) {
+    const locale = hubMatch[1] ?? defaultLocale;
+    // The hub login page itself must stay public.
+    const isHubLogin = pathname.endsWith('/hub/login') || pathname.endsWith('/hub/register');
+    if (!isHubLogin) {
+      const session = await getSessionCookie(request);
+      if (!session) {
+        const url = request.nextUrl.clone();
+        url.pathname = `/${locale}/hub/login`;
+        url.search = `?next=${encodeURIComponent(pathname)}`;
+        return NextResponse.redirect(url);
+      }
+    }
+    // Authenticated (or public hub login) — let next-intl handle locale routing.
+    return intlMiddleware(request);
+  }
+
+  // ── Public site: intl + cacheable response (unchanged behavior) ─────────────
   const response = intlMiddleware(request);
 
   // Firebase App Hosting's adapter sets `cache-control: no-store` whenever
   // middleware runs, which suppresses edge Brotli compression and disables
   // CDN caching of the prerendered locale HTML. Force a public, cacheable
-  // policy that matches the page's `revalidate = 3600`. Always override —
-  // the upstream value is `no-store` so a guarded set would be a no-op.
+  // policy that matches the page's `revalidate = 3600`.
   if (response) {
     response.headers.set(
       'cache-control',
@@ -34,12 +78,15 @@ export default function middleware(request: NextRequest) {
 }
 
 export const config = {
-  // Only intercept routes that don't already carry a locale prefix.
-  // Locale-prefixed paths (/it/*, /en/*) are served directly by Next.js —
-  // bypassing middleware prevents Firebase App Hosting's adapter from
-  // overriding cache-control to no-store on those responses, which in turn
-  // allows the CDN to apply Brotli/gzip compression on the prerendered HTML.
   matcher: [
+    // Public, non-locale-prefixed paths — handled by intl + cached.
+    // Locale-prefixed paths (/it/*, /en/*) are served directly by Next.js,
+    // bypassing middleware so the CDN can compress prerendered HTML.
     '/((?!it(?:/|$)|en(?:/|$)|api|admin|_next|_vercel|.*\\..*).*)',
+    // Admin area — auth-gated (no caching).
+    '/admin/:path*',
+    // Client hub — auth-gated. Cover both bare and locale-prefixed forms.
+    '/hub/:path*',
+    '/(it|en)/hub/:path*',
   ],
 };

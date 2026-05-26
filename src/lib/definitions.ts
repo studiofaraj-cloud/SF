@@ -7,6 +7,21 @@ export type ImageMetadata = {
   path: string;
 };
 
+export type UserRole = 'admin' | 'client';
+
+export type ClientProfile = {
+  uid: string;
+  email: string;
+  displayName?: string;
+  photoURL?: string;
+  role: UserRole;
+  company?: string;
+  phone?: string;
+  country?: string;
+  locale?: string;
+  disabled?: boolean;
+};
+
 export type Blog = {
   id: string;
   slug: string;

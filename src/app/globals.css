@@ -7,6 +7,40 @@
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
+/* Brand wordmark — static dark-blue→light-blue gradient text (no animation) */
+.brand-wordmark {
+  background-image: linear-gradient(90deg, #1e3a8a, #38bdf8);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Checkout success celebration — confetti pieces fall from the top */
+@keyframes confetti-fall {
+  0%   { transform: translateY(-10vh) rotate(0); opacity: 1; }
+  100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+.confetti-piece {
+  position: fixed;
+  top: 0;
+  width: 9px;
+  height: 14px;
+  border-radius: 2px;
+  pointer-events: none;
+  animation-name: confetti-fall;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+  z-index: 60;
+}
+
+/* Big check icon pops in */
+@keyframes success-pop {
+  0%   { transform: scale(0);   opacity: 0; }
+  60%  { transform: scale(1.18); opacity: 1; }
+  100% { transform: scale(1);    opacity: 1; }
+}
+.animate-success-pop { animation: success-pop 0.55s cubic-bezier(.2,.8,.2,1) forwards; }
+
 /* Hide scrollbar while maintaining scroll functionality */
 .scrollbar-hide {
   -ms-overflow-style: none;

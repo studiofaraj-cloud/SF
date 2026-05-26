@@ -6,10 +6,14 @@ import {
   type JWTPayload,
 } from 'jose';
 
+export type SessionRole = 'admin' | 'client';
+
 type SessionPayload = JWTPayload & {
   user: {
     id: string;
     name: string;
+    email?: string;
+    role: SessionRole;
   },
   expires: string;
 }
@@ -168,7 +172,12 @@ export async function getSessionFromCookie(cookieValue: string | undefined) {
   return session;
 }
 
-export async function createSession(userId: string, username: string) {
+export async function createSession(
+  userId: string,
+  username: string,
+  role: SessionRole = 'client',
+  email?: string
+) {
   // Validate SESSION_SECRET at runtime when actually creating a session
   if (!process.env.SESSION_SECRET) {
     if (process.env.NODE_ENV === 'production') {
@@ -185,9 +194,9 @@ export async function createSession(userId: string, username: string) {
     const expires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 1 day
     const expiresISO = expires.toISOString();
     
-    const payload: SessionPayload = { 
-      user: { id: userId, name: username }, 
-      expires: expiresISO 
+    const payload: SessionPayload = {
+      user: { id: userId, name: username, email, role },
+      expires: expiresISO
     };
     
     console.log('[Auth] Creating session for user:', userId, 'expires:', expiresISO);
@@ -242,8 +251,33 @@ export async function deleteSession() {
   });
 }
 
-export async function verifyAdminSession() {
-    // This function is kept for backwards compatibility but no longer enforces authentication
-    // Authentication has been removed from the application
-    return null;
+/** Returns the current session's role, or null if unauthenticated. */
+export async function getCurrentRole(): Promise<SessionRole | null> {
+  const session = await getSession();
+  return (session?.user?.role as SessionRole) ?? null;
+}
+
+/**
+ * Throws if there is no valid session for the required role.
+ * Use at the top of privileged server actions so authorization is enforced
+ * server-side, never trusting the client.
+ */
+export async function requireRole(role: SessionRole) {
+  const session = await getSession();
+  if (!session?.user) {
+    throw new Error('Unauthorized: no active session');
+  }
+  if (role === 'admin' && session.user.role !== 'admin') {
+    throw new Error('Forbidden: admin role required');
+  }
+  return session.user as SessionPayload['user'];
+}
+
+/** Returns the authenticated session user, or throws if unauthenticated. */
+export async function requireUser() {
+  const session = await getSession();
+  if (!session?.user) {
+    throw new Error('Unauthorized: no active session');
+  }
+  return session.user as SessionPayload['user'];
 }

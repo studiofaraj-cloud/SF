@@ -1,9 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { FileText, FolderKanban, MessageSquare, Users, ArrowRight, Sparkles, Plus, Eye, Mail, Calendar, Clock } from 'lucide-react';
+import { FileText, FolderKanban, MessageSquare, Users, ArrowRight, Sparkles, Plus, Eye, Mail, Calendar, Clock, ClipboardList } from 'lucide-react';
 import { StatCard } from '@/components/admin/stat-card';
 import { getDashboardStatsAction, getMessagesAction, getSubscribersAction, getBookingsAction } from '@/lib/actions';
+import { listServiceRequestsAction } from '@/lib/service-request-actions';
+import { statusLabel, statusBadgeClass } from '@/lib/service-request-status';
+import type { ServiceRequest } from '@/lib/firestore-data';
+import { contactServices } from '@/lib/definitions';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -31,10 +35,11 @@ type Subscriber = {
 };
 
 export default function AdminDashboardPage() {
-  const [stats, setStats] = useState({ totalBlogs: 0, totalProjects: 0, totalMessages: 0, totalSubscribers: 0, totalBookings: 0 });
+  const [stats, setStats] = useState({ totalBlogs: 0, totalProjects: 0, totalMessages: 0, totalSubscribers: 0, totalBookings: 0, totalRequests: 0, totalClients: 0 });
   const [recentMessages, setRecentMessages] = useState<Message[]>([]);
   const [recentSubscribers, setRecentSubscribers] = useState<Subscriber[]>([]);
   const [recentBookings, setRecentBookings] = useState<any[]>([]);
+  const [recentRequests, setRecentRequests] = useState<ServiceRequest[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -44,17 +49,19 @@ export default function AdminDashboardPage() {
   const loadDashboardData = async () => {
     try {
       setLoading(true);
-      const [statsData, messagesData, subscribersData, bookingsData] = await Promise.all([
+      const [statsData, messagesData, subscribersData, bookingsData, requestsData] = await Promise.all([
         getDashboardStatsAction(),
         getMessagesAction({ limitCount: 5 }),
         getSubscribersAction(),
         getBookingsAction({ limitCount: 5 }),
+        listServiceRequestsAction(),
       ]);
-      
+
       setStats(statsData);
       setRecentMessages((messagesData as Message[]).slice(0, 5));
       setRecentSubscribers((subscribersData as Subscriber[]).slice(0, 5));
       setRecentBookings((bookingsData as any[]).slice(0, 5));
+      setRecentRequests(requestsData.slice(0, 5));
     } catch (error) {
       console.error('Error loading dashboard data:', error);
     } finally {
@@ -94,7 +101,12 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-5 mb-6 md:mb-8">
+      <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-6 mb-6 md:mb-8">
+        <StatCard
+          title="Richieste"
+          value={stats.totalRequests}
+          icon={<ClipboardList className="h-4 w-4" aria-hidden="true" />}
+        />
         <StatCard
           title="Blog Totali"
           value={stats.totalBlogs}
@@ -124,6 +136,55 @@ export default function AdminDashboardPage() {
 
       {/* Main Content Grid */}
       <div className="grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
+        {/* Recent Service Requests */}
+        <Card className="xl:col-span-3 holographic-card neon-border bg-card/80 backdrop-blur-sm border-primary/30">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="flex items-center gap-2">
+                  <ClipboardList className="h-5 w-5 text-primary" />
+                  Richieste Recenti
+                </CardTitle>
+                <CardDescription>Ultime richieste di servizio dai clienti</CardDescription>
+              </div>
+              <Button variant="outline" size="sm" asChild>
+                <Link href="/admin/requests">
+                  Vedi tutte
+                  <ArrowRight className="h-4 w-4 ml-2" />
+                </Link>
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent>
+            {recentRequests.length === 0 ? (
+              <p className="text-sm text-muted-foreground text-center py-8">Nessuna richiesta recente.</p>
+            ) : (
+              <div className="space-y-3">
+                {recentRequests.map((r) => (
+                  <Link
+                    key={r.id}
+                    href={`/admin/requests/${r.id}`}
+                    className="block holographic-card rounded-lg p-3 md:p-4 bg-card/50 backdrop-blur-sm border border-primary/20 transition-all duration-300 hover:border-primary/50"
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex-1 min-w-0">
+                        <p className="font-semibold text-sm text-foreground truncate">{r.title}</p>
+                        <p className="text-xs text-muted-foreground truncate">
+                          {contactServices.find((s) => s.value === r.type)?.label ?? r.type}
+                          {r.clientName ? ` · ${r.clientName}` : ''}
+                        </p>
+                      </div>
+                      <Badge className={`text-xs ${statusBadgeClass(r.status)}`}>
+                        {statusLabel(r.status, 'it')}
+                      </Badge>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
         {/* Recent Activity - Messages */}
         <Card className="xl:col-span-2 holographic-card neon-border bg-card/80 backdrop-blur-sm border-primary/30">
           <CardHeader>
@@ -244,6 +305,17 @@ export default function AdminDashboardPage() {
             <CardDescription>Accesso rapido alle funzioni comuni</CardDescription>
           </CardHeader>
           <CardContent className="grid gap-2">
+            <Button variant="outline" className="justify-start h-auto py-3" asChild>
+              <Link href="/admin/requests">
+                <ClipboardList className="h-4 w-4 mr-2" />
+                <div className="text-left">
+                  <div className="font-medium">Richieste di Servizio</div>
+                  <div className="text-xs text-muted-foreground">
+                    {stats.totalRequests} richieste · {stats.totalClients} clienti
+                  </div>
+                </div>
+              </Link>
+            </Button>
             <Button variant="outline" className="justify-start h-auto py-3" asChild>
               <Link href="/admin/blogs/create">
                 <Plus className="h-4 w-4 mr-2" />

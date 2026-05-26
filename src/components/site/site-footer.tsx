@@ -84,7 +84,7 @@ export function SiteFooter() {
                   unoptimized
                 />
               </div>
-              <span className="font-brand text-xl md:text-2xl text-foreground group-hover:text-primary transition-colors">
+              <span className="font-brand font-semibold text-xl md:text-2xl brand-wordmark transition-colors">
                 Studio Faraj
               </span>
             </Link>
@@ -231,6 +231,18 @@ export function SiteFooter() {
           <div className="col-span-2 md:col-span-1 lg:col-span-2">
             <p className="font-bold text-foreground mb-4 md:mb-6 text-sm md:text-base">{t('support')}</p>
             <ul className="space-y-3">
+              <li>
+                <Link href={`/${locale}/inizia`} title={locale === 'it' ? 'Inizia il tuo progetto' : 'Start your project'} className="text-sm font-medium text-primary hover:text-primary/80 transition-colors flex items-center gap-2 group">
+                  <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
+                  {locale === 'it' ? 'Inizia il tuo progetto' : 'Start your project'}
+                </Link>
+              </li>
+              <li>
+                <Link href={`/${locale}/hub/login`} title={locale === 'it' ? 'Area Clienti' : 'Client Area'} className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group">
+                  <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
+                  {locale === 'it' ? 'Area Clienti' : 'Client Area'}
+                </Link>
+              </li>
               <li>
                 <Link href={getLocalizedPath('/servizi/hosting-cloud', locale as any)} title={tServices('hostingCloud.label')} className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group">
                   <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />

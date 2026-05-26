@@ -9,7 +9,20 @@
       "Bash(curl -sv \"https://places.googleapis.com/v1/places/ChIJV_YxeITzBAERefznEKaDrkc/reviews?key=AIzaSyABCcZGZWDpupI-IS4m-bgDNXatdyF54Y8\")",
       "Bash(dir \"C:\\\\Users\\\\Utente\\\\Desktop\\\\studio faraj web edit\\\\src\\\\lib\" /b)",
       "Bash(dir \"C:\\\\Users\\\\Utente\\\\Desktop\\\\studio faraj web edit\\\\src\\\\app\\\\admin\" /b /s)",
-      "Bash(node -e ' *)"
+      "Bash(node -e ' *)",
+      "Bash(git stash *)",
+      "Bash(git fetch *)",
+      "Bash(git checkout *)",
+      "Bash(git add *)",
+      "Bash(git merge *)",
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(node scripts/manage-reviews.mjs)",
+      "Bash(npx next *)",
+      "Bash(node scripts/backfill-blogs.mjs)",
+      "WebFetch(domain:studiofaraj.it)",
+      "Bash(git rev-list *)",
+      "Bash(curl -s -I -H \"Accept-Encoding: gzip, br\" https://studiofaraj.it/it)"
     ]
   }
 }

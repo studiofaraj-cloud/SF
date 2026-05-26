@@ -29,6 +29,8 @@ import {
     deleteBookingData,
     getHeroSlides,
     saveHeroSlides,
+    listServiceRequests,
+    listUsers,
     type HeroSlideData,
 } from './firestore-data';
 import { Timestamp } from 'firebase/firestore';
@@ -240,12 +242,16 @@ export async function getDashboardStatsAction() {
     const messages = await getMessages();
     const subscribers = await getSubscribers();
     const bookings = await getBookings();
+    const requests = await listServiceRequests();
+    const clients = await listUsers({ role: 'client' });
     return {
         totalBlogs: blogs.length,
         totalProjects: projects.length,
         totalMessages: messages.length,
         totalSubscribers: subscribers.length,
         totalBookings: bookings.length,
+        totalRequests: requests.length,
+        totalClients: clients.length,
     };
 }
 

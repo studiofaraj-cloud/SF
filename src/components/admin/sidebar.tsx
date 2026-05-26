@@ -12,6 +12,9 @@ import {
   Calendar,
   ExternalLink,
   Star,
+  ClipboardList,
+  MessagesSquare,
+  Receipt,
 } from 'lucide-react';
 import { Sidebar, SidebarHeader, SidebarContent, SidebarFooter } from '@/components/ui/sidebar';
 import Image from 'next/image';
@@ -19,6 +22,10 @@ import { cn } from '@/lib/utils';
 
 const menuItems = [
   { href: '/admin',             label: 'Overview',     icon: LayoutDashboard, exact: true },
+  { href: '/admin/requests',    label: 'Requests',     icon: ClipboardList },
+  { href: '/admin/chat',        label: 'Client Chat',  icon: MessagesSquare },
+  { href: '/admin/invoices',    label: 'Preventivi',   icon: Receipt },
+  { href: '/admin/clients',     label: 'Clients',      icon: Users },
   { href: '/admin/blogs',       label: 'Blogs',        icon: FileText },
   { href: '/admin/projects',    label: 'Projects',     icon: FolderKanban },
   { href: '/admin/messages',    label: 'Messages',     icon: MessageSquare },

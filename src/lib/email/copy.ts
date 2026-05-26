@@ -1,5 +1,12 @@
 export type Locale = 'it' | 'en';
-export type Scenario = 'contact' | 'quote' | 'newsletter' | 'booking' | 'plan-request';
+export type Scenario =
+  | 'contact'
+  | 'quote'
+  | 'newsletter'
+  | 'booking'
+  | 'plan-request'
+  | 'service-request'
+  | 'payment-receipt';
 
 interface ClientCopy {
   subject: string;
@@ -58,6 +65,22 @@ const clientCopy: Record<Locale, Record<Scenario, ClientCopy>> = {
       signOff: 'A presto,<br/>Il team di Studio Faraj',
       ctaLabel: 'Visita il sito',
     },
+    'service-request': {
+      subject: 'Richiesta ricevuta — Studio Faraj',
+      heading: 'Abbiamo ricevuto la tua richiesta',
+      intro: 'Grazie! La tua richiesta è stata registrata nella tua area cliente. La esamineremo e ti aggiorneremo a breve.',
+      body: 'Puoi seguire lo stato di avanzamento, scambiare messaggi e condividere file direttamente dalla tua dashboard.',
+      signOff: 'A presto,<br/>Il team di Studio Faraj',
+      ctaLabel: 'Vai alla dashboard',
+    },
+    'payment-receipt': {
+      subject: 'Pagamento ricevuto — Studio Faraj',
+      heading: 'Grazie per il pagamento!',
+      intro: 'Abbiamo ricevuto correttamente il tuo pagamento. Trovi il riepilogo nella tua area cliente.',
+      body: 'Procederemo con i prossimi passi del tuo progetto. Per qualsiasi domanda, rispondi pure a questa email.',
+      signOff: 'Grazie,<br/>Il team di Studio Faraj',
+      ctaLabel: 'Vai alla dashboard',
+    },
   },
   en: {
     contact: {
@@ -100,6 +123,22 @@ const clientCopy: Record<Locale, Record<Scenario, ClientCopy>> = {
       signOff: 'Talk soon,<br/>The Studio Faraj team',
       ctaLabel: 'Visit the website',
     },
+    'service-request': {
+      subject: 'Request received — Studio Faraj',
+      heading: "We've received your request",
+      intro: 'Thank you! Your request has been logged in your client area. We will review it and update you shortly.',
+      body: 'You can track progress, exchange messages, and share files right from your dashboard.',
+      signOff: 'Talk soon,<br/>The Studio Faraj team',
+      ctaLabel: 'Go to dashboard',
+    },
+    'payment-receipt': {
+      subject: 'Payment received — Studio Faraj',
+      heading: 'Thanks for your payment!',
+      intro: 'We have successfully received your payment. You can find the summary in your client area.',
+      body: "We'll proceed with the next steps of your project. For any questions, just reply to this email.",
+      signOff: 'Thank you,<br/>The Studio Faraj team',
+      ctaLabel: 'Go to dashboard',
+    },
   },
 };
 
@@ -128,6 +167,16 @@ const adminCopy: Record<Scenario, AdminCopy> = {
     subject: (name) => `Richiesta pagamento piano${name ? ` da ${name}` : ''}`,
     heading: 'Richiesta pagamento piano',
     intro: 'Un utente ha richiesto il link di pagamento per un piano.',
+  },
+  'service-request': {
+    subject: (name) => `Nuova richiesta di servizio${name ? ` da ${name}` : ''}`,
+    heading: 'Nuova richiesta di servizio',
+    intro: 'Un cliente ha inviato una nuova richiesta dalla client hub.',
+  },
+  'payment-receipt': {
+    subject: (name) => `Pagamento ricevuto${name ? ` da ${name}` : ''}`,
+    heading: 'Pagamento ricevuto',
+    intro: 'Un cliente ha completato un pagamento online.',
   },
 };
 
