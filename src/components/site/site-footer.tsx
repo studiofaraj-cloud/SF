@@ -268,6 +268,11 @@ export function SiteFooter() {
                 className="text-muted-foreground hover:text-primary transition-colors">
                 {t('cookiePolicy')}
               </Link>
+              <span className="w-px h-3 bg-border/60" />
+              <Link href={getLocalizedPath('/terms', locale as any)}
+                className="text-muted-foreground hover:text-primary transition-colors">
+                {t('terms')}
+              </Link>
             </div>
 
           </div>
