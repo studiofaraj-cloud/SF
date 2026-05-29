@@ -31,6 +31,7 @@ export type Blog = {
   featuredImage: string;
   gallery?: string[];
   published: boolean;
+  author?: string;
   createdAt: string;
   updatedAt: string;
 };

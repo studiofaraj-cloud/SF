@@ -148,6 +148,15 @@ export default function EditBlogClient({ slug }: { slug: string }) {
                 {state.errors?.excerpt && <p className="text-sm text-destructive">{state.errors.excerpt[0]}</p>}
               </div>
               <div className="space-y-2">
+                <Label htmlFor="author">Autore</Label>
+                <Input
+                  id="author"
+                  name="author"
+                  placeholder="Studio Faraj Team"
+                  defaultValue={blog.author || 'Studio Faraj Team'}
+                />
+              </div>
+              <div className="space-y-2">
                 <Label htmlFor="content">Contenuto</Label>
                 <RichTextEditor
                   value={content}

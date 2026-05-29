@@ -264,6 +264,7 @@ const BlogSchema = z.object({
     featuredImage: z.string().url('Must be a valid URL').optional().or(z.literal('')),
     gallery: z.array(z.string().url('Must be a valid URL')).optional().default([]),
     published: z.preprocess((val) => val === 'on' || val === true, z.boolean()),
+    author: z.string().optional().default('Studio Faraj Team'),
 });
 
 export async function createBlog(prevState: { message: string; errors?: any }, formData: FormData) {
@@ -276,6 +277,7 @@ export async function createBlog(prevState: { message: string; errors?: any }, f
       featuredImage: formData.get('featuredImage-url'),
       gallery: formData.getAll('gallery[]'),
       published: formData.get('published'),
+      author: formData.get('author') || 'Studio Faraj Team',
     });
 
     if (!validatedFields.success) {
@@ -284,7 +286,7 @@ export async function createBlog(prevState: { message: string; errors?: any }, f
             message: 'Validazione fallita. Controlla i campi.',
         };
     }
-    
+
     const featuredImage = validatedFields.data.featuredImage;
     if (featuredImage && !isValidImageUrl(featuredImage)) {
         return {
@@ -292,7 +294,7 @@ export async function createBlog(prevState: { message: string; errors?: any }, f
             message: 'URL immagine in evidenza non valido.',
         };
     }
-    
+
     const validGalleryUrls = validateImageUrls(validatedFields.data.gallery || []);
     if (validatedFields.data.gallery && validatedFields.data.gallery.length > 0 && validGalleryUrls.length === 0) {
         return {
@@ -300,14 +302,14 @@ export async function createBlog(prevState: { message: string; errors?: any }, f
             message: 'Gli URL della galleria non sono validi.',
         };
     }
-    
+
     try {
         const blogData = {
             ...validatedFields.data,
             featuredImage: featuredImage || undefined,
             gallery: validGalleryUrls,
         };
-        
+
         await createBlogData(blogData as any);
     } catch (error) {
         logError(error, {
@@ -347,6 +349,7 @@ export async function updateBlog(id: string, prevState: { message: string; error
         featuredImage: formData.get('featuredImage-url'),
         gallery: formData.getAll('gallery[]'),
         published: formData.get('published'),
+        author: formData.get('author') || 'Studio Faraj Team',
     });
 
     if (!validatedFields.success) {
@@ -355,7 +358,7 @@ export async function updateBlog(id: string, prevState: { message: string; error
             message: 'Validazione fallita. Controlla i campi.',
         };
     }
-    
+
     const featuredImage = validatedFields.data.featuredImage;
     if (featuredImage && !isValidImageUrl(featuredImage)) {
         return {
@@ -363,7 +366,7 @@ export async function updateBlog(id: string, prevState: { message: string; error
             message: 'URL immagine in evidenza non valido.',
         };
     }
-    
+
     const validGalleryUrls = validateImageUrls(validatedFields.data.gallery || []);
     if (validatedFields.data.gallery && validatedFields.data.gallery.length > 0 && validGalleryUrls.length === 0) {
         return {
@@ -371,14 +374,14 @@ export async function updateBlog(id: string, prevState: { message: string; error
             message: 'Gli URL della galleria non sono validi.',
         };
     }
-    
+
     try {
         const blogData = {
             ...validatedFields.data,
             featuredImage: featuredImage || undefined,
             gallery: validGalleryUrls,
         };
-        
+
         await updateBlogData(id, blogData as any);
     } catch (error) {
         logError(error, {

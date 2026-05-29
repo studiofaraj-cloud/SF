@@ -270,6 +270,36 @@ function renderNode(node: TiptapNode, index: number, insideParagraph: boolean = 
       );
     }
 
+    case 'table':
+      return (
+        <div key={key} className="overflow-x-auto my-6">
+          <table className="w-full border-collapse text-sm">
+            {node.content?.map((child, i) => renderNode(child, i, false))}
+          </table>
+        </div>
+      );
+
+    case 'tableRow':
+      return (
+        <tr key={key} className="border-b border-border/40">
+          {node.content?.map((child, i) => renderNode(child, i, false))}
+        </tr>
+      );
+
+    case 'tableHeader':
+      return (
+        <th key={key} className="px-4 py-2 text-left font-semibold text-foreground bg-primary/5 border border-border/30">
+          {node.content?.map((child, i) => renderNode(child, i, true))}
+        </th>
+      );
+
+    case 'tableCell':
+      return (
+        <td key={key} className="px-4 py-2 text-muted-foreground border border-border/30">
+          {node.content?.map((child, i) => renderNode(child, i, true))}
+        </td>
+      );
+
     case 'text':
       // Handle wrapper text nodes from old editor format (no text, but has content children)
       if (!node.text && node.content) {

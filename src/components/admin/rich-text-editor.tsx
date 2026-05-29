@@ -16,7 +16,8 @@ import {
   ImagePlus,
   Link as LinkIcon,
   Minus,
-  Loader2
+  Loader2,
+  Table2
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { storage } from '@/firebase/config';
@@ -76,6 +77,9 @@ export function RichTextEditor({
   const [uploadProgress, setUploadProgress] = useState(0);
   const [linkUrl, setLinkUrl] = useState('');
   const [linkText, setLinkText] = useState('');
+  const [showTableDialog, setShowTableDialog] = useState(false);
+  const [tableRows, setTableRows] = useState(3);
+  const [tableCols, setTableCols] = useState(3);
   const imageInputRef = useRef<HTMLInputElement>(null);
 
   // Initialize editor content from JSON
@@ -252,6 +256,29 @@ export function RichTextEditor({
     setLinkText('');
   };
 
+  const handleInsertTable = () => {
+    const rows = Math.max(1, tableRows);
+    const cols = Math.max(1, tableCols);
+
+    const headerCells = Array(cols).fill(0).map(() => '<th style="border:1px solid #ccc;padding:6px 10px;background:#f0f0f0;font-weight:600;text-align:left">Intestazione</th>').join('');
+    const bodyRowCells = Array(cols).fill(0).map(() => '<td style="border:1px solid #ccc;padding:6px 10px">Cella</td>').join('');
+    const bodyRows = Array(Math.max(1, rows - 1)).fill(`<tr>${bodyRowCells}</tr>`).join('');
+
+    const tableHtml =
+      `<table style="width:100%;border-collapse:collapse;margin:1em 0">` +
+      `<thead><tr>${headerCells}</tr></thead>` +
+      `<tbody>${bodyRows}</tbody>` +
+      `</table><p><br></p>`;
+
+    if (editorRef.current) {
+      editorRef.current.focus();
+      document.execCommand('insertHTML', false, tableHtml);
+      updateContent();
+    }
+
+    setShowTableDialog(false);
+  };
+
   // Handle paste/drop images directly into the editor
   const handleEditorPaste = useCallback(async (e: React.ClipboardEvent) => {
     const items = e.clipboardData?.items;
@@ -347,6 +374,12 @@ export function RichTextEditor({
         <Button type="button" variant="ghost" size="sm" onClick={() => setShowImageDialog(true)} className="h-8 px-2 gap-1.5 text-primary hover:text-primary" title="Inserisci immagine nel contenuto">
           <ImagePlus className="h-4 w-4" />
           <span className="text-xs font-medium hidden sm:inline">Immagine</span>
+        </Button>
+
+        {/* Table */}
+        <Button type="button" variant="ghost" size="sm" onClick={() => setShowTableDialog(true)} className="h-8 px-2 gap-1.5 text-primary hover:text-primary" title="Inserisci tabella">
+          <Table2 className="h-4 w-4" />
+          <span className="text-xs font-medium hidden sm:inline">Tabella</span>
         </Button>
 
         <div className="w-px h-6 bg-border mx-1" />
@@ -602,6 +635,49 @@ export function RichTextEditor({
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Table Insert Dialog */}
+      <Dialog open={showTableDialog} onOpenChange={setShowTableDialog}>
+        <DialogContent className="sm:max-w-xs">
+          <DialogHeader>
+            <DialogTitle>Inserisci Tabella</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div>
+              <Label htmlFor="table-rows">Righe</Label>
+              <Input
+                id="table-rows"
+                type="number"
+                min={2}
+                max={20}
+                value={tableRows}
+                onChange={(e) => setTableRows(Math.max(2, parseInt(e.target.value) || 3))}
+                className="mt-1.5"
+              />
+            </div>
+            <div>
+              <Label htmlFor="table-cols">Colonne</Label>
+              <Input
+                id="table-cols"
+                type="number"
+                min={1}
+                max={10}
+                value={tableCols}
+                onChange={(e) => setTableCols(Math.max(1, parseInt(e.target.value) || 3))}
+                className="mt-1.5"
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button type="button" variant="outline" onClick={() => setShowTableDialog(false)}>
+              Annulla
+            </Button>
+            <Button type="button" onClick={handleInsertTable}>
+              Inserisci
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
@@ -691,6 +767,20 @@ function nodeToJson(
   if (tagName === 'br') return { type: 'hardBreak' };
   if (tagName === 'hr') return { type: 'horizontalRule' };
 
+  // Transparent container nodes (thead/tbody) — skip the wrapper, flatten children directly
+  if (tagName === 'thead' || tagName === 'tbody') {
+    const results: JSONContent[] = [];
+    node.childNodes.forEach(child => {
+      const childResult = nodeToJson(child, []);
+      if (Array.isArray(childResult)) {
+        results.push(...childResult);
+      } else if (childResult.type === 'tableRow') {
+        results.push(childResult);
+      }
+    });
+    return results;
+  }
+
   // Inline mark elements (strong, em, a, u) — flatten into children with accumulated marks
   if (INLINE_MARK_TAGS.has(tagName)) {
     const marks = [...inheritedMarks, ...getMarksForTag(element, tagName)];
@@ -750,7 +840,11 @@ function tagNameToType(tagName: string): string {
     'blockquote': 'blockquote',
     'br': 'hardBreak',
     'hr': 'horizontalRule',
-    'body': 'doc'
+    'body': 'doc',
+    'table': 'table',
+    'tr': 'tableRow',
+    'th': 'tableHeader',
+    'td': 'tableCell',
   };
   return typeMap[tagName] || 'paragraph';
 }
@@ -795,6 +889,20 @@ function jsonToHtml(json: JSONContent): string {
   }
 
   const children = json.content?.map(child => jsonToHtml(child)).join('') || '';
+
+  // Table types
+  if (json.type === 'table') {
+    return `<table style="width:100%;border-collapse:collapse;margin:1em 0"><tbody>${children}</tbody></table>`;
+  }
+  if (json.type === 'tableRow') {
+    return `<tr>${children}</tr>`;
+  }
+  if (json.type === 'tableHeader') {
+    return `<th style="border:1px solid #ccc;padding:6px 10px;background:#f0f0f0;font-weight:600;text-align:left">${children}</th>`;
+  }
+  if (json.type === 'tableCell') {
+    return `<td style="border:1px solid #ccc;padding:6px 10px">${children}</td>`;
+  }
 
   const typeToTag: Record<string, string> = {
     'doc': 'div',
