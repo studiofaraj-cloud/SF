@@ -58,8 +58,7 @@ import { TestimonialsServer } from '@/components/site/testimonials-server';
 import StatsSection from '@/components/site/stats-section';
 import ScrollFadeIn from '@/components/site/scroll-fade-in';
 import { TechSectionMobile } from '@/components/site/tech-section-mobile';
-import { ServiceAccordionMobile } from '@/components/site/service-accordion-mobile';
-import { ServicesDesktop } from '@/components/site/services-desktop';
+import { ServicesSticky } from '@/components/site/services-sticky';
 // Server Components
 import { HomeProjectSection } from '@/components/site/home-project-section';
 import { HomeBlogSection } from '@/components/site/home-blog-section';
@@ -135,55 +134,55 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       icon: <Code className="w-8 h-8" />,
       title: tServices('webDevelopment.title'),
       description: tServices('webDevelopment.description'),
-      color: "from-blue-500/20 to-cyan-500/20",
+      color: "from-sky-500/30 to-blue-500/20",
       slug: "sviluppo-web",
-      orbColor: "bg-blue-500/15",
+      orbColor: "bg-sky-500/15",
     },
     {
       icon: <ShoppingCart className="w-8 h-8" />,
       title: tServices('ecommerce.title'),
       description: tServices('ecommerce.description'),
-      color: "from-emerald-500/20 to-green-500/20",
+      color: "from-blue-500/30 to-cyan-500/20",
       slug: "e-commerce",
-      orbColor: "bg-emerald-500/15",
+      orbColor: "bg-blue-500/15",
     },
     {
       icon: <Smartphone className="w-8 h-8" />,
       title: tServices('designUIUX.title'),
       description: tServices('designUIUX.description'),
-      color: "from-violet-500/20 to-purple-500/20",
+      color: "from-blue-400/30 to-sky-500/20",
       slug: "design-ui-ux",
-      orbColor: "bg-violet-500/15",
+      orbColor: "bg-blue-400/15",
     },
     {
       icon: <Wrench className="w-8 h-8" />,
       title: tServices('maintenance.title'),
       description: tServices('maintenance.description'),
-      color: "from-orange-500/20 to-amber-500/20",
+      color: "from-indigo-500/30 to-blue-500/20",
       slug: "manutenzione",
-      orbColor: "bg-orange-500/15",
+      orbColor: "bg-indigo-500/15",
     },
     {
       icon: <Bot className="w-8 h-8" />,
       title: tServices('aiAutomation.title'),
       description: tServices('aiAutomation.description'),
-      color: "from-pink-500/20 to-rose-500/20",
+      color: "from-cyan-500/30 to-blue-500/20",
       slug: "ai-automazione",
-      orbColor: "bg-pink-500/15",
+      orbColor: "bg-cyan-500/15",
     },
     {
       icon: <LineChart className="w-8 h-8" />,
       title: tServices('seoMarketing.title'),
       description: tServices('seoMarketing.description'),
-      color: "from-teal-500/20 to-cyan-500/20",
+      color: "from-sky-400/30 to-blue-600/20",
       slug: "seo-marketing",
-      orbColor: "bg-teal-500/15",
+      orbColor: "bg-sky-400/15",
     },
     {
       icon: <Server className="w-8 h-8" />,
       title: tServices('hostingCloud.title'),
       description: tServices('hostingCloud.description'),
-      color: "from-indigo-500/20 to-blue-500/20",
+      color: "from-indigo-500/30 to-blue-600/20",
       slug: "hosting-cloud",
       orbColor: "bg-indigo-500/15",
     },
@@ -191,9 +190,9 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       icon: <DraftingCompass className="w-8 h-8" />,
       title: tServices('consulting.title'),
       description: tServices('consulting.description'),
-      color: "from-fuchsia-500/20 to-pink-500/20",
+      color: "from-blue-500/30 to-indigo-500/20",
       slug: "consulenza",
-      orbColor: "bg-fuchsia-500/15",
+      orbColor: "bg-blue-500/15",
     },
   ];
 
@@ -470,7 +469,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       {/* ============================================
           SERVICES SECTION - Bento Grid
           ============================================ */}
-      <section id="services" className="relative py-10 sm:py-16 md:py-24 lg:py-32 overflow-hidden">
+      <section id="services" className="relative py-10 sm:py-16 md:py-24 lg:py-32 overflow-clip">
         {/* Circuit Background */}
         <div className="absolute inset-0 bg-secondary" />
         <div className="absolute inset-0 bg-circuit opacity-40" />
@@ -496,17 +495,8 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           </div>
           </ScrollFadeIn>
 
-          {/* ── Mobile: Accordion List (unchanged) ── */}
-          <ServiceAccordionMobile services={services} learnMoreLabel={tServices('learnMore')} />
-
-          {/* ── Desktop: Elegant sidebar + detail panel ── */}
-          <ServicesDesktop
-            services={services}
-            locale={locale}
-            requestInfo={tServices('requestInfo')}
-            cta={tServices('cta')}
-            ctaHref={getLocalizedPath('/contatti', locale as any)}
-          />
+          {/* ── Sticky scroll-jacked services (desktop) + stacked cards (mobile) ── */}
+          <ServicesSticky services={services} learnMoreLabel={tServices('learnMore')} />
 
           <ScrollFadeIn animation="fade-up" delay={600}>
           <div className="text-center mt-12">

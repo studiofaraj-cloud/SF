@@ -235,15 +235,15 @@ export function BlogPostClient({ blog, related, locale, readingTime = 1, formatt
               </div>
             </ScrollFadeIn>
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
               {related.map((post, idx) => (
-                <ScrollFadeIn key={post.id} animation="fade-up" delay={idx * 120}>
+                <ScrollFadeIn key={post.id} animation="fade-up" delay={idx * 120} className="h-full">
                   <Link
                     href={`/${locale}/blog/${post.slug}`}
-                    className="group block rounded-xl overflow-hidden holographic-card neon-border hover:shadow-lg hover:shadow-primary/10 transition-all duration-300"
+                    className="group flex flex-col h-full rounded-xl overflow-hidden holographic-card neon-border hover:shadow-lg hover:shadow-primary/10 transition-all duration-300"
                   >
                     {post.featuredImage ? (
-                      <div className="relative h-48 overflow-hidden">
+                      <div className="relative h-48 shrink-0 overflow-hidden">
                         <FirebaseImage
                           src={post.featuredImage}
                           alt={post.title}
@@ -254,14 +254,14 @@ export function BlogPostClient({ blog, related, locale, readingTime = 1, formatt
                         <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent" />
                       </div>
                     ) : (
-                      <div className="h-48 bg-gradient-to-br from-primary/10 via-background to-secondary/10 flex items-center justify-center relative overflow-hidden">
+                      <div className="h-48 shrink-0 bg-gradient-to-br from-primary/10 via-background to-secondary/10 flex items-center justify-center relative overflow-hidden">
                         <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:2rem_2rem]" />
                         <div className="h-14 w-14 rounded-full bg-primary/10 flex items-center justify-center neon-border">
                           <BookOpen className="h-6 w-6 text-primary/40" />
                         </div>
                       </div>
                     )}
-                    <div className="p-5">
+                    <div className="p-5 flex flex-col flex-1">
                       <p suppressHydrationWarning className="text-[10px] text-muted-foreground/50 mb-2 font-semibold uppercase tracking-widest">
                         {relatedDates[idx] ?? ''}
                       </p>
@@ -273,7 +273,7 @@ export function BlogPostClient({ blog, related, locale, readingTime = 1, formatt
                           {post.excerpt}
                         </p>
                       )}
-                      <div className="mt-3 flex items-center gap-1 text-xs text-primary/60 font-medium group-hover:text-primary transition-colors">
+                      <div className="mt-auto pt-3 flex items-center gap-1 text-xs text-primary/60 font-medium group-hover:text-primary transition-colors">
                         <span>{locale === 'it' ? 'Leggi' : 'Read'}</span>
                         <ArrowLeft className="h-3 w-3 rotate-180 transition-transform group-hover:translate-x-1" />
                       </div>

@@ -39,7 +39,7 @@ export function HomeProjectContent({ projects }: HomeProjectContentProps) {
             </Badge>
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4 md:mb-6">
               <span className="text-foreground">I Nostri</span>
-              <span className="block text-primary mt-1 md:mt-2">Ultimi Lavori</span>
+              <span className="block brand-wordmark mt-1 md:mt-2">Ultimi Lavori</span>
             </h2>
             <p className="text-base md:text-lg lg:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto px-2">
               Dai un&apos;occhiata ad alcuni dei progetti che abbiamo realizzato con passione per i nostri clienti.

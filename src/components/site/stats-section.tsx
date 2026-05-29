@@ -121,6 +121,16 @@ export default function StatsSection() {
       <div className="md:hidden absolute top-0 left-1/2 -translate-x-1/2 w-64 h-32 bg-primary/10 rounded-full blur-[80px] pointer-events-none" />
 
       <div className="container relative z-10 px-4 md:px-8">
+        {/* Section header — credibility */}
+        <div className="mb-6 md:mb-10 text-center">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">
+            <span className="brand-wordmark">{t('sinceLabel')}</span>
+            <span className="block text-base md:text-lg font-normal text-muted-foreground mt-2">
+              {t('sinceTagline')}
+            </span>
+          </h2>
+        </div>
+
         {/* Single row strip */}
         <div className="relative rounded-2xl border border-border/50 bg-card/50 backdrop-blur-sm overflow-hidden">
           {/* Subtle top accent line */}
@@ -151,7 +161,7 @@ export default function StatsSection() {
                     >
                       {stat.icon}
                     </div>
-                    <div className="text-3xl font-bold text-foreground mb-1 tracking-tight">
+                    <div className="brand-wordmark text-4xl font-extrabold mb-1 tracking-tight">
                       <AnimatedCounter target={stat.value} suffix={stat.suffix} isVisible={isVisible} />
                     </div>
                     <p className="text-xs text-muted-foreground font-medium leading-tight">{stat.label}</p>
@@ -189,7 +199,7 @@ export default function StatsSection() {
                   </div>
 
                   {/* Number */}
-                  <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-1 tracking-tight">
+                  <div className="brand-wordmark text-4xl sm:text-5xl md:text-6xl font-extrabold mb-1 tracking-tight">
                     <AnimatedCounter
                       target={stat.value}
                       suffix={stat.suffix}

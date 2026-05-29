@@ -136,11 +136,11 @@
     @apply border-border;
   }
   html {
-    overflow-x: hidden;
+    overflow-x: clip;
   }
   body {
     @apply bg-background text-foreground font-sans;
-    overflow-x: hidden;
+    overflow-x: clip;
     touch-action: pan-y pinch-zoom;
     /* Poppins renders best with slightly tighter tracking */
     letter-spacing: -0.01em;

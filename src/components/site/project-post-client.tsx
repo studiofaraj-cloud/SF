@@ -333,15 +333,15 @@ export function ProjectPostClient({
               </div>
             </ScrollFadeIn>
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
               {related.map((p, idx) => (
-                <ScrollFadeIn key={p.id} animation="fade-up" delay={idx * 120}>
+                <ScrollFadeIn key={p.id} animation="fade-up" delay={idx * 120} className="h-full">
                   <Link
                     href={`/${locale}/projects/${p.slug}`}
-                    className="group block rounded-xl overflow-hidden holographic-card neon-border hover:shadow-lg hover:shadow-violet-500/10 transition-all duration-300"
+                    className="group flex flex-col h-full rounded-xl overflow-hidden holographic-card neon-border hover:shadow-lg hover:shadow-violet-500/10 transition-all duration-300"
                   >
                     {p.featuredImage ? (
-                      <div className="relative h-48 overflow-hidden">
+                      <div className="relative h-48 shrink-0 overflow-hidden">
                         <FirebaseImage
                           src={p.featuredImage}
                           alt={p.title}
@@ -352,13 +352,13 @@ export function ProjectPostClient({
                         <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent" />
                       </div>
                     ) : (
-                      <div className="h-48 bg-gradient-to-br from-violet-500/10 via-background to-secondary/10 flex items-center justify-center">
+                      <div className="h-48 shrink-0 bg-gradient-to-br from-violet-500/10 via-background to-secondary/10 flex items-center justify-center">
                         <div className="h-14 w-14 rounded-full bg-violet-500/10 flex items-center justify-center neon-border">
                           <FolderKanban className="h-6 w-6 text-violet-400/40" />
                         </div>
                       </div>
                     )}
-                    <div className="p-5">
+                    <div className="p-5 flex flex-col flex-1">
                       <p suppressHydrationWarning className="text-[10px] text-muted-foreground/50 mb-2 font-semibold uppercase tracking-widest">
                         {relatedDates[idx] ?? ''}
                       </p>
@@ -370,7 +370,7 @@ export function ProjectPostClient({
                           {p.description}
                         </p>
                       )}
-                      <div className="mt-3 flex items-center gap-1 text-xs text-violet-400/60 font-medium group-hover:text-violet-400 transition-colors">
+                      <div className="mt-auto pt-3 flex items-center gap-1 text-xs text-violet-400/60 font-medium group-hover:text-violet-400 transition-colors">
                         <span>{locale === 'it' ? 'Scopri' : 'View'}</span>
                         <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-1" />
                       </div>

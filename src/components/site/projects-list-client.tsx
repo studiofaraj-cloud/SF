@@ -212,12 +212,12 @@ export function ProjectsListClient({ projects: initialProjects }: ProjectsListCl
               </ScrollFadeIn>
 
               {filteredProjects.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
                   {filteredProjects.map((project, index) => (
-                    <ScrollFadeIn key={project.id} animation="fade-up" delay={index * 100}>
-                      <Link href={`/${locale}/projects/${project.slug}`} className="block group">
-                        <Card className="h-full holographic-card neon-border overflow-hidden bg-card/80 backdrop-blur-sm transition-all duration-500 hover:shadow-xl hover:shadow-violet-500/20 group-hover:scale-[1.02]">
-                          <div className="relative overflow-hidden aspect-video">
+                    <ScrollFadeIn key={project.id} animation="fade-up" delay={index * 100} className="h-full">
+                      <Link href={`/${locale}/projects/${project.slug}`} className="block group h-full">
+                        <Card className="h-full flex flex-col holographic-card neon-border overflow-hidden bg-card/80 backdrop-blur-sm transition-all duration-500 hover:shadow-xl hover:shadow-violet-500/20 group-hover:scale-[1.02]">
+                          <div className="relative overflow-hidden aspect-video shrink-0">
                             {project.featuredImage ? (
                               <FirebaseImage
                                 alt={project.title}

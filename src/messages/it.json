@@ -1181,10 +1181,18 @@
       "adminArea": "Area Amministrativa Inclusa",
       "adminAreaDesc": "Gestisci il tuo sito in autonomia con un pannello di controllo intuitivo e potente.",
       "ctaQuote": "Richiedi un preventivo",
-      "ctaProjects": "Scopri i nostri lavori",
+      "ctaProjects": "Vedi i nostri progetti",
+      "ctaStart": "Inizia il tuo progetto",
       "trustLocation": "Padova, IT",
       "trustRating": "5.0",
-      "trustAvailability": "Disponibili"
+      "trustRatingFull": "5.0 su Google",
+      "trustAvailability": "Disponibili ora",
+      "trustProjects": "+50 progetti",
+      "since": "Sviluppo Web",
+      "titlePart1": "Costruiamo siti che fanno",
+      "titleAccent": "crescere",
+      "titlePart2": "il tuo business.",
+      "payoff": "Studio di sviluppo web a Padova. Trasformiamo idee in prodotti digitali veloci, accessibili e fatti per durare — codice scritto a mano, pensato per crescere con te."
     },
     "stats": {
       "title": "I Nostri Numeri",
@@ -1465,7 +1473,9 @@
     "projects": "Progetti Completati",
     "clients": "Clienti Soddisfatti",
     "experience": "Anni di Esperienza",
-    "technologies": "Tecnologie Padroneggiate"
+    "technologies": "Tecnologie Padroneggiate",
+    "sinceLabel": "Dal 2020",
+    "sinceTagline": "al servizio di chi fa impresa"
   },
   "contact": {
     "badge": "Contattaci",

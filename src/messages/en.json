@@ -1151,10 +1151,18 @@
       "adminArea": "Admin Area Included",
       "adminAreaDesc": "Manage your site independently with an intuitive and powerful control panel.",
       "ctaQuote": "Request a Quote",
-      "ctaProjects": "Discover Our Work",
+      "ctaProjects": "See our projects",
+      "ctaStart": "Start your project",
       "trustLocation": "Padova, IT",
       "trustRating": "5.0",
-      "trustAvailability": "Available"
+      "trustRatingFull": "5.0 on Google",
+      "trustAvailability": "Available now",
+      "trustProjects": "50+ projects",
+      "since": "Web Development",
+      "titlePart1": "We build sites that",
+      "titleAccent": "grow",
+      "titlePart2": "your business.",
+      "payoff": "A web development studio in Padova, Italy. We turn ideas into fast, accessible digital products built to last — code crafted by hand, designed to scale with you."
     },
     "stats": {
       "title": "Our Numbers",
@@ -1435,7 +1443,9 @@
     "projects": "Completed Projects",
     "clients": "Satisfied Clients",
     "experience": "Years of Experience",
-    "technologies": "Technologies Mastered"
+    "technologies": "Technologies Mastered",
+    "sinceLabel": "Since 2020",
+    "sinceTagline": "serving people who build businesses"
   },
   "contact": {
     "badge": "Contact Us",

@@ -130,13 +130,13 @@ export function HomeBlogContent({ blogs }: HomeBlogContentProps) {
 
             {/* Remaining Blog Posts Grid */}
             {blogs.length > 1 && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 auto-rows-fr">
                 {blogs.slice(1).map((blog, index) => (
-                  <ScrollFadeIn key={blog.id || blog.slug || index} animation="fade-up" delay={(index + 1) * 100}>
-                    <Link href={`/${locale}/blog/${blog.slug}`} title={blog.title} className="block group" aria-label={blog.title}>
-                      <Card className="relative overflow-hidden h-full holographic-card neon-border transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 md:hover:-translate-y-2">
+                  <ScrollFadeIn key={blog.id || blog.slug || index} animation="fade-up" delay={(index + 1) * 100} className="h-full">
+                    <Link href={`/${locale}/blog/${blog.slug}`} title={blog.title} className="block group h-full" aria-label={blog.title}>
+                      <Card className="relative overflow-hidden h-full flex flex-col holographic-card neon-border transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 md:hover:-translate-y-2">
                         {/* Image */}
-                        <div className="relative aspect-video overflow-hidden">
+                        <div className="relative aspect-video overflow-hidden shrink-0">
                           {blog.featuredImage && (
                             <FirebaseImage
                               alt={blog.title || 'Blog post'}
@@ -159,7 +159,7 @@ export function HomeBlogContent({ blogs }: HomeBlogContentProps) {
                         </div>
                         
                         {/* Content */}
-                        <CardContent className="relative z-10 p-4 md:p-6">
+                        <CardContent className="relative z-10 p-4 md:p-6 flex flex-col flex-1">
                           {/* Date and Reading Time */}
                           <div className="flex items-center gap-3 md:gap-4 mb-2 md:mb-3 text-xs md:text-sm text-muted-foreground">
                             <span className="flex items-center">
@@ -187,7 +187,7 @@ export function HomeBlogContent({ blogs }: HomeBlogContentProps) {
                           </p>
                           
                           {/* CTA */}
-                          <span className="inline-flex items-center text-sm font-medium text-primary group-hover:underline">
+                          <span className="inline-flex items-center text-sm font-medium text-primary group-hover:underline mt-auto">
                             Leggi l&apos;articolo
                             <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-2" />
                           </span>
