@@ -3,7 +3,6 @@
 
 import { useActionState, useState, useTransition } from 'react';
 import { Mail, MapPin } from 'lucide-react';
-import RippleGrid from '@/components/RippleGrid';
 import GradientText from '@/components/GradientText';
 import {
   Dialog,
@@ -116,18 +115,6 @@ export default function QuoteDialog({ open, onOpenChange, prefill }: QuoteDialog
         </VisuallyHidden>
 
         <div className="relative w-full h-full overflow-hidden">
-            {/* RippleGrid WebGL Background */}
-            <div className="absolute inset-0 z-0">
-              <RippleGrid
-                gridColor="#3b82f6"
-                rippleIntensity={0.06}
-                gridSize={12}
-                mouseInteraction={true}
-              />
-            </div>
-
-            {/* Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background/80 z-10" />
 
             {/* Floating Geometric Shapes */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden z-10">

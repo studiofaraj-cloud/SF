@@ -17,7 +17,6 @@ const ScrollFadeIn = dynamic(
   () => import('@/components/site/scroll-fade-in'),
   { ssr: true }
 );
-const RippleGrid = dynamic(() => import('@/components/RippleGrid'), { ssr: false });
 const GradientText = dynamic(() => import('@/components/GradientText'), { ssr: false });
 
 interface ProjectPostClientProps {
@@ -53,21 +52,6 @@ export function ProjectPostClient({
 
       {/* ── Hero ── */}
       <section className="relative min-h-[60vh] min-h-[60svh] sm:min-h-[65vh] sm:min-h-[65svh] flex flex-col justify-end overflow-x-hidden pt-20">
-        <div className="absolute inset-0 z-0">
-          <RippleGrid
-            gridColor="#8b5cf6"
-            rippleIntensity={0.05}
-            gridSize={14}
-            gridThickness={18}
-            fadeDistance={1.2}
-            vignetteStrength={1.8}
-            glowIntensity={0.12}
-            opacity={0.7}
-            mouseInteraction={true}
-            mouseInteractionRadius={1.5}
-            animationSpeed={0.6}
-          />
-        </div>
         <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/50 to-background z-10" />
 
         {/* Floating shapes */}

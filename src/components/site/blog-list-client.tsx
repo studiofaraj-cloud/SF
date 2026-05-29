@@ -13,7 +13,6 @@ const ScrollFadeIn = dynamic(
   () => import('@/components/site/scroll-fade-in'),
   { ssr: true }
 );
-const RippleGrid = dynamic(() => import('@/components/RippleGrid'), { ssr: false });
 const GradientText = dynamic(() => import('@/components/GradientText'), { ssr: false });
 
 interface BlogListClientProps {
@@ -83,20 +82,6 @@ export function BlogListClient({ blogs: initialBlogs }: BlogListClientProps) {
 
       {/* ── Hero ── */}
       <section className="relative min-h-[65vh] min-h-[65svh] flex flex-col justify-end overflow-hidden pt-20">
-        <div className="absolute inset-0 z-0">
-          <RippleGrid
-            gridColor="#10b981"
-            rippleIntensity={0.04}
-            gridSize={14}
-            gridThickness={18}
-            fadeDistance={1.3}
-            vignetteStrength={2}
-            glowIntensity={0.1}
-            opacity={0.7}
-            mouseInteraction={false}
-            animationSpeed={0.5}
-          />
-        </div>
         <div className="absolute inset-0 bg-gradient-to-b from-background/85 via-background/55 to-background z-10" />
 
         <div className="relative z-20 container px-4 sm:px-6 md:px-8 text-center max-w-3xl py-14">

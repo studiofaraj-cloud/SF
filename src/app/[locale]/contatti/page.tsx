@@ -12,7 +12,6 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import ScrollFadeIn from '@/components/site/scroll-fade-in';
-import RippleGrid from '@/components/RippleGrid';
 import GradientText from '@/components/GradientText';
 import { useTranslations, useLocale } from 'next-intl';
 import { getLocalizedPath } from '@/lib/i18n-helpers';
@@ -87,26 +86,9 @@ export default function ContattiPage() {
           1. HERO SECTION - Connection Portal
           ============================================ */}
       <section className="relative min-h-[58vh] min-h-[58svh] sm:min-h-[80vh] sm:min-h-[80svh] flex items-center justify-center overflow-hidden pt-20 sm:pt-24 md:pt-28 pb-6 sm:pb-0">
-        {/* Mobile: lightweight CSS-only background */}
-        <div className="sm:hidden absolute inset-0 z-0 bg-gradient-to-b from-background via-secondary/30 to-background" />
-        <div className="sm:hidden absolute inset-0 z-0 bg-constellation opacity-40 pointer-events-none" />
-
-        {/* Desktop: WebGL RippleGrid Background */}
-        <div className="hidden sm:block absolute inset-0 z-0">
-          <RippleGrid
-            gridColor="#3b82f6"
-            rippleIntensity={0.06}
-            gridSize={12}
-            gridThickness={20}
-            fadeDistance={1.2}
-            vignetteStrength={1.8}
-            glowIntensity={0.15}
-            opacity={0.8}
-            mouseInteraction={true}
-            mouseInteractionRadius={1.5}
-            animationSpeed={0.8}
-          />
-        </div>
+        {/* Background */}
+        <div className="absolute inset-0 z-0 bg-gradient-to-b from-background via-secondary/30 to-background" />
+        <div className="absolute inset-0 z-0 bg-constellation opacity-40 pointer-events-none" />
 
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/50 to-background z-10" />

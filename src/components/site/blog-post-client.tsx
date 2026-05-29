@@ -162,7 +162,7 @@ export function BlogPostClient({
       {/* ══════════════════════════════════════════════════════
           2. ARTICLE HEADER — breadcrumb + badge + title + excerpt + meta
           ══════════════════════════════════════════════════════ */}
-      <section className="container mx-auto px-4 sm:px-6 pt-12 md:pt-16 pb-8 max-w-[860px]">
+      <section className="container mx-auto px-4 sm:px-6 pt-12 md:pt-16 pb-8">
         {/* Breadcrumb */}
         <nav
           aria-label="breadcrumb"
@@ -229,7 +229,7 @@ export function BlogPostClient({
           <img
             src={blog.featuredImage}
             alt={blog.title}
-            className="w-[90%] h-auto block rounded-xl border border-border/40 shadow-lg"
+            className="w-[90%] md:w-[70%] h-auto block rounded-xl border border-border/40 shadow-lg"
             loading="eager"
             decoding="async"
           />
@@ -240,7 +240,7 @@ export function BlogPostClient({
           4. ARTICLE BODY
           ══════════════════════════════════════════════════════ */}
       <article>
-        <div className="container mx-auto px-4 sm:px-6 max-w-[860px] py-12 md:py-16">
+        <div className="container mx-auto px-4 sm:px-6 py-12 md:py-16">
           {/* Decorative divider */}
           <div className="mb-10 flex items-center justify-center gap-3">
             <div className="h-px flex-1 bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
@@ -296,7 +296,7 @@ export function BlogPostClient({
           5. STATIC FAQ
           ══════════════════════════════════════════════════════ */}
       <section className="bg-primary/5 border-y border-primary/10 py-16">
-        <div className="container mx-auto px-4 sm:px-6 max-w-[860px]">
+        <div className="container mx-auto px-4 sm:px-6">
           <ScrollFadeIn animation="fade-up">
             <div className="text-center mb-10">
               <Badge className="badge-futuristic mb-4 bg-primary/10 text-primary border-primary/20">
@@ -366,7 +366,7 @@ export function BlogPostClient({
       {/* ══════════════════════════════════════════════════════
           7. AUTHOR + DATE CARD
           ══════════════════════════════════════════════════════ */}
-      <div className="container mx-auto px-4 sm:px-6 max-w-[860px] py-10">
+      <div className="container mx-auto px-4 sm:px-6 py-10">
         <ScrollFadeIn animation="fade-up">
           <div className="holographic-card neon-border rounded-xl p-5 sm:p-6 flex flex-wrap sm:flex-nowrap items-center gap-4 sm:gap-5">
             <div className="h-12 w-12 sm:h-14 sm:w-14 shrink-0 rounded-full bg-primary/15 flex items-center justify-center ring-1 ring-primary/20">
@@ -401,7 +401,7 @@ export function BlogPostClient({
           8. STUDIO FARAJ SERVICES BLOCK
           ══════════════════════════════════════════════════════ */}
       <section className="border-t border-border/30 py-14">
-        <div className="container mx-auto px-4 sm:px-6 max-w-[860px]">
+        <div className="container mx-auto px-4 sm:px-6">
           <ScrollFadeIn animation="fade-up">
             <h3 className="text-base font-semibold text-muted-foreground uppercase tracking-wider mb-5">
               {isIT ? 'I nostri servizi' : 'Our services'}

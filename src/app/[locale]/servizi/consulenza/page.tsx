@@ -12,7 +12,6 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { PlanRequestDialog } from '@/components/site/plan-request-dialog';
 import ScrollFadeIn from '@/components/site/scroll-fade-in';
-import RippleGrid from '@/components/RippleGrid';
 import GradientText from '@/components/GradientText';
 import { BookingDialog } from '@/components/site/booking-dialog';
 import { useTranslations, useLocale } from 'next-intl';
@@ -76,21 +75,7 @@ export default function ConsulenzaPage() {
     <div className="bg-background text-foreground overflow-x-hidden">
       {/* Hero Section */}
       <section className="relative min-h-[80vh] min-h-[80svh] flex items-center justify-center overflow-hidden pt-20 sm:pt-24 md:pt-0">
-        <div className="absolute inset-0 z-0">
-          <RippleGrid
-            gridColor="#d946ef"
-            rippleIntensity={0.06}
-            gridSize={12}
-            gridThickness={20}
-            fadeDistance={1.2}
-            vignetteStrength={1.8}
-            glowIntensity={0.15}
-            opacity={0.8}
-            mouseInteraction={true}
-            mouseInteractionRadius={1.5}
-            animationSpeed={0.8}
-          />
-        </div>
+
         <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/50 to-background z-10" />
         
         <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden">
