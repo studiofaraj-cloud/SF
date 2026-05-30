@@ -9,6 +9,7 @@ const staticPages = [
   { url: '', priority: '1.0', changefreq: 'daily' },
   { url: '/chi-siamo', priority: '0.8', changefreq: 'monthly' },
   { url: '/contatti', priority: '0.9', changefreq: 'monthly' },
+  { url: '/inizia', priority: '0.9', changefreq: 'monthly' },
   { url: '/servizi', priority: '0.9', changefreq: 'monthly' },
   { url: '/faq', priority: '0.7', changefreq: 'monthly' },
   { url: '/projects', priority: '0.8', changefreq: 'weekly' },
