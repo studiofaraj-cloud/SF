@@ -12,6 +12,8 @@ import {
   Youtube,
   Star,
   CheckCircle2,
+  Sparkles,
+  Quote,
 } from 'lucide-react';
 import type {
   CompanyProfileContact,
@@ -89,14 +91,61 @@ export function ProfileHero({
   );
 }
 
-export function DescriptionSection({ description }: { description?: string }) {
+export function DescriptionSection({
+  description,
+  lang = 'it',
+}: {
+  description?: string;
+  lang?: 'it' | 'en';
+}) {
   if (!description) return null;
+
+  // Split into "lead sentence" + "body" for visual hierarchy. We don't want to
+  // mangle abbreviations like "S.r.l." or "P.IVA" so we split on a period
+  // followed by a space and a capital letter — a reasonable heuristic.
+  const splitIdx = description.search(/\.\s+[A-ZÀ-Ý]/);
+  const lead = splitIdx > 0 ? description.slice(0, splitIdx + 1) : description;
+  const body = splitIdx > 0 ? description.slice(splitIdx + 1).trim() : '';
+
   return (
-    <section className="container mx-auto px-4 py-16">
-      <div className="mx-auto max-w-3xl">
-        <p className="whitespace-pre-line text-lg leading-relaxed text-foreground/90">
-          {description}
-        </p>
+    <section className="relative isolate overflow-hidden py-20 md:py-24">
+      {/* Subtle background gradient + radial accent */}
+      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-background via-muted/10 to-background" />
+      <div className="absolute inset-x-0 top-1/2 -z-10 h-96 bg-[radial-gradient(circle_at_center,hsl(var(--primary)/0.08),transparent_60%)]" />
+
+      <div className="container mx-auto px-4">
+        <div className="mx-auto max-w-4xl">
+          {/* Section badge */}
+          <div className="mb-6 flex flex-col items-center gap-3">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
+              <Sparkles className="h-3 w-3" />
+              {lang === 'en' ? 'About us' : 'Chi siamo'}
+            </span>
+            <div className="h-px w-16 bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+          </div>
+
+          {/* Decorative quote glyph */}
+          <Quote
+            aria-hidden="true"
+            className="mx-auto mb-6 h-10 w-10 text-primary/25"
+            strokeWidth={1.25}
+          />
+
+          {/* Lead — larger, lighter weight, foreground color */}
+          <p className="whitespace-pre-line text-center text-xl font-light leading-relaxed text-foreground md:text-2xl md:leading-relaxed">
+            {lead}
+          </p>
+
+          {/* Body — softer, smaller */}
+          {body && (
+            <p className="mx-auto mt-6 max-w-3xl whitespace-pre-line text-center text-base leading-relaxed text-muted-foreground md:text-lg md:leading-relaxed">
+              {body}
+            </p>
+          )}
+
+          {/* Bottom accent */}
+          <div className="mx-auto mt-10 h-px w-24 bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+        </div>
       </div>
     </section>
   );

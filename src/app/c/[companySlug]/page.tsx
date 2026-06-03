@@ -137,7 +137,7 @@ export default async function CompanyProfilePage({
 
       <SocialRow social={profile.social} />
 
-      <DescriptionSection description={profile.description} />
+      <DescriptionSection description={profile.description} lang={inferProfileLang(profile)} />
 
       <ServicesGrid services={profile.services} />
 
