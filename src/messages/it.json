@@ -1793,9 +1793,27 @@
     "cta": "Inizia il Tuo Progetto"
   },
   "faq": {
-    "title": "Domande Frequenti",
+    "title": "Domande",
+    "titleHighlight": "Frequenti",
     "subtitle": "Trova le risposte alle domande più comuni sui nostri servizi e processi. Se non trovi quello che cerchi, non esitare a contattarci.",
     "badge": "FAQ",
+    "searchPlaceholder": "Cerca tra le domande...",
+    "categoryAll": "Tutte",
+    "categories": {
+      "services": "Servizi",
+      "pricing": "Prezzi",
+      "process": "Processo",
+      "support": "Supporto"
+    },
+    "noResults": "Nessun risultato trovato",
+    "noResultsDesc": "Prova a usare parole chiave diverse o a cambiare categoria.",
+    "stillHaveQuestions": {
+      "badge": "Hai bisogno di aiuto?",
+      "title": "Non hai trovato",
+      "titleHighlight": "la risposta?",
+      "subtitle": "Scrivici due righe: rispondiamo entro 24 ore con una proposta su misura per il tuo progetto.",
+      "cta": "Contattaci"
+    },
     "questions": {
       "services": {
         "question": "Quali servizi offrite?",

@@ -31,13 +31,16 @@ import {
     saveHeroSlides,
     listServiceRequests,
     listUsers,
+    getPublishedCompanyProfiles,
     type HeroSlideData,
 } from './firestore-data';
 import { Timestamp } from 'firebase/firestore';
 import { sendTransactionalEmails, normalizeLocale } from './email/send';
 import { redirect } from 'next/navigation';
+import { after } from 'next/server';
 import { uploadFile, type ImageMetadata } from './storage';
 import { logError, getFirebaseErrorMessage } from './error-logger';
+import { notifyContentPublished } from './indexnow';
 
 // Logout is now handled client-side in AdminHeader component using Firebase signOut
 // This function is kept for backwards compatibility but is no longer used
@@ -128,6 +131,22 @@ export async function getProjectsAction() {
         },
         ['projects-list'],
         { revalidate: 7200, tags: ['projects'] }
+    )();
+}
+
+/** Published company profile URLs, for the dynamic sitemap. */
+export async function getPublishedCompanyProfilesAction() {
+    return unstable_cache(
+        async () => {
+            const profiles = await getPublishedCompanyProfiles();
+            return profiles.map((p) => ({
+                slug: p.slug,
+                updatedAt: p.updatedAt ? p.updatedAt.toDate().toISOString() : null,
+                publishedAt: p.publishedAt ? p.publishedAt.toDate().toISOString() : null,
+            }));
+        },
+        ['company-profiles-published'],
+        { revalidate: 600, tags: ['company-profiles'] }
     )();
 }
 
@@ -328,6 +347,7 @@ export async function createBlog(prevState: { message: string; errors?: any }, f
     revalidateTag('blogs');
     revalidatePath('/admin/blogs');
     revalidatePath('/sitemap.xml');
+    revalidatePath('/sitemap-blog.xml');
     for (const locale of ['it', 'en']) {
         revalidatePath(`/${locale}`);
         revalidatePath(`/${locale}/blog`);
@@ -336,6 +356,15 @@ export async function createBlog(prevState: { message: string; errors?: any }, f
             revalidatePath(`/${locale}/blog/${validatedFields.data.slug}`);
         }
     }
+
+    // Ping IndexNow (Bing/Yandex/etc.) after the response is sent so the
+    // publish action returns fast even if IndexNow is slow. Only fires when
+    // the post is actually live — drafts shouldn't be announced to crawlers.
+    if (validatedFields.data.published && validatedFields.data.slug) {
+        const slug = validatedFields.data.slug;
+        after(() => notifyContentPublished('blog', slug));
+    }
+
     redirect('/admin/blogs');
 }
 
@@ -403,11 +432,19 @@ export async function updateBlog(id: string, prevState: { message: string; error
     revalidatePath('/admin/blogs');
     revalidatePath(`/admin/blogs/edit/${validatedFields.data.slug}`);
     revalidatePath('/sitemap.xml');
+    revalidatePath('/sitemap-blog.xml');
     for (const locale of ['it', 'en']) {
         revalidatePath(`/${locale}`);
         revalidatePath(`/${locale}/blog`);
         revalidatePath(`/${locale}/blog/${validatedFields.data.slug}`);
     }
+
+    // See createBlog for rationale.
+    if (validatedFields.data.published && validatedFields.data.slug) {
+        const slug = validatedFields.data.slug;
+        after(() => notifyContentPublished('blog', slug));
+    }
+
     redirect('/admin/blogs');
 }
 
@@ -422,6 +459,7 @@ export async function deleteBlog(id: string) {
         revalidateTag('blogs');
         revalidatePath('/admin/blogs');
         revalidatePath('/sitemap.xml');
+        revalidatePath('/sitemap-blog.xml');
         for (const locale of ['it', 'en']) {
             revalidatePath(`/${locale}`);
             revalidatePath(`/${locale}/blog`);
@@ -530,6 +568,7 @@ export async function createProject(prevState: { message: string; errors?: any }
     revalidateTag('projects');
     revalidatePath('/admin/projects');
     revalidatePath('/sitemap.xml');
+    revalidatePath('/sitemap-projects.xml');
     for (const locale of ['it', 'en']) {
         revalidatePath(`/${locale}`);
         revalidatePath(`/${locale}/projects`);
@@ -538,6 +577,13 @@ export async function createProject(prevState: { message: string; errors?: any }
             revalidatePath(`/${locale}/projects/${validatedFields.data.slug}`);
         }
     }
+
+    // Notify IndexNow on publish — see createBlog for rationale.
+    if (validatedFields.data.published && validatedFields.data.slug) {
+        const slug = validatedFields.data.slug;
+        after(() => notifyContentPublished('project', slug));
+    }
+
     redirect('/admin/projects');
 }
 
@@ -620,11 +666,19 @@ export async function updateProject(id: string, prevState: { message: string; er
     revalidatePath('/admin/projects');
     revalidatePath(`/admin/projects/edit/${validatedFields.data.slug}`);
     revalidatePath('/sitemap.xml');
+    revalidatePath('/sitemap-projects.xml');
     for (const locale of ['it', 'en']) {
         revalidatePath(`/${locale}`);
         revalidatePath(`/${locale}/projects`);
         revalidatePath(`/${locale}/projects/${validatedFields.data.slug}`);
     }
+
+    // Notify IndexNow on publish — see createBlog for rationale.
+    if (validatedFields.data.published && validatedFields.data.slug) {
+        const slug = validatedFields.data.slug;
+        after(() => notifyContentPublished('project', slug));
+    }
+
     redirect('/admin/projects');
 }
 
@@ -639,6 +693,7 @@ export async function deleteProject(id: string) {
         revalidateTag('projects');
         revalidatePath('/admin/projects');
         revalidatePath('/sitemap.xml');
+        revalidatePath('/sitemap-projects.xml');
         for (const locale of ['it', 'en']) {
             revalidatePath(`/${locale}`);
             revalidatePath(`/${locale}/projects`);

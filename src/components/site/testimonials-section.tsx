@@ -154,9 +154,6 @@ export default function TestimonialsSection({ place }: { place: PlaceSummary }) 
                 ))}
               </div>
               <span className="text-sm font-bold text-foreground">{place.rating.toFixed(1)}</span>
-              <span className="text-xs text-muted-foreground">
-                ({place.totalRatings} recensioni su Google)
-              </span>
             </div>
           )}
         </div>

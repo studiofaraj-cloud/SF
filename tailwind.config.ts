@@ -140,6 +140,13 @@ export default {
           '0%': { transform: 'scale(0.95)', opacity: '0' },
           '100%': { transform: 'scale(1)', opacity: '1' },
         },
+        // Cycling-word reveal: slides up from fully below its own height while
+        // fading in. Used in the hero's rotating accent word (replaces a
+        // framer-motion AnimatePresence to keep that bundle off the home page).
+        'word-rise': {
+          '0%':   { transform: 'translateY(110%)', opacity: '0' },
+          '100%': { transform: 'translateY(0)',    opacity: '1' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -151,6 +158,7 @@ export default {
         'slide-up': 'slide-up 0.5s ease-out',
         'slide-down': 'slide-down 0.5s ease-out',
         'scale-in': 'scale-in 0.5s ease-out',
+        'word-rise': 'word-rise 0.5s cubic-bezier(0.22, 1, 0.36, 1)',
       },
     },
   },

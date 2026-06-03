@@ -15,6 +15,8 @@ import {
   ClipboardList,
   MessagesSquare,
   Receipt,
+  Building2,
+  Banknote,
 } from 'lucide-react';
 import { Sidebar, SidebarHeader, SidebarContent, SidebarFooter } from '@/components/ui/sidebar';
 import Image from 'next/image';
@@ -25,9 +27,11 @@ const menuItems = [
   { href: '/admin/requests',    label: 'Requests',     icon: ClipboardList },
   { href: '/admin/chat',        label: 'Client Chat',  icon: MessagesSquare },
   { href: '/admin/invoices',    label: 'Preventivi',   icon: Receipt },
+  { href: '/admin/billing',     label: 'Fatturazione', icon: Banknote },
   { href: '/admin/clients',     label: 'Clients',      icon: Users },
   { href: '/admin/blogs',       label: 'Blogs',        icon: FileText },
   { href: '/admin/projects',    label: 'Projects',     icon: FolderKanban },
+  { href: '/admin/company-profiles', label: 'Company Pages', icon: Building2 },
   { href: '/admin/messages',    label: 'Messages',     icon: MessageSquare },
   { href: '/admin/subscribers', label: 'Subscribers',  icon: Users },
   { href: '/admin/bookings',    label: 'Bookings',     icon: Calendar },

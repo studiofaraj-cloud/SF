@@ -13,7 +13,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Users, Search, Mail, Loader2, Shield } from 'lucide-react';
+import { Users, Search, Mail, Loader2, Shield, ChevronRight } from 'lucide-react';
+import Link from 'next/link';
 import { useToast } from '@/hooks/use-toast';
 
 export default function AdminClientsPage() {
@@ -140,6 +141,14 @@ export default function AdminClientsPage() {
                     </SelectContent>
                   </Select>
                 </div>
+
+                <Link
+                  href={`/admin/clients/${u.uid}`}
+                  className="mt-2 -mx-4 -mb-4 flex items-center justify-between border-t border-border/40 px-4 py-2 text-xs font-medium text-primary transition-colors hover:bg-primary/5"
+                >
+                  Vedi dettagli completi
+                  <ChevronRight className="h-3.5 w-3.5" />
+                </Link>
               </CardContent>
             </Card>
           ))}

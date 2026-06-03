@@ -147,6 +147,22 @@ env:
     availability:
       - RUNTIME
 
+  # Stripe price IDs for the Company Profile subscription (NOT secret —
+  # they're public identifiers visible in the Stripe Checkout URL).
+  # Create the prices in Stripe Dashboard (LIVE mode) under the "Pagina
+  # Aziendale" product, then paste the ids below:
+  #   - €4.99/month → STRIPE_COMPANY_PROFILE_PRICE_ID
+  #   - €49.99/year → STRIPE_COMPANY_PROFILE_PRICE_ID_ANNUAL
+  - variable: STRIPE_COMPANY_PROFILE_PRICE_ID
+    value: price_1TeDYvQf84zoAYlwI9mtwljM
+    availability:
+      - RUNTIME
+
+  - variable: STRIPE_COMPANY_PROFILE_PRICE_ID_ANNUAL
+    value: price_1TeDb1Qf84zoAYlwPacgHvMd
+    availability:
+      - RUNTIME
+
   # ----- App Check (anti-bot) -----
   # Public reCAPTCHA v3 site key. App Check stays OFF until this is set.
   # Setup:

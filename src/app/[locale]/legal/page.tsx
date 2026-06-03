@@ -487,9 +487,26 @@ export default function LegalPage() {
                         </li>
                         <li className="flex items-start gap-2">
                           <span className="text-primary mt-1">•</span>
+                          <span>
+                            <strong>Stripe Payments Europe Ltd.</strong> in qualità di responsabile
+                            del trattamento per la gestione dei pagamenti e degli abbonamenti
+                            (es. Profili Azienda 4,99 €/mese). Studio Faraj non conserva i dati
+                            della carta. Sono trasmessi a Stripe: email, nome, eventuale Partita IVA
+                            per la fatturazione.
+                          </span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-primary mt-1">•</span>
                           <span>Fornitori di servizi di hosting e infrastruttura cloud</span>
                         </li>
                       </ul>
+                      <p className="text-xs text-muted-foreground mt-4">
+                        Le aziende che scelgono di pubblicare una pagina pubblica all&apos;indirizzo
+                        studiofaraj.it/&lt;slug&gt; sono consapevoli che i dati inseriti nel profilo
+                        (ragione sociale, servizi, contatti, e opzionalmente la Partita IVA) sono
+                        diffusi pubblicamente per loro espressa scelta. Il consenso marketing è
+                        opzionale e separato dall&apos;accettazione dei Termini.
+                      </p>
                     </CardContent>
                   </Card>
                   <Card className="bg-muted/30 border-border/50">

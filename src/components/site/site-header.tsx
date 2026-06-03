@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Search, Menu, Home, Users, Sparkles, FolderOpen, BookOpen, Mail, Code, ShoppingCart, Palette, TrendingUp, Bot, Wrench, Server, MessageSquare, ChevronDown, ArrowRight, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { LanguageSwitcher } from './language-switcher';
+import { ThemeToggle } from './theme-toggle';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet';
 import { SearchDialog } from './search-dialog';
@@ -232,6 +233,7 @@ function DesktopNav({ onSearchOpen }: { onSearchOpen: () => void }) {
                 <Search className="h-4 w-4 md:h-5 md:w-5 text-foreground" />
                 <span className="sr-only">Search</span>
               </Button>
+              <ThemeToggle />
               <LanguageSwitcher />
               <Link
                 href={`/${locale}/hub/login`}
@@ -308,11 +310,13 @@ export function SiteHeader() {
           <div className="md:hidden relative z-10 flex items-center h-full gap-2">
             {mounted ? (
               <>
+                <ThemeToggle />
                 <LanguageSwitcher />
                 <MobileNav onSearchOpen={handleSearchOpen} />
               </>
             ) : (
               <>
+                <div className="h-9 w-9 bg-muted/50 rounded animate-pulse" />
                 <div className="h-9 w-9 bg-muted/50 rounded animate-pulse" />
                 <div className="px-2">
                   <div className="h-6 w-6 bg-muted/50 rounded animate-pulse" />

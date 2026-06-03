@@ -15,6 +15,8 @@ import {
   orderBy,
   limit,
   increment,
+  runTransaction,
+  serverTimestamp,
   Timestamp,
   DocumentData,
   QueryConstraint,
@@ -130,7 +132,11 @@ const COLLECTIONS = {
   CONVERSATIONS: 'conversations',
   CONVERSATION_MESSAGES: 'conversationMessages',
   CLIENT_FILES: 'clientFiles',
+  SLUGS: 'slugs',
+  COMPANY_PROFILES: 'companyProfiles',
 } as const;
+
+export const SLUG_INDEX_DOC = '_index';
 
 /** Firestore rejects `undefined` field values; drop them before writing. */
 function stripUndefined<T extends Record<string, any>>(obj: T): T {
@@ -139,6 +145,27 @@ function stripUndefined<T extends Record<string, any>>(obj: T): T {
     if (v !== undefined) out[k] = v;
   }
   return out as T;
+}
+
+/**
+ * Recursive strip — required for nested objects (e.g. CompanyProfileDoc.contact)
+ * because Firestore rejects undefined values at ANY depth.
+ * Arrays are preserved as-is; null is preserved.
+ */
+function deepStripUndefined<T>(value: T): T {
+  if (value === null || value === undefined) return value;
+  if (Array.isArray(value)) {
+    return value.map((v) => deepStripUndefined(v)) as unknown as T;
+  }
+  if (typeof value === 'object' && !((value as any) instanceof Timestamp)) {
+    const out: Record<string, any> = {};
+    for (const [k, v] of Object.entries(value as Record<string, any>)) {
+      if (v === undefined) continue;
+      out[k] = deepStripUndefined(v);
+    }
+    return out as T;
+  }
+  return value;
 }
 
 // ─── Users / Roles ──────────────────────────────────────────────────────────
@@ -170,6 +197,152 @@ export interface UserProfile {
   createdAt: Timestamp;
   updatedAt: Timestamp;
   lastLoginAt?: Timestamp;
+
+  // Note: company profiles for the public /{slug} pages live in their own
+  // collection (COMPANY_PROFILES) and reference users by ownerUid. A user can
+  // own multiple profiles (admins manage many; clients normally own one).
+}
+
+export interface CompanyProfileService {
+  title: string;
+  description?: string;
+  icon?: string;
+}
+
+export interface CompanyProfileStat {
+  label: string;
+  value: string;
+}
+
+export interface CompanyProfilePoint {
+  title: string;
+  description?: string;
+}
+
+export interface CompanyProfileContact {
+  email?: string;
+  phone?: string;
+  website?: string;
+  addressLine?: string;
+  city?: string;
+  country?: string;
+}
+
+export interface CompanyProfileSocial {
+  instagram?: string;
+  linkedin?: string;
+  facebook?: string;
+  x?: string;
+  youtube?: string;
+  tiktok?: string;
+}
+
+export type TaxIdType = 'EU_VAT' | 'IT_PIVA' | 'OTHER';
+
+export interface CompanyProfileTaxId {
+  country: string; // ISO 3166-1 alpha-2
+  value: string;
+  type: TaxIdType;
+  verified: boolean;
+  verifiedAt?: Timestamp;
+}
+
+/**
+ * Display-only subset of a CompanyProfileDoc (everything the public landing
+ * page needs). Used as a partial input shape for updates.
+ */
+export interface CompanyProfileDisplay {
+  companyName?: string;
+  tagline?: string;
+  description?: string; // max 1400 chars (enforced in Zod)
+  logoUrl?: string;
+  heroUrl?: string;
+  services?: CompanyProfileService[];
+  stats?: CompanyProfileStat[];
+  pointsOfStrength?: CompanyProfilePoint[]; // max 3 (enforced in Zod)
+  contact?: CompanyProfileContact;
+  social?: CompanyProfileSocial;
+  taxId?: CompanyProfileTaxId;
+  taxIdPublic?: boolean;
+  numberOfEmployees?: number;
+}
+
+/**
+ * Top-level document in the `companyProfiles` collection. One user (the
+ * `ownerUid`) may own many profile docs. Clients normally own one (gated by
+ * Stripe). Admins may own many (each with `adminManaged: true`, auto-published,
+ * no Stripe subscription required).
+ */
+export interface CompanyProfileDoc extends CompanyProfileDisplay {
+  id?: string; // Firestore doc id
+  ownerUid: string; // The user who can edit this profile
+  slug: string; // Public URL slug (matches /slugs/{slug} sentinel)
+  companyName: string; // Required — also the public h1
+  taxIdPublic: boolean; // Required (defaults to true in Zod)
+
+  isPublished: boolean;
+  publishedAt?: Timestamp;
+  adminManaged: boolean; // True → no Stripe gating, owner is staff
+
+  subscription?: SubscriptionState; // Only meaningful when !adminManaged
+  consent?: ConsentRecord; // Captured when the owner agrees to ToS
+  invoicing?: InvoicingInfo; // E-invoicing routing (SDI / PEC)
+
+  createdAt: Timestamp;
+  updatedAt: Timestamp;
+}
+
+export interface ConsentRecord {
+  tosVersion: string;
+  tosAcceptedAt: Timestamp;
+  tosIp?: string;
+  marketingConsent: boolean;
+  marketingConsentAt?: Timestamp;
+  marketingIp?: string;
+}
+
+export type SubscriptionStatus =
+  | 'trialing'
+  | 'active'
+  | 'past_due'
+  | 'canceled'
+  | 'unpaid'
+  | 'incomplete';
+
+export interface SubscriptionState {
+  stripeSubscriptionId?: string;
+  stripePriceId?: string;          // Which Stripe price the subscription uses
+  billingCycle?: 'monthly' | 'annual'; // Derived from the price (for UI)
+  status?: SubscriptionStatus;
+  currentPeriodEnd?: Timestamp;
+  trialEndsAt?: Timestamp;
+  canceledAt?: Timestamp;
+  lastEventId?: string; // Idempotency guard for Stripe webhooks
+  disputed?: boolean;   // Chargeback open — page kept offline until resolved
+}
+
+/**
+ * E-invoicing fields collected per profile so Studio Faraj can emit fatture
+ * elettroniche correctly. Both optional — if empty, fattura defaults to SDI
+ * universal code `0000000` (lands in the recipient's Agenzia Entrate area).
+ */
+export interface InvoicingInfo {
+  sdiCode?: string;  // Codice destinatario SDI (7-char alphanumeric)
+  pecEmail?: string; // PEC for fattura delivery
+}
+
+// ─── Slug sentinel (uniqueness via dedicated /slugs/{slug} doc) ────────────
+
+export interface SlugRecord {
+  profileId: string;
+  ownerUid: string;
+  createdAt: Timestamp;
+}
+
+/** Single doc at /slugs/_index that mirrors the set of currently-claimed slugs. */
+export interface SlugIndex {
+  slugs: string[];
+  updatedAt: Timestamp;
 }
 
 /** Fetch a user profile by Firebase UID (the document id). */
@@ -251,6 +424,301 @@ export async function listUsers(filters?: { role?: UserRole }): Promise<UserProf
     console.error('Error listing users:', error);
     return [];
   }
+}
+
+/** Lookup used by Stripe webhooks to map a Customer ID back to a user. */
+export async function getUserProfileByStripeCustomerId(
+  customerId: string
+): Promise<UserProfile | null> {
+  try {
+    const ref = collection(db, COLLECTIONS.USERS);
+    const q = query(ref, where('stripeCustomerId', '==', customerId), limit(1));
+    const snap = await getDocs(q);
+    if (snap.empty) return null;
+    const d = snap.docs[0];
+    return { id: d.id, ...d.data() } as UserProfile;
+  } catch (error) {
+    console.error(`Error fetching user by stripe customer ${customerId}:`, error);
+    return null;
+  }
+}
+
+// ─── Company Profile + Slug Management ────────────────────────────────────
+
+export class SlugTakenError extends Error {
+  constructor(slug: string) {
+    super(`Slug "${slug}" is already taken`);
+    this.name = 'SlugTakenError';
+  }
+}
+
+/**
+ * Atomically claim a slug for the given profile. If the profile already holds
+ * a different slug, releases the old one in the same transaction. Throws
+ * SlugTakenError if another profile owns the requested slug.
+ */
+export async function claimSlugForProfile(
+  profileId: string,
+  ownerUid: string,
+  newSlug: string
+): Promise<void> {
+  const profileRef = doc(db, COLLECTIONS.COMPANY_PROFILES, profileId);
+  const newSlugRef = doc(db, COLLECTIONS.SLUGS, newSlug);
+
+  await runTransaction(db, async (tx) => {
+    const profileSnap = await tx.get(profileRef);
+    if (!profileSnap.exists()) throw new Error('Profile not found');
+    const currentSlug: string | undefined = profileSnap.data()?.slug;
+
+    if (currentSlug === newSlug) return; // No-op
+
+    const newSlugSnap = await tx.get(newSlugRef);
+    if (newSlugSnap.exists() && newSlugSnap.data()?.profileId !== profileId) {
+      throw new SlugTakenError(newSlug);
+    }
+
+    tx.set(newSlugRef, {
+      profileId,
+      ownerUid,
+      createdAt: Timestamp.now(),
+    } satisfies SlugRecord);
+
+    if (currentSlug && currentSlug !== newSlug) {
+      const oldRef = doc(db, COLLECTIONS.SLUGS, currentSlug);
+      const oldSnap = await tx.get(oldRef);
+      if (oldSnap.exists() && oldSnap.data()?.profileId === profileId) {
+        tx.delete(oldRef);
+      }
+    }
+
+    tx.update(profileRef, { slug: newSlug, updatedAt: Timestamp.now() });
+  });
+
+  refreshSlugIndex().catch((err) =>
+    console.warn('[firestore-data] refreshSlugIndex failed:', err)
+  );
+}
+
+/** Release a slug from /slugs/{slug} and clear the field on the profile. */
+export async function releaseSlugForProfile(profileId: string): Promise<void> {
+  const profileRef = doc(db, COLLECTIONS.COMPANY_PROFILES, profileId);
+  await runTransaction(db, async (tx) => {
+    const profileSnap = await tx.get(profileRef);
+    if (!profileSnap.exists()) return;
+    const currentSlug: string | undefined = profileSnap.data()?.slug;
+    if (!currentSlug) return;
+    const slugRef = doc(db, COLLECTIONS.SLUGS, currentSlug);
+    const slugSnap = await tx.get(slugRef);
+    if (slugSnap.exists() && slugSnap.data()?.profileId === profileId) {
+      tx.delete(slugRef);
+    }
+    tx.update(profileRef, { slug: null, updatedAt: Timestamp.now() });
+  });
+  refreshSlugIndex().catch(() => {});
+}
+
+/** Resolve a slug to its profile id (used by the public /{slug} route). */
+export async function getProfileIdBySlug(slug: string): Promise<string | null> {
+  try {
+    const snap = await getDoc(doc(db, COLLECTIONS.SLUGS, slug));
+    if (!snap.exists()) return null;
+    return (snap.data() as SlugRecord).profileId;
+  } catch (error) {
+    console.error(`Error resolving slug ${slug}:`, error);
+    return null;
+  }
+}
+
+/**
+ * Walk /slugs and rebuild /slugs/_index. Called after any slug claim/release.
+ * Safe to call concurrently — last writer wins on the index doc.
+ */
+export async function refreshSlugIndex(): Promise<void> {
+  const snap = await getDocs(collection(db, COLLECTIONS.SLUGS));
+  const slugs = snap.docs
+    .map((d) => d.id)
+    .filter((id) => id !== SLUG_INDEX_DOC);
+  await setDoc(doc(db, COLLECTIONS.SLUGS, SLUG_INDEX_DOC), {
+    slugs,
+    updatedAt: Timestamp.now(),
+  } satisfies SlugIndex);
+}
+
+export async function getSlugIndex(): Promise<SlugIndex | null> {
+  try {
+    const snap = await getDoc(doc(db, COLLECTIONS.SLUGS, SLUG_INDEX_DOC));
+    if (!snap.exists()) return null;
+    return snap.data() as SlugIndex;
+  } catch (error) {
+    console.error('Error fetching slug index:', error);
+    return null;
+  }
+}
+
+export interface PublishedCompanyProfileRef {
+  slug: string;
+  updatedAt: Timestamp;
+  publishedAt?: Timestamp;
+}
+
+/** Sitemap helper — published company profiles with their last update times. */
+export async function getPublishedCompanyProfiles(): Promise<PublishedCompanyProfileRef[]> {
+  try {
+    const ref = collection(db, COLLECTIONS.COMPANY_PROFILES);
+    const snap = await getDocs(query(ref, where('isPublished', '==', true)));
+    const out: PublishedCompanyProfileRef[] = [];
+    for (const d of snap.docs) {
+      const data = d.data() as CompanyProfileDoc;
+      if (!data.slug) continue;
+      out.push({
+        slug: data.slug,
+        updatedAt: data.updatedAt,
+        publishedAt: data.publishedAt,
+      });
+    }
+    return out;
+  } catch (error) {
+    console.error('Error listing published company profiles:', error);
+    return [];
+  }
+}
+
+// ─── CRUD on the companyProfiles collection ────────────────────────────
+
+export async function createCompanyProfileDoc(
+  data: Omit<CompanyProfileDoc, 'id' | 'createdAt' | 'updatedAt'>
+): Promise<string> {
+  const now = Timestamp.now();
+  const payload = deepStripUndefined({ ...data, createdAt: now, updatedAt: now });
+  const ref = await addDoc(collection(db, COLLECTIONS.COMPANY_PROFILES), payload);
+  return ref.id;
+}
+
+export async function getCompanyProfileById(
+  id: string
+): Promise<CompanyProfileDoc | null> {
+  try {
+    const snap = await getDoc(doc(db, COLLECTIONS.COMPANY_PROFILES, id));
+    if (!snap.exists()) return null;
+    return { id: snap.id, ...snap.data() } as CompanyProfileDoc;
+  } catch (error) {
+    console.error(`Error fetching company profile ${id}:`, error);
+    return null;
+  }
+}
+
+export async function getCompanyProfileBySlug(
+  slug: string
+): Promise<CompanyProfileDoc | null> {
+  const id = await getProfileIdBySlug(slug);
+  if (!id) return null;
+  return getCompanyProfileById(id);
+}
+
+export async function getCompanyProfilesByOwner(
+  ownerUid: string
+): Promise<CompanyProfileDoc[]> {
+  try {
+    const ref = collection(db, COLLECTIONS.COMPANY_PROFILES);
+    const snap = await getDocs(query(ref, where('ownerUid', '==', ownerUid)));
+    const docs = snap.docs.map((d) => ({ id: d.id, ...d.data() } as CompanyProfileDoc));
+    return docs.sort(
+      (a, b) => (b.createdAt?.toMillis?.() ?? 0) - (a.createdAt?.toMillis?.() ?? 0)
+    );
+  } catch (error) {
+    console.error(`Error listing company profiles for owner ${ownerUid}:`, error);
+    return [];
+  }
+}
+
+export async function listAllCompanyProfiles(): Promise<CompanyProfileDoc[]> {
+  try {
+    const snap = await getDocs(collection(db, COLLECTIONS.COMPANY_PROFILES));
+    const docs = snap.docs.map((d) => ({ id: d.id, ...d.data() } as CompanyProfileDoc));
+    return docs.sort(
+      (a, b) => (b.createdAt?.toMillis?.() ?? 0) - (a.createdAt?.toMillis?.() ?? 0)
+    );
+  } catch (error) {
+    console.error('Error listing all company profiles:', error);
+    return [];
+  }
+}
+
+export async function updateCompanyProfileDoc(
+  id: string,
+  patch: Partial<Omit<CompanyProfileDoc, 'id' | 'ownerUid' | 'createdAt'>>
+): Promise<void> {
+  const updates = deepStripUndefined({ ...patch, updatedAt: Timestamp.now() });
+  await updateDoc(doc(db, COLLECTIONS.COMPANY_PROFILES, id), updates);
+}
+
+export async function deleteCompanyProfileDoc(id: string): Promise<void> {
+  // Release the slug first to keep /slugs in sync.
+  await releaseSlugForProfile(id);
+  await deleteDoc(doc(db, COLLECTIONS.COMPANY_PROFILES, id));
+}
+
+/** Webhook fallback: find a profile by its stored Stripe subscription id. */
+export async function getCompanyProfileBySubscriptionId(
+  subscriptionId: string
+): Promise<CompanyProfileDoc | null> {
+  try {
+    const ref = collection(db, COLLECTIONS.COMPANY_PROFILES);
+    const snap = await getDocs(
+      query(ref, where('subscription.stripeSubscriptionId', '==', subscriptionId), limit(1))
+    );
+    if (snap.empty) return null;
+    const d = snap.docs[0];
+    return { id: d.id, ...d.data() } as CompanyProfileDoc;
+  } catch (error) {
+    console.error(`Error finding profile by sub ${subscriptionId}:`, error);
+    return null;
+  }
+}
+
+/**
+ * Update embedded subscription state on a profile, optionally toggling
+ * isPublished. Used by the Stripe webhook to react to subscription lifecycle.
+ */
+export async function updateProfileSubscriptionState(
+  profileId: string,
+  patch: Partial<SubscriptionState>,
+  publishOverride?: boolean
+): Promise<void> {
+  const updates: Record<string, any> = { updatedAt: Timestamp.now() };
+  for (const [k, v] of Object.entries(patch)) {
+    if (v !== undefined) updates[`subscription.${k}`] = v;
+  }
+  if (publishOverride !== undefined) {
+    updates['isPublished'] = publishOverride;
+    if (publishOverride) {
+      updates['publishedAt'] = Timestamp.now();
+    }
+  }
+  await updateDoc(doc(db, COLLECTIONS.COMPANY_PROFILES, profileId), updates);
+}
+
+/** Persist the consent record on a profile. */
+export async function saveProfileConsentRecord(
+  profileId: string,
+  consent: ConsentRecord
+): Promise<void> {
+  // deepStripUndefined: ConsentRecord has optional fields (tosIp,
+  // marketingConsentAt, marketingIp) that may be undefined — Firestore rejects
+  // nested undefined values, so strip them recursively before write.
+  const payload = deepStripUndefined({
+    consent,
+    updatedAt: Timestamp.now(),
+  });
+  await updateDoc(doc(db, COLLECTIONS.COMPANY_PROFILES, profileId), payload);
+}
+
+/** Persist a stripeCustomerId on the user (created on first subscription). */
+export async function setStripeCustomerId(uid: string, customerId: string): Promise<void> {
+  await updateDoc(doc(db, COLLECTIONS.USERS, uid), {
+    stripeCustomerId: customerId,
+    updatedAt: Timestamp.now(),
+  });
 }
 
 // ─── Reviews ──────────────────────────────────────────────────────────────────

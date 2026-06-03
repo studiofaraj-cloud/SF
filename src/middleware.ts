@@ -2,6 +2,8 @@ import { NextResponse, type NextRequest } from 'next/server';
 import createMiddleware from 'next-intl/middleware';
 import { locales, defaultLocale } from './i18n/config';
 import { getSessionFromCookie } from './lib/session';
+import { RESERVED_SLUGS, SLUG_REGEX } from './lib/company-slugs';
+import { isPublishedSlug } from './lib/company-slug-cache';
 
 const intlMiddleware = createMiddleware({
   locales,
@@ -58,6 +60,27 @@ export default async function middleware(request: NextRequest) {
     }
     // Authenticated (or public hub login) — let next-intl handle locale routing.
     return intlMiddleware(request);
+  }
+
+  // ── Bare company-profile slug (/{slug}) — rewrite to /c/{slug} ─────────────
+  // Without this bypass next-intl would redirect /acme-corp to /it/acme-corp.
+  // We can't host a top-level [companySlug] segment alongside [locale] (Next.js
+  // refuses two differently-named dynamic siblings), so the actual route lives
+  // at app/c/[companySlug]/page.tsx and the user-facing URL stays bare /{slug}.
+  // Reserved segments and malformed slugs fall through to intl untouched.
+  const firstSegment = pathname.slice(1).split('/')[0];
+  if (
+    firstSegment &&
+    !RESERVED_SLUGS.has(firstSegment) &&
+    SLUG_REGEX.test(firstSegment) &&
+    pathname === `/${firstSegment}` // only treat single-segment paths as profile pages
+  ) {
+    const known = await isPublishedSlug(firstSegment, request.nextUrl.origin);
+    if (known) {
+      const rewriteUrl = request.nextUrl.clone();
+      rewriteUrl.pathname = `/c/${firstSegment}`;
+      return NextResponse.rewrite(rewriteUrl);
+    }
   }
 
   // ── Public site: intl + cacheable response (unchanged behavior) ─────────────

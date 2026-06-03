@@ -11,6 +11,7 @@ import {
   type UserProfile,
   type UserRole,
 } from '@/lib/firestore-data';
+import { sendTransactionalEmails, normalizeLocale } from '@/lib/email/send';
 
 /**
  * Emails that are always granted the admin role on sign-in. Acts as the
@@ -65,6 +66,24 @@ export async function establishSession(idToken: string): Promise<EstablishSessio
       fbUser.email
     );
 
+    // First-time signup → welcome email fan-out (client + admin alert).
+    // Fire-and-forget: never block the session creation on email delivery.
+    // No `existing.locale` yet for a brand-new user — default to Italian.
+    if (!existing && role !== 'admin') {
+      const clientName = fbUser.name || fbUser.email;
+      sendTransactionalEmails({
+        scenario: 'welcome',
+        locale: normalizeLocale('it'),
+        client: { name: clientName, email: fbUser.email },
+        adminFields: [
+          { label: 'Email', value: fbUser.email },
+          ...(fbUser.name ? [{ label: 'Nome', value: fbUser.name }] : []),
+        ],
+      }).catch((err) =>
+        console.warn('[auth-actions] welcome email failed (non-fatal):', err)
+      );
+    }
+
     return { ok: true, role };
   } catch (error) {
     console.error('[auth-actions] establishSession failed:', error);
@@ -110,6 +129,62 @@ export async function adminGetUserProfileAction(uid: string): Promise<UserProfil
   await requireRole('admin');
   const profile = await getUserProfile(uid);
   return profile ? serialize(profile) : null;
+}
+
+/**
+ * Admin-only: full detail snapshot for the client detail page.
+ * Returns user profile + their company profiles + Stripe invoices (if customer exists).
+ */
+export interface AdminClientDetail {
+  user: UserProfile | null;
+  companyProfiles: any[]; // CompanyProfileDoc[] — kept as any to avoid circular import
+  invoices: Array<{
+    id: string;
+    number?: string;
+    created: number;
+    amountPaid: number;
+    currency: string;
+    status: string;
+    hostedInvoiceUrl?: string;
+    invoicePdfUrl?: string;
+  }>;
+}
+
+export async function adminGetClientDetailAction(uid: string): Promise<AdminClientDetail> {
+  await requireRole('admin');
+  const { getCompanyProfilesByOwner } = await import('@/lib/firestore-data');
+  const { getStripe, isStripeConfigured } = await import('@/lib/stripe');
+
+  const userProfile = await getUserProfile(uid);
+  const companyProfiles = await getCompanyProfilesByOwner(uid);
+
+  let invoices: AdminClientDetail['invoices'] = [];
+  if (userProfile?.stripeCustomerId && isStripeConfigured()) {
+    try {
+      const list = await getStripe().invoices.list({
+        customer: userProfile.stripeCustomerId,
+        limit: 20,
+      });
+      invoices = list.data.map((inv) => ({
+        id: inv.id ?? '',
+        number: inv.number ?? undefined,
+        created: inv.created,
+        amountPaid: inv.amount_paid ?? 0,
+        currency: inv.currency ?? 'eur',
+        status: inv.status ?? 'unknown',
+        hostedInvoiceUrl: inv.hosted_invoice_url ?? undefined,
+        invoicePdfUrl: inv.invoice_pdf ?? undefined,
+      }));
+    } catch (err) {
+      console.warn('[auth-actions] failed to fetch invoices for', uid, err);
+    }
+  }
+
+  return {
+    user: userProfile ? serialize(userProfile) : null,
+    companyProfiles: companyProfiles.map(serialize),
+    invoices,
+  };
 }
 
 // ── Client profile / billing details ──────────────────────────────────────────

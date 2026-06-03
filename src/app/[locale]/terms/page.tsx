@@ -377,6 +377,135 @@ export default function TermsPage() {
             </CardContent>
           </Card>
 
+          {/* 5-bis. Pagine Profilo Azienda */}
+          <Card className="holographic-card neon-border bg-card/80 backdrop-blur-sm border-primary/20">
+            <CardHeader>
+              <CardTitle className="text-3xl font-bold flex items-center gap-3">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center border border-primary/30">
+                  <Globe className="w-6 h-6 text-primary" />
+                </div>
+                5-bis. Pagine Profilo Azienda (Hub Clienti)
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <p className="text-muted-foreground">
+                Tramite l&apos;area Hub Clienti, le aziende possono creare e pubblicare una pagina
+                pubblica all&apos;indirizzo <code className="px-1.5 py-0.5 rounded bg-muted text-xs">studiofaraj.it/&lt;slug&gt;</code>{' '}
+                contenente la presentazione della propria attività, servizi, contatti e dati aziendali.
+                La pubblicazione è subordinata all&apos;attivazione di un abbonamento mensile.
+              </p>
+              <div className="grid sm:grid-cols-2 gap-4">
+                <Card className="bg-muted/30 border-border/50">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-base flex items-center gap-2">
+                      <Banknote className="w-4 h-4 text-primary" />
+                      Abbonamento
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-2 text-sm text-muted-foreground">
+                      <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span> Costo: 4,99 €/mese (IVA inclusa, fatturata a parte se applicabile).</li>
+                      <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span> Primo mese gratuito (trial). Il pagamento parte alla scadenza del periodo di prova.</li>
+                      <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span> Addebito automatico mensile sulla carta registrata.</li>
+                      <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span> Disdetta in qualsiasi momento dall&apos;area billing (Stripe Customer Portal).</li>
+                    </ul>
+                  </CardContent>
+                </Card>
+                <Card className="bg-muted/30 border-border/50">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-base flex items-center gap-2">
+                      <Lock className="w-4 h-4 text-primary" />
+                      Pubblicazione e slug
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-2 text-sm text-muted-foreground">
+                      <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span> La pagina è pubblicata solo finché l&apos;abbonamento è attivo o in periodo di prova.</li>
+                      <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span> Allo scadere o in caso di disdetta la pagina viene rimossa dalla sitemap e mostrata come non disponibile.</li>
+                      <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span> Lo slug rimane riservato al titolare originario in caso di riattivazione.</li>
+                      <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span> Slug riservati o offensivi possono essere rifiutati o revocati.</li>
+                    </ul>
+                  </CardContent>
+                </Card>
+              </div>
+              <Card className="bg-primary/5 border-primary/20">
+                <CardContent className="pt-6">
+                  <div className="flex items-start gap-3">
+                    <Info className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                    <div className="space-y-2">
+                      <p className="text-sm text-muted-foreground">
+                        Il pagamento è gestito da <strong className="text-foreground">Stripe Payments Europe Ltd.</strong>,
+                        che opera in qualità di responsabile del trattamento per i dati di pagamento.
+                        Studio Faraj non conserva i dati della carta di credito.
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        Il cliente è l&apos;unico responsabile per la veridicità e la liceità dei contenuti
+                        pubblicati sulla propria pagina. Studio Faraj si riserva il diritto di sospendere
+                        pagine che violino la legge, i diritti di terzi o i presenti Termini.
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              <Card className="bg-red-500/5 border-red-500/30">
+                <CardContent className="pt-6">
+                  <div className="flex items-start gap-3">
+                    <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
+                    <div className="space-y-2">
+                      <p className="text-sm text-foreground">
+                        <strong>Servizio destinato esclusivamente ad aziende (B2B).</strong>{' '}
+                        L&apos;attivazione di una Pagina Aziendale richiede la sottoscrizione
+                        in qualit&agrave; di titolare di Partita IVA. Il servizio non &egrave;
+                        offerto a consumatori privati ai sensi dell&apos;art. 3 D.Lgs. 206/2005,
+                        e di conseguenza <strong>non si applica il diritto di recesso di 14 giorni</strong>{' '}
+                        ex art. 52 D.Lgs. 206/2005.
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        Il cliente professionale (B2B) pu&ograve; cancellare l&apos;abbonamento in qualsiasi
+                        momento dalla propria area Hub o tramite il Customer Portal Stripe. Effetti
+                        della cancellazione:
+                      </p>
+                      <ul className="ml-5 list-disc space-y-1 text-sm text-muted-foreground">
+                        <li>
+                          <strong className="text-foreground">Durante il periodo di prova gratuito di 30 giorni</strong>:
+                          la cancellazione comporta la <strong>sospensione immediata</strong> della pagina
+                          pubblica. Nessun addebito viene effettuato.
+                        </li>
+                        <li>
+                          <strong className="text-foreground">Dopo il primo addebito (piano mensile)</strong>: la pagina rimane
+                          pubblica fino alla fine del periodo di fatturazione corrente, quindi viene sospesa
+                          automaticamente. Non sono previsti rimborsi per il periodo gi&agrave; fatturato.
+                        </li>
+                        <li>
+                          <strong className="text-foreground">Sul piano annuale</strong>: la pagina rimane
+                          pubblica fino alla fine dell&apos;anno gi&agrave; pagato, quindi viene sospesa.
+                          Nessun rimborso parziale.
+                        </li>
+                      </ul>
+                      <p className="text-sm text-muted-foreground">
+                        In tutti i casi lo slug rimane riservato al titolare originario in caso di
+                        riattivazione futura.
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        <strong>Sospensione automatica per mancato pagamento:</strong> in caso di
+                        pagamento non riuscito, viene applicato un periodo di tolleranza di 5 giorni
+                        durante il quale Stripe tenta nuovi addebiti. Trascorsi i 5 giorni senza pagamento
+                        andato a buon fine, l&apos;abbonamento viene automaticamente cancellato e la pagina
+                        pubblica diventa non disponibile. Lo slug rimane riservato e la pagina pu&ograve;
+                        essere riattivata avviando un nuovo abbonamento.
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        <strong>Hosting:</strong> la pagina pubblicata &egrave; ospitata sul dominio
+                        studiofaraj.it e ne resta parte integrante. Nessun diritto di propriet&agrave;
+                        sul dominio o sull&apos;infrastruttura viene trasferito al cliente.
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </CardContent>
+          </Card>
+
           {/* 6. Limitazione di Responsabilità */}
           <Card className="holographic-card neon-border bg-card/80 backdrop-blur-sm border-primary/20">
             <CardHeader>

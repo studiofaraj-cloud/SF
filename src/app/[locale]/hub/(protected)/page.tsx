@@ -8,7 +8,7 @@ import { db } from '@/firebase/config';
 import { useUser } from '@/firebase/provider';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { FileText, MessageSquare, FolderOpen, Receipt } from 'lucide-react';
+import { FileText, MessageSquare, FolderOpen, Receipt, Building2 } from 'lucide-react';
 
 export default function HubDashboardPage() {
   const params = useParams();
@@ -55,6 +55,15 @@ export default function HubDashboardPage() {
       title: en ? 'Quotes & Invoices' : 'Preventivi e fatture',
       desc: en ? 'Review quotes and pay securely.' : 'Consulta i preventivi e paga in sicurezza.',
       href: `/${locale}/hub/quotes`,
+      badge: 0,
+    },
+    {
+      icon: Building2,
+      title: en ? 'Company page' : 'Pagina aziendale',
+      desc: en
+        ? 'Publish a public landing page at your own URL. €4.99/mo, first month free.'
+        : 'Pubblica una pagina pubblica con il tuo URL. 4,99 €/mese, primo mese gratis.',
+      href: `/${locale}/hub/company-profile`,
       badge: 0,
     },
   ];

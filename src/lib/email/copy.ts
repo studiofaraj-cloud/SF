@@ -6,7 +6,8 @@ export type Scenario =
   | 'booking'
   | 'plan-request'
   | 'service-request'
-  | 'payment-receipt';
+  | 'payment-receipt'
+  | 'welcome';
 
 interface ClientCopy {
   subject: string;
@@ -81,6 +82,14 @@ const clientCopy: Record<Locale, Record<Scenario, ClientCopy>> = {
       signOff: 'Grazie,<br/>Il team di Studio Faraj',
       ctaLabel: 'Vai alla dashboard',
     },
+    welcome: {
+      subject: 'Benvenuto su Studio Faraj — il tuo account è pronto',
+      heading: 'Benvenuto a bordo!',
+      intro: 'Il tuo account su Studio Faraj è stato creato con successo. Da ora puoi accedere all\'area Hub per gestire i tuoi progetti, richiedere preventivi, scambiare file e messaggi con il nostro team.',
+      body: 'Hai un\'azienda? Puoi anche pubblicare in pochi minuti la tua Pagina Aziendale su un URL personalizzato di studiofaraj.it — ottimizzata per Google, primi 30 giorni gratis. Trovi tutto dall\'area Hub.',
+      signOff: 'A presto,<br/>Il team di Studio Faraj',
+      ctaLabel: 'Vai al Hub',
+    },
   },
   en: {
     contact: {
@@ -139,6 +148,14 @@ const clientCopy: Record<Locale, Record<Scenario, ClientCopy>> = {
       signOff: 'Thank you,<br/>The Studio Faraj team',
       ctaLabel: 'Go to dashboard',
     },
+    welcome: {
+      subject: 'Welcome to Studio Faraj — your account is ready',
+      heading: 'Welcome aboard!',
+      intro: 'Your Studio Faraj account has been created successfully. You can now access the Hub to manage your projects, request quotes, share files and chat with our team.',
+      body: 'Own a business? You can also publish your Company Page on a custom studiofaraj.it URL in minutes — SEO-optimized, with a 30-day free trial. Everything is in the Hub.',
+      signOff: 'Talk soon,<br/>The Studio Faraj team',
+      ctaLabel: 'Go to the Hub',
+    },
   },
 };
 
@@ -177,6 +194,11 @@ const adminCopy: Record<Scenario, AdminCopy> = {
     subject: (name) => `Pagamento ricevuto${name ? ` da ${name}` : ''}`,
     heading: 'Pagamento ricevuto',
     intro: 'Un cliente ha completato un pagamento online.',
+  },
+  welcome: {
+    subject: (name) => `Nuovo cliente registrato${name ? `: ${name}` : ''}`,
+    heading: 'Nuovo cliente nel Hub',
+    intro: 'Un nuovo utente ha creato un account su studiofaraj.it. Potrebbe essere un lead — considera di mandare un benvenuto personalizzato se sembra interessante.',
   },
 };
 

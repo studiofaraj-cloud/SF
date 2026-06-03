@@ -1,9 +1,8 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import { AnimatePresence, motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ArrowRight, ChevronDown, MapPin, Star } from 'lucide-react';
@@ -187,18 +186,15 @@ export default function HomepageClient({ heroSlides }: HomepageClientProps = {})
                 className="relative block mt-2 md:mt-4"
                 style={{ overflow: 'hidden', paddingBottom: '0.12em' }}
               >
-                <AnimatePresence mode="wait" initial={false}>
-                  <motion.span
-                    key={words[wordIdx]}
-                    className="brand-wordmark inline-block"
-                    initial={{ y: '110%', opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    exit={{ y: '-110%', opacity: 0 }}
-                    transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                  >
-                    {words[wordIdx]}.
-                  </motion.span>
-                </AnimatePresence>
+                {/* Key change re-mounts the span so the CSS animation re-runs.
+                    Replaces a framer-motion AnimatePresence — same entrance
+                    behavior, no JS bundle cost beyond a className. */}
+                <span
+                  key={words[wordIdx]}
+                  className="brand-wordmark inline-block animate-word-rise"
+                >
+                  {words[wordIdx]}.
+                </span>
               </span>
             </h1>
 

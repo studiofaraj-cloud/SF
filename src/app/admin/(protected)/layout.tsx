@@ -4,6 +4,7 @@ import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import { AdminSidebar } from '@/components/admin/sidebar';
 import { AdminHeader } from '@/components/admin/header';
 import { AuthGuard } from '@/components/admin/auth-guard';
+import { Toaster } from '@/components/ui/toaster';
 
 /**
  * Protected admin layout — sidebar + header + auth guard.
@@ -24,6 +25,7 @@ export default function AdminProtectedLayout({ children }: { children: ReactNode
           </main>
         </SidebarInset>
       </SidebarProvider>
+      <Toaster />
     </AuthGuard>
   );
 }

@@ -1,8 +1,7 @@
 'use client';
 
-import { useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import Link from 'next/link';
-import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
 import { useLocale } from 'next-intl';
 import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -64,16 +63,31 @@ export function ServicesSticky({ services, learnMoreLabel }: ServicesStickyProps
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start start', 'end end'],
-  });
+  // Native scroll-driven active index — replaces framer-motion's useScroll +
+  // useMotionValueEvent. We map the section's scroll progress (0→1) onto
+  // 0…services.length-1, identical to the previous behavior, but without
+  // shipping framer-motion to compute it.
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
 
-  useMotionValueEvent(scrollYProgress, 'change', (p) => {
-    // Map progress 0→1 onto 0…services.length-1
-    const idx = Math.min(services.length - 1, Math.max(0, Math.floor(p * services.length)));
-    setActiveIndex((prev) => (prev === idx ? prev : idx));
-  });
+    const onScroll = () => {
+      const rect = el.getBoundingClientRect();
+      const total = rect.height - window.innerHeight;
+      if (total <= 0) return;
+      const progress = Math.max(0, Math.min(1, -rect.top / total));
+      const idx = Math.min(services.length - 1, Math.max(0, Math.floor(progress * services.length)));
+      setActiveIndex((prev) => (prev === idx ? prev : idx));
+    };
+
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
+  }, [services.length]);
 
   const active = services[activeIndex] ?? services[0];
   const bullets = (BULLETS_BY_SLUG[active?.slug] ?? { it: [], en: [] })[en ? 'en' : 'it'];
@@ -123,13 +137,9 @@ export function ServicesSticky({ services, learnMoreLabel }: ServicesStickyProps
 
             {/* Right: active card */}
             <div className="col-span-7 lg:col-span-8 relative">
-              <motion.div
+              <div
                 key={active.slug}
-                initial={{ opacity: 0, y: 24 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                className="holographic-card neon-border relative rounded-3xl p-8 lg:p-12 bg-card/60 backdrop-blur-md border-primary/30"
+                className="holographic-card neon-border relative rounded-3xl p-8 lg:p-12 bg-card/60 backdrop-blur-md border-primary/30 animate-slide-up"
               >
                 <div className="absolute top-6 right-8 font-mono text-xs text-muted-foreground">
                   {String(activeIndex + 1).padStart(2, '0')} / {String(services.length).padStart(2, '0')}
@@ -165,7 +175,7 @@ export function ServicesSticky({ services, learnMoreLabel }: ServicesStickyProps
                   {learn}
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                 </Link>
-              </motion.div>
+              </div>
             </div>
           </div>
         </div>
