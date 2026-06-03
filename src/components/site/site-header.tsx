@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Search, Menu, Home, Users, Sparkles, FolderOpen, BookOpen, Mail, Code, ShoppingCart, Palette, TrendingUp, Bot, Wrench, Server, MessageSquare, ChevronDown, ArrowRight, X } from 'lucide-react';
+import { Search, Menu, Home, Users, Sparkles, FolderOpen, BookOpen, Mail, Code, ShoppingCart, Palette, TrendingUp, Bot, Wrench, Server, MessageSquare, ChevronDown, ArrowRight, X, Building2 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { LanguageSwitcher } from './language-switcher';
 import { ThemeToggle } from './theme-toggle';
@@ -22,6 +22,7 @@ const navIcons: Record<string, React.ComponentType<{ className?: string }>> = {
   '/': Home,
   '/chi-siamo': Users,
   '/#services': Sparkles,
+  '/pagine-aziendali': Building2,
   '/projects': FolderOpen,
   '/blog': BookOpen,
   '/contatti': Mail,

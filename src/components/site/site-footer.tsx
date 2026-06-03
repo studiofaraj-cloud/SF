@@ -183,6 +183,7 @@ export function SiteFooter() {
             </p>
             <ul className="space-y-1">
               <li><FooterLink href={getLocalizedPath('/chi-siamo', locale as any)}>{tNav('about')}</FooterLink></li>
+              <li><FooterLink href={getLocalizedPath('/pagine-aziendali', locale as any)}>{tNav('companyPages')}</FooterLink></li>
               <li><FooterLink href={getLocalizedPath('/projects', locale as any)}>{tNav('projects')}</FooterLink></li>
               <li><FooterLink href={getLocalizedPath('/blog', locale as any)}>{tNav('blog')}</FooterLink></li>
               <li><FooterLink href={getLocalizedPath('/contatti', locale as any)}>{tNav('contact')}</FooterLink></li>

@@ -179,11 +179,12 @@ export function NavigationMenu() {
   useEffect(() => { setOpen(false); }, [pathname]);
 
   const navItems = [
-    { href: '/',          label: t('home') },
-    { href: '/chi-siamo', label: t('about') },
-    { href: '/projects',  label: t('projects') },
-    { href: '/blog',      label: t('blog') },
-    { href: '/contatti',  label: t('contact') },
+    { href: '/',                  label: t('home') },
+    { href: '/chi-siamo',         label: t('about') },
+    { href: '/pagine-aziendali',  label: t('companyPages') },
+    { href: '/projects',          label: t('projects') },
+    { href: '/blog',              label: t('blog') },
+    { href: '/contatti',          label: t('contact') },
   ];
 
   const serviceItems = [

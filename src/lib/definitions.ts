@@ -103,6 +103,7 @@ export const navItems = [
   { href: '/', label: 'Home' },
   { href: '/chi-siamo', label: 'Chi Siamo' },
   { href: '/#services', label: 'Servizi' },
+  { href: '/pagine-aziendali', label: 'Pagine Aziendali' },
   { href: '/projects', label: 'Progetti' },
   { href: '/blog', label: 'Blog' },
   { href: '/contatti', label: 'Contatti' },
