@@ -75,7 +75,7 @@ export default async function middleware(request: NextRequest) {
     SLUG_REGEX.test(firstSegment) &&
     pathname === `/${firstSegment}` // only treat single-segment paths as profile pages
   ) {
-    const known = await isPublishedSlug(firstSegment, request.nextUrl.origin);
+    const known = await isPublishedSlug(firstSegment);
     if (known) {
       const rewriteUrl = request.nextUrl.clone();
       rewriteUrl.pathname = `/c/${firstSegment}`;
@@ -105,7 +105,10 @@ export const config = {
     // Public, non-locale-prefixed paths — handled by intl + cached.
     // Locale-prefixed paths (/it/*, /en/*) are served directly by Next.js,
     // bypassing middleware so the CDN can compress prerendered HTML.
-    '/((?!it(?:/|$)|en(?:/|$)|api|admin|_next|_vercel|.*\\..*).*)',
+    // `/c/*` is also excluded so the company-profile rewrite target
+    // (app/c/[companySlug]/page.tsx) doesn't get re-routed through intl,
+    // which would prefix it to `/it/c/{slug}` and 404 there.
+    '/((?!it(?:/|$)|en(?:/|$)|api|admin|c(?:/|$)|_next|_vercel|.*\\..*).*)',
     // Admin area — auth-gated (no caching).
     '/admin/:path*',
     // Client hub — auth-gated. Cover both bare and locale-prefixed forms.

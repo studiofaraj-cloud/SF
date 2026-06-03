@@ -1,23 +1,26 @@
 /**
  * Edge-runtime-safe published-slug lookup used by middleware.
  *
- * Middleware can't talk to Firestore directly (the SDK isn't edge-compatible),
- * so we hit a Node-runtime internal API route that performs a single-slug
- * existence check, and keep the boolean result in module memory for `TTL_MS`
- * to avoid per-request fetches.
+ * On the very first visit to a bare slug URL, the middleware needs to decide
+ * if the path is a known company profile. We can't use the Firebase SDK from
+ * the edge runtime, so we hit the Firestore REST API directly — much more
+ * reliable than fetching our own `/api/slugs/check/{slug}` endpoint, which
+ * adds an internal load-balancer round-trip that occasionally times out on
+ * Firebase App Hosting (causes false negatives → bare URL gets `/it/`-
+ * prefixed and 404s).
  *
- * Cold start: 1 fetch per slug per instance per TTL.
- * Warm: O(1) Map lookup.
- * Failure mode: fail-open — if the fetch errors, return false, which lets the
- * normal intl pipeline serve the path (and 404 if no locale page matches).
+ * Cache strategy:
+ *   - Positive hits cached 10 min (slugs don't change once claimed)
+ *   - Negative hits cached 30 sec (so a newly-published slug is picked up
+ *     within half a minute)
+ * Inflight requests for the same slug are coalesced.
  *
- * Why per-slug instead of a bulk index?
- *   - Newly-claimed slugs are recognised on the FIRST visit, not after the
- *     bulk index propagates (which used to take up to ~2 minutes).
- *   - The HTTP cache on the API endpoint scales naturally per-slug.
+ * Failure mode: fail-open — if the REST call errors, return false so the
+ * normal intl pipeline serves the path (and 404s if no locale page matches).
  */
 
-const TTL_MS = 60 * 1000;
+const TTL_POSITIVE_MS = 10 * 60 * 1000; // 10 min — slug exists, rarely changes
+const TTL_NEGATIVE_MS = 30 * 1000; // 30 sec — slug doesn't exist (yet)
 
 interface CacheEntry {
   value: boolean;
@@ -28,24 +31,31 @@ interface CacheEntry {
 const cache = new Map<string, CacheEntry>();
 const inflight = new Map<string, Promise<boolean>>();
 
-async function fetchSlugExists(slug: string, origin: string): Promise<boolean> {
+/**
+ * Query Firestore REST API directly for the existence of /slugs/{slug}.
+ * Works in edge runtime (no Firebase SDK needed). Public read on /slugs/* is
+ * allowed by the current firestore.rules. 200 → exists, 404 → doesn't.
+ */
+async function fetchSlugExists(slug: string): Promise<boolean> {
+  const projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
+  if (!projectId) {
+    console.warn('[slug-cache] NEXT_PUBLIC_FIREBASE_PROJECT_ID not set');
+    return false;
+  }
   try {
-    const res = await fetch(
-      `${origin}/api/slugs/check/${encodeURIComponent(slug)}`,
-      {
-        cache: 'no-store',
-        signal: AbortSignal.timeout(2000),
-      }
-    );
-    if (!res.ok) return false;
-    const json = (await res.json()) as { exists?: boolean };
-    return !!json.exists;
-  } catch {
+    const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/slugs/${encodeURIComponent(slug)}`;
+    const res = await fetch(url, {
+      signal: AbortSignal.timeout(2500),
+      cache: 'no-store',
+    });
+    return res.ok;
+  } catch (err) {
+    console.warn(`[slug-cache] Firestore REST call failed for "${slug}":`, err);
     return false;
   }
 }
 
-export async function isPublishedSlug(slug: string, origin: string): Promise<boolean> {
+export async function isPublishedSlug(slug: string): Promise<boolean> {
   const cached = cache.get(slug);
   if (cached && cached.expiresAt > Date.now()) {
     return cached.value;
@@ -54,13 +64,16 @@ export async function isPublishedSlug(slug: string, origin: string): Promise<boo
   // Coalesce concurrent lookups for the same slug into a single fetch.
   let pending = inflight.get(slug);
   if (!pending) {
-    pending = fetchSlugExists(slug, origin).finally(() => {
+    pending = fetchSlugExists(slug).finally(() => {
       inflight.delete(slug);
     });
     inflight.set(slug, pending);
   }
   const exists = await pending;
-  cache.set(slug, { value: exists, expiresAt: Date.now() + TTL_MS });
+  cache.set(slug, {
+    value: exists,
+    expiresAt: Date.now() + (exists ? TTL_POSITIVE_MS : TTL_NEGATIVE_MS),
+  });
   return exists;
 }
 
