@@ -280,13 +280,13 @@ export function SiteHeader() {
         className={cn(
           'fixed top-0 z-50 left-0 right-0 animate-fade-in-up transition-all duration-300',
           scrolled
-            ? 'p-2 md:p-2.5 lg:left-[120px] lg:right-[120px] xl:left-[200px] xl:right-[200px]'
-            : 'p-3 md:p-4 lg:left-[120px] lg:right-[120px] xl:left-[200px] xl:right-[200px]'
+            ? 'p-2 md:p-2.5 lg:px-6 xl:px-10 2xl:px-24'
+            : 'p-3 md:p-4 lg:px-6 xl:px-10 2xl:px-24'
         )}
       >
         <div
           className={cn(
-            'header-modern-angled header-angled-border relative flex items-center justify-between px-4 md:px-6 lg:px-8 animate-fade-in-up transition-all duration-300',
+            'header-modern-angled header-angled-border relative flex items-center justify-between mx-auto w-full max-w-[1600px] px-4 md:px-5 lg:px-6 xl:px-8 animate-fade-in-up transition-all duration-300',
             scrolled ? 'h-12 md:h-14' : 'h-14 md:h-16'
           )}
         >
