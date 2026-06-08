@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import Link from 'next/link';
 import {
@@ -51,6 +52,17 @@ const SECTION_TRANSITION = { duration: 0.7, ease: 'easeOut' as const };
 
 export function PaginaAziendaliBody({ lang }: { lang: Lang }) {
   const reduced = useReducedMotion();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Gate framer's `initial: { opacity: 0 }` on mount. Without this, SSR bakes
+  // opacity:0 into the section HTML and content stays invisible on mobile when
+  // hydration is slow, blocked (ad-blocker / CSP), or fails — the page would
+  // render only the hero and look blank below.
+  const canAnimate = mounted && !reduced;
+
   const showItems = pick('showItems', lang);
   const faqs = pick('faqs', lang);
 
@@ -59,14 +71,14 @@ export function PaginaAziendaliBody({ lang }: { lang: Lang }) {
   )}`;
 
   // Build the framer-motion section props once so each section is identical.
-  const sectionProps = reduced
-    ? {}
-    : {
+  const sectionProps = canAnimate
+    ? {
         initial: SECTION_INITIAL,
         whileInView: SECTION_IN,
         viewport: SECTION_VIEWPORT,
         transition: SECTION_TRANSITION,
-      };
+      }
+    : {};
 
   return (
     <main className="relative overflow-hidden bg-background text-foreground">
@@ -126,7 +138,7 @@ export function PaginaAziendaliBody({ lang }: { lang: Lang }) {
         <div className="container mx-auto px-4">
           <motion.div
             className="mx-auto max-w-4xl text-center"
-            initial={reduced ? false : { opacity: 0, y: 30 }}
+            initial={canAnimate ? { opacity: 0, y: 30 } : false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
           >
@@ -190,7 +202,7 @@ export function PaginaAziendaliBody({ lang }: { lang: Lang }) {
             ].map((c, i) => (
               <motion.div
                 key={c.title}
-                initial={reduced ? false : { opacity: 0, y: 20 }}
+                initial={canAnimate ? { opacity: 0, y: 20 } : false}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={SECTION_VIEWPORT}
                 transition={{ duration: 0.5, delay: i * 0.1, ease: 'easeOut' }}
@@ -227,7 +239,7 @@ export function PaginaAziendaliBody({ lang }: { lang: Lang }) {
               return (
                 <motion.div
                   key={item.title}
-                  initial={reduced ? false : { opacity: 0, y: 15 }}
+                  initial={canAnimate ? { opacity: 0, y: 15 } : false}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={SECTION_VIEWPORT}
                   transition={{ duration: 0.4, delay: i * 0.05, ease: 'easeOut' }}
@@ -260,7 +272,7 @@ export function PaginaAziendaliBody({ lang }: { lang: Lang }) {
 
           <motion.div
             className="mx-auto mt-12 max-w-5xl overflow-hidden rounded-2xl border border-border/60 bg-background shadow-2xl"
-            initial={reduced ? false : { opacity: 0, y: 120, scale: 0.95 }}
+            initial={canAnimate ? { opacity: 0, y: 120, scale: 0.95 } : false}
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
             viewport={{ once: true, margin: '-150px' }}
             transition={{ duration: 1, ease: 'easeOut' }}
@@ -392,7 +404,7 @@ export function PaginaAziendaliBody({ lang }: { lang: Lang }) {
             ].map((c, i) => (
               <motion.div
                 key={c.title}
-                initial={reduced ? false : { opacity: 0, y: 25 }}
+                initial={canAnimate ? { opacity: 0, y: 25 } : false}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={SECTION_VIEWPORT}
                 transition={{ duration: 0.5, delay: i * 0.08, ease: 'easeOut' }}
@@ -423,7 +435,7 @@ export function PaginaAziendaliBody({ lang }: { lang: Lang }) {
               {faqs.map((f, i) => (
                 <motion.details
                   key={i}
-                  initial={reduced ? false : { opacity: 0, x: -20 }}
+                  initial={canAnimate ? { opacity: 0, x: -20 } : false}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={SECTION_VIEWPORT}
                   transition={{ duration: 0.4, delay: i * 0.06, ease: 'easeOut' }}
