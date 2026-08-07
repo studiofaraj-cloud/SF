@@ -488,6 +488,9 @@ const ProjectSchema = z.object({
         value: z.string(),
     })).optional().default([]),
     highlights: z.array(z.string()).optional().default([]),
+    challenge: z.string().optional(),
+    solution: z.string().optional(),
+    results: z.string().optional(),
     year: z.string().optional(),
     published: z.preprocess((val) => val === 'on' || val === true, z.boolean()),
 });
@@ -516,6 +519,9 @@ export async function createProject(prevState: { message: string; errors?: any }
         clientName: formData.get('clientName') || '',
         metrics: metrics.length > 0 ? metrics : undefined,
         highlights: formData.getAll('highlights[]').filter(h => h) as string[],
+        challenge: formData.get('challenge') || '',
+        solution: formData.get('solution') || '',
+        results: formData.get('results') || '',
         year: formData.get('year') || '',
         published: formData.get('published'),
     });
@@ -611,6 +617,9 @@ export async function updateProject(id: string, prevState: { message: string; er
         clientName: formData.get('clientName') || '',
         metrics: metrics.length > 0 ? metrics : undefined,
         highlights: formData.getAll('highlights[]').filter(h => h) as string[],
+        challenge: formData.get('challenge') || '',
+        solution: formData.get('solution') || '',
+        results: formData.get('results') || '',
         year: formData.get('year') || '',
         published: formData.get('published'),
     });

@@ -1850,6 +1850,32 @@
         "description": "Contact us to discuss your next project and discover how we can turn your ideas into reality.",
         "button": "Contact Us"
       }
+    },
+    "detail": {
+      "project": "Project",
+      "home": "Home",
+      "projects": "Projects",
+      "completedOn": "Completed on",
+      "client": "Client",
+      "year": "Year",
+      "viewProject": "View Project",
+      "viewCode": "Code",
+      "keyResults": "Key Results",
+      "challenge": "The Challenge",
+      "solution": "The Solution",
+      "results": "The Results",
+      "highlights": "Highlights",
+      "techStack": "Tech Stack",
+      "gallery": "Gallery",
+      "backToProjects": "All Projects",
+      "relatedBadge": "Discover more",
+      "relatedTitle": "Other Projects",
+      "relatedView": "View",
+      "factsTitle": "Details",
+      "categoryLabel": "Category",
+      "ctaTitle": "Have a project in mind?",
+      "ctaText": "Let's turn your idea into a tailor-made digital product. Let's talk.",
+      "ctaButton": "Let's talk"
     }
   },
   "blog": {

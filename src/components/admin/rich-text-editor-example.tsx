@@ -32,7 +32,7 @@ export function RichTextEditorExample() {
             
             <TabsContent value="editor" className="space-y-4">
               <RichTextEditor
-                content={content}
+                value={content}
                 onChange={setContent}
                 placeholder="Try out the rich text editor..."
               />

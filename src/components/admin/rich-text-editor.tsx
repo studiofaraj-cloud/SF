@@ -1,10 +1,14 @@
 'use client';
 
-import { useState, useCallback, useRef, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
+import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
+import { useEditor, EditorContent, type Editor } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import Image from '@tiptap/extension-image';
+import { Table, TableRow, TableHeader, TableCell } from '@tiptap/extension-table';
 import {
   Bold,
   Italic,
+  Underline as UnderlineIcon,
   List,
   ListOrdered,
   Heading1,
@@ -17,11 +21,12 @@ import {
   Link as LinkIcon,
   Minus,
   Loader2,
-  Table2
+  Table2,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { storage } from '@/firebase/config';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -38,14 +43,45 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { normalizeTiptapJson } from '@/lib/tiptap-utils';
 
-export type JSONContent = {
-  type: string;
-  content?: JSONContent[];
-  text?: string;
-  marks?: { type: string; attrs?: Record<string, any> }[];
-  attrs?: Record<string, any>;
-};
+// Re-export so existing callers (SEO tool, forms) keep working with no import changes.
+export { tiptapJsonToPlainText as jsonContentToPlainText } from '@/lib/tiptap-utils';
+
+const EMPTY_DOC = '{"type":"doc","content":[{"type":"paragraph"}]}';
+
+/**
+ * Image node extended with `size` (full | medium | small) and `align`
+ * (center | left | right) attributes. These are serialised into the Tiptap
+ * JSON exactly as the public renderer (`rich-content-renderer.tsx`) reads them,
+ * and mirrored to `data-*` attributes so the editor can style them via CSS.
+ */
+const CustomImage = Image.extend({
+  addAttributes() {
+    return {
+      ...this.parent?.(),
+      size: {
+        default: 'full',
+        parseHTML: (el) => el.getAttribute('data-size') || 'full',
+        renderHTML: (attrs) => ({ 'data-size': attrs.size }),
+      },
+      align: {
+        default: 'center',
+        parseHTML: (el) => el.getAttribute('data-align') || 'center',
+        renderHTML: (attrs) => ({ 'data-align': attrs.align }),
+      },
+    };
+  },
+});
+
+function parseInitialContent(value: string): object {
+  try {
+    const json = JSON.parse(value && value.trim() ? value : EMPTY_DOC);
+    return normalizeTiptapJson(json);
+  } catch {
+    return JSON.parse(EMPTY_DOC);
+  }
+}
 
 interface RichTextEditorProps {
   value: string;
@@ -58,15 +94,19 @@ interface RichTextEditorProps {
 export function RichTextEditor({
   value,
   onChange,
-  placeholder = 'Start writing...',
+  placeholder = 'Inizia a scrivere...',
   className,
-  name
+  name,
 }: RichTextEditorProps) {
-  const editorRef = useRef<HTMLDivElement>(null);
-  const [history, setHistory] = useState<string[]>([value]);
-  const [historyIndex, setHistoryIndex] = useState(0);
+  // Force a re-render on editor transactions so the toolbar reflects active state.
+  const [, forceUpdate] = useReducer((x) => x + 1, 0);
+  // Guards the external-value sync effect against our own onChange updates.
+  const isInternalUpdate = useRef(false);
+
   const [showImageDialog, setShowImageDialog] = useState(false);
   const [showLinkDialog, setShowLinkDialog] = useState(false);
+  const [showTableDialog, setShowTableDialog] = useState(false);
+
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState('');
   const [imageAlt, setImageAlt] = useState('');
@@ -75,239 +115,66 @@ export function RichTextEditor({
   const [imageCaption, setImageCaption] = useState('');
   const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [linkUrl, setLinkUrl] = useState('');
-  const [linkText, setLinkText] = useState('');
-  const [showTableDialog, setShowTableDialog] = useState(false);
-  const [tableRows, setTableRows] = useState(3);
-  const [tableCols, setTableCols] = useState(3);
   const imageInputRef = useRef<HTMLInputElement>(null);
 
-  // Initialize editor content from JSON
+  const [linkUrl, setLinkUrl] = useState('');
+  const [linkText, setLinkText] = useState('');
+
+  const [tableRows, setTableRows] = useState(3);
+  const [tableCols, setTableCols] = useState(3);
+
+  const editor = useEditor({
+    immediatelyRender: false,
+    extensions: [
+      StarterKit.configure({
+        heading: { levels: [1, 2, 3] },
+        link: {
+          openOnClick: false,
+          autolink: true,
+          HTMLAttributes: { rel: 'noopener noreferrer', target: '_blank' },
+        },
+      }),
+      CustomImage.configure({ inline: false, allowBase64: false }),
+      Table.configure({ resizable: false }),
+      TableRow,
+      TableHeader,
+      TableCell,
+    ],
+    content: parseInitialContent(value),
+    editorProps: {
+      attributes: {
+        class:
+          'max-w-none min-h-[20rem] px-4 py-3 focus:outline-none text-foreground',
+      },
+    },
+    onUpdate: ({ editor }) => {
+      isInternalUpdate.current = true;
+      onChange(JSON.stringify(editor.getJSON()));
+    },
+    onTransaction: () => forceUpdate(),
+  });
+
+  // Keep the editor in sync when `value` changes from OUTSIDE the editor
+  // (e.g. an edit form fetching a project asynchronously). Skips updates that
+  // originate from our own onUpdate to avoid cursor jumps / feedback loops.
   useEffect(() => {
-    if (editorRef.current && value) {
-      try {
-        const json = JSON.parse(value);
-        editorRef.current.innerHTML = jsonToHtml(json);
-      } catch {
-        if (editorRef.current.innerHTML !== value) {
-          editorRef.current.innerHTML = value;
-        }
-      }
-    }
-  }, []);
-
-  const updateContent = useCallback(() => {
-    if (editorRef.current) {
-      const html = editorRef.current.innerHTML;
-      const json = htmlToJson(html);
-      const jsonString = JSON.stringify(json);
-
-      const newHistory = history.slice(0, historyIndex + 1);
-      newHistory.push(jsonString);
-      setHistory(newHistory);
-      setHistoryIndex(newHistory.length - 1);
-
-      onChange(jsonString);
-    }
-  }, [onChange, history, historyIndex]);
-
-  // Add delete buttons to image blocks and handle clicks
-  useEffect(() => {
-    const editor = editorRef.current;
     if (!editor) return;
-
-    const handleClick = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (target.closest('.editor-image-delete')) {
-        e.preventDefault();
-        e.stopPropagation();
-        const block = target.closest('.editor-image-block');
-        if (block) {
-          block.remove();
-          updateContent();
-        }
-      }
-    };
-
-    editor.addEventListener('click', handleClick);
-    return () => editor.removeEventListener('click', handleClick);
-  }, [updateContent]);
-
-  const execCommand = (command: string, value?: string) => {
-    document.execCommand(command, false, value);
-    updateContent();
-    editorRef.current?.focus();
-  };
-
-  const undo = () => {
-    if (historyIndex > 0) {
-      const newIndex = historyIndex - 1;
-      setHistoryIndex(newIndex);
-      const content = history[newIndex];
-      onChange(content);
-      if (editorRef.current) {
-        try {
-          const json = JSON.parse(content);
-          editorRef.current.innerHTML = jsonToHtml(json);
-        } catch {
-          editorRef.current.innerHTML = content;
-        }
-      }
+    if (isInternalUpdate.current) {
+      isInternalUpdate.current = false;
+      return;
     }
-  };
-
-  const redo = () => {
-    if (historyIndex < history.length - 1) {
-      const newIndex = historyIndex + 1;
-      setHistoryIndex(newIndex);
-      const content = history[newIndex];
-      onChange(content);
-      if (editorRef.current) {
-        try {
-          const json = JSON.parse(content);
-          editorRef.current.innerHTML = jsonToHtml(json);
-        } catch {
-          editorRef.current.innerHTML = content;
-        }
-      }
-    }
-  };
-
-  const handleImageUpload = async () => {
-    if (!imageFile && !imageUrl) return;
-
-    let finalUrl = imageUrl;
-
-    if (imageFile) {
-      setIsUploadingImage(true);
-      setUploadProgress(0);
-
+    const incoming = value && value.trim() ? value : EMPTY_DOC;
+    const current = JSON.stringify(editor.getJSON());
+    if (incoming !== current) {
       try {
-        const timestamp = Date.now();
-        const sanitizedFileName = imageFile.name.replace(/[^a-zA-Z0-9.-]/g, '_');
-        const fileName = `${timestamp}-${sanitizedFileName}`;
-        const storageRef = ref(storage, `images/content/${fileName}`);
-
-        const uploadTask = uploadBytesResumable(storageRef, imageFile);
-
-        finalUrl = await new Promise<string>((resolve, reject) => {
-          uploadTask.on(
-            'state_changed',
-            (snapshot) => {
-              const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-              setUploadProgress(progress);
-            },
-            (error) => reject(error),
-            async () => {
-              const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-              resolve(downloadURL);
-            }
-          );
+        editor.commands.setContent(parseInitialContent(incoming), {
+          emitUpdate: false,
         });
-      } catch (error) {
-        console.error('Image upload error:', error);
-        setIsUploadingImage(false);
-        return;
-      }
-
-      setIsUploadingImage(false);
-    }
-
-    if (finalUrl && editorRef.current) {
-      // Build a custom image block with delete button
-      const imgHtml = `<div class="editor-image-block" data-size="${imageSize}" data-align="${imageAlign}" contenteditable="false">` +
-        `<button type="button" class="editor-image-delete" title="Rimuovi immagine">&times;</button>` +
-        `<img src="${finalUrl}" alt="${imageAlt || ''}" title="${imageCaption || ''}" data-size="${imageSize}" data-align="${imageAlign}" />` +
-        (imageCaption ? `<p class="image-caption">${imageCaption}</p>` : '') +
-        `</div><p><br></p>`;
-
-      editorRef.current.focus();
-      document.execCommand('insertHTML', false, imgHtml);
-      updateContent();
-    }
-
-    // Reset dialog state
-    setShowImageDialog(false);
-    setImageFile(null);
-    setImageUrl('');
-    setImageAlt('');
-    setImageSize('full');
-    setImageAlign('center');
-    setImageCaption('');
-    setUploadProgress(0);
-  };
-
-  const handleInsertLink = () => {
-    if (!linkUrl) return;
-
-    if (editorRef.current) {
-      const selection = window.getSelection();
-      if (selection && selection.toString()) {
-        document.execCommand('createLink', false, linkUrl);
-      } else if (linkText) {
-        const html = `<a href="${linkUrl}" target="_blank" rel="noopener noreferrer">${linkText}</a>`;
-        document.execCommand('insertHTML', false, html);
-      }
-      updateContent();
-    }
-
-    setShowLinkDialog(false);
-    setLinkUrl('');
-    setLinkText('');
-  };
-
-  const handleInsertTable = () => {
-    const rows = Math.max(1, tableRows);
-    const cols = Math.max(1, tableCols);
-
-    const headerCells = Array(cols).fill(0).map(() => '<th style="border:1px solid #ccc;padding:6px 10px;background:#f0f0f0;font-weight:600;text-align:left">Intestazione</th>').join('');
-    const bodyRowCells = Array(cols).fill(0).map(() => '<td style="border:1px solid #ccc;padding:6px 10px">Cella</td>').join('');
-    const bodyRows = Array(Math.max(1, rows - 1)).fill(`<tr>${bodyRowCells}</tr>`).join('');
-
-    const tableHtml =
-      `<table style="width:100%;border-collapse:collapse;margin:1em 0">` +
-      `<thead><tr>${headerCells}</tr></thead>` +
-      `<tbody>${bodyRows}</tbody>` +
-      `</table><p><br></p>`;
-
-    if (editorRef.current) {
-      editorRef.current.focus();
-      document.execCommand('insertHTML', false, tableHtml);
-      updateContent();
-    }
-
-    setShowTableDialog(false);
-  };
-
-  // Handle paste/drop images directly into the editor
-  const handleEditorPaste = useCallback(async (e: React.ClipboardEvent) => {
-    const items = e.clipboardData?.items;
-    if (!items) return;
-    for (const item of Array.from(items)) {
-      if (item.type.startsWith('image/')) {
-        e.preventDefault();
-        const file = item.getAsFile();
-        if (file) {
-          setImageFile(file);
-          setImageAlt(file.name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' '));
-          setShowImageDialog(true);
-        }
-        return;
+      } catch {
+        /* ignore malformed external content */
       }
     }
-  }, []);
-
-  const handleEditorDrop = useCallback(async (e: React.DragEvent) => {
-    const files = e.dataTransfer?.files;
-    if (!files?.length) return;
-    const file = files[0];
-    if (file.type.startsWith('image/')) {
-      e.preventDefault();
-      setImageFile(file);
-      setImageAlt(file.name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' '));
-      setShowImageDialog(true);
-    }
-  }, []);
+  }, [value, editor]);
 
   const handleImageFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -320,131 +187,284 @@ export function RichTextEditor({
     }
   };
 
+  const resetImageDialog = () => {
+    setShowImageDialog(false);
+    setImageFile(null);
+    setImageUrl('');
+    setImageAlt('');
+    setImageSize('full');
+    setImageAlign('center');
+    setImageCaption('');
+    setUploadProgress(0);
+  };
+
+  const handleImageInsert = async () => {
+    if (!editor || (!imageFile && !imageUrl)) return;
+
+    let finalUrl = imageUrl;
+
+    if (imageFile) {
+      setIsUploadingImage(true);
+      setUploadProgress(0);
+      try {
+        const timestamp = Date.now();
+        const sanitizedFileName = imageFile.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+        const fileName = `${timestamp}-${sanitizedFileName}`;
+        const storageRef = ref(storage, `images/content/${fileName}`);
+        const uploadTask = uploadBytesResumable(storageRef, imageFile);
+
+        finalUrl = await new Promise<string>((resolve, reject) => {
+          uploadTask.on(
+            'state_changed',
+            (snapshot) => {
+              setUploadProgress(
+                (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+              );
+            },
+            (error) => reject(error),
+            async () => resolve(await getDownloadURL(uploadTask.snapshot.ref))
+          );
+        });
+      } catch (error) {
+        console.error('Image upload error:', error);
+        setIsUploadingImage(false);
+        return;
+      }
+      setIsUploadingImage(false);
+    }
+
+    if (finalUrl) {
+      editor
+        .chain()
+        .focus()
+        .insertContent({
+          type: 'image',
+          attrs: {
+            src: finalUrl,
+            alt: imageAlt || '',
+            title: imageCaption || '',
+            size: imageSize,
+            align: imageAlign,
+          },
+        })
+        .run();
+    }
+
+    resetImageDialog();
+  };
+
+  const handleInsertLink = () => {
+    if (!editor || !linkUrl) return;
+    const chain = editor.chain().focus();
+
+    if (editor.state.selection.empty && linkText) {
+      chain
+        .insertContent({
+          type: 'text',
+          text: linkText,
+          marks: [{ type: 'link', attrs: { href: linkUrl, target: '_blank' } }],
+        })
+        .run();
+    } else {
+      chain
+        .extendMarkRange('link')
+        .setLink({ href: linkUrl, target: '_blank' })
+        .run();
+    }
+
+    setShowLinkDialog(false);
+    setLinkUrl('');
+    setLinkText('');
+  };
+
+  const handleInsertTable = () => {
+    if (!editor) return;
+    editor
+      .chain()
+      .focus()
+      .insertTable({
+        rows: Math.max(2, tableRows),
+        cols: Math.max(1, tableCols),
+        withHeaderRow: true,
+      })
+      .run();
+    setShowTableDialog(false);
+  };
+
   return (
-    <div className={cn('border rounded-md', className)}>
+    <div className={cn('rounded-md border', className)}>
       {/* Toolbar */}
-      <div className="flex flex-wrap items-center gap-1 p-2 border-b bg-muted/50">
-        {/* Text formatting */}
-        <Button type="button" variant="ghost" size="sm" onClick={() => execCommand('bold')} className="h-8 w-8 p-0" title="Grassetto">
+      <div className="flex flex-wrap items-center gap-1 border-b bg-muted/50 p-2">
+        <ToolbarButton
+          onClick={() => editor?.chain().focus().toggleBold().run()}
+          active={editor?.isActive('bold')}
+          title="Grassetto"
+        >
           <Bold className="h-4 w-4" />
-        </Button>
-        <Button type="button" variant="ghost" size="sm" onClick={() => execCommand('italic')} className="h-8 w-8 p-0" title="Corsivo">
+        </ToolbarButton>
+        <ToolbarButton
+          onClick={() => editor?.chain().focus().toggleItalic().run()}
+          active={editor?.isActive('italic')}
+          title="Corsivo"
+        >
           <Italic className="h-4 w-4" />
-        </Button>
+        </ToolbarButton>
+        <ToolbarButton
+          onClick={() => editor?.chain().focus().toggleUnderline().run()}
+          active={editor?.isActive('underline')}
+          title="Sottolineato"
+        >
+          <UnderlineIcon className="h-4 w-4" />
+        </ToolbarButton>
 
-        <div className="w-px h-6 bg-border mx-1" />
+        <Divider />
 
-        {/* Headings */}
-        <Button type="button" variant="ghost" size="sm" onClick={() => execCommand('formatBlock', 'h1')} className="h-8 w-8 p-0" title="Titolo 1">
+        <ToolbarButton
+          onClick={() => editor?.chain().focus().toggleHeading({ level: 1 }).run()}
+          active={editor?.isActive('heading', { level: 1 })}
+          title="Titolo 1"
+        >
           <Heading1 className="h-4 w-4" />
-        </Button>
-        <Button type="button" variant="ghost" size="sm" onClick={() => execCommand('formatBlock', 'h2')} className="h-8 w-8 p-0" title="Titolo 2">
+        </ToolbarButton>
+        <ToolbarButton
+          onClick={() => editor?.chain().focus().toggleHeading({ level: 2 }).run()}
+          active={editor?.isActive('heading', { level: 2 })}
+          title="Titolo 2"
+        >
           <Heading2 className="h-4 w-4" />
-        </Button>
-        <Button type="button" variant="ghost" size="sm" onClick={() => execCommand('formatBlock', 'h3')} className="h-8 w-8 p-0" title="Titolo 3">
+        </ToolbarButton>
+        <ToolbarButton
+          onClick={() => editor?.chain().focus().toggleHeading({ level: 3 }).run()}
+          active={editor?.isActive('heading', { level: 3 })}
+          title="Titolo 3"
+        >
           <Heading3 className="h-4 w-4" />
-        </Button>
+        </ToolbarButton>
 
-        <div className="w-px h-6 bg-border mx-1" />
+        <Divider />
 
-        {/* Lists */}
-        <Button type="button" variant="ghost" size="sm" onClick={() => execCommand('insertUnorderedList')} className="h-8 w-8 p-0" title="Elenco puntato">
+        <ToolbarButton
+          onClick={() => editor?.chain().focus().toggleBulletList().run()}
+          active={editor?.isActive('bulletList')}
+          title="Elenco puntato"
+        >
           <List className="h-4 w-4" />
-        </Button>
-        <Button type="button" variant="ghost" size="sm" onClick={() => execCommand('insertOrderedList')} className="h-8 w-8 p-0" title="Elenco numerato">
+        </ToolbarButton>
+        <ToolbarButton
+          onClick={() => editor?.chain().focus().toggleOrderedList().run()}
+          active={editor?.isActive('orderedList')}
+          title="Elenco numerato"
+        >
           <ListOrdered className="h-4 w-4" />
-        </Button>
-        <Button type="button" variant="ghost" size="sm" onClick={() => execCommand('formatBlock', 'blockquote')} className="h-8 w-8 p-0" title="Citazione">
+        </ToolbarButton>
+        <ToolbarButton
+          onClick={() => editor?.chain().focus().toggleBlockquote().run()}
+          active={editor?.isActive('blockquote')}
+          title="Citazione"
+        >
           <Quote className="h-4 w-4" />
-        </Button>
+        </ToolbarButton>
 
-        <div className="w-px h-6 bg-border mx-1" />
+        <Divider />
 
-        {/* Horizontal rule */}
-        <Button type="button" variant="ghost" size="sm" onClick={() => execCommand('insertHorizontalRule')} className="h-8 w-8 p-0" title="Linea separatrice">
+        <ToolbarButton
+          onClick={() => editor?.chain().focus().setHorizontalRule().run()}
+          title="Linea separatrice"
+        >
           <Minus className="h-4 w-4" />
-        </Button>
-
-        {/* Link */}
-        <Button type="button" variant="ghost" size="sm" onClick={() => setShowLinkDialog(true)} className="h-8 w-8 p-0" title="Inserisci link">
+        </ToolbarButton>
+        <ToolbarButton
+          onClick={() => {
+            const previous = editor?.getAttributes('link').href as string | undefined;
+            setLinkUrl(previous || '');
+            setLinkText('');
+            setShowLinkDialog(true);
+          }}
+          active={editor?.isActive('link')}
+          title="Inserisci link"
+        >
           <LinkIcon className="h-4 w-4" />
-        </Button>
+        </ToolbarButton>
 
-        {/* Image */}
-        <Button type="button" variant="ghost" size="sm" onClick={() => setShowImageDialog(true)} className="h-8 px-2 gap-1.5 text-primary hover:text-primary" title="Inserisci immagine nel contenuto">
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          onClick={() => setShowImageDialog(true)}
+          className="h-8 gap-1.5 px-2 text-primary hover:text-primary"
+          title="Inserisci immagine nel contenuto"
+        >
           <ImagePlus className="h-4 w-4" />
-          <span className="text-xs font-medium hidden sm:inline">Immagine</span>
+          <span className="hidden text-xs font-medium sm:inline">Immagine</span>
         </Button>
-
-        {/* Table */}
-        <Button type="button" variant="ghost" size="sm" onClick={() => setShowTableDialog(true)} className="h-8 px-2 gap-1.5 text-primary hover:text-primary" title="Inserisci tabella">
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          onClick={() => setShowTableDialog(true)}
+          className="h-8 gap-1.5 px-2 text-primary hover:text-primary"
+          title="Inserisci tabella"
+        >
           <Table2 className="h-4 w-4" />
-          <span className="text-xs font-medium hidden sm:inline">Tabella</span>
+          <span className="hidden text-xs font-medium sm:inline">Tabella</span>
         </Button>
 
-        <div className="w-px h-6 bg-border mx-1" />
+        <Divider />
 
-        {/* Undo/Redo */}
-        <Button type="button" variant="ghost" size="sm" onClick={undo} disabled={historyIndex === 0} className="h-8 w-8 p-0" title="Annulla">
+        <ToolbarButton
+          onClick={() => editor?.chain().focus().undo().run()}
+          disabled={!editor?.can().undo()}
+          title="Annulla"
+        >
           <Undo className="h-4 w-4" />
-        </Button>
-        <Button type="button" variant="ghost" size="sm" onClick={redo} disabled={historyIndex === history.length - 1} className="h-8 w-8 p-0" title="Ripeti">
+        </ToolbarButton>
+        <ToolbarButton
+          onClick={() => editor?.chain().focus().redo().run()}
+          disabled={!editor?.can().redo()}
+          title="Ripeti"
+        >
           <Redo className="h-4 w-4" />
-        </Button>
+        </ToolbarButton>
       </div>
 
       {/* Editor area */}
-      <div
-        ref={editorRef}
-        contentEditable
-        onInput={updateContent}
-        onBlur={updateContent}
-        onPaste={handleEditorPaste}
-        onDrop={handleEditorDrop}
-        onDragOver={(e) => e.preventDefault()}
-        className="prose prose-sm max-w-none p-4 min-h-[20rem] focus:outline-none [&_img]:max-w-full [&_img]:rounded-lg [&_.editor-image-block]:my-4 [&_.editor-image-block]:relative [&_.editor-image-block[data-align='center']]:mx-auto [&_.editor-image-block[data-align='left']]:mr-auto [&_.editor-image-block[data-align='right']]:ml-auto [&_.editor-image-block[data-size='full']]:w-full [&_.editor-image-block[data-size='medium']]:w-3/4 [&_.editor-image-block[data-size='small']]:w-1/2 [&_.image-caption]:text-sm [&_.image-caption]:text-center [&_.image-caption]:text-muted-foreground [&_.image-caption]:mt-2 [&_.image-caption]:italic"
-        data-placeholder={placeholder}
-        suppressContentEditableWarning
-      />
+      <div className="relative rte-content">
+        <EditorContent editor={editor} />
+        {editor?.isEmpty && (
+          <div className="pointer-events-none absolute left-4 top-3 text-muted-foreground">
+            {placeholder}
+          </div>
+        )}
+      </div>
 
       <input type="hidden" name={name} value={value} />
 
-      <style jsx>{`
-        [contenteditable]:empty:before {
-          content: attr(data-placeholder);
-          color: hsl(var(--muted-foreground));
-          pointer-events: none;
-          position: absolute;
-        }
-      `}</style>
       <style>{`
-        .editor-image-block {
-          position: relative;
-        }
-        .editor-image-delete {
-          position: absolute;
-          top: 8px;
-          right: 8px;
-          z-index: 10;
-          width: 28px;
-          height: 28px;
-          border-radius: 50%;
-          background: rgba(239, 68, 68, 0.9);
-          color: white;
-          border: none;
-          font-size: 18px;
-          line-height: 1;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          opacity: 0;
-          transition: opacity 0.2s;
-          box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-        }
-        .editor-image-block:hover .editor-image-delete {
-          opacity: 1;
-        }
+        .rte-content .ProseMirror { line-height: 1.7; }
+        .rte-content .ProseMirror > * + * { margin-top: 0.75em; }
+        .rte-content .ProseMirror h1 { font-size: 1.875rem; font-weight: 700; line-height: 1.2; margin-top: 1em; }
+        .rte-content .ProseMirror h2 { font-size: 1.5rem; font-weight: 700; line-height: 1.25; margin-top: 1em; }
+        .rte-content .ProseMirror h3 { font-size: 1.25rem; font-weight: 600; line-height: 1.3; margin-top: 1em; }
+        .rte-content .ProseMirror p { margin: 0; }
+        .rte-content .ProseMirror ul { list-style: disc; padding-left: 1.5rem; }
+        .rte-content .ProseMirror ol { list-style: decimal; padding-left: 1.5rem; }
+        .rte-content .ProseMirror li { margin: 0.25em 0; }
+        .rte-content .ProseMirror li > p { margin: 0; }
+        .rte-content .ProseMirror blockquote { border-left: 3px solid hsl(var(--primary) / 0.5); padding-left: 1rem; color: hsl(var(--muted-foreground)); font-style: italic; }
+        .rte-content .ProseMirror a { color: hsl(var(--primary)); text-decoration: underline; text-underline-offset: 2px; }
+        .rte-content .ProseMirror hr { border: none; border-top: 1px solid hsl(var(--border)); margin: 1.5em 0; }
+        .rte-content .ProseMirror img { max-width: 100%; height: auto; border-radius: 0.5rem; }
+        .rte-content .ProseMirror img[data-align='center'] { display: block; margin-left: auto; margin-right: auto; }
+        .rte-content .ProseMirror img[data-align='left'] { float: left; margin: 0.25rem 1rem 0.5rem 0; }
+        .rte-content .ProseMirror img[data-align='right'] { float: right; margin: 0.25rem 0 0.5rem 1rem; }
+        .rte-content .ProseMirror img[data-size='full'] { width: 100%; }
+        .rte-content .ProseMirror img[data-size='medium'] { width: 75%; }
+        .rte-content .ProseMirror img[data-size='small'] { width: 50%; }
+        .rte-content .ProseMirror table { border-collapse: collapse; width: 100%; margin: 0.5em 0; table-layout: fixed; overflow: hidden; }
+        .rte-content .ProseMirror th, .rte-content .ProseMirror td { border: 1px solid hsl(var(--border)); padding: 6px 10px; vertical-align: top; }
+        .rte-content .ProseMirror th { background: hsl(var(--muted)); font-weight: 600; text-align: left; }
+        .rte-content .ProseMirror .selectedCell:after { background: hsl(var(--primary) / 0.1); content: ''; position: absolute; inset: 0; pointer-events: none; }
+        .rte-content .ProseMirror:focus { outline: none; }
       `}</style>
 
       {/* Hidden file input for image uploads */}
@@ -457,22 +477,24 @@ export function RichTextEditor({
       />
 
       {/* Image Insert Dialog */}
-      <Dialog open={showImageDialog} onOpenChange={setShowImageDialog}>
+      <Dialog
+        open={showImageDialog}
+        onOpenChange={(open) => (open ? setShowImageDialog(true) : resetImageDialog())}
+      >
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
             <DialogTitle>Inserisci Immagine</DialogTitle>
           </DialogHeader>
 
           <div className="space-y-4 py-4">
-            {/* Upload or URL */}
             <div className="space-y-3">
               <div>
                 <Label className="text-sm font-medium">Carica Immagine</Label>
                 <div className="mt-1.5">
                   {imageFile ? (
-                    <div className="flex items-center gap-2 p-3 bg-muted rounded-lg">
-                      <ImagePlus className="h-5 w-5 text-primary shrink-0" />
-                      <span className="text-sm truncate flex-1">{imageFile.name}</span>
+                    <div className="flex items-center gap-2 rounded-lg bg-muted p-3">
+                      <ImagePlus className="h-5 w-5 shrink-0 text-primary" />
+                      <span className="flex-1 truncate text-sm">{imageFile.name}</span>
                       <Button type="button" variant="ghost" size="sm" onClick={() => setImageFile(null)}>
                         Cambia
                       </Button>
@@ -481,11 +503,11 @@ export function RichTextEditor({
                     <Button
                       type="button"
                       variant="outline"
-                      className="w-full h-20 border-dashed"
+                      className="h-20 w-full border-dashed"
                       onClick={() => imageInputRef.current?.click()}
                     >
                       <div className="text-center">
-                        <ImagePlus className="h-6 w-6 mx-auto mb-1 text-muted-foreground" />
+                        <ImagePlus className="mx-auto mb-1 h-6 w-6 text-muted-foreground" />
                         <span className="text-sm text-muted-foreground">Clicca per caricare</span>
                       </div>
                     </Button>
@@ -507,7 +529,6 @@ export function RichTextEditor({
               )}
             </div>
 
-            {/* Alt text */}
             <div>
               <Label htmlFor="image-alt" className="text-sm font-medium">Testo alternativo</Label>
               <Input
@@ -519,7 +540,6 @@ export function RichTextEditor({
               />
             </div>
 
-            {/* Caption */}
             <div>
               <Label htmlFor="image-caption" className="text-sm font-medium">Didascalia (opzionale)</Label>
               <Input
@@ -531,7 +551,6 @@ export function RichTextEditor({
               />
             </div>
 
-            {/* Size & Alignment */}
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <Label className="text-sm font-medium">Dimensione</Label>
@@ -561,13 +580,12 @@ export function RichTextEditor({
               </div>
             </div>
 
-            {/* Upload progress */}
             {isUploadingImage && (
-              <div className="flex items-center gap-3 p-3 bg-primary/5 rounded-lg">
+              <div className="flex items-center gap-3 rounded-lg bg-primary/5 p-3">
                 <Loader2 className="h-4 w-4 animate-spin text-primary" />
                 <div className="flex-1">
-                  <div className="h-2 bg-muted rounded-full overflow-hidden">
-                    <div className="h-full bg-primary rounded-full transition-all" style={{ width: `${uploadProgress}%` }} />
+                  <div className="h-2 overflow-hidden rounded-full bg-muted">
+                    <div className="h-full rounded-full bg-primary transition-all" style={{ width: `${uploadProgress}%` }} />
                   </div>
                 </div>
                 <span className="text-sm text-muted-foreground">{Math.round(uploadProgress)}%</span>
@@ -576,17 +594,17 @@ export function RichTextEditor({
           </div>
 
           <DialogFooter>
-            <Button type="button" variant="outline" onClick={() => setShowImageDialog(false)}>
+            <Button type="button" variant="outline" onClick={resetImageDialog}>
               Annulla
             </Button>
             <Button
               type="button"
-              onClick={handleImageUpload}
+              onClick={handleImageInsert}
               disabled={(!imageFile && !imageUrl) || isUploadingImage}
             >
               {isUploadingImage ? (
                 <>
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   Caricamento...
                 </>
               ) : (
@@ -626,6 +644,20 @@ export function RichTextEditor({
             </div>
           </div>
           <DialogFooter>
+            {editor?.isActive('link') && (
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => {
+                  editor.chain().focus().extendMarkRange('link').unsetLink().run();
+                  setShowLinkDialog(false);
+                  setLinkUrl('');
+                  setLinkText('');
+                }}
+              >
+                Rimuovi link
+              </Button>
+            )}
             <Button type="button" variant="outline" onClick={() => setShowLinkDialog(false)}>
               Annulla
             </Button>
@@ -682,259 +714,34 @@ export function RichTextEditor({
   );
 }
 
-// Helper functions to convert between HTML and JSON structure
-function htmlToJson(html: string): JSONContent {
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(html, 'text/html');
-  const result = nodeToJson(doc.body, []);
-  if (Array.isArray(result)) {
-    return { type: 'doc', content: result };
-  }
-  return result;
+function ToolbarButton({
+  onClick,
+  active,
+  disabled,
+  title,
+  children,
+}: {
+  onClick: () => void;
+  active?: boolean;
+  disabled?: boolean;
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <Button
+      type="button"
+      variant="ghost"
+      size="sm"
+      onClick={onClick}
+      disabled={disabled}
+      title={title}
+      className={cn('h-8 w-8 p-0', active && 'bg-primary/15 text-primary')}
+    >
+      {children}
+    </Button>
+  );
 }
 
-// Inline elements that produce marks instead of wrapper nodes
-const INLINE_MARK_TAGS = new Set(['strong', 'b', 'em', 'i', 'a', 'u']);
-
-function getMarksForTag(element: HTMLElement, tagName: string): { type: string; attrs?: Record<string, any> }[] {
-  const marks: { type: string; attrs?: Record<string, any> }[] = [];
-  if (tagName === 'strong' || tagName === 'b') marks.push({ type: 'bold' });
-  if (tagName === 'em' || tagName === 'i') marks.push({ type: 'italic' });
-  if (tagName === 'u') marks.push({ type: 'underline' });
-  if (tagName === 'a') {
-    marks.push({
-      type: 'link',
-      attrs: {
-        href: element.getAttribute('href') || '',
-        target: element.getAttribute('target') || '_blank'
-      }
-    });
-  }
-  return marks;
-}
-
-function nodeToJson(
-  node: Node,
-  inheritedMarks: { type: string; attrs?: Record<string, any> }[]
-): JSONContent | JSONContent[] {
-  // Text node — leaf with inherited marks
-  if (node.nodeType === Node.TEXT_NODE) {
-    const text = node.textContent || '';
-    if (!text) return { type: 'text', text: '' };
-    const result: JSONContent = { type: 'text', text };
-    if (inheritedMarks.length > 0) {
-      result.marks = [...inheritedMarks];
-    }
-    return result;
-  }
-
-  const element = node as HTMLElement;
-  const tagName = element.tagName?.toLowerCase();
-
-  // Handle image blocks
-  if (tagName === 'div' && element.classList.contains('editor-image-block')) {
-    const img = element.querySelector('img');
-    const caption = element.querySelector('.image-caption');
-    if (img) {
-      return {
-        type: 'image',
-        attrs: {
-          src: img.getAttribute('src') || '',
-          alt: img.getAttribute('alt') || '',
-          title: img.getAttribute('title') || caption?.textContent || '',
-          size: element.getAttribute('data-size') || img.getAttribute('data-size') || 'full',
-          align: element.getAttribute('data-align') || img.getAttribute('data-align') || 'center',
-        }
-      };
-    }
-  }
-
-  // Handle standalone images
-  if (tagName === 'img') {
-    return {
-      type: 'image',
-      attrs: {
-        src: element.getAttribute('src') || '',
-        alt: element.getAttribute('alt') || '',
-        title: element.getAttribute('title') || '',
-        size: element.getAttribute('data-size') || 'full',
-        align: element.getAttribute('data-align') || 'center',
-      }
-    };
-  }
-
-  // Handle <br> and <hr>
-  if (tagName === 'br') return { type: 'hardBreak' };
-  if (tagName === 'hr') return { type: 'horizontalRule' };
-
-  // Transparent container nodes (thead/tbody) — skip the wrapper, flatten children directly
-  if (tagName === 'thead' || tagName === 'tbody') {
-    const results: JSONContent[] = [];
-    node.childNodes.forEach(child => {
-      const childResult = nodeToJson(child, []);
-      if (Array.isArray(childResult)) {
-        results.push(...childResult);
-      } else if (childResult.type === 'tableRow') {
-        results.push(childResult);
-      }
-    });
-    return results;
-  }
-
-  // Inline mark elements (strong, em, a, u) — flatten into children with accumulated marks
-  if (INLINE_MARK_TAGS.has(tagName)) {
-    const marks = [...inheritedMarks, ...getMarksForTag(element, tagName)];
-    const results: JSONContent[] = [];
-    node.childNodes.forEach(child => {
-      const childResult = nodeToJson(child, marks);
-      if (Array.isArray(childResult)) {
-        results.push(...childResult);
-      } else {
-        results.push(childResult);
-      }
-    });
-    return results;
-  }
-
-  // Block element
-  const content: JSONContent = {
-    type: tagNameToType(tagName)
-  };
-
-  // Handle heading levels
-  if (tagName === 'h1' || tagName === 'h2' || tagName === 'h3') {
-    content.attrs = { level: parseInt(tagName.charAt(1)) };
-  }
-
-  // Process children — no inherited marks for block elements
-  const children: JSONContent[] = [];
-  node.childNodes.forEach(child => {
-    const childResult = nodeToJson(child, []);
-    if (Array.isArray(childResult)) {
-      childResult.forEach(c => {
-        if (c.type === 'image' || c.type === 'hardBreak' || c.type === 'horizontalRule' || c.text || c.content) {
-          children.push(c);
-        }
-      });
-    } else {
-      if (childResult.type === 'image' || childResult.type === 'hardBreak' || childResult.type === 'horizontalRule' || childResult.text || childResult.content) {
-        children.push(childResult);
-      }
-    }
-  });
-
-  content.content = children;
-
-  return content;
-}
-
-function tagNameToType(tagName: string): string {
-  const typeMap: Record<string, string> = {
-    'p': 'paragraph',
-    'h1': 'heading',
-    'h2': 'heading',
-    'h3': 'heading',
-    'ul': 'bulletList',
-    'ol': 'orderedList',
-    'li': 'listItem',
-    'blockquote': 'blockquote',
-    'br': 'hardBreak',
-    'hr': 'horizontalRule',
-    'body': 'doc',
-    'table': 'table',
-    'tr': 'tableRow',
-    'th': 'tableHeader',
-    'td': 'tableCell',
-  };
-  return typeMap[tagName] || 'paragraph';
-}
-
-function jsonToHtml(json: JSONContent): string {
-  if (json.type === 'text') {
-    // Wrapper text node (from inline elements like <strong>, <em>, <a>)
-    // has content children but no text — render children instead
-    if (!json.text && json.content) {
-      return json.content.map(child => jsonToHtml(child)).join('');
-    }
-    let text = json.text || '';
-    if (json.marks) {
-      json.marks.forEach(mark => {
-        if (mark.type === 'bold') text = `<strong>${text}</strong>`;
-        if (mark.type === 'italic') text = `<em>${text}</em>`;
-        if (mark.type === 'link') text = `<a href="${mark.attrs?.href || '#'}" target="${mark.attrs?.target || '_blank'}" rel="noopener noreferrer">${text}</a>`;
-      });
-    }
-    return text;
-  }
-
-  if (json.type === 'image') {
-    const src = json.attrs?.src || '';
-    const alt = json.attrs?.alt || '';
-    const title = json.attrs?.title || '';
-    const size = json.attrs?.size || 'full';
-    const align = json.attrs?.align || 'center';
-    return `<div class="editor-image-block" data-size="${size}" data-align="${align}" contenteditable="false">` +
-      `<button type="button" class="editor-image-delete" title="Rimuovi immagine">&times;</button>` +
-      `<img src="${src}" alt="${alt}" title="${title}" data-size="${size}" data-align="${align}" />` +
-      (title ? `<p class="image-caption">${title}</p>` : '') +
-      `</div>`;
-  }
-
-  if (json.type === 'horizontalRule') {
-    return '<hr>';
-  }
-
-  if (json.type === 'hardBreak') {
-    return '<br>';
-  }
-
-  const children = json.content?.map(child => jsonToHtml(child)).join('') || '';
-
-  // Table types
-  if (json.type === 'table') {
-    return `<table style="width:100%;border-collapse:collapse;margin:1em 0"><tbody>${children}</tbody></table>`;
-  }
-  if (json.type === 'tableRow') {
-    return `<tr>${children}</tr>`;
-  }
-  if (json.type === 'tableHeader') {
-    return `<th style="border:1px solid #ccc;padding:6px 10px;background:#f0f0f0;font-weight:600;text-align:left">${children}</th>`;
-  }
-  if (json.type === 'tableCell') {
-    return `<td style="border:1px solid #ccc;padding:6px 10px">${children}</td>`;
-  }
-
-  const typeToTag: Record<string, string> = {
-    'doc': 'div',
-    'paragraph': 'p',
-    'heading': `h${json.attrs?.level || 2}`,
-    'bulletList': 'ul',
-    'orderedList': 'ol',
-    'listItem': 'li',
-    'blockquote': 'blockquote',
-  };
-
-  const tag = typeToTag[json.type] || 'p';
-  return `<${tag}>${children}</${tag}>`;
-}
-
-export function jsonContentToPlainText(jsonString: string): string {
-  try {
-    const json = JSON.parse(jsonString);
-    return extractText(json);
-  } catch {
-    return jsonString;
-  }
-}
-
-function extractText(node: JSONContent): string {
-  if (node.type === 'text') {
-    return node.text || '';
-  }
-
-  if (node.content) {
-    return node.content.map(child => extractText(child)).join(' ');
-  }
-
-  return '';
+function Divider() {
+  return <div className="mx-1 h-6 w-px bg-border" />;
 }

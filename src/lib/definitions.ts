@@ -54,6 +54,9 @@ export type Project = {
     value: string;
   }[];
   highlights?: string[];
+  challenge?: string;
+  solution?: string;
+  results?: string;
   year?: string;
   published: boolean;
   createdAt: string;

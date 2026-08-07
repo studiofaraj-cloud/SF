@@ -4,7 +4,7 @@
 import { useState, useActionState, useEffect } from 'react';
 import Link from 'next/link';
 import { useFormStatus } from 'react-dom';
-import { ChevronLeft, PlusCircle, Plus, X, ExternalLink, Github, Code, Award, TrendingUp } from 'lucide-react';
+import { ChevronLeft, PlusCircle, Plus, X, ExternalLink, Github, Code, Award, TrendingUp, Target, Lightbulb, Trophy, BookOpenCheck } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -165,6 +165,8 @@ export default function CreateProjectPage() {
                   id="description"
                   name="description"
                   placeholder="Un breve riassunto del tuo progetto"
+                  autoResize
+                  className="min-h-[120px]"
                   required
                 />
                  {state.errors?.description && <p className="text-sm text-destructive">{state.errors.description[0]}</p>}
@@ -333,6 +335,59 @@ export default function CreateProjectPage() {
                 <Plus className="w-4 h-4 mr-2" />
                 Aggiungi Punto di Forza
               </Button>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <BookOpenCheck className="w-4 h-4" />
+                Case Study
+              </CardTitle>
+              <p className="text-sm text-muted-foreground">
+                Racconta il progetto come case study: sfida, soluzione e risultati. Testo semplice, mostrato come sezioni sulla pagina pubblica.
+              </p>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="challenge" className="flex items-center gap-2">
+                  <Target className="w-4 h-4 text-violet-500" />
+                  La Sfida
+                </Label>
+                <Textarea
+                  id="challenge"
+                  name="challenge"
+                  rows={4}
+                  autoResize
+                  placeholder="Qual era il problema o l'obiettivo del cliente?"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="solution" className="flex items-center gap-2">
+                  <Lightbulb className="w-4 h-4 text-violet-500" />
+                  La Soluzione
+                </Label>
+                <Textarea
+                  id="solution"
+                  name="solution"
+                  rows={4}
+                  autoResize
+                  placeholder="Come avete affrontato il problema? Approccio, tecnologie, processo."
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="results" className="flex items-center gap-2">
+                  <Trophy className="w-4 h-4 text-violet-500" />
+                  I Risultati
+                </Label>
+                <Textarea
+                  id="results"
+                  name="results"
+                  rows={4}
+                  autoResize
+                  placeholder="Quali risultati ha ottenuto il cliente? Impatto e benefici."
+                />
+              </div>
             </CardContent>
           </Card>
 

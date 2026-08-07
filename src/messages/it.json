@@ -1880,6 +1880,32 @@
         "description": "Contattaci per discutere del tuo prossimo progetto e scoprire come possiamo trasformare le tue idee in realtà.",
         "button": "Contattaci"
       }
+    },
+    "detail": {
+      "project": "Progetto",
+      "home": "Home",
+      "projects": "Progetti",
+      "completedOn": "Completato il",
+      "client": "Cliente",
+      "year": "Anno",
+      "viewProject": "Vedi Progetto",
+      "viewCode": "Codice",
+      "keyResults": "Risultati Chiave",
+      "challenge": "La Sfida",
+      "solution": "La Soluzione",
+      "results": "I Risultati",
+      "highlights": "Punti di Forza",
+      "techStack": "Stack Tecnologico",
+      "gallery": "Galleria",
+      "backToProjects": "Tutti i Progetti",
+      "relatedBadge": "Scopri altri",
+      "relatedTitle": "Altri Progetti",
+      "relatedView": "Scopri",
+      "factsTitle": "Dettagli",
+      "categoryLabel": "Categoria",
+      "ctaTitle": "Hai un progetto in mente?",
+      "ctaText": "Trasformiamo la tua idea in un prodotto digitale su misura. Parliamone.",
+      "ctaButton": "Parliamone"
     }
   },
   "blog": {

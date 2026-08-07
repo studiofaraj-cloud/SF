@@ -97,6 +97,17 @@ export default async function ProjectPostPage({ params }: Props) {
 
   const postUrl = `${siteConfig.url}/${currentLocale}/projects/${slug}`;
 
+  // Full image set for structured data (featured + gallery, deduped)
+  const images = Array.from(
+    new Set([project.featuredImage, ...(project.gallery || [])].filter(Boolean))
+  );
+  const imageValue = images.length > 0 ? images : siteConfig.ogImage;
+
+  // Indexable case-study narrative folded into the schema
+  const caseStudyText = [project.challenge, project.solution, project.results]
+    .filter(Boolean)
+    .join('\n\n');
+
   // Structured data
   const structuredData = {
     '@context': 'https://schema.org',
@@ -104,7 +115,9 @@ export default async function ProjectPostPage({ params }: Props) {
     name: project.title,
     description: project.description,
     url: postUrl,
-    image: project.featuredImage || siteConfig.ogImage,
+    mainEntityOfPage: postUrl,
+    image: imageValue,
+    datePublished: project.createdAt,
     dateCreated: project.createdAt,
     dateModified: project.updatedAt,
     author: { '@type': 'Organization', name: siteConfig.name },
@@ -113,6 +126,7 @@ export default async function ProjectPostPage({ params }: Props) {
       name: siteConfig.name,
       logo: { '@type': 'ImageObject', url: `${siteConfig.url}/assets/logo.png` },
     },
+    ...(caseStudyText ? { abstract: caseStudyText } : {}),
     ...(project.technologies ? { keywords: project.technologies.join(', ') } : {}),
   };
 
