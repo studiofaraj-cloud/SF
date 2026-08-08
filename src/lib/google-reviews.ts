@@ -11,6 +11,7 @@
  */
 
 import 'server-only';
+import { cache } from 'react';
 
 export interface GoogleReview {
   authorDisplayName: string;
@@ -128,7 +129,7 @@ async function fetchFromPlacesAPI(locale = 'it'): Promise<{ reviews: GoogleRevie
 // ---------------------------------------------------------------------------
 // Main export — used by TestimonialsServer
 // ---------------------------------------------------------------------------
-export async function fetchGoogleReviews(locale = 'it'): Promise<PlaceSummary> {
+async function fetchGoogleReviewsUncached(locale = 'it'): Promise<PlaceSummary> {
   // 1. Try Firestore first (no review cap, admin-managed)
   const firestoreReviews = await fetchFromFirestore();
   if (firestoreReviews.length > 0) {
@@ -159,6 +160,35 @@ export async function fetchGoogleReviews(locale = 'it'): Promise<PlaceSummary> {
   // 3. Total failure → hardcoded data
   console.warn('[GoogleReviews] ALL fetches failed. Falling back to hardcoded data.');
   return hardcodedFallback();
+}
+
+/**
+ * Request-scoped memoization. The homepage needs this twice per render — once
+ * for the testimonials carousel and once to build the LocalBusiness
+ * aggregateRating — and without cache() that is two identical Firestore
+ * round-trips on every request.
+ */
+export const fetchGoogleReviews = cache(fetchGoogleReviewsUncached);
+
+/**
+ * Real rating for schema.org `aggregateRating`, or null when we don't have one.
+ *
+ * Returns null unless the numbers came from a live source AND there is at least
+ * one actual review: the hardcoded fallback reports rating 5 / 0 ratings with
+ * placeholder authors, and emitting that as structured data would be a
+ * fabricated review snippet — the exact structured-data policy violation this
+ * replaced. No data means no aggregateRating node, not an invented one.
+ */
+export async function getAggregateRating(
+  locale = 'it',
+): Promise<{ ratingValue: number; reviewCount: number } | null> {
+  try {
+    const place = await fetchGoogleReviews(locale);
+    if (!place.isLive || place.totalRatings < 1) return null;
+    return { ratingValue: place.rating, reviewCount: place.totalRatings };
+  } catch {
+    return null;
+  }
 }
 
 // ---------------------------------------------------------------------------

@@ -32,6 +32,7 @@ import { Badge } from '@/components/ui/badge';
 import { generateMetadata as generateSEOMetadata, siteConfig } from '@/lib/seo';
 import { StructuredDataServer } from '@/components/seo/structured-data-server';
 import { generateStructuredDataLocalBusiness } from '@/lib/seo';
+import { getAggregateRating } from '@/lib/google-reviews';
 import { Metadata } from 'next';
 import { getTranslations, getLocale, setRequestLocale } from 'next-intl/server';
 import { getLocalizedPath } from '@/lib/i18n-helpers';
@@ -85,7 +86,12 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
   // Enable static rendering by setting the request locale
   setRequestLocale(currentLocale);
   
-  const localBusinessData = generateStructuredDataLocalBusiness(currentLocale);
+  // Real review aggregate, or null when there is no live data — in which case
+  // the schema simply omits aggregateRating rather than inventing one.
+  // fetchGoogleReviews is request-memoized, so this shares the fetch with the
+  // TestimonialsServer section below instead of hitting Firestore twice.
+  const aggregateRating = await getAggregateRating(currentLocale);
+  const localBusinessData = generateStructuredDataLocalBusiness(currentLocale, aggregateRating);
   
   // Safely get locale and translations with error handling
   let locale: string;

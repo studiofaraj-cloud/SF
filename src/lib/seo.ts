@@ -378,12 +378,9 @@ export function generateStructuredDataProfessionalService(locale: Locale = 'it')
       { '@type': 'Place', name: locale === 'it' ? 'Unione Europea' : 'European Union' },
     ],
     availableLanguage: ['Italian', 'English'],
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '5',
-      reviewCount: '12',
-      bestRating: '5',
-    },
+    // No aggregateRating: it was hardcoded to 5 stars from 12 reviews here too.
+    // If this builder is ever wired up, take the rating from
+    // getAggregateRating() the way generateStructuredDataLocalBusiness does.
   };
 }
 
@@ -407,13 +404,28 @@ export function generateStructuredDataWebSite(locale: Locale = 'it') {
   };
 }
 
+/** Real, measured review aggregate. Never synthesise one. */
+export interface AggregateRatingInput {
+  ratingValue: number;
+  reviewCount: number;
+}
+
 /**
  * Combined LocalBusiness + ProfessionalService schema for the homepage.
  * Schema.org allows multi-type via array; this merges what was previously two
  * separate JSON-LD blocks (LocalBusiness on home + ProfessionalService on every
  * page in the layout) into one node — saves ~3KB on every HTML response.
+ *
+ * `rating` must come from `getAggregateRating()` in src/lib/google-reviews.ts,
+ * which returns null when there is no live data. Omit the node rather than
+ * inventing numbers: this used to hardcode 5 stars from 12 reviews on every
+ * page regardless of reality, which is a structured-data policy violation and
+ * risks a manual action that would strip every rich result on the domain.
  */
-export function generateStructuredDataLocalBusiness(locale: Locale = 'it') {
+export function generateStructuredDataLocalBusiness(
+  locale: Locale = 'it',
+  rating?: AggregateRatingInput | null,
+) {
   const baseUrl = `${siteConfig.url}/${locale}`;
   return {
     '@context': 'https://schema.org',
@@ -474,12 +486,15 @@ export function generateStructuredDataLocalBusiness(locale: Locale = 'it') {
       'https://www.linkedin.com/company/studiofaraj',
       'https://www.facebook.com/studiofaraj',
     ],
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '5',
-      reviewCount: '12',
-      bestRating: '5',
-    },
+    // Only present when real review data was fetched — see the note above.
+    ...(rating && {
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: String(rating.ratingValue),
+        reviewCount: String(rating.reviewCount),
+        bestRating: '5',
+      },
+    }),
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
       name: locale === 'it' ? 'Servizi di Sviluppo Web Full-Stack' : 'Full-Stack Web Development Services',
