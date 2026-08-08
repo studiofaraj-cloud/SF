@@ -84,6 +84,19 @@ export interface SEOProps {
   url?: string;
   locale?: Locale;
   alternateUrls?: Record<Locale, string>;
+  /**
+   * Set for content that exists in ONE language but is reachable under both
+   * locale prefixes — blog posts and projects, whose text comes from a single
+   * set of Firestore fields with no per-locale variant. /en/{slug} serves the
+   * exact same Italian document as /it/{slug}.
+   *
+   * When true, both URLs canonicalise to the default-locale one and no hreflang
+   * pair is emitted. Cross-language canonical is normally wrong, but these pages
+   * are not translations of each other — they are literally the same document at
+   * two URLs, which is exactly what canonical is for. Claiming an hreflang pair
+   * here tells Google a translation exists when it doesn't.
+   */
+  defaultLocaleOnly?: boolean;
   type?: 'website' | 'article' | 'profile';
   publishedTime?: string;
   modifiedTime?: string;
@@ -101,6 +114,7 @@ export function generateMetadata({
   url,
   locale = 'it',
   alternateUrls,
+  defaultLocaleOnly = false,
   type = 'website',
   publishedTime,
   modifiedTime,
@@ -142,14 +156,23 @@ export function generateMetadata({
     enHref = stripTrailing(`${siteConfig.url}/en${pathAfterLocale}`);
   }
 
-  const alternates: Metadata['alternates'] = {
-    canonical: canonicalUrl,
-    languages: {
-      'it-IT': itHref,
-      'en-US': enHref,
-      'x-default': itHref,
-    },
-  };
+  // Single-language content: collapse both locale URLs onto the default-locale
+  // one and emit no hreflang, rather than advertising a translation that does
+  // not exist. See `defaultLocaleOnly` in SEOProps.
+  // og:url follows the canonical — a share of the /en URL should resolve to the
+  // same page Google indexes, not to the duplicate we point away from.
+  const resolvedCanonical = defaultLocaleOnly ? itHref : canonicalUrl;
+
+  const alternates: Metadata['alternates'] = defaultLocaleOnly
+    ? { canonical: itHref }
+    : {
+        canonical: canonicalUrl,
+        languages: {
+          'it-IT': itHref,
+          'en-US': enHref,
+          'x-default': itHref,
+        },
+      };
   
   const metadata: Metadata = {
     title: fullTitle,
@@ -172,7 +195,7 @@ export function generateMetadata({
     openGraph: {
       type: type === 'article' ? 'article' : 'website',
       locale: config.locale,
-      url: canonicalUrl,
+      url: resolvedCanonical,
       title: fullTitle,
       description: fullDescription,
       siteName: siteConfig.name,

@@ -5,6 +5,13 @@ interface GradientTextProps {
   className?: string;
   colors?: string[];
   animationSpeed?: number;
+  /**
+   * Wrapper element. Defaults to 'div'; pass 'span' when nesting inside a
+   * heading — <h1> only accepts phrasing content, so a div child is invalid
+   * markup. Used by the service pages, whose headline is one <h1> split across
+   * a gradient line and a plain line.
+   */
+  as?: 'div' | 'span';
 }
 
 export default function GradientText({
@@ -12,18 +19,20 @@ export default function GradientText({
   className = '',
   colors = ['#ffaa40', '#9c40ff', '#ffaa40'],
   animationSpeed = 8,
+  as: Wrapper = 'div',
 }: GradientTextProps) {
+  const Inner = Wrapper === 'span' ? 'span' : 'div';
   const gradientStyle = {
     backgroundImage: `linear-gradient(to right, ${colors.join(', ')})`,
     animationDuration: `${animationSpeed}s`
   };
 
   return (
-    <div
+    <Wrapper
       className={`relative mx-auto flex max-w-fit flex-row items-center justify-center font-medium overflow-hidden ${className}`}
       suppressHydrationWarning
     >
-      <div
+      <Inner
         className="inline-block relative text-transparent bg-cover bg-clip-text animate-gradient"
         style={{
           ...gradientStyle,
@@ -34,7 +43,7 @@ export default function GradientText({
         suppressHydrationWarning
       >
         {children}
-      </div>
-    </div>
+      </Inner>
+    </Wrapper>
   );
 }

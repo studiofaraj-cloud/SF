@@ -79,18 +79,19 @@ export default function ManutenzionePage() {
               {t('badge')}
             </Badge>
 
-            <div className="mb-4 sm:mb-6">
-              <GradientText 
+            <h1 className="mb-4 sm:mb-6 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight">
+              <GradientText
+                as="span"
                 colors={['#f97316', '#f59e0b', '#f97316']}
                 animationSpeed={4}
                 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight"
               >
                 {t('title')}
               </GradientText>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-foreground mt-1">
+              <span className="block text-foreground mt-1">
                 {t('titleHighlight')}
-              </h1>
-            </div>
+              </span>
+            </h1>
 
             <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-8 leading-relaxed">
               {t('subtitle')} 

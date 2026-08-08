@@ -77,18 +77,21 @@ export default function SviluppoWebPage() {
                 {t('hero.badge')}
               </Badge>
 
-              <div className="mb-5 sm:mb-6 [&_.animate-gradient]:!inline [&>div:first-child]:lg:!mx-0 [&>div:first-child]:lg:!justify-start">
+              {/* Child selectors target span, not div: GradientText renders a
+                  span here so it can be nested inside the <h1>. */}
+              <h1 className="mb-5 sm:mb-6 text-4xl sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl font-bold tracking-tight leading-[1.05] [&_.animate-gradient]:!inline [&>span:first-child]:lg:!mx-0 [&>span:first-child]:lg:!justify-start">
                 <GradientText
+                  as="span"
                   colors={['#3b82f6', '#06b6d4', '#3b82f6']}
                   animationSpeed={4}
                   className="text-4xl sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl font-bold tracking-tight leading-[1.05]"
                 >
                   {t('hero.titleLine1')}
                 </GradientText>
-                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-foreground mt-1 leading-[1.05]">
+                <span className="block text-foreground mt-1">
                   {t('hero.titleLine2')}
-                </h1>
-              </div>
+                </span>
+              </h1>
 
               <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto lg:mx-0 mb-8 leading-relaxed">
                 {t('hero.subtitle')}

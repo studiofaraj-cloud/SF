@@ -66,6 +66,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       it: `${siteConfig.url}/it/projects/${slug}`,
       en: `${siteConfig.url}/en/projects/${slug}`,
     },
+    // A project has one set of Firestore text fields, so /en/projects/{slug}
+    // serves the identical document as /it/projects/{slug}. Canonicalise both
+    // to the Italian URL instead of claiming a translation exists.
+    defaultLocaleOnly: true,
   });
 }
 

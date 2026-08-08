@@ -44,6 +44,34 @@ export interface UrlEntryOptions {
  * each emission carries the full hreflang set so Google understands the
  * relationship between language variants.
  */
+/**
+ * Render a single `<url>` entry for content that exists in ONE language only —
+ * blog posts and projects, whose text comes from a single set of Firestore
+ * fields with no per-locale variant.
+ *
+ * Emits just the default-locale URL, with no hreflang alternates. Previously
+ * these were emitted once per locale, so the sitemap submitted ~20 /en URLs
+ * that served identical Italian text and annotated them as English
+ * translations. The pages themselves now canonicalise /en -> /it (see
+ * `defaultLocaleOnly` in src/lib/seo.ts); this keeps the sitemap consistent
+ * with that instead of asking Google to crawl URLs we have canonicalised away.
+ */
+export function renderDefaultLocaleUrl({
+  path,
+  lastmod,
+  changefreq,
+  priority,
+}: UrlEntryOptions): string {
+  const optional =
+    (changefreq ? `      <changefreq>${changefreq}</changefreq>\n` : '') +
+    (priority ? `      <priority>${priority}</priority>\n` : '');
+
+  return `    <url>
+      <loc>${xmlEscape(makeUrl(path, DEFAULT_LOCALE))}</loc>
+      <lastmod>${lastmod}</lastmod>
+${optional}    </url>`;
+}
+
 export function renderLocalizedUrl(
   { path, lastmod, changefreq, priority }: UrlEntryOptions,
   locale: string,

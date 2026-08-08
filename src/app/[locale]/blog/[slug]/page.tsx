@@ -79,6 +79,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     url: baseUrl,
     locale: currentLocale,
     alternateUrls,
+    // A post has one set of Firestore text fields, so /en/blog/{slug} serves the
+    // identical document as /it/blog/{slug}. Canonicalise both to the Italian
+    // URL instead of claiming a translation exists.
+    defaultLocaleOnly: true,
     type: 'article',
     publishedTime: blog.createdAt,
     modifiedTime: blog.updatedAt,
