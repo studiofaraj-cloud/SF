@@ -6,6 +6,7 @@ import {
 import { locales } from '@/i18n/config';
 import {
   renderLocalizedUrl,
+  renderDefaultLocaleUrl,
   wrapUrlset,
   SITEMAP_HEADERS,
   maxLastmod,
@@ -107,6 +108,20 @@ export async function GET() {
     { url: '/servizi/consulenza', priority: '0.8', changefreq: 'monthly' },
   ];
 
+  /**
+   * Italian-only pages. These call notFound() for any locale but `it`, so they
+   * must be emitted once, without hreflang alternates pointing at URLs that 404.
+   *
+   * They target Italian-language queries on Italian slugs ("quanto costa un sito
+   * web", "sito web impresa ristrutturazioni"); an English twin would be a thin
+   * duplicate aimed at a market this domain has no realistic chance in.
+   */
+  const italianOnlyPages: StaticPage[] = [
+    { url: '/quanto-costa-un-sito-web', priority: '0.9', changefreq: 'monthly' },
+    { url: '/siti-web/edilizia', priority: '0.9', changefreq: 'monthly' },
+    { url: '/siti-web/imprese-di-ristrutturazione', priority: '0.8', changefreq: 'monthly' },
+  ];
+
   const all = [...staticPages, ...servicePages];
 
   const blocks: string[] = [];
@@ -125,6 +140,17 @@ export async function GET() {
         ),
       );
     }
+  }
+
+  for (const page of italianOnlyPages) {
+    blocks.push(
+      renderDefaultLocaleUrl({
+        path: page.url,
+        lastmod: page.computedLastmod ?? STATIC_PAGE_LASTMOD,
+        changefreq: page.changefreq,
+        priority: page.priority,
+      }),
+    );
   }
 
   return new Response(wrapUrlset(blocks), { headers: SITEMAP_HEADERS });
