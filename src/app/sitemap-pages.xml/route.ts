@@ -120,6 +120,10 @@ export async function GET() {
     { url: '/quanto-costa-un-sito-web', priority: '0.9', changefreq: 'monthly' },
     { url: '/siti-web/edilizia', priority: '0.9', changefreq: 'monthly' },
     { url: '/siti-web/imprese-di-ristrutturazione', priority: '0.8', changefreq: 'monthly' },
+    { url: '/siti-web/imprese-edili', priority: '0.8', changefreq: 'monthly' },
+    { url: '/siti-web/geometri', priority: '0.8', changefreq: 'monthly' },
+    { url: '/dall-idea-al-progetto', priority: '0.8', changefreq: 'monthly' },
+    { url: '/servizi/software-gestionale', priority: '0.8', changefreq: 'monthly' },
   ];
 
   const all = [...staticPages, ...servicePages];

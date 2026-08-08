@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import {
   Code, ShoppingCart, Palette, LineChart, Bot, Wrench, Server, Lightbulb,
-  ArrowRight,
+  Boxes, ArrowRight,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -43,6 +43,22 @@ const SERVICES = [
   { slug: 'manutenzione',   key: 'maintenance',    Icon: Wrench,       accent: 'text-orange-500  bg-orange-500/10' },
   { slug: 'hosting-cloud',  key: 'hostingCloud',   Icon: Server,       accent: 'text-indigo-500  bg-indigo-500/10' },
   { slug: 'consulenza',     key: 'consulting',     Icon: Lightbulb,    accent: 'text-fuchsia-500 bg-fuchsia-500/10' },
+] as const;
+
+/**
+ * Italian-only service pages that have no entry in the `services` message
+ * namespace, so their copy lives here. They notFound() outside `it`, hence the
+ * locale guard where they are merged in.
+ */
+const IT_ONLY_SERVICES = [
+  {
+    slug: 'software-gestionale',
+    Icon: Boxes,
+    accent: 'text-cyan-500 bg-cyan-500/10',
+    label: 'Software gestionale su misura',
+    subtitle:
+      'Gestionali costruiti sul processo reale: commesse, cantieri, rapportini e avanzamento lavori. Nessun canone per utente, codice di proprietà del cliente.',
+  },
 ] as const;
 
 const COPY = {
@@ -128,15 +144,29 @@ export default async function ServicesHubPage({ params }: Props) {
       .replace(/\s+([,.])/g, '$1')
       .trim();
 
-  const items = SERVICES.map(({ slug, key, Icon, accent }) => ({
-    slug,
-    Icon,
-    accent,
-    href: getLocalizedPath(`/servizi/${slug}`, lang),
-    label: t(`${key}.label`),
-    subtitle: fullSubtitle(key),
-    url: `${siteConfig.url}/${lang}/servizi/${slug}`,
-  }));
+  const items = [
+    ...SERVICES.map(({ slug, key, Icon, accent }) => ({
+      slug,
+      Icon,
+      accent,
+      href: getLocalizedPath(`/servizi/${slug}`, lang),
+      label: t(`${key}.label`),
+      subtitle: fullSubtitle(key),
+      url: `${siteConfig.url}/${lang}/servizi/${slug}`,
+    })),
+    // Only on /it — these pages 404 on any other locale.
+    ...(lang === 'it'
+      ? IT_ONLY_SERVICES.map(({ slug, Icon, accent, label, subtitle }) => ({
+          slug,
+          Icon,
+          accent,
+          href: getLocalizedPath(`/servizi/${slug}`, lang),
+          label,
+          subtitle,
+          url: `${siteConfig.url}/it/servizi/${slug}`,
+        }))
+      : []),
+  ];
 
   const jsonLd = [
     generateStructuredDataBreadcrumbList([

@@ -50,6 +50,18 @@ const TRADE_PAGES: Array<{ name: string; path: string; blurb: string }> = [
     blurb:
       'Ristrutturazioni chiavi in mano, finiture, rifacimento bagni. Il prima-dopo è l\'argomento di vendita: il sito deve essere costruito attorno alla galleria lavori.',
   },
+  {
+    name: 'Imprese edili e di costruzioni',
+    path: '/siti-web/imprese-edili',
+    blurb:
+      'Chi arriva sul sito vi sta valutando. Attestazione SOA, certificazioni, cantieri conclusi con importi — e la pagina lavoro che porta candidature.',
+  },
+  {
+    name: 'Geometri e studi tecnici',
+    path: '/siti-web/geometri',
+    blurb:
+      'I clienti cercano l\'APE o la voltura, non «geometra». Una pagina per pratica, credenziali in evidenza, rilievi e laser scanner mostrati come si deve.',
+  },
 ];
 
 const WHY = [
