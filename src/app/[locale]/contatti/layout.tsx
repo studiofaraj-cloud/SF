@@ -9,7 +9,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   
   const seoContent = {
     it: {
-      title: 'Contatti - Studio Faraj | Richiedi un Preventivo Gratuito',
+      title: 'Contatti — Richiedi un Preventivo Gratuito',
       description: 'Contatta Studio Faraj a Padova, Veneto. Richiedi un preventivo gratuito per il tuo progetto web. Siamo disponibili per consulenze e collaborazioni.',
       keywords: [
         'contatti',
@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       ],
     },
     en: {
-      title: 'Contact - Studio Faraj | Request a Free Quote',
+      title: 'Contact — Request a Free Quote',
       description: 'Contact Studio Faraj in Padova, Veneto. Request a free quote for your web project. We are available for consultations and collaborations.',
       keywords: [
         'contact',

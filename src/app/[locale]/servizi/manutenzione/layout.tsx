@@ -9,7 +9,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
   const seoContent = {
     it: {
-      title: 'Manutenzione e Supporto Web - Studio Faraj | Padova',
+      title: 'Manutenzione e Supporto Web — Padova',
       description: 'Servizi di manutenzione e supporto per siti web. Aggiornamenti, backup, sicurezza e ottimizzazione delle performance. Supporto continuo per il tuo sito.',
       keywords: [
         'manutenzione siti web',
@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       ],
     },
     en: {
-      title: 'Website Maintenance and Support - Studio Faraj | Padova',
+      title: 'Website Maintenance and Support — Padova',
       description: 'Website maintenance and support services. Updates, backups, security and performance optimization. Continuous support for your website.',
       keywords: [
         'website maintenance',

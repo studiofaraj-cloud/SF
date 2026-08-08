@@ -9,7 +9,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
   const seoContent = {
     it: {
-      title: 'AI e Automazione - Studio Faraj | Soluzioni Intelligenti',
+      title: 'AI e Automazione — Soluzioni Intelligenti',
       description: 'Integrazione intelligenza artificiale e automazione per migliorare i processi aziendali. Chatbot, sistemi di raccomandazione e automazione intelligente.',
       keywords: [
         'integrazione AI automazione siti web',
@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       ],
     },
     en: {
-      title: 'AI & Automation - Studio Faraj | Intelligent Solutions',
+      title: 'AI & Automation — Intelligent Solutions',
       description: 'Artificial intelligence and automation integration to improve business processes. Chatbots, recommendation systems and intelligent automation.',
       keywords: [
         'integrazione AI automazione siti web',

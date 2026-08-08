@@ -10,7 +10,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   
   const seoContent = {
     it: {
-      title: 'Sviluppo Web su Misura - Studio Faraj | Padova, Veneto',
+      title: 'Sviluppo Web su Misura — Padova, Veneto',
       description: 'Sviluppo web professionale e personalizzato a Padova, Veneto. Creiamo siti web moderni, responsive e performanti con le tecnologie più avanzate. Preventivo gratuito.',
       keywords: [
         'realizzazione siti web Veneto',
@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       ],
     },
     en: {
-      title: 'Custom Web Development - Studio Faraj | Padova, Veneto',
+      title: 'Custom Web Development — Padova, Veneto',
       description: 'Professional and customized web development in Padova, Veneto. We create modern, responsive and high-performance websites with the most advanced technologies. Free quote.',
       keywords: [
         'realizzazione siti web Veneto',

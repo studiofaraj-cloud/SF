@@ -9,7 +9,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
   const seoContent = {
     it: {
-      title: 'Design UI/UX Professionale - Studio Faraj | Padova',
+      title: 'Design UI/UX Professionale — Padova',
       description: 'Design UI/UX moderno e user-friendly per siti web e applicazioni. Creiamo interfacce intuitive che migliorano l\'esperienza utente e aumentano le conversioni.',
       keywords: [
         'design UI/UX',
@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       ],
     },
     en: {
-      title: 'Professional UI/UX Design - Studio Faraj | Padova',
+      title: 'Professional UI/UX Design — Padova',
       description: 'Modern and user-friendly UI/UX design for websites and applications. We create intuitive interfaces that improve user experience and increase conversions.',
       keywords: [
         'UI/UX design',

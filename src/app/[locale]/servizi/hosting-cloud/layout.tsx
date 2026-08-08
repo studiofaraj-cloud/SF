@@ -9,7 +9,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
   const seoContent = {
     it: {
-      title: 'Hosting e Cloud - Studio Faraj | Soluzioni di Hosting Professionale',
+      title: 'Hosting e Cloud — Soluzioni di Hosting Professionale',
       description: 'Servizi di hosting e cloud per siti web e applicazioni. Hosting veloce, sicuro e scalabile con supporto tecnico dedicato. Padova, Veneto.',
       keywords: [
         'sviluppo web Triveneto',
@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       ],
     },
     en: {
-      title: 'Hosting and Cloud - Studio Faraj | Professional Hosting Solutions',
+      title: 'Hosting and Cloud — Professional Hosting Solutions',
       description: 'Hosting and cloud services for websites and applications. Fast, secure and scalable hosting with dedicated technical support. Padova, Veneto.',
       keywords: [
         'sviluppo web Triveneto',

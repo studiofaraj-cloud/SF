@@ -11,7 +11,10 @@ import { CookieProvider } from '@/contexts/cookie-context';
 import { AppBody } from '@/components/site/app-body';
 import { StructuredDataServer } from '@/components/seo/structured-data-server';
 import { generateStructuredDataWebSite } from '@/lib/seo';
-import Script from 'next/script';
+import { RootHtml, sharedViewport } from '../root-html';
+
+// This is a ROOT layout: it owns <html>/<body> for the whole public site.
+export const viewport = sharedViewport;
 
 type Props = {
   children: ReactNode;
@@ -85,17 +88,11 @@ export default async function LocaleLayout({ children, params }: Props) {
   // overlap with LocalBusiness on the homepage (both share the same fields).
   const websiteData = generateStructuredDataWebSite(locale);
 
-  // Update the html lang attribute dynamically via a script
-  // The root layout has the html/body tags, so we update the lang here
+  // `lang` comes straight from the [locale] route param, so the SERVED html is
+  // correct for crawlers — no post-hydration patching, and hreflang annotations
+  // are no longer contradicted by the document's own language declaration.
   return (
-    <>
-      <Script
-        id="set-lang"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: `document.documentElement.lang = '${locale}';`,
-        }}
-      />
+    <RootHtml lang={locale}>
       <StructuredDataServer data={websiteData} />
       <ThemeProvider
         attribute="class"
@@ -117,6 +114,6 @@ export default async function LocaleLayout({ children, params }: Props) {
           </NextIntlClientProvider>
         </CookieProvider>
       </ThemeProvider>
-    </>
+    </RootHtml>
   );
 }

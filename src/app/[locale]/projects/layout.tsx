@@ -13,11 +13,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   };
   
   const seoContent = currentLocale === 'it' ? {
-    title: 'Progetti - Portfolio | Studio Faraj',
+    title: 'Progetti - Portfolio',
     description: 'Scopri i nostri progetti di sviluppo web, e-commerce e applicazioni digitali. Portfolio di successi realizzati per clienti in tutta Italia.',
     keywords: ['portfolio', 'progetti web', 'case study', 'progetti sviluppo web', 'portfolio digitale'],
   } : {
-    title: 'Projects - Portfolio | Studio Faraj',
+    title: 'Projects - Portfolio',
     description: 'Discover our web development, e-commerce and digital application projects. Portfolio of successes achieved for clients throughout Italy.',
     keywords: ['portfolio', 'web projects', 'case study', 'web development projects', 'digital portfolio'],
   };

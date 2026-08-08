@@ -15,12 +15,12 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
   const seoContent = {
     it: {
-      title: 'FAQ - Domande Frequenti | Studio Faraj',
+      title: 'FAQ - Domande Frequenti',
       description: 'Trova risposte alle domande più frequenti su sviluppo web, e-commerce, design UI/UX, SEO e servizi digitali. Studio Faraj risponde alle tue domande.',
       keywords: ['FAQ', 'domande frequenti', 'sviluppo web FAQ', 'e-commerce domande', 'preventivo sito web', 'tempi sviluppo'],
     },
     en: {
-      title: 'FAQ - Frequently Asked Questions | Studio Faraj',
+      title: 'FAQ - Frequently Asked Questions',
       description: 'Find answers to the most frequently asked questions about web development, e-commerce, UI/UX design, SEO and digital services. Studio Faraj answers your questions.',
       keywords: ['FAQ', 'frequently asked questions', 'web development FAQ', 'e-commerce questions', 'website quote', 'development timeline'],
     },

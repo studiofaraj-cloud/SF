@@ -13,11 +13,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   };
   
   const seoContent = currentLocale === 'it' ? {
-    title: 'Blog - Articoli e Guide | Studio Faraj',
+    title: 'Blog - Articoli e Guide',
     description: 'Leggi gli ultimi articoli su sviluppo web, design, SEO, e-commerce e tecnologie digitali. Guide pratiche e approfondimenti dal team di Studio Faraj.',
     keywords: ['blog sviluppo web', 'articoli web design', 'guide SEO', 'blog digitale', 'notizie web'],
   } : {
-    title: 'Blog - Articles and Guides | Studio Faraj',
+    title: 'Blog - Articles and Guides',
     description: 'Read the latest articles on web development, design, SEO, e-commerce and digital technologies. Practical guides and insights from the Studio Faraj team.',
     keywords: ['web development blog', 'web design articles', 'SEO guides', 'digital blog', 'web news'],
   };

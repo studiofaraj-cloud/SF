@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Shield, Cookie, FileText, Lock, Mail, Globe, Eye, Settings, BarChart3, Target, Zap, CheckCircle2, AlertCircle, Info } from 'lucide-react';
 
 export const metadata: Metadata = generateSEOMetadata({
-  title: 'Privacy Policy e Cookie Policy | Studio Faraj',
+  title: 'Privacy Policy e Cookie Policy',
   description: 'Privacy policy completa conforme al GDPR, cookie policy e note legali di Studio Faraj. Informazioni dettagliate sul trattamento dei dati personali e sulla gestione dei cookie.',
   keywords: [
     'privacy policy',

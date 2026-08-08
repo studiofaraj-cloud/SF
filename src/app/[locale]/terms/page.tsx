@@ -20,7 +20,7 @@ import {
 } from 'lucide-react';
 
 export const metadata: Metadata = generateSEOMetadata({
-  title: 'Termini e Condizioni | Studio Faraj',
+  title: 'Termini e Condizioni',
   description:
     'Termini e condizioni generali di utilizzo dei servizi di Studio Faraj. Leggi le condizioni che regolano il rapporto tra Studio Faraj e i propri clienti.',
   keywords: [

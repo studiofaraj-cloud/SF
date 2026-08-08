@@ -1,12 +1,22 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import type { Viewport } from 'next';
-import "@/app/globals.css";
+import '@/app/globals.css';
+import { cn } from '@/lib/utils';
+import { fontVariables } from './fonts';
 
-import { Poppins, Lora, Tomorrow } from 'next/font/google';
-import { defaultLocale } from '@/i18n/config';
-import { cn } from "@/lib/utils";
+/**
+ * The <html>/<head>/<body> shell shared by all three root layouts.
+ *
+ * Next.js requires <html> and <body> to come from a root layout, and a tree can
+ * only have one. This app has three separate trees — [locale], admin and c —
+ * because each needs its own `lang` and its own providers. Previously a single
+ * app/layout.tsx served all of them, which forced `lang` to a hardcoded constant
+ * and meant every /en page shipped `lang="it"` to crawlers, contradicting its own
+ * hreflang annotations. Each tree now owns its root layout and passes the correct
+ * `lang` here.
+ */
 
-export const viewport: Viewport = {
+export const sharedViewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
@@ -15,42 +25,9 @@ export const viewport: Viewport = {
   themeColor: '#3b82f6',
 };
 
-// Primary UI font — geometric, modern, very readable
-const poppins = Poppins({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
-  variable: '--font-poppins',
-  display: 'swap',
-  preload: true,
-  adjustFontFallback: true,
-});
-
-// Elegant serif — used for review quote text and pull-quotes
-const lora = Lora({
-  subsets: ['latin'],
-  weight: ['400', '500', '600'],
-  style: ['normal', 'italic'],
-  variable: '--font-lora',
-  display: 'swap',
-  preload: false, // non-critical, load after body font
-  adjustFontFallback: true,
-});
-
-// Brand / heading accent — keep existing
-const tomorrow = Tomorrow({
-  subsets: ['latin'],
-  weight: ['400', '700'],
-  variable: '--font-tomorrow',
-  display: 'swap',
-  preload: true,
-  adjustFontFallback: true,
-});
-
-// Root layout must have <html> and <body> tags per Next.js requirements
-// The locale-specific content is handled in [locale]/layout.tsx
-export default function RootLayout({ children }: { children: ReactNode }) {
+export function RootHtml({ lang, children }: { lang: string; children: ReactNode }) {
   return (
-    <html lang={defaultLocale} className={`${poppins.variable} ${lora.variable} ${tomorrow.variable}`} suppressHydrationWarning>
+    <html lang={lang} className={fontVariables} suppressHydrationWarning>
       <head>
         {/* DNS prefetch and preconnect for external resources */}
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
@@ -72,7 +49,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <meta name="apple-mobile-web-app-title" content="Studio Faraj" />
         <meta name="format-detection" content="telephone=no" />
       </head>
-      <body className={cn("min-h-screen bg-background font-sans antialiased")}>
+      <body className={cn('min-h-screen bg-background font-sans antialiased')}>
         {children}
       </body>
     </html>

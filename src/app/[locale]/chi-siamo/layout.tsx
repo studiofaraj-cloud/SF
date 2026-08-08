@@ -9,7 +9,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   
   const seoContent = {
     it: {
-      title: 'Chi Siamo - Studio Faraj | Il Nostro Team e la Nostra Storia',
+      title: 'Chi Siamo — Il Nostro Team e la Nostra Storia',
       description: 'Scopri Studio Faraj: un team di esperti in sviluppo web, design e marketing digitale con sede a Padova, Veneto. Professionalità, innovazione e risultati garantiti.',
       keywords: [
         'web agency Nord Est Italia',
@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       ],
     },
     en: {
-      title: 'About Us - Studio Faraj | Our Team and Our Story',
+      title: 'About Us — Our Team and Our Story',
       description: 'Discover Studio Faraj: a team of experts in web development, design and digital marketing based in Padova, Veneto. Professionalism, innovation and guaranteed results.',
       keywords: [
         'web agency Nord Est Italia',

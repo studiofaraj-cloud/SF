@@ -10,7 +10,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   
   const seoContent = {
     it: {
-      title: 'SEO e Marketing Digitale - Studio Faraj | Padova',
+      title: 'SEO e Marketing Digitale — Padova',
       description: 'Servizi SEO e marketing digitale per aumentare la visibilità online. Ottimizzazione per motori di ricerca, content marketing e campagne pubblicitarie efficaci.',
       keywords: [
         'web agency Verona',
@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       ],
     },
     en: {
-      title: 'SEO and Digital Marketing - Studio Faraj | Padova',
+      title: 'SEO and Digital Marketing — Padova',
       description: 'SEO and digital marketing services to increase online visibility. Search engine optimization, content marketing and effective advertising campaigns.',
       keywords: [
         'web agency Verona',
