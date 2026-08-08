@@ -1,6 +1,12 @@
 
 import { Metadata } from 'next';
-import { generateMetadata as generateSEOMetadata, siteConfig } from '@/lib/seo';
+import {
+  generateMetadata as generateSEOMetadata,
+  generateStructuredDataPageBreadcrumb,
+  generateStructuredDataPerson,
+  siteConfig,
+} from '@/lib/seo';
+import { StructuredDataServer } from '@/components/seo/structured-data-server';
 import { setRequestLocale } from 'next-intl/server';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -67,6 +73,33 @@ export default async function ChiSiamoLayout({
   
   // Enable static rendering by setting the request locale
   setRequestLocale(currentLocale);
-  
-  return children;
+
+  // Emitted from the layout because chi-siamo/page.tsx is a client component.
+  // Person nodes are the E-E-A-T anchor for the studio: named, credited humans
+  // rather than an anonymous brand. Kept to facts that are already on the page.
+  const pageUrl = `${siteConfig.url}/${currentLocale}/chi-siamo`;
+  const jsonLd = [
+    generateStructuredDataPageBreadcrumb(currentLocale, {
+      name: currentLocale === 'it' ? 'Chi Siamo' : 'About Us',
+      path: '/chi-siamo',
+    }),
+    generateStructuredDataPerson({
+      name: 'Hussein Faraj',
+      jobTitle: 'Founder & Full-Stack Developer',
+      image: '/assets/hussein-faraj-fondatore-studio-faraj.webp',
+      url: pageUrl,
+    }),
+    generateStructuredDataPerson({
+      name: 'Maria Elisa Midulla',
+      jobTitle: 'Co-Founder & Frontend Developer',
+      url: pageUrl,
+    }),
+  ];
+
+  return (
+    <>
+      <StructuredDataServer data={jsonLd} id="chi-siamo-schema" />
+      {children}
+    </>
+  );
 }

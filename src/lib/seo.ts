@@ -556,10 +556,14 @@ export function generateStructuredDataBlogPosting(
     image: allImages.length === 1 ? allImages[0] : allImages,
     datePublished: publishedTime,
     dateModified: modifiedTime || publishedTime,
-    author: {
-      '@type': 'Organization',
-      name: author || siteConfig.name,
-    },
+    // A named byline is attributed to a Person, not the Organization: Google's
+    // guidance on who-wrote-this leans on identifiable authors, and for a small
+    // studio that is one of the few E-E-A-T signals available. Posts with no
+    // byline stay attributed to the Organization rather than inventing one.
+    author:
+      author && author !== siteConfig.name
+        ? { '@type': 'Person', name: author }
+        : { '@type': 'Organization', name: siteConfig.name },
     publisher: {
       '@type': 'Organization',
       name: siteConfig.name,
@@ -611,6 +615,63 @@ export function generateStructuredDataArticle(
     mainEntityOfPage: {
       '@type': 'WebPage',
       '@id': url,
+    },
+  };
+}
+
+/**
+ * Breadcrumb for a normal second-level page (Home > This page).
+ *
+ * Most static pages had no BreadcrumbList at all — only the service pages,
+ * projects and blog posts did. Google uses it to render the breadcrumb trail in
+ * place of the raw URL in results, so a page without one shows a bare URL while
+ * its siblings show a readable path.
+ */
+export function generateStructuredDataPageBreadcrumb(
+  locale: Locale,
+  page: { name: string; path: string },
+) {
+  return generateStructuredDataBreadcrumbList([
+    { name: 'Home', url: `${siteConfig.url}/${locale}` },
+    { name: page.name, url: `${siteConfig.url}/${locale}${page.path}` },
+  ]);
+}
+
+/**
+ * Person schema for the people behind the studio.
+ *
+ * E-E-A-T leans on identifiable, credentialed humans, and for a small studio
+ * competing against established agencies that is one of the few trust signals
+ * available. Deliberately minimal: name, role, employer, photo and the page
+ * they appear on. Do not add credentials, awards or sameAs profiles that cannot
+ * be verified — fabricated author authority is worse than none.
+ */
+export function generateStructuredDataPerson(person: {
+  name: string;
+  jobTitle: string;
+  image?: string;
+  url: string;
+  description?: string;
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    '@id': `${siteConfig.url}#person-${person.name.toLowerCase().replace(/\s+/g, '-')}`,
+    name: person.name,
+    jobTitle: person.jobTitle,
+    url: person.url,
+    ...(person.image && { image: `${siteConfig.url}${person.image}` }),
+    ...(person.description && { description: person.description }),
+    worksFor: {
+      '@type': 'Organization',
+      name: siteConfig.name,
+      url: siteConfig.url,
+    },
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Padova',
+      addressRegion: 'Veneto',
+      addressCountry: 'IT',
     },
   };
 }

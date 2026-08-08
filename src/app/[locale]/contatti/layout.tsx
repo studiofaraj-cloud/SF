@@ -1,6 +1,11 @@
 
 import { Metadata } from 'next';
-import { generateMetadata as generateSEOMetadata, siteConfig } from '@/lib/seo';
+import {
+  generateMetadata as generateSEOMetadata,
+  generateStructuredDataPageBreadcrumb,
+  siteConfig,
+} from '@/lib/seo';
+import { StructuredDataServer } from '@/components/seo/structured-data-server';
 import { setRequestLocale } from 'next-intl/server';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -63,6 +68,18 @@ export default async function ContattiLayout({
   
   // Enable static rendering by setting the request locale
   setRequestLocale(currentLocale);
-  
-  return children;
+
+  // Emitted here because contatti/page.tsx is a client component.
+  return (
+    <>
+      <StructuredDataServer
+        data={generateStructuredDataPageBreadcrumb(currentLocale, {
+          name: currentLocale === 'it' ? 'Contatti' : 'Contact',
+          path: '/contatti',
+        })}
+        id="contatti-breadcrumb"
+      />
+      {children}
+    </>
+  );
 }

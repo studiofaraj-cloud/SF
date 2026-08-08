@@ -5,7 +5,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { Button } from '@/components/ui/button';
 import { StructuredDataServer } from '@/components/seo/structured-data-server';
-import { generateMetadata as generateSEOMetadata, siteConfig, generateStructuredDataFAQPage } from '@/lib/seo';
+import { generateMetadata as generateSEOMetadata, siteConfig, generateStructuredDataFAQPage, generateStructuredDataPageBreadcrumb } from '@/lib/seo';
 import { getLocalizedPath } from '@/lib/i18n-helpers';
 import { FaqAccordion, type FaqItem, type FaqCategoryKey } from '@/components/site/faq-accordion';
 
@@ -79,7 +79,15 @@ export default async function FaqPage({ params }: { params: Promise<{ locale: st
 
   return (
     <div className="bg-background text-foreground">
-      <StructuredDataServer data={faqStructuredData} />
+      <StructuredDataServer
+        data={[
+          faqStructuredData,
+          generateStructuredDataPageBreadcrumb(currentLocale, {
+            name: 'FAQ',
+            path: '/faq',
+          }),
+        ]}
+      />
 
       {/* ============================================
           HERO — gradient + blur orbs + headline

@@ -9,6 +9,7 @@ import { ThemeProvider } from "next-themes";
 import { CookieConsent } from '@/components/site/cookie-consent';
 import { CookieProvider } from '@/contexts/cookie-context';
 import { AppBody } from '@/components/site/app-body';
+import { GoogleAnalytics } from '@/components/analytics/google-analytics';
 import { StructuredDataServer } from '@/components/seo/structured-data-server';
 import { generateStructuredDataWebSite } from '@/lib/seo';
 import { RootHtml, sharedViewport } from '../root-html';
@@ -111,6 +112,9 @@ export default async function LocaleLayout({ children, params }: Props) {
             </AppBody>
             <Toaster />
             <CookieConsent />
+            {/* No-ops unless NEXT_PUBLIC_GA_MEASUREMENT_ID is set AND the
+                visitor granted the analytics cookie category. */}
+            <GoogleAnalytics />
           </NextIntlClientProvider>
         </CookieProvider>
       </ThemeProvider>

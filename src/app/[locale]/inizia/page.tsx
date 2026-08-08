@@ -2,6 +2,8 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { ArrowRight, ClipboardList, MessagesSquare, FolderOpen, Receipt, UserPlus, FileText, Rocket } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { StructuredDataServer } from '@/components/seo/structured-data-server';
+import { generateStructuredDataPageBreadcrumb } from '@/lib/seo';
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -67,6 +69,13 @@ export default async function StartPage({ params }: Props) {
 
   return (
     <main className="relative overflow-hidden">
+      <StructuredDataServer
+        data={generateStructuredDataPageBreadcrumb(en ? 'en' : 'it', {
+          name: en ? 'Start your project' : 'Inizia il tuo progetto',
+          path: '/inizia',
+        })}
+        id="inizia-breadcrumb"
+      />
       {/* Hero */}
       <section className="relative px-4 pb-16 pt-28 md:pt-36">
         <div className="pointer-events-none absolute inset-0 overflow-hidden">

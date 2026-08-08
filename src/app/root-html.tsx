@@ -48,6 +48,21 @@ export function RootHtml({ lang, children }: { lang: string; children: ReactNode
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="Studio Faraj" />
         <meta name="format-detection" content="telephone=no" />
+        {/* Search engine ownership verification. Both omitted until the env vars
+            are set, so no empty verification tags ship. Paste the token value
+            only — not the whole <meta> tag Google/Bing show you. */}
+        {process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION && (
+          <meta
+            name="google-site-verification"
+            content={process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION}
+          />
+        )}
+        {process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION && (
+          <meta
+            name="msvalidate.01"
+            content={process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION}
+          />
+        )}
       </head>
       <body className={cn('min-h-screen bg-background font-sans antialiased')}>
         {children}

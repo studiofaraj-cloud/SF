@@ -20,6 +20,7 @@ import { useCookiePreferences } from '@/contexts/cookie-context';
 import { useParams } from 'next/navigation';
 import { defaultLocale, type Locale } from '@/i18n/config';
 import { getLocalizedPath } from '@/lib/i18n-helpers';
+import { COOKIE_CONSENT_CHANGED_EVENT } from '@/lib/cookie-preferences';
 
 export interface CookiePreferences {
   essential: boolean;
@@ -34,6 +35,15 @@ const defaultPreferences: CookiePreferences = {
   marketing: false,
   functional: false,
 };
+
+/**
+ * Announce that consent was saved. Writing to localStorage does not fire a
+ * `storage` event in the same tab, so consent-gated scripts (GA4) would
+ * otherwise stay dormant until the next page load.
+ */
+function notifyConsentChanged() {
+  window.dispatchEvent(new Event(COOKIE_CONSENT_CHANGED_EVENT));
+}
 
 export function CookieConsent() {
   const [showBanner, setShowBanner] = useState(false);
@@ -76,6 +86,7 @@ export function CookieConsent() {
       localStorage.setItem('cookie_preferences', JSON.stringify(defaultPreferences));
       localStorage.setItem('cookie_consent', 'refused');
     }
+    notifyConsentChanged();
     setShowBanner(false);
   };
 
@@ -87,6 +98,7 @@ export function CookieConsent() {
   const handleSavePreferences = () => {
     localStorage.setItem('cookie_preferences', JSON.stringify(preferences));
     localStorage.setItem('cookie_consent', 'custom');
+    notifyConsentChanged();
     setShowBanner(false);
     setShowPreferences(false);
   };

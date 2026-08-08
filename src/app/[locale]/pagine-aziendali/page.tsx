@@ -1,5 +1,9 @@
 import type { Metadata } from 'next';
-import { generateMetadata as buildSEOMetadata, siteConfig } from '@/lib/seo';
+import {
+  generateMetadata as buildSEOMetadata,
+  generateStructuredDataPageBreadcrumb,
+  siteConfig,
+} from '@/lib/seo';
 import { pick, t, type Lang } from './translations';
 import { PaginaAziendaliBody } from './body';
 
@@ -64,11 +68,20 @@ export default async function PagineAziendaliPage({
     })),
   };
 
+  const breadcrumb = generateStructuredDataPageBreadcrumb(lang, {
+    name: lang === 'it' ? 'Pagine Aziendali' : 'Business Pages',
+    path: '/pagine-aziendali',
+  });
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
       />
       <PaginaAziendaliBody lang={lang} />
     </>
