@@ -1,6 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight, MapPin, Star } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
+import { ArrowRight, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { FirebaseImage } from '@/components/ui/firebase-image';
 import { HeroRotatingWord } from '@/components/site/hero-rotating-word';
@@ -44,8 +43,6 @@ const ROTATING_EN = ['grow', 'convert', 'scale', 'last'] as const;
 
 const COPY = {
   it: {
-    badge: 'Padova, IT',
-    since: 'Studio di sviluppo web',
     h1a: 'Agenzia web',
     h1b: 'a Padova.',
     leadBefore: 'Siti, e-commerce e piattaforme che',
@@ -58,8 +55,6 @@ const COPY = {
     allWorks: 'Tutti i progetti',
   },
   en: {
-    badge: 'Padova, Italy',
-    since: 'Web development studio',
     h1a: 'Web agency',
     h1b: 'in Padova, Italy.',
     leadBefore: 'Websites, e-commerce and platforms that',
@@ -131,13 +126,6 @@ export async function HeroSection({ locale }: { locale: Locale }) {
               inside a 335px grid on mobile and pushed the hero out of the
               viewport. min-w-0 lets the track shrink so truncation can do its job. */}
           <div className="min-w-0">
-            <Badge className="badge-futuristic mb-6 gap-2 px-4 py-2 text-sm">
-              <span>{copy.since}</span>
-              <span className="opacity-50">·</span>
-              <MapPin className="h-3.5 w-3.5 text-primary" />
-              <span>{copy.badge}</span>
-            </Badge>
-
             {/* The page's only <h1>. Static, keyword-bearing, in the HTML. */}
             <h1 className="text-5xl font-bold leading-[1.03] tracking-tight sm:text-6xl lg:text-7xl">
               {copy.h1a}
