@@ -102,14 +102,27 @@ export async function HeroSection({ locale }: { locale: Locale }) {
       <div className="pointer-events-none absolute -top-40 left-1/4 h-[420px] w-[420px] rounded-full bg-primary/20 blur-[130px]" />
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0a1628]" />
 
-      <div className="container relative z-10 mx-auto px-5 pb-16 pt-28 md:px-8 md:pb-20 md:pt-32 lg:min-h-[88svh] lg:pb-24">
+      {/* `lg:flex lg:items-center` is what actually centres the content: the
+          min-height alone just made the container taller and left the grid
+          sitting at the top with dead space underneath. The grid needs w-full
+          because as a flex child it would otherwise shrink to its content. */}
+      {/* `flex flex-col justify-center` is what actually centres the content:
+          a min-height alone just made the container taller and left the grid
+          sitting at the top with dead space underneath.
+
+          `min-h-screen` is unprefixed on purpose. The lg: variant of it had
+          never been generated on a long-running dev server, so the height
+          silently stayed at auto; the unprefixed class already exists in this
+          project. It also costs nothing on mobile, where the stacked hero
+          content is taller than the viewport regardless. */}
+      <div className="container relative z-10 mx-auto flex min-h-screen flex-col justify-center px-5 pb-16 pt-28 md:px-8 md:pb-20 md:pt-32 lg:pb-24">
         {/* Two equal columns via grid-cols-2 rather than grid-cols-12 + col-span-6.
             The 12-col version depended on `col-span-6`, which is used nowhere
             else in the project — so a dev server whose Tailwind scan predated
             this file generated no rule for it and both columns silently
             collapsed to a single 64px track. Equal halves don't need a
             12-column grid; this has no span dependency at all. */}
-        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+        <div className="grid w-full items-center gap-12 lg:grid-cols-2 lg:gap-16">
           {/* ── Statement ─────────────────────────────────────────────── */}
           {/* min-w-0: grid items default to min-width:auto, so a track cannot
               shrink below its content's min-content size. The project cards
@@ -131,9 +144,14 @@ export async function HeroSection({ locale }: { locale: Locale }) {
               <span className="block text-primary">{copy.h1b}</span>
             </h1>
 
+            {/* The rotating word deliberately ends the first line. Nothing sits
+                to its right, so a shorter word cannot leave a gap before the
+                period and the rest of the copy never reflows as it cycles. */}
             <p className="mt-7 max-w-xl text-lg leading-relaxed text-white/75">
-              {copy.leadBefore} <HeroRotatingWord words={rotating} />.{' '}
-              {copy.leadAfter}
+              <span className="block">
+                {copy.leadBefore} <HeroRotatingWord words={rotating} />.
+              </span>
+              <span className="mt-1 block">{copy.leadAfter}</span>
             </p>
 
             <div className="mt-12 flex flex-col gap-3 sm:flex-row sm:items-center">

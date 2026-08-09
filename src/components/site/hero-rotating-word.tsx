@@ -14,13 +14,20 @@ import { useEffect, useState } from 'react';
  * Renders `words[0]` on the server so the sentence is complete in the HTML and
  * reads correctly with JS disabled.
  *
- * Layout is done with INLINE STYLES on purpose. The first version used an
- * `inline-grid` wrapper with an invisible sizer stacked underneath; `inline-grid`
- * is used nowhere else in this project, so Tailwind never generated the rule and
- * the wrapper fell back to `display: inline` — which put the invisible sizer
- * *beside* the visible word and opened a large gap mid-sentence. A min-width in
- * `ch` damps the reflow when the word length changes without depending on any
- * generated class.
+ * No reserved width. Two earlier attempts tried to stop the sentence reflowing
+ * when the word length changes — first an `inline-grid` overlay with an
+ * invisible sizer, then a min-width sized to the longest word. Both reserved
+ * space for "convertono", so every shorter word left a visible hole before the
+ * following period.
+ *
+ * The caller instead places this at the END of its line, so there is nothing to
+ * its right to be pushed around and no reservation is needed: the period sits
+ * flush against the word at every length.
+ *
+ * `display: inline-block` is set inline rather than via a class because
+ * `animate-word-rise` transforms the element, which an inline box ignores — and
+ * because three Tailwind classes in this component were previously missing from
+ * the generated CSS. An inline style cannot be affected by a content scan.
  */
 export function HeroRotatingWord({ words }: { words: readonly string[] }) {
   const [index, setIndex] = useState(0);
@@ -31,17 +38,18 @@ export function HeroRotatingWord({ words }: { words: readonly string[] }) {
     return () => clearInterval(id);
   }, [words.length]);
 
-  const longest = words.reduce((a, b) => (b.length > a.length ? b : a), '');
-
   return (
     <span
       key={words[index]}
       className="animate-word-rise font-semibold text-primary"
-      style={{
-        display: 'inline-block',
-        minWidth: `${(longest.length * 0.56).toFixed(2)}em`,
-        textAlign: 'left',
-      }}
+      // Size and layout are inline, not Tailwind classes. Three separate class
+      // names in this one component (inline-grid, text-2xl, leading-none) never
+      // made it into the generated CSS on a long-running dev server, each time
+      // silently changing how it rendered. Inline styles cannot be affected by
+      // a content scan, and this element only needs three properties.
+      // 1.4em against the lead's 18px ≈ 25px, so the word reads as a deliberate
+      // accent; lineHeight 1 stops the taller glyphs pushing the next line down.
+      style={{ display: 'inline-block', fontSize: '1.4em', lineHeight: 1 }}
     >
       {words[index]}
     </span>
