@@ -105,9 +105,21 @@ export async function HeroSection({ locale }: { locale: Locale }) {
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0a1628]" />
 
       <div className="container relative z-10 mx-auto px-5 pb-16 pt-28 md:px-8 md:pb-20 md:pt-32 lg:min-h-[88svh] lg:pb-24">
-        <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
+        {/* Two equal columns via grid-cols-2 rather than grid-cols-12 + col-span-6.
+            The 12-col version depended on `col-span-6`, which is used nowhere
+            else in the project — so a dev server whose Tailwind scan predated
+            this file generated no rule for it and both columns silently
+            collapsed to a single 64px track. Equal halves don't need a
+            12-column grid; this has no span dependency at all. */}
+        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
           {/* ── Statement ─────────────────────────────────────────────── */}
-          <div className="lg:col-span-6">
+          {/* min-w-0: grid items default to min-width:auto, so a track cannot
+              shrink below its content's min-content size. The project cards
+              contain `truncate` text (white-space: nowrap), whose min-content is
+              the full untruncated string — which forced the column to 420px
+              inside a 335px grid on mobile and pushed the hero out of the
+              viewport. min-w-0 lets the track shrink so truncation can do its job. */}
+          <div className="min-w-0">
             <Badge className="badge-futuristic mb-6 gap-2 px-4 py-2 text-sm">
               <span>{copy.since}</span>
               <span className="opacity-50">·</span>
@@ -171,8 +183,8 @@ export async function HeroSection({ locale }: { locale: Locale }) {
 
           {/* ── The work ──────────────────────────────────────────────── */}
           {featured.length > 0 && (
-            <div className="lg:col-span-6">
-              <div className="mb-4 flex items-baseline justify-between">
+            <div className="min-w-0">
+              <div className="mb-4 flex items-baseline justify-between gap-3">
                 <h2 className="text-sm font-semibold uppercase tracking-wider text-white/50">
                   {copy.worksTitle}
                 </h2>
@@ -186,7 +198,10 @@ export async function HeroSection({ locale }: { locale: Locale }) {
 
               <ul className="space-y-3">
                 {featured.map((p, i) => (
-                  <li key={p.id}>
+                  // Third card is desktop-only: on a phone the statement plus
+                  // three cards makes the hero ~1.5 screens tall before the
+                  // visitor reaches anything else.
+                  <li key={p.id} className={i === 2 ? 'hidden sm:block' : undefined}>
                     <Link
                       href={getLocalizedPath(`/projects/${p.slug}`, locale)}
                       className="group flex items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.04] p-3 backdrop-blur-sm transition-colors hover:border-primary/40 hover:bg-white/[0.07] sm:gap-5 sm:p-4"
