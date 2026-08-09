@@ -3,7 +3,6 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { setRequestLocale } from 'next-intl/server';
 import { ArrowRight, Check, Boxes, FileSpreadsheet, HardHat, Plug, X } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { StructuredDataServer } from '@/components/seo/structured-data-server';
 import {
@@ -172,11 +171,7 @@ export default async function GestionalePage({ params }: Props) {
             >
               ← Tutti i servizi
             </Link>
-            <Badge variant="secondary" className="mt-4 mb-5 flex w-fit items-center gap-1.5 border-primary/20 bg-primary/10 text-primary">
-              <Boxes className="h-3.5 w-3.5" />
-              Software su misura
-            </Badge>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-[1.05]">
+            <h1 className="mt-5 text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-[1.05]">
               Software gestionale{' '}
               <span className="text-primary">costruito sul vostro processo.</span>
             </h1>

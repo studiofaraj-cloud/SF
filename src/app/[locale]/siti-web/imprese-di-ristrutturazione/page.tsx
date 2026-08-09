@@ -3,7 +3,6 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { setRequestLocale } from 'next-intl/server';
 import { ArrowRight, Check, Hammer, Camera, MessageSquare, Search } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { StructuredDataServer } from '@/components/seo/structured-data-server';
 import {
@@ -194,11 +193,7 @@ export default async function RistrutturazioniPage({ params }: Props) {
             >
               ← Edilizia e costruzioni
             </Link>
-            <Badge variant="secondary" className="mt-4 mb-5 flex w-fit items-center gap-1.5 border-amber-500/20 bg-amber-500/10 text-amber-600 dark:text-amber-400">
-              <Hammer className="h-3.5 w-3.5" />
-              Imprese di ristrutturazione
-            </Badge>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-[1.05]">
+            <h1 className="mt-5 text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-[1.05]">
               Siti web per imprese{' '}
               <span className="text-primary">di ristrutturazione.</span>
             </h1>

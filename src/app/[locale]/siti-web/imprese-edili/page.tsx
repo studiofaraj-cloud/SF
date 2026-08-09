@@ -2,8 +2,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { setRequestLocale } from 'next-intl/server';
-import { ArrowRight, Check, Building2, ClipboardCheck, UserPlus, Handshake, Repeat } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
+import { ArrowRight, Check, ClipboardCheck, UserPlus, Handshake, Repeat } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { StructuredDataServer } from '@/components/seo/structured-data-server';
 import {
@@ -171,11 +170,7 @@ export default async function ImpreseEdiliPage({ params }: Props) {
             >
               ← Edilizia e costruzioni
             </Link>
-            <Badge variant="secondary" className="mt-4 mb-5 flex w-fit items-center gap-1.5 border-orange-500/20 bg-orange-500/10 text-orange-600 dark:text-orange-400">
-              <Building2 className="h-3.5 w-3.5" />
-              Imprese edili e di costruzioni
-            </Badge>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-[1.05]">
+            <h1 className="mt-5 text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-[1.05]">
               Siti web per imprese{' '}
               <span className="text-primary">edili e di costruzioni.</span>
             </h1>

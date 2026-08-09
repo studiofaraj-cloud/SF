@@ -2,8 +2,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { setRequestLocale } from 'next-intl/server';
-import { ArrowRight, Check, Lightbulb, Lock, Compass, Rocket, ShieldCheck } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
+import { ArrowRight, Check, Lock, Compass, Rocket, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { StructuredDataServer } from '@/components/seo/structured-data-server';
 import {
@@ -151,10 +150,6 @@ export default async function IdeaHubPage({ params }: Props) {
       <div className="bg-background text-foreground">
         <section className="container px-4 sm:px-6 md:px-8 pt-28 pb-10 sm:pt-32">
           <div className="max-w-3xl">
-            <Badge variant="secondary" className="mb-5 inline-flex items-center gap-1.5 border-primary/20 bg-primary/10 text-primary">
-              <Lightbulb className="h-3.5 w-3.5" />
-              Dall&apos;idea al progetto
-            </Badge>
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-[1.05]">
               Hai un&apos;idea.{' '}
               <span className="text-primary">La rendiamo reale.</span>

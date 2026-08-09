@@ -2,8 +2,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { setRequestLocale } from 'next-intl/server';
-import { ArrowRight, Check, Ruler, BadgeCheck, Clock, FileSearch, Scan } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
+import { ArrowRight, Check, BadgeCheck, Clock, FileSearch, Scan } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { StructuredDataServer } from '@/components/seo/structured-data-server';
 import {
@@ -174,11 +173,7 @@ export default async function GeometriPage({ params }: Props) {
             >
               ← Edilizia e costruzioni
             </Link>
-            <Badge variant="secondary" className="mt-4 mb-5 flex w-fit items-center gap-1.5 border-sky-500/20 bg-sky-500/10 text-sky-600 dark:text-sky-400">
-              <Ruler className="h-3.5 w-3.5" />
-              Geometri e studi tecnici
-            </Badge>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-[1.05]">
+            <h1 className="mt-5 text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-[1.05]">
               Siti web per geometri{' '}
               <span className="text-primary">e studi tecnici.</span>
             </h1>

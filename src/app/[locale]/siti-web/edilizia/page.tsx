@@ -2,10 +2,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { setRequestLocale } from 'next-intl/server';
-import {
-  ArrowRight, HardHat, FileCheck, Users, Images, FileText, MapPin, Check,
-} from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
+import { ArrowRight, FileCheck, Users, Images, FileText, MapPin, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { StructuredDataServer } from '@/components/seo/structured-data-server';
 import {
@@ -238,10 +235,6 @@ export default async function EdiliziaPillarPage({ params }: Props) {
         {/* Hero */}
         <section className="container px-4 sm:px-6 md:px-8 pt-28 pb-10 sm:pt-32">
           <div className="max-w-3xl">
-            <Badge variant="secondary" className="mb-5 inline-flex items-center gap-1.5 border-amber-500/20 bg-amber-500/10 text-amber-600 dark:text-amber-400">
-              <HardHat className="h-3.5 w-3.5" />
-              Edilizia e costruzioni
-            </Badge>
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-[1.05]">
               Siti web per l&apos;edilizia{' '}
               <span className="text-primary">e le costruzioni.</span>
