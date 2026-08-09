@@ -36,15 +36,13 @@ import { getAggregateRating } from '@/lib/google-reviews';
 import { Metadata } from 'next';
 import { getTranslations, getLocale, setRequestLocale } from 'next-intl/server';
 import { getLocalizedPath } from '@/lib/i18n-helpers';
-import { getHeroSlidesAction } from '@/lib/actions';
-import type { HeroSlide } from '@/lib/definitions';
 
 // Client components — direct imports prevent React error #130 during
 // client-side navigation in production. HomepageClient uses a thin 'use client'
 // wrapper with dynamic() + ssr:false for lazy-loading without breaking chunk resolution.
 import TechLogosClient from '@/components/site/tech-logos-client';
 import ProcessTimeline from '@/components/site/process-timeline';
-import HomepageClientDynamic from '@/components/site/homepage-client-dynamic';
+import { HeroSection } from '@/components/site/hero-section';
 import HomeCtaSection from '@/components/site/home-cta-section';
 import { TestimonialsServer } from '@/components/site/testimonials-server';
 import StatsSection from '@/components/site/stats-section';
@@ -264,31 +262,14 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
     { title: "Firebase", href: "https://firebase.google.com" },
   ];
 
-  // Fetch hero slides from Firestore (non-blocking — falls back to defaults in client)
-  let heroSlides: HeroSlide[] = [];
-  try {
-    const raw = await getHeroSlidesAction();
-    heroSlides = raw.map(s => ({
-      id: s.id,
-      title: s.title,
-      description: s.description,
-      titleEn: s.titleEn,
-      descriptionEn: s.descriptionEn,
-      imageUrl: s.imageUrl,
-      imageHint: s.imageHint,
-    }));
-  } catch {
-    // fallback handled in HomepageClient
-  }
 
   return (
     <div className="bg-background text-foreground" suppressHydrationWarning>
-      <h1 className="sr-only">
-        {currentLocale === 'it'
-          ? 'Studio Faraj - Agenzia Web Padova | Sviluppo Siti Web Veneto'
-          : 'Studio Faraj - Web Agency Italy English | Custom Web Development'}
-      </h1>
-      <HomepageClientDynamic heroSlides={heroSlides} />
+      {/* The hidden keyword-stuffed <h1 class="sr-only"> that used to sit here is
+          gone: HeroSection renders the real, visible <h1> server-side, so the
+          workaround for a client-only hero is no longer needed — and hidden
+          text stuffed with keywords is what Google's spam policies describe. */}
+      <HeroSection locale={currentLocale} />
 
       {/* Stats Section */}
       <StatsSection />
