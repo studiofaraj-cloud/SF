@@ -56,7 +56,6 @@ const COPY = {
     available: 'Disponibili per nuovi progetti',
     worksTitle: 'Lavori recenti',
     allWorks: 'Tutti i progetti',
-    reviews: (n: number) => `${n} recensioni Google`,
   },
   en: {
     badge: 'Padova, Italy',
@@ -71,7 +70,6 @@ const COPY = {
     available: 'Available for new projects',
     worksTitle: 'Recent work',
     allWorks: 'All projects',
-    reviews: (n: number) => `${n} Google reviews`,
   },
 } as const;
 
@@ -138,7 +136,7 @@ export async function HeroSection({ locale }: { locale: Locale }) {
               {copy.leadAfter}
             </p>
 
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <div className="mt-12 flex flex-col gap-3 sm:flex-row sm:items-center">
               <Button asChild size="lg" className="group neon-glow-intense min-h-[52px] px-8 font-semibold">
                 <Link href={getLocalizedPath('/inizia', locale)}>
                   {copy.ctaStart}
@@ -171,10 +169,24 @@ export async function HeroSection({ locale }: { locale: Locale }) {
               {rating && (
                 <>
                   <span className="text-white/20">·</span>
-                  <span className="inline-flex items-center gap-1.5">
-                    <Star className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400" />
-                    <span className="font-semibold text-white">{rating.ratingValue}</span>
-                    <span>{copy.reviews(rating.reviewCount)}</span>
+                  {/* Stars only — no rating number, no review count. Filled
+                      stars follow the real rating rather than always showing
+                      five, so this stays truthful if the average ever drops. */}
+                  <span
+                    className="inline-flex items-center gap-1"
+                    aria-label={`${rating.ratingValue}/5`}
+                  >
+                    {Array.from({ length: 5 }, (_, i) => (
+                      <Star
+                        key={i}
+                        aria-hidden
+                        className={
+                          i < Math.round(rating.ratingValue)
+                            ? 'h-4 w-4 fill-yellow-400 text-yellow-400'
+                            : 'h-4 w-4 text-white/25'
+                        }
+                      />
+                    ))}
                   </span>
                 </>
               )}
