@@ -2,11 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { 
-  ShoppingCart, CheckCircle, ArrowRight, Sparkles, Zap, Clock, 
-  ShieldCheck, Rocket, CreditCard, Package, TrendingUp, Store,
-  Truck, BarChart3, ChevronDown, Globe
-} from 'lucide-react';
+import { CheckCircle, ArrowRight, Sparkles, Zap, Clock, ShieldCheck, Rocket, CreditCard, Package, TrendingUp, Store, Truck, BarChart3, ChevronDown, Globe } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -86,10 +82,6 @@ export default function EcommercePage() {
 
         <div className="relative z-20 container px-4 sm:px-6 md:px-8 text-center">
           <div className={`transition-all duration-1000 ${heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <Badge className="badge-futuristic mb-4 sm:mb-6 bg-emerald-500/20 text-emerald-400 border-emerald-500/30">
-              <ShoppingCart className="w-4 h-4 mr-2" />
-              {t('badge')}
-            </Badge>
 
             <h1 className="mb-4 sm:mb-6 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight">
               <GradientText

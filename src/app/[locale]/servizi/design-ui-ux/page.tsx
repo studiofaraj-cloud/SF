@@ -137,10 +137,6 @@ export default function DesignUiUxPage() {
 
         <div className="relative z-20 container px-4 sm:px-6 md:px-8 text-center">
           <div className={`transition-all duration-1000 ${heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <Badge className="badge-futuristic mb-4 sm:mb-6 bg-violet-500/20 text-violet-400 border-violet-500/30">
-              <Palette className="w-4 h-4 mr-2" />
-              {t('badge')}
-            </Badge>
 
             <h1 className="mb-4 sm:mb-6 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight">
               <GradientText

@@ -235,7 +235,7 @@ export default async function CostoSitoWebPage({ params }: Props) {
 
       <div className="bg-background text-foreground">
         {/* Hero */}
-        <section className="container px-4 sm:px-6 md:px-8 pt-28 pb-10 sm:pt-32">
+        <section className="container px-4 sm:px-6 md:px-8 pt-32 pb-10 sm:pt-40">
           <div className="max-w-3xl">
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-[1.05]">
               Quanto costa <span className="text-primary">un sito web?</span>

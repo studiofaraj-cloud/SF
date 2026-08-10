@@ -2,11 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { 
-  Bot, CheckCircle, ArrowRight, Sparkles, Zap, Clock, 
-  ShieldCheck, Brain, MessageSquare, Workflow, Cpu, Cog,
-  BarChart3, ChevronDown, Globe
-} from 'lucide-react';
+import { CheckCircle, ArrowRight, Sparkles, Zap, Clock, ShieldCheck, Brain, MessageSquare, Workflow, Cpu, Cog, BarChart3, ChevronDown, Globe } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -88,10 +84,6 @@ export default function AiAutomazionePage() {
 
         <div className="container relative z-10 px-4 sm:px-6 md:px-8 text-center">
           <div className={`transition-all duration-1000 ${heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <Badge className="badge-futuristic mb-4 sm:mb-6 bg-pink-500/20 text-pink-400 border-pink-500/30">
-              <Bot className="w-4 h-4 mr-2" />
-              {t('badge')}
-            </Badge>
 
             <h1 className="mb-4 sm:mb-6 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight">
               <GradientText

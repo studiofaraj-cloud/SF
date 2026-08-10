@@ -163,7 +163,7 @@ export default async function GestionalePage({ params }: Props) {
       <StructuredDataServer data={jsonLd} id="software-gestionale" />
 
       <div className="bg-background text-foreground">
-        <section className="container px-4 sm:px-6 md:px-8 pt-28 pb-10 sm:pt-32">
+        <section className="container px-4 sm:px-6 md:px-8 pt-32 pb-10 sm:pt-40">
           <div className="max-w-3xl">
             <Link
               href={getLocalizedPath('/servizi', 'it')}

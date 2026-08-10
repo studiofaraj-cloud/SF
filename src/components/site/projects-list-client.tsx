@@ -58,15 +58,8 @@ export function ProjectsListClient({ projects: initialProjects }: ProjectsListCl
     <div className="bg-background text-foreground">
       {/* ── Hero ── */}
       <section className="relative border-b border-border/60 bg-gradient-to-b from-secondary/40 to-background">
-        <div className="container px-4 sm:px-6 md:px-8 py-16 md:py-24">
+        <div className="container px-4 sm:px-6 md:px-8 pt-32 pb-16 md:pt-40 md:pb-24">
           <div className="max-w-3xl">
-            <Badge
-              variant="secondary"
-              className="mb-5 inline-flex items-center gap-1.5 bg-violet-500/10 text-violet-600 dark:text-violet-400 border-violet-500/20"
-            >
-              <FolderKanban className="h-3.5 w-3.5" />
-              {t('hero.badge')}
-            </Badge>
 
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-[1.05]">
               {t('hero.title')}{' '}

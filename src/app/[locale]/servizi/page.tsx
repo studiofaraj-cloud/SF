@@ -186,7 +186,7 @@ export default async function ServicesHubPage({ params }: Props) {
 
       <div className="bg-background text-foreground">
         {/* Hero */}
-        <section className="container px-4 sm:px-6 md:px-8 pt-28 pb-12 sm:pt-32 sm:pb-16">
+        <section className="container px-4 sm:px-6 md:px-8 pt-32 pb-12 sm:pt-40 sm:pb-16">
           <div className="max-w-3xl">
 
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-[1.05]">

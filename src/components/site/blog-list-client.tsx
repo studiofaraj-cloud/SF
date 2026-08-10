@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { FirebaseImage } from '@/components/ui/firebase-image';
 import dynamic from 'next/dynamic';
 import { BookOpen, Calendar, ChevronRight, Search, ArrowRight } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
 import type { Blog } from '@/lib/definitions';
 import { useTranslations, useLocale } from 'next-intl';
 import { useState, useMemo } from 'react';
@@ -85,10 +84,6 @@ export function BlogListClient({ blogs: initialBlogs }: BlogListClientProps) {
         <div className="absolute inset-0 bg-gradient-to-b from-background/85 via-background/55 to-background z-10" />
 
         <div className="relative z-20 container px-4 sm:px-6 md:px-8 text-center max-w-3xl py-14">
-          <Badge className="badge-futuristic mb-5 bg-emerald-500/20 text-emerald-400 border-emerald-500/30">
-            <BookOpen className="w-3.5 h-3.5 mr-1.5" />
-            {t('hero.badge')}
-          </Badge>
 
           <div className="mb-4 pb-2">
             <GradientText
