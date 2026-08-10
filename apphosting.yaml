@@ -26,6 +26,17 @@ env:
       - BUILD
       - RUNTIME
 
+  # Google Analytics 4 Measurement ID (public — ships in client HTML).
+  # gtag loads only after the visitor grants the analytics cookie category;
+  # see src/components/analytics/google-analytics.tsx. BUILD availability is
+  # required because NEXT_PUBLIC_* is inlined at build time, so changing this
+  # value needs a redeploy, not just an env update.
+  - variable: NEXT_PUBLIC_GA_MEASUREMENT_ID
+    value: G-YZK9SVT8CQ
+    availability:
+      - BUILD
+      - RUNTIME
+
   # FormSubmit email notifications (legacy)
   - variable: FORMSUBMIT_ENDPOINT
     value: https://formsubmit.co/ajax/info@studiofaraj.it
