@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import type { Project } from '@/lib/definitions';
 import { useLocale } from 'next-intl';
 import ScrollFadeIn from '@/components/site/scroll-fade-in';
+import { SectionHeader } from '@/components/site/section-header';
 
 interface HomeProjectContentProps {
   projects: Project[];
@@ -21,31 +22,20 @@ export function HomeProjectContent({ projects }: HomeProjectContentProps) {
   }
 
   return (
-    <section className="relative w-full py-16 sm:py-24 md:py-32 lg:py-40 overflow-hidden suspense-reveal" suppressHydrationWarning>
-      {/* Background Effects */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-secondary/30 to-background" />
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-0 w-48 h-48 md:w-96 md:h-96 bg-primary/10 rounded-full blur-[100px] animate-pulse" />
-        <div className="absolute bottom-1/4 right-0 w-48 h-48 md:w-96 md:h-96 bg-primary/10 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '1s' }} />
-      </div>
-      
+    <section className="relative w-full py-16 md:py-24 overflow-hidden suspense-reveal" suppressHydrationWarning>
+      {/* Background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-secondary/20 to-background" />
+
       <div className="container relative z-10 px-4 md:px-8">
         {/* Header */}
-        <ScrollFadeIn animation="fade-up">
-          <div className="text-center max-w-4xl mx-auto mb-10 md:mb-16">
-            <Badge className="badge-futuristic mb-4 md:mb-6">
-              <Tag className="w-3 h-3 mr-2" />
-              Portfolio
-            </Badge>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4 md:mb-6">
-              <span className="text-foreground">I Nostri</span>
-              <span className="block brand-wordmark mt-1 md:mt-2">Ultimi Lavori</span>
-            </h2>
-            <p className="text-base md:text-lg lg:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto px-2">
-              Dai un&apos;occhiata ad alcuni dei progetti che abbiamo realizzato con passione per i nostri clienti.
-            </p>
-          </div>
-        </ScrollFadeIn>
+        <SectionHeader
+          eyebrow="Portfolio"
+          eyebrowIcon={<Tag className="w-3.5 h-3.5" />}
+          title="I Nostri"
+          titleHighlight="Ultimi Lavori"
+          subtitle="Dai un'occhiata ad alcuni dei progetti che abbiamo realizzato con passione per i nostri clienti."
+          className="mb-10 md:mb-14"
+        />
 
         {/* Featured Project + Grid Layout */}
         {projects.length > 0 && projects[0] && (

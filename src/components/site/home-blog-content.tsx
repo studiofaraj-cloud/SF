@@ -10,6 +10,7 @@ import type { Blog } from '@/lib/definitions';
 import { useTranslations, useLocale } from 'next-intl';
 import { getLocalizedPath } from '@/lib/i18n-helpers';
 import ScrollFadeIn from '@/components/site/scroll-fade-in';
+import { SectionHeader } from '@/components/site/section-header';
 
 interface HomeBlogContentProps {
   blogs: Blog[];
@@ -23,33 +24,19 @@ export function HomeBlogContent({ blogs }: HomeBlogContentProps) {
   }
 
   return (
-    <section className="relative w-full py-16 sm:py-24 md:py-32 lg:py-40 overflow-hidden suspense-reveal">
-      {/* Constellation Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-secondary/50 via-background to-background" />
-      <div className="absolute inset-0 bg-constellation" />
-      
-      {/* Glowing Orbs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 right-0 w-48 h-48 md:w-96 md:h-96 bg-primary/10 rounded-full blur-[100px] animate-pulse" />
-        <div className="absolute bottom-1/4 left-0 w-48 h-48 md:w-96 md:h-96 bg-primary/10 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '1.5s' }} />
-      </div>
-      
+    <section className="relative w-full py-16 md:py-24 overflow-hidden suspense-reveal">
+      {/* Background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-secondary/30 via-background to-background" />
+
       <div className="container relative z-10 px-4 md:px-8">
         {/* Header */}
-        <ScrollFadeIn animation="fade-up">
-          <div className="text-center max-w-4xl mx-auto mb-10 md:mb-16">
-            <Badge className="badge-futuristic mb-4 md:mb-6">
-              <BookOpen className="w-3 h-3 mr-2" />
-              {t('title')}
-            </Badge>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4 md:mb-6">
-              <span className="text-foreground">{t('title')}</span>
-            </h2>
-            <p className="text-base md:text-lg lg:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto px-2">
-              {t('subtitle')}
-            </p>
-          </div>
-        </ScrollFadeIn>
+        <SectionHeader
+          eyebrow={t('title')}
+          eyebrowIcon={<BookOpen className="w-3.5 h-3.5" />}
+          title={t('title')}
+          subtitle={t('subtitle')}
+          className="mb-10 md:mb-14"
+        />
 
         {/* Featured Blog Post + Grid Layout */}
         {blogs.length > 0 && blogs[0] && (

@@ -1239,43 +1239,6 @@
         "cuttingEdge": "Cutting-Edge"
       }
     },
-    "responsive": {
-      "badge": "Perfect on Every Device",
-      "title": "Websites that Adapt",
-      "titleHighlight": "Perfectly to You",
-      "subtitle": "Every pixel counts. We design digital experiences that shine on any screen, guaranteeing optimal performance and an impeccable user experience on desktop, tablet and mobile.",
-      "desktop": {
-        "label": "Desktop",
-        "description": "Complete and detailed experience"
-      },
-      "tablet": {
-        "label": "Tablet",
-        "description": "Perfect balance between functionality and portability"
-      },
-      "mobile": {
-        "label": "Mobile",
-        "description": "Optimized for touch and fast navigation"
-      },
-      "features": {
-        "mobileFirst": {
-          "title": "Mobile-First",
-          "description": "Design that starts from mobile to guarantee optimal performance"
-        },
-        "touchFriendly": {
-          "title": "Touch-Friendly",
-          "description": "Interfaces optimized for touch and intuitive navigation"
-        },
-        "performance": {
-          "title": "Performance",
-          "description": "Fast and smooth loading on any connection"
-        },
-        "accessibility": {
-          "title": "Accessibility",
-          "description": "Inclusive design accessible to all users"
-        }
-      },
-      "cta": "Discover Our Services"
-    },
     "values": {
       "badge": "Why Choose Us",
       "title": "The Ideal Partner for",

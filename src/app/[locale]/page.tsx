@@ -13,18 +13,13 @@ import {
   DraftingCompass,
   Eye,
   Wrench,
-  ShieldCheck,
   Trophy,
   Code2,
   Monitor,
-  Tablet,
-  Smartphone as SmartphoneIcon,
   ArrowRight,
   Sparkles,
   Award,
-  Zap,
-  ExternalLink,
-  CheckCircle,
+  Users,
 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -40,7 +35,6 @@ import { getLocalizedPath } from '@/lib/i18n-helpers';
 // Client components — direct imports prevent React error #130 during
 // client-side navigation in production. HomepageClient uses a thin 'use client'
 // wrapper with dynamic() + ssr:false for lazy-loading without breaking chunk resolution.
-import TechLogosClient from '@/components/site/tech-logos-client';
 import ProcessTimeline from '@/components/site/process-timeline';
 import { HeroSection } from '@/components/site/hero-section';
 import HomeCtaSection from '@/components/site/home-cta-section';
@@ -48,7 +42,8 @@ import { TestimonialsServer } from '@/components/site/testimonials-server';
 import StatsSection from '@/components/site/stats-section';
 import ScrollFadeIn from '@/components/site/scroll-fade-in';
 import { TechSectionMobile } from '@/components/site/tech-section-mobile';
-import { ServicesSticky } from '@/components/site/services-sticky';
+import { ServicesGrid } from '@/components/site/services-grid';
+import { SectionHeader } from '@/components/site/section-header';
 // Server Components
 import { HomeProjectSection } from '@/components/site/home-project-section';
 import { HomeBlogSection } from '@/components/site/home-blog-section';
@@ -80,17 +75,17 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
   const { locale: localeParam } = await params;
   const currentLocale = localeParam as 'it' | 'en';
-  
+
   // Enable static rendering by setting the request locale
   setRequestLocale(currentLocale);
-  
+
   // Real review aggregate, or null when there is no live data — in which case
   // the schema simply omits aggregateRating rather than inventing one.
   // fetchGoogleReviews is request-memoized, so this shares the fetch with the
   // TestimonialsServer section below instead of hitting Firestore twice.
   const aggregateRating = await getAggregateRating(currentLocale);
   const localBusinessData = generateStructuredDataLocalBusiness(currentLocale, aggregateRating);
-  
+
   // Safely get locale and translations with error handling
   let locale: string;
   let t: any;
@@ -98,9 +93,8 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
   let tValues: any;
   let tProcess: any;
   let tTech: any;
-  let tResponsive: any;
   let tTeam: any;
-  
+
   try {
     locale = await getLocale();
     t = await getTranslations('home');
@@ -108,7 +102,6 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
     tValues = await getTranslations('home.values');
     tProcess = await getTranslations('home.process');
     tTech = await getTranslations('home.technologies');
-    tResponsive = await getTranslations('home.responsive');
     tTeam = await getTranslations('home.team');
   } catch (error) {
     console.error('[Home] Failed to load locale/translations:', error);
@@ -120,80 +113,63 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
     tValues = emptyT;
     tProcess = emptyT;
     tTech = emptyT;
-    tResponsive = emptyT;
     tTeam = emptyT;
   }
 
   const services = [
     {
-      icon: <Code className="w-8 h-8" />,
+      icon: <Code />,
       title: tServices('webDevelopment.title'),
       description: tServices('webDevelopment.description'),
-      color: "from-sky-500/30 to-blue-500/20",
-      slug: "sviluppo-web",
-      orbColor: "bg-sky-500/15",
+      slug: 'sviluppo-web',
     },
     {
-      icon: <ShoppingCart className="w-8 h-8" />,
+      icon: <ShoppingCart />,
       title: tServices('ecommerce.title'),
       description: tServices('ecommerce.description'),
-      color: "from-blue-500/30 to-cyan-500/20",
-      slug: "e-commerce",
-      orbColor: "bg-blue-500/15",
+      slug: 'e-commerce',
     },
     {
-      icon: <Smartphone className="w-8 h-8" />,
+      icon: <Smartphone />,
       title: tServices('designUIUX.title'),
       description: tServices('designUIUX.description'),
-      color: "from-blue-400/30 to-sky-500/20",
-      slug: "design-ui-ux",
-      orbColor: "bg-blue-400/15",
+      slug: 'design-ui-ux',
     },
     {
-      icon: <Wrench className="w-8 h-8" />,
+      icon: <Wrench />,
       title: tServices('maintenance.title'),
       description: tServices('maintenance.description'),
-      color: "from-indigo-500/30 to-blue-500/20",
-      slug: "manutenzione",
-      orbColor: "bg-indigo-500/15",
+      slug: 'manutenzione',
     },
     {
-      icon: <Bot className="w-8 h-8" />,
+      icon: <Bot />,
       title: tServices('aiAutomation.title'),
       description: tServices('aiAutomation.description'),
-      color: "from-cyan-500/30 to-blue-500/20",
-      slug: "ai-automazione",
-      orbColor: "bg-cyan-500/15",
+      slug: 'ai-automazione',
     },
     {
-      icon: <LineChart className="w-8 h-8" />,
+      icon: <LineChart />,
       title: tServices('seoMarketing.title'),
       description: tServices('seoMarketing.description'),
-      color: "from-sky-400/30 to-blue-600/20",
-      slug: "seo-marketing",
-      orbColor: "bg-sky-400/15",
+      slug: 'seo-marketing',
     },
     {
-      icon: <Server className="w-8 h-8" />,
+      icon: <Server />,
       title: tServices('hostingCloud.title'),
       description: tServices('hostingCloud.description'),
-      color: "from-indigo-500/30 to-blue-600/20",
-      slug: "hosting-cloud",
-      orbColor: "bg-indigo-500/15",
+      slug: 'hosting-cloud',
     },
     {
-      icon: <DraftingCompass className="w-8 h-8" />,
+      icon: <DraftingCompass />,
       title: tServices('consulting.title'),
       description: tServices('consulting.description'),
-      color: "from-blue-500/30 to-indigo-500/20",
-      slug: "consulenza",
-      orbColor: "bg-blue-500/15",
+      slug: 'consulenza',
     },
   ];
 
   const values = [
     {
-      icon: <Trophy className="w-8 h-8" />,
+      icon: <Trophy className="w-7 h-7" />,
       title: tValues('topRanked.title'),
       description: tValues('topRanked.description'),
       metric: tValues('topRanked.metric'),
@@ -246,22 +222,19 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
     },
   ];
 
-  // Tech logos data for badges (simple strings, no JSX)
+  // Tech logos data for the category chips (simple strings, no JSX)
   const techLogosData = [
-    { title: "React", href: "https://react.dev" },
-    { title: "Next.js", href: "https://nextjs.org" },
-    { title: "TypeScript", href: "https://www.typescriptlang.org" },
-    { title: "JavaScript", href: "https://developer.mozilla.org/en-US/docs/Web/JavaScript" },
-    { title: "Tailwind CSS", href: "https://tailwindcss.com" },
-    { title: "HTML5", href: "https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5" },
-    { title: "CSS3", href: "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS3" },
-    { title: "Node.js", href: "https://nodejs.org" },
-    { title: "Python", href: "https://python.org" },
-    { title: "Docker", href: "https://www.docker.com" },
-    { title: "Vercel", href: "https://vercel.com" },
-    { title: "Firebase", href: "https://firebase.google.com" },
+    { title: 'React' },
+    { title: 'Next.js' },
+    { title: 'TypeScript' },
+    { title: 'JavaScript' },
+    { title: 'Tailwind CSS' },
+    { title: 'HTML5' },
+    { title: 'CSS3' },
+    { title: 'Node.js' },
+    { title: 'Firebase' },
+    { title: 'Vercel' },
   ];
-
 
   return (
     <div className="bg-background text-foreground" suppressHydrationWarning>
@@ -275,36 +248,20 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       <StatsSection />
 
       {/* ============================================
-          TECHNOLOGIES SECTION - Constellation Background
+          TECHNOLOGIES SECTION
           ============================================ */}
-      <section className="relative py-10 sm:py-16 md:py-32 lg:py-40 overflow-hidden">
-        {/* Constellation Background */}
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-secondary/30 to-background" />
-        <div className="absolute inset-0 bg-constellation" />
-        
-        {/* Glowing Orbs */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/3 left-0 w-48 h-48 md:w-96 md:h-96 bg-primary/10 rounded-full blur-[100px] animate-pulse" />
-          <div className="absolute bottom-1/3 right-0 w-48 h-48 md:w-96 md:h-96 bg-primary/10 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '1s' }} />
-        </div>
-        
+      <section className="relative py-16 md:py-24 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-secondary/20 to-background" />
+
         <div className="container relative z-10 px-4 md:px-8">
-          {/* Header */}
-          <ScrollFadeIn animation="fade-up">
-          <div className="text-center max-w-4xl mx-auto mb-10 md:mb-16">
-              <Badge className="badge-futuristic mb-4 md:mb-6">
-                <Code className="w-3 h-3 mr-2" />
-              {tTech('badge')}
-            </Badge>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4 md:mb-6">
-              <span className="text-foreground">{tTech('title')}</span>
-              <span className="block text-primary mt-1 md:mt-2">{tTech('titleHighlight')}</span>
-            </h2>
-            <p className="text-base md:text-lg lg:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto px-2">
-              {tTech('subtitle')}
-            </p>
-          </div>
-          </ScrollFadeIn>
+          <SectionHeader
+            eyebrow={tTech('badge')}
+            eyebrowIcon={<Code className="w-3.5 h-3.5" />}
+            title={tTech('title')}
+            titleHighlight={tTech('titleHighlight')}
+            subtitle={tTech('subtitle')}
+            className="mb-10 md:mb-14"
+          />
 
           {/* Technology Categories - Mobile Tabs */}
           <TechSectionMobile categories={[
@@ -331,333 +288,105 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
             },
           ]} />
 
-
           {/* Technology Categories - Desktop Grid */}
-          <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 mb-10 md:mb-16">
-            {/* Frontend */}
-            <ScrollFadeIn animation="fade-right" delay={0}>
-              <Card className="holographic-card neon-border overflow-hidden group h-full">
-              <CardHeader className="p-4 md:p-6">
-                  <div className="icon-tile w-12 h-12 md:w-14 md:h-14 mb-3 md:mb-4">
-                    <Monitor className="w-6 h-6 md:w-7 md:h-7 icon-tile-glyph" />
-                </div>
-                <CardTitle className="text-lg md:text-xl text-primary">{tTech('frontend.title')}</CardTitle>
-              </CardHeader>
-              <CardContent className="p-4 md:p-6 pt-0">
-                <p className="text-sm text-muted-foreground mb-4">
-                  {tTech('frontend.description')}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {techLogosData.filter(tech => ['React', 'Next.js', 'TypeScript', 'JavaScript', 'Tailwind CSS', 'HTML5', 'CSS3'].includes(tech.title)).map((tech, i) => (
-                    <Badge key={i} variant="secondary" className="tech-badge">
-                      {tech.title}
-                    </Badge>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-            </ScrollFadeIn>
-
-            {/* Backend & Infrastructure */}
-            <ScrollFadeIn animation="fade-up" delay={100}>
-              <Card className="holographic-card neon-border overflow-hidden group h-full">
-              <CardHeader className="p-4 md:p-6">
-                  <div className="icon-tile w-12 h-12 md:w-14 md:h-14 mb-3 md:mb-4">
-                    <Server className="w-6 h-6 md:w-7 md:h-7 icon-tile-glyph" />
-                </div>
-                <CardTitle className="text-lg md:text-xl text-primary">{tTech('backend.title')}</CardTitle>
-              </CardHeader>
-              <CardContent className="p-4 md:p-6 pt-0">
-                <p className="text-sm text-muted-foreground mb-4">
-                  {tTech('backend.description')}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {techLogosData.filter(tech => ['Node.js', 'Firebase', 'Vercel'].includes(tech.title)).map((tech, i) => (
-                    <Badge key={i} variant="secondary" className="tech-badge">
-                      {tech.title}
-                    </Badge>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-            </ScrollFadeIn>
-
-            {/* E-commerce */}
-            <ScrollFadeIn animation="fade-left" delay={200}>
-              <Card className="holographic-card neon-border overflow-hidden group h-full">
-              <CardHeader className="p-4 md:p-6">
-                  <div className="icon-tile w-12 h-12 md:w-14 md:h-14 mb-3 md:mb-4">
-                    <ShoppingCart className="w-6 h-6 md:w-7 md:h-7 icon-tile-glyph" />
-                </div>
-                <CardTitle className="text-lg md:text-xl text-primary">{tTech('ecommerce.title')}</CardTitle>
-              </CardHeader>
-              <CardContent className="p-4 md:p-6 pt-0">
-                <p className="text-sm text-muted-foreground mb-4">
-                  {tTech('ecommerce.description')}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {techLogosData.filter(tech => ['Next.js', 'Node.js'].includes(tech.title)).map((tech, i) => (
-                    <Badge key={i} variant="secondary" className="tech-badge">
-                      {tech.title}
-                    </Badge>
-                  ))}
-                  <Badge variant="secondary" className="tech-badge">
-                    {tTech('ecommerce.customCoding')}
-                  </Badge>
-                </div>
-              </CardContent>
-            </Card>
-            </ScrollFadeIn>
-          </div>
-
-          {/* Animated Logo Loop */}
-          <ScrollFadeIn animation="fade-up" delay={300}>
-          <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-background via-transparent to-background z-10 pointer-events-none" />
-          <div className="text-primary px-4 md:px-20 lg:px-40">
-            <TechLogosClient />
-            </div>
-          </div>
-          </ScrollFadeIn>
-
-          {/* Trust Indicators with Neon Effect */}
-          <ScrollFadeIn animation="scale" delay={400}>
-            <div className="mt-8 md:mt-12 flex flex-wrap justify-center gap-3 sm:gap-4">
-              <div className="trust-pill px-4 py-2 sm:px-5 sm:py-2.5">
-                <ShieldCheck className="w-4 h-4 sm:w-4 sm:h-4 text-primary" />
-                <span className="text-xs sm:text-sm font-medium text-foreground">{tTech('trust.secure')}</span>
-              </div>
-              <div className="trust-pill px-4 py-2 sm:px-5 sm:py-2.5">
-                <Zap className="w-4 h-4 sm:w-4 sm:h-4 text-primary" />
-                <span className="text-xs sm:text-sm font-medium text-foreground">{tTech('trust.performant')}</span>
-              </div>
-              <div className="trust-pill px-4 py-2 sm:px-5 sm:py-2.5">
-                <Award className="w-4 h-4 sm:w-4 sm:h-4 text-primary" />
-                <span className="text-xs sm:text-sm font-medium text-foreground">{tTech('trust.cuttingEdge')}</span>
-              </div>
-            </div>
-          </ScrollFadeIn>
-        </div>
-      </section>
-
-      {/* ============================================
-          SERVICES SECTION - Bento Grid
-          ============================================ */}
-      <section id="services" className="relative py-10 sm:py-16 md:py-24 lg:py-32 overflow-clip">
-        {/* Circuit Background */}
-        <div className="absolute inset-0 bg-secondary" />
-        <div className="absolute inset-0 bg-circuit opacity-40" />
-
-        {/* Glowing Orbs */}
-        <div className="absolute top-0 right-0 w-48 h-48 md:w-96 md:h-96 bg-primary/10 rounded-full blur-[100px]" />
-        <div className="absolute bottom-0 left-0 w-48 h-48 md:w-96 md:h-96 bg-primary/10 rounded-full blur-[100px]" />
-
-        <div className="container relative z-10 px-4 md:px-8 lg:px-16">
-          <ScrollFadeIn animation="fade-up">
-          <div className="text-center max-w-3xl mx-auto mb-10 md:mb-16">
-              <Badge className="badge-futuristic mb-3 md:mb-4">
-                <Sparkles className="w-3 h-3 mr-2" />
-              {tServices('badge')}
-            </Badge>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">
-                <span className="text-foreground">{tServices('title')}</span>
-                <span className="block text-primary mt-1">{tServices('titleHighlight')}</span>
-            </h2>
-            <p className="mt-4 md:mt-6 text-base md:text-lg leading-7 md:leading-8 text-muted-foreground px-2">
-              {tServices('subtitle')}
-            </p>
-          </div>
-          </ScrollFadeIn>
-
-          {/* ── Sticky scroll-jacked services (desktop) + stacked cards (mobile) ── */}
-          <ServicesSticky services={services} learnMoreLabel={tServices('learnMore')} />
-
-          <ScrollFadeIn animation="fade-up" delay={600}>
-          <div className="text-center mt-12">
-              <Button asChild size="lg" className="group neon-glow">
-              <Link href={getLocalizedPath('/contatti', locale as any)} title={tServices('cta')} className="flex items-center gap-2">
-                {tServices('cta')}
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </Link>
-            </Button>
-          </div>
-          </ScrollFadeIn>
-        </div>
-      </section>
-
-      {/* ============================================
-          RESPONSIVE DESIGN SECTION - Constellation Background
-          ============================================ */}
-      <section className="hidden md:block relative py-16 sm:py-20 md:py-24 lg:py-32 overflow-hidden">
-        {/* Constellation Background */}
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-secondary/30 to-background" />
-        <div className="absolute inset-0 bg-constellation opacity-50" />
-        
-        {/* Glowing Orbs */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 -left-10 md:-left-20 w-48 h-48 md:w-96 md:h-96 bg-primary/10 rounded-full blur-[100px] animate-pulse" />
-          <div className="absolute bottom-1/4 -right-10 md:-right-20 w-48 h-48 md:w-96 md:h-96 bg-primary/10 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '1s' }} />
-              </div>
-        
-        <div className="container relative z-10 px-4 md:px-8">
-          {/* Header */}
-          <ScrollFadeIn animation="fade-up">
-          <div className="text-center max-w-3xl mx-auto mb-10 md:mb-16">
-              <Badge className="badge-futuristic mb-3 md:mb-4">
-                <Sparkles className="w-3 h-3 mr-2" />
-              {tResponsive('badge')}
-                  </Badge>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground mb-4 md:mb-6">
-              {tResponsive('title')}
-              <span className="block text-primary mt-1 md:mt-2">{tResponsive('titleHighlight')}</span>
-                  </h2>
-            <p className="text-base md:text-lg text-muted-foreground leading-relaxed px-2">
-              {tResponsive('subtitle')}
-            </p>
-          </div>
-          </ScrollFadeIn>
-
-          {/* Device Showcase */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 mb-10 md:mb-16">
-            {[
-              { 
-                icon: Monitor, 
-                label: tResponsive('desktop.label'), 
-                description: tResponsive('desktop.description'),
-                size: '1920px',
-                color: 'from-blue-500/20 to-cyan-500/20',
-                imageUrl: '/assets/sito-web-responsive-desktop.webp',
-                imageHint: 'Sito web responsive Studio Faraj su schermo desktop'
-              },
-              { 
-                icon: Tablet, 
-                label: tResponsive('tablet.label'), 
-                description: tResponsive('tablet.description'),
-                size: '768px',
-                color: 'from-purple-500/20 to-pink-500/20',
-                imageUrl: '/assets/sito-web-responsive-tablet.webp',
-                imageHint: 'Sito web responsive Studio Faraj su tablet'
-              },
-              { 
-                icon: SmartphoneIcon, 
-                label: tResponsive('mobile.label'), 
-                description: tResponsive('mobile.description'),
-                size: '375px',
-                color: 'from-emerald-500/20 to-teal-500/20',
-                imageUrl: '/assets/sito-web-responsive-mobile.webp',
-                imageHint: 'Sito web responsive Studio Faraj su smartphone'
-              },
-                    ].map((device, index) => {
-                      const DeviceIcon = device.icon;
-                      return (
-                        <ScrollFadeIn key={index} animation="scale" delay={index * 100}>
-                          <Card className="relative overflow-hidden holographic-card neon-border transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 md:hover:-translate-y-2 group">
-                            {/* Background Image */}
-                            <div className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity duration-300">
-                              <Image
-                                src={device.imageUrl}
-                                alt={device.imageHint}
-                                fill
-                                className="object-cover"
-                                data-ai-hint={device.imageHint}
-                              />
-                            </div>
-                            
-                            {/* Gradient Overlay */}
-                            <div className={`absolute inset-0 bg-gradient-to-br ${device.color} opacity-0 group-hover:opacity-50 transition-opacity duration-300`} />
-                            
-                            {/* Dark overlay for better text readability */}
-                            <div className="absolute inset-0 bg-background/40 group-hover:bg-background/30 transition-colors duration-300" />
-                            
-                            <CardHeader className="relative z-10 p-4 md:p-6">
-                              <div className="icon-tile rounded-2xl w-14 h-14 md:w-16 md:h-16 mb-3 md:mb-4">
-                                <DeviceIcon className="w-7 h-7 md:w-8 md:h-8 icon-tile-glyph" />
-                              </div>
-                              <CardTitle className="text-xl md:text-2xl">{device.label}</CardTitle>
-                              <p className="text-xs md:text-sm text-muted-foreground mt-2">{device.size}</p>
-                            </CardHeader>
-                            <CardContent className="relative z-10 p-4 md:p-6 pt-0">
-                              <p className="text-muted-foreground">{device.description}</p>
-                            </CardContent>
-                          </Card>
-                        </ScrollFadeIn>
-                      );
-                    })}
-                  </div>
-
-          {/* Features Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          <div className="hidden md:grid md:grid-cols-3 gap-6">
             {[
               {
-                title: tResponsive('features.mobileFirst.title'),
-                description: tResponsive('features.mobileFirst.description'),
-                icon: SmartphoneIcon,
+                icon: <Monitor className="w-6 h-6" />,
+                title: tTech('frontend.title'),
+                description: tTech('frontend.description'),
+                badges: techLogosData.filter(tech => ['React', 'Next.js', 'TypeScript', 'JavaScript', 'Tailwind CSS', 'HTML5', 'CSS3'].includes(tech.title)).map(t => t.title),
+                delay: 0,
+                anim: 'fade-right' as const,
               },
               {
-                title: tResponsive('features.touchFriendly.title'),
-                description: tResponsive('features.touchFriendly.description'),
-                icon: Eye,
+                icon: <Server className="w-6 h-6" />,
+                title: tTech('backend.title'),
+                description: tTech('backend.description'),
+                badges: techLogosData.filter(tech => ['Node.js', 'Firebase', 'Vercel'].includes(tech.title)).map(t => t.title),
+                delay: 100,
+                anim: 'fade-up' as const,
               },
               {
-                title: tResponsive('features.performance.title'),
-                description: tResponsive('features.performance.description'),
-                icon: Rocket,
+                icon: <ShoppingCart className="w-6 h-6" />,
+                title: tTech('ecommerce.title'),
+                description: tTech('ecommerce.description'),
+                badges: [...techLogosData.filter(tech => ['Next.js', 'Node.js'].includes(tech.title)).map(t => t.title), tTech('ecommerce.customCoding')],
+                delay: 200,
+                anim: 'fade-left' as const,
               },
-              {
-                title: tResponsive('features.accessibility.title'),
-                description: tResponsive('features.accessibility.description'),
-                icon: ShieldCheck,
-              },
-            ].map((feature, index) => {
-              const FeatureIcon = feature.icon;
-              return (
-                <ScrollFadeIn key={index} animation="fade-up" delay={index * 75}>
-                  <div className="h-full p-4 md:p-5 lg:p-6 rounded-2xl holographic-card neon-border transition-all duration-300 hover:shadow-lg group flex flex-col">
-                    <div className="icon-tile w-10 h-10 md:w-11 md:h-11 lg:w-12 lg:h-12 mb-3 md:mb-4 flex-shrink-0">
-                      <FeatureIcon className="w-5 h-5 md:w-5 md:h-5 lg:w-6 lg:h-6 icon-tile-glyph" />
+            ].map((cat) => (
+              <ScrollFadeIn key={cat.title} animation={cat.anim} delay={cat.delay}>
+                <Card className="h-full rounded-xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
+                  <CardHeader className="p-6">
+                    <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                      {cat.icon}
                     </div>
-                    <p className="font-semibold text-sm md:text-base lg:text-lg mb-2 flex-shrink-0">{feature.title}</p>
-                    <p className="text-xs md:text-sm text-muted-foreground flex-1">{feature.description}</p>
-                  </div>
-                </ScrollFadeIn>
-              );
-            })}
-            </div>
+                    <CardTitle className="text-lg text-foreground">{cat.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-6 pt-0">
+                    <p className="mb-4 text-sm text-muted-foreground">{cat.description}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {cat.badges.map((b, i) => (
+                        <Badge key={i} variant="secondary" className="tech-badge">{b}</Badge>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </ScrollFadeIn>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* ============================================
-          WHY CHOOSE US - Circuit Background
+          SERVICES SECTION - Compact grid
           ============================================ */}
-      <section className="relative py-10 sm:py-16 md:py-32 lg:py-40 overflow-hidden">
-        {/* Circuit Background */}
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-secondary/50 to-background" />
-        <div className="absolute inset-0 bg-circuit opacity-30" />
-        
-        {/* Glowing Orbs */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-0 left-1/4 w-48 h-48 md:w-96 md:h-96 bg-primary/15 rounded-full blur-[100px] animate-pulse" />
-          <div className="absolute bottom-0 right-1/4 w-48 h-48 md:w-96 md:h-96 bg-primary/10 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '1.5s' }} />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-primary/5 rounded-full blur-[120px]" />
-        </div>
-        
+      <section id="services" className="relative py-16 md:py-24 overflow-hidden">
+        <div className="absolute inset-0 bg-secondary/40" />
+
         <div className="container relative z-10 px-4 md:px-8">
-          {/* Header Section */}
-          <ScrollFadeIn animation="fade-up">
-          <div className="text-center max-w-4xl mx-auto mb-10 md:mb-20">
-              <Badge className="badge-futuristic mb-4 md:mb-6">
-                <Award className="w-3 h-3 mr-2" />
-              {tValues('badge')}
-            </Badge>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4 md:mb-6">
-              <span className="text-foreground">{tValues('title')}</span>
-              <span className="block text-primary mt-1 md:mt-2">{tValues('titleHighlight')}</span>
-            </h2>
-            <p className="text-base md:text-lg lg:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto px-2">
-              {tValues('subtitle')}
-            </p>
-          </div>
+          <SectionHeader
+            eyebrow={tServices('badge')}
+            eyebrowIcon={<Sparkles className="w-3.5 h-3.5" />}
+            title={tServices('title')}
+            titleHighlight={tServices('titleHighlight')}
+            subtitle={tServices('subtitle')}
+            className="mb-10 md:mb-14"
+          />
+
+          <ServicesGrid services={services} learnMoreLabel={tServices('learnMore')} />
+
+          <ScrollFadeIn animation="fade-up" delay={200}>
+            <div className="text-center mt-12">
+              <Button asChild size="lg" className="group">
+                <Link href={getLocalizedPath('/contatti', locale as any)} title={tServices('cta')} className="flex items-center gap-2">
+                  {tServices('cta')}
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                </Link>
+              </Button>
+            </div>
           </ScrollFadeIn>
+        </div>
+      </section>
+
+      {/* ============================================
+          WHY CHOOSE US
+          ============================================ */}
+      <section className="relative py-16 md:py-24 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-secondary/30 to-background" />
+        {/* Single focal orb (static) */}
+        <div className="pointer-events-none absolute top-1/3 left-1/2 -translate-x-1/2 w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-primary/5 rounded-full blur-[120px]" />
+
+        <div className="container relative z-10 px-4 md:px-8">
+          <SectionHeader
+            eyebrow={tValues('badge')}
+            eyebrowIcon={<Award className="w-3.5 h-3.5" />}
+            title={tValues('title')}
+            titleHighlight={tValues('titleHighlight')}
+            subtitle={tValues('subtitle')}
+            className="mb-10 md:mb-16"
+          />
 
           {/* Two Column Layout: Cards and Image */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16 items-center">
@@ -665,13 +394,13 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
             <div className="space-y-4 md:space-y-6">
               {values.map((value, index) => (
                 <ScrollFadeIn key={value.title} animation="fade-right" delay={index * 100}>
-                  <Card className={`group relative overflow-hidden holographic-card transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 lg:hover:-translate-x-2 ${
-                    value.featured ? 'animated-gradient-border' : 'neon-border'
+                  <Card className={`group relative overflow-hidden transition-all duration-500 hover:shadow-xl hover:shadow-primary/10 ${
+                    value.featured ? 'animated-gradient-border holographic-card' : 'rounded-xl border border-border bg-card'
                   }`}>
                     {value.featured && (
                       <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-primary/5 pointer-events-none" />
                     )}
-                    <CardContent className="relative z-10 p-4 md:p-6">
+                    <CardContent className="relative z-10 p-5 md:p-6">
                       {value.featured && value.badge && (
                         <Badge variant="secondary" className="mb-3 bg-primary/15 text-primary border-primary/30 text-xs">
                           <Trophy className="w-3 h-3 mr-1.5" />
@@ -679,31 +408,23 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                         </Badge>
                       )}
                       <div className="flex items-start gap-4 md:gap-5">
-                        {/* Icon with animated background */}
-                        <div className="relative flex-shrink-0">
-                          <div className="absolute inset-0 bg-primary/10 rounded-2xl blur-xl group-hover:bg-primary/20 transition-all duration-500 scale-0 group-hover:scale-100" />
-                          <div className="icon-tile relative w-12 h-12 md:w-14 md:h-14 text-primary shrink-0">
-                            {value.icon}
-                          </div>
+                        <div className="relative flex-shrink-0 inline-flex h-12 w-12 md:h-14 md:w-14 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                          {value.icon}
                         </div>
 
-                        {/* Content */}
                         <div className="flex-1">
-                          <div className="flex items-start justify-between mb-2">
+                          <div className="flex items-start justify-between mb-2 gap-4">
                             <CardTitle className="text-lg md:text-xl font-bold text-foreground group-hover:text-primary transition-colors duration-300">
                               {value.title}
                             </CardTitle>
-                            <div className="text-right ml-4">
-                              <div className="text-lg md:text-xl font-bold text-primary metric-glow">{value.metric}</div>
+                            <div className="text-right">
+                              <div className="text-lg md:text-xl font-bold text-primary">{value.metric}</div>
                               <div className="text-xs text-muted-foreground">{value.metricLabel}</div>
                             </div>
                           </div>
                           <p className="text-muted-foreground leading-relaxed text-sm">
                             {value.description}
                           </p>
-
-                          {/* Decorative line */}
-                          <div className="hidden md:block mt-4 h-1 w-0 bg-gradient-to-r from-primary to-transparent group-hover:w-full transition-all duration-500 rounded-full" />
                         </div>
                       </div>
                     </CardContent>
@@ -714,12 +435,10 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
 
             {/* Right Column: Image */}
             <ScrollFadeIn animation="fade-left" delay={200}>
-            <div className="relative mt-8 lg:mt-0">
-              <div className="relative">
-                {/* Decorative frame */}
-                <div className="absolute -inset-3 md:-inset-6 bg-gradient-to-br from-primary/20 via-primary/10 to-transparent rounded-3xl blur-2xl opacity-50" />
-                <div className="relative rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl neon-border">
-                  <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent z-10" />
+              <div className="relative mt-8 lg:mt-0">
+                <div className="absolute -inset-3 md:-inset-6 bg-gradient-to-br from-primary/15 via-primary/5 to-transparent rounded-3xl blur-2xl opacity-50" />
+                <div className="relative rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl border border-border">
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent z-10" />
                   <Image
                     alt="Team Studio Faraj che collabora allo sviluppo web a Padova"
                     className="w-full h-auto object-cover"
@@ -729,28 +448,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                     width={1200}
                   />
                 </div>
-
-                {/* Floating badges — Google ranking + clean code */}
-                <div className="hidden md:flex absolute -top-4 -left-4 holographic-card neon-border rounded-2xl p-3 md:p-4 shadow-xl backdrop-blur-sm items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center text-primary shrink-0">
-                    <Trophy className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <div className="text-xl md:text-2xl font-bold text-primary metric-glow leading-none">#10</div>
-                    <div className="text-xs text-muted-foreground mt-1">{tValues('topRanked.metricLabel')}</div>
-                  </div>
-                </div>
-                <div className="hidden md:flex absolute -bottom-4 -right-4 holographic-card neon-border rounded-2xl p-3 md:p-4 shadow-xl backdrop-blur-sm items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center text-primary shrink-0">
-                    <Sparkles className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <div className="text-xl md:text-2xl font-bold text-primary metric-glow leading-none">AAA</div>
-                    <div className="text-xs text-muted-foreground mt-1">{tValues('quality.metricLabel')}</div>
-                  </div>
-                </div>
               </div>
-            </div>
             </ScrollFadeIn>
           </div>
         </div>
@@ -759,63 +457,41 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       {/* ============================================
           OUR PROCESS - Timeline Section
           ============================================ */}
-      <section className="relative w-full py-10 sm:py-16 md:py-24 lg:py-32 overflow-hidden">
-        {/* Background */}
+      <section className="relative w-full py-16 md:py-24 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent" />
-        <div className="absolute inset-0 bg-constellation opacity-30" />
-        
+
         <div className="container relative z-10 px-4 md:px-8">
-          <ScrollFadeIn animation="fade-up">
-          <div className="text-center max-w-3xl mx-auto">
-              <Badge className="badge-futuristic mb-3 md:mb-4">
-                <Rocket className="w-3 h-3 mr-2" />
-                {tProcess('badge')}
-              </Badge>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">
-                <span className="text-foreground">{tProcess('title')}</span>
-                <span className="block text-primary mt-1">{tProcess('titleHighlight')}</span>
-            </h2>
-            <p className="mt-4 md:mt-6 text-base md:text-lg leading-7 md:leading-8 text-muted-foreground px-2">
-              {tProcess('subtitle')}
-            </p>
-          </div>
-          </ScrollFadeIn>
+          <SectionHeader
+            eyebrow={tProcess('badge')}
+            eyebrowIcon={<Rocket className="w-3.5 h-3.5" />}
+            title={tProcess('title')}
+            titleHighlight={tProcess('titleHighlight')}
+            subtitle={tProcess('subtitle')}
+          />
           <ProcessTimeline steps={processSteps} />
         </div>
       </section>
 
       {/* ============================================
-          CHI SIAMO — Brief studio intro + CTA to dedicated page
+          CHI SIAMO — slim intro band + CTA
           ============================================ */}
-      <section className="relative py-16 sm:py-20 md:py-28 lg:py-32 overflow-hidden">
-        {/* Soft background */}
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-secondary/30 to-background" />
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/4 right-0 w-72 md:w-[500px] h-72 md:h-[500px] bg-primary/8 rounded-full blur-[120px]" />
-          <div className="absolute bottom-1/4 left-0 w-64 md:w-[400px] h-64 md:h-[400px] bg-primary/6 rounded-full blur-[100px]" />
-        </div>
-
+      <section className="relative py-12 md:py-16 overflow-hidden border-y border-border/60 bg-secondary/30">
         <div className="container relative z-10 px-4 md:px-8">
-          {/* Section header */}
           <ScrollFadeIn animation="fade-up">
-            <div className="text-center max-w-3xl mx-auto mb-10 md:mb-12">
-              <p className="text-xs font-semibold tracking-widest text-primary uppercase mb-4">
-                {tTeam('badge')}
-              </p>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4">
-                <span className="text-foreground">{tTeam('title')} </span>
-                <span className="text-primary">{tTeam('titleHighlight')}</span>
-              </h2>
-              <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
-                {tTeam('subtitle')}
-              </p>
-            </div>
-          </ScrollFadeIn>
-
-          {/* CTA */}
-          <ScrollFadeIn animation="fade-up" delay={100}>
-            <div className="text-center">
-              <Button size="lg" asChild className="group w-full sm:w-auto px-8">
+            <div className="mx-auto flex max-w-4xl flex-col items-center gap-6 text-center md:flex-row md:justify-between md:text-left">
+              <div className="max-w-2xl">
+                <p className="mb-2 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-primary">
+                  <Users className="w-3.5 h-3.5" />
+                  {tTeam('badge')}
+                </p>
+                <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+                  {tTeam('title')} <span className="text-primary">{tTeam('titleHighlight')}</span>
+                </h2>
+                <p className="mt-3 text-base leading-relaxed text-muted-foreground">
+                  {tTeam('subtitle')}
+                </p>
+              </div>
+              <Button size="lg" asChild className="group shrink-0 w-full sm:w-auto px-8">
                 <Link href={getLocalizedPath('/chi-siamo', locale as any)} title={tTeam('cta')}>
                   {tTeam('cta')}
                   <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -827,21 +503,21 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       </section>
 
       {/* ============================================
-          LATEST PROJECTS - Circuit Background
+          LATEST PROJECTS
           ============================================ */}
       <Suspense fallback={<HomeProjectSkeleton />}>
         <HomeProjectSection />
       </Suspense>
 
       {/* ============================================
-          LATEST BLOG - Constellation Background
+          LATEST BLOG
           ============================================ */}
       <Suspense fallback={<HomeBlogSkeleton />}>
         <HomeBlogSection />
       </Suspense>
 
       <TestimonialsServer />
-      
+
       <HomeCtaSection locale={currentLocale} />
       <StructuredDataServer data={localBusinessData} />
     </div>

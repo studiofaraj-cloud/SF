@@ -1269,43 +1269,6 @@
         "cuttingEdge": "All'Avanguardia"
       }
     },
-    "responsive": {
-      "badge": "Perfetto su Ogni Dispositivo",
-      "title": "Siti Web che Si Adattano",
-      "titleHighlight": "Perfettamente a Te",
-      "subtitle": "Ogni pixel conta. Progettiamo esperienze digitali che brillano su qualsiasi schermo, garantendo prestazioni ottimali e un'esperienza utente impeccabile su desktop, tablet e mobile.",
-      "desktop": {
-        "label": "Desktop",
-        "description": "Esperienza completa e dettagliata"
-      },
-      "tablet": {
-        "label": "Tablet",
-        "description": "Perfetto equilibrio tra funzionalità e portabilità"
-      },
-      "mobile": {
-        "label": "Mobile",
-        "description": "Ottimizzato per il touch e la navigazione rapida"
-      },
-      "features": {
-        "mobileFirst": {
-          "title": "Mobile-First",
-          "description": "Progettazione che parte dal mobile per garantire performance ottimali"
-        },
-        "touchFriendly": {
-          "title": "Touch-Friendly",
-          "description": "Interfacce ottimizzate per il tocco e la navigazione intuitiva"
-        },
-        "performance": {
-          "title": "Performance",
-          "description": "Caricamento rapido e fluido su qualsiasi connessione"
-        },
-        "accessibility": {
-          "title": "Accessibilità",
-          "description": "Design inclusivo accessibile a tutti gli utenti"
-        }
-      },
-      "cta": "Scopri i Nostri Servizi"
-    },
     "values": {
       "badge": "Perché Sceglierci",
       "title": "Il Partner Ideale per",

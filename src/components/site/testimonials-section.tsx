@@ -185,10 +185,14 @@ export default function TestimonialsSection({ place }: { place: PlaceSummary }) 
           </div>
         </div>
 
-        {/* ── Mobile: vertical stack ────────────────────────────────────── */}
-        <div className="md:hidden container px-4 flex flex-col gap-4">
+        {/* ── Mobile: horizontal snap carousel ──────────────────────────── */}
+        <div
+          className="md:hidden flex gap-4 overflow-x-auto snap-x snap-mandatory px-4 pb-4 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+        >
           {reviews.map((review, i) => (
-            <ReviewCard key={`${review.authorDisplayName}-${i}`} review={review} />
+            <div key={`${review.authorDisplayName}-${i}`} className="snap-start">
+              <ReviewCard review={review} compact />
+            </div>
           ))}
         </div>
 
