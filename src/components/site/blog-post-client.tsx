@@ -192,9 +192,11 @@ export function BlogPostClient({
           {blog.title}
         </h1>
 
-        {/* Excerpt / description */}
+        {/* Excerpt / description — `whitespace-pre-line` keeps the line breaks
+            typed in the admin textarea, which HTML would otherwise collapse
+            into one run-on block. Same treatment as the project description. */}
         {blog.excerpt && (
-          <p className="text-lg md:text-xl text-muted-foreground leading-relaxed mb-6 font-light max-w-[720px]">
+          <p className="text-lg md:text-xl text-muted-foreground leading-relaxed mb-6 font-light max-w-[720px] whitespace-pre-line">
             {blog.excerpt}
           </p>
         )}

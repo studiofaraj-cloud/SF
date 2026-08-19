@@ -207,7 +207,10 @@ export function ProjectPostClient({
             {project.title}
           </h1>
 
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
+          {/* `whitespace-pre-line` keeps the line breaks typed in the admin
+              textarea — without it a multi-paragraph description collapses
+              into one run-on block. */}
+          <p className="mt-6 max-w-2xl whitespace-pre-line text-lg leading-relaxed text-muted-foreground">
             {project.description}
           </p>
 

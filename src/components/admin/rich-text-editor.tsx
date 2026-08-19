@@ -5,6 +5,7 @@ import { useEditor, EditorContent, type Editor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Image from '@tiptap/extension-image';
 import { Table, TableRow, TableHeader, TableCell } from '@tiptap/extension-table';
+import { marked } from 'marked';
 import {
   Bold,
   Italic,
@@ -49,6 +50,43 @@ import { normalizeTiptapJson } from '@/lib/tiptap-utils';
 export { tiptapJsonToPlainText as jsonContentToPlainText } from '@/lib/tiptap-utils';
 
 const EMPTY_DOC = '{"type":"doc","content":[{"type":"paragraph"}]}';
+
+/**
+ * Markers that make a plain-text paste look like Markdown.
+ *
+ * Copying from Claude chat or from a `.md` file puts the raw Markdown in the
+ * clipboard's `text/plain` flavour. The `text/html` flavour that comes with it
+ * is either the rendered chat DOM or — from a code editor — syntax-highlighted
+ * `<div>`/`<span>` soup, and ProseMirror pastes the latter with the Markdown
+ * syntax intact (`## Titolo` stays literal text, and every blank line becomes
+ * an empty paragraph). When these markers are present we parse the plain text
+ * ourselves instead. See `handlePaste` below.
+ */
+const MARKDOWN_SIGNALS = [
+  /^ {0,3}#{1,6} +\S/m,                  // headings
+  /^ {0,3}[-*+] +\S/m,                   // bullet list
+  /^ {0,3}\d+\. +\S/m,                   // ordered list
+  /^ {0,3}> +\S/m,                       // blockquote
+  /^ {0,3}(?:```|~~~)/m,                 // fenced code
+  /^ {0,3}(?:-{3,}|\*{3,}|_{3,}) *$/m,   // horizontal rule
+  /^ {0,3}\|.+\| *$/m,                   // table row
+  /\*\*[^*\n]+\*\*/,                     // bold
+  /\[[^\]\n]+\]\([^)\s]+\)/,             // link
+];
+
+function looksLikeMarkdown(text: string): boolean {
+  return MARKDOWN_SIGNALS.some((re) => re.test(text));
+}
+
+/** Markdown -> HTML, which Tiptap then parses against its own schema. */
+function markdownToHtml(markdown: string): string | null {
+  try {
+    const html = marked.parse(markdown, { gfm: true, breaks: false, async: false });
+    return typeof html === 'string' && html.trim() ? html : null;
+  } catch {
+    return null;
+  }
+}
 
 /**
  * Image node extended with `size` (full | medium | small) and `align`
@@ -102,6 +140,8 @@ export function RichTextEditor({
   const [, forceUpdate] = useReducer((x) => x + 1, 0);
   // Guards the external-value sync effect against our own onChange updates.
   const isInternalUpdate = useRef(false);
+  // Lets `handlePaste` reach the editor instance from inside the useEditor config.
+  const editorRef = useRef<Editor | null>(null);
 
   const [showImageDialog, setShowImageDialog] = useState(false);
   const [showLinkDialog, setShowLinkDialog] = useState(false);
@@ -146,6 +186,27 @@ export function RichTextEditor({
         class:
           'max-w-none min-h-[20rem] px-4 py-3 focus:outline-none text-foreground',
       },
+      // Markdown-aware paste. Without this, text copied from Claude chat or a
+      // .md file lands as literal `## Titolo` / `**grassetto**` and one empty
+      // paragraph per blank line. Inside a code block we stay out of the way.
+      handlePaste: (_view, event) => {
+        const editorInstance = editorRef.current;
+        if (!editorInstance || editorInstance.isActive('codeBlock')) return false;
+
+        const text = event.clipboardData?.getData('text/plain');
+        if (!text || !looksLikeMarkdown(text)) return false;
+
+        const html = markdownToHtml(text);
+        if (!html) return false;
+
+        event.preventDefault();
+        editorInstance
+          .chain()
+          .focus()
+          .insertContent(html, { parseOptions: { preserveWhitespace: false } })
+          .run();
+        return true;
+      },
     },
     onUpdate: ({ editor }) => {
       isInternalUpdate.current = true;
@@ -153,6 +214,8 @@ export function RichTextEditor({
     },
     onTransaction: () => forceUpdate(),
   });
+
+  editorRef.current = editor;
 
   // Keep the editor in sync when `value` changes from OUTSIDE the editor
   // (e.g. an edit form fetching a project asynchronously). Skips updates that

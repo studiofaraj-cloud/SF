@@ -33,6 +33,21 @@ function isJSONContent(content: string | TiptapDocument): content is TiptapDocum
   }
 }
 
+/**
+ * A paragraph carrying nothing visible — no children, or only hard breaks and
+ * whitespace-only text. Pasting a Markdown file used to leave one of these per
+ * blank line; rendering them as `&nbsp;` turned the article into a column of
+ * gaps, so they are dropped instead.
+ */
+function isBlankParagraph(node: TiptapNode): boolean {
+  if (!node.content || node.content.length === 0) return true;
+  return node.content.every(
+    (child) =>
+      child.type === 'hardBreak' ||
+      (child.type === 'text' && !child.text?.trim())
+  );
+}
+
 function renderText(node: TiptapNode): React.ReactNode {
   if (!node.text) return null;
 
@@ -83,45 +98,46 @@ function renderNode(node: TiptapNode, index: number, insideParagraph: boolean = 
   const key = `node-${index}`;
 
   switch (node.type) {
-    case 'paragraph':
+    case 'paragraph': {
+      if (isBlankParagraph(node)) return null;
+
+      const children = node.content ?? [];
+
       if (insideParagraph) {
         return (
           <div key={key} className="mb-5 leading-[1.85] text-muted-foreground">
-            {node.content?.map((child, i) => renderNode(child, i, true))}
+            {children.map((child, i) => renderNode(child, i, true))}
           </div>
         );
       }
 
-      if (!node.content || node.content.length === 0) {
-        return <p key={key} className="mb-5 leading-[1.85] text-muted-foreground">&nbsp;</p>;
-      }
-
-      const hasNestedParagraph = node.content.some(child => child.type === 'paragraph');
+      const hasNestedParagraph = children.some(child => child.type === 'paragraph');
       if (hasNestedParagraph) {
         return (
           <div key={key} className="mb-5 leading-[1.85] text-muted-foreground">
-            {node.content.map((child, i) => renderNode(child, i, true))}
+            {children.map((child, i) => renderNode(child, i, true))}
           </div>
         );
       }
 
-      const hasOnlyTextNodes = node.content.every(child => {
+      const hasOnlyTextNodes = children.every(child => {
         return child.type === 'text' || child.type === 'hardBreak';
       });
 
       if (hasOnlyTextNodes) {
         return (
           <p key={key} className="mb-5 leading-[1.85] text-muted-foreground">
-            {node.content.map((child, i) => renderNode(child, i, true))}
+            {children.map((child, i) => renderNode(child, i, true))}
           </p>
         );
       }
 
       return (
         <div key={key} className="mb-5 leading-[1.85] text-muted-foreground">
-          {node.content.map((child, i) => renderNode(child, i, true))}
+          {children.map((child, i) => renderNode(child, i, true))}
         </div>
       );
+    }
 
     case 'heading': {
       const level = node.attrs?.level || 1;
