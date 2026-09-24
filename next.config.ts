@@ -19,6 +19,10 @@ const nextConfig: NextConfig = {
   // fewer, smaller chunks instead of one chunk per library entry. Cuts the
   // number of JS files loaded on the homepage.
   experimental: {
+    // Inline the CSS into the HTML as <style> instead of <link rel="stylesheet">.
+    // The two stylesheets (~34 KiB) were render-blocking on mobile (~600 ms in
+    // PageSpeed). Trade-off: CSS is no longer cached separately across page loads.
+    inlineCss: true,
     optimizePackageImports: [
       'lucide-react',
       'react-icons',
