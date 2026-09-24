@@ -10,6 +10,7 @@ import ScrollFadeIn from '@/components/site/scroll-fade-in';
 import GradientText from '@/components/GradientText';
 import { useTranslations, useLocale } from 'next-intl';
 import { getLocalizedPath } from '@/lib/i18n-helpers';
+import { ServiceLocalSection } from '@/components/site/service-local-section';
 
 export default function EcommercePage() {
   const locale = useLocale();
@@ -212,6 +213,9 @@ export default function EcommercePage() {
           </div>
         </div>
       </section>
+
+      {/* Local SEO copy, FAQ and related services (Italian only) */}
+      <ServiceLocalSection service="ecommerce" locale={locale} />
 
       {/* CTA Section */}
       <section className="relative py-20 md:py-32 overflow-hidden">

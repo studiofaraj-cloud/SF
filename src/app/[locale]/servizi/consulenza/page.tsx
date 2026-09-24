@@ -12,6 +12,7 @@ import GradientText from '@/components/GradientText';
 import { BookingDialog } from '@/components/site/booking-dialog';
 import { useTranslations, useLocale } from 'next-intl';
 import { getLocalizedPath } from '@/lib/i18n-helpers';
+import { ServiceLocalSection } from '@/components/site/service-local-section';
 
 export default function ConsulenzaPage() {
   const locale = useLocale();
@@ -276,6 +277,9 @@ export default function ConsulenzaPage() {
           </div>
         </div>
       </section>
+
+      {/* Local SEO copy, FAQ and related services (Italian only) */}
+      <ServiceLocalSection service="consulting" locale={locale} />
 
       {/* CTA Section */}
       <section className="relative py-20 md:py-32 overflow-hidden">
