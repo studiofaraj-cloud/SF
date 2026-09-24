@@ -143,7 +143,7 @@
       "v2": {
         "hero": {
           "badge": "Web Development · Padova",
-          "titleLine1": "Websites and platforms",
+          "titleLine1": "Web development in Padova,",
           "titleLine2": "written line by line.",
           "subtitle": "No templates, no no-code. A Gen-Z team that designs, builds and ships 100% code platforms — fast, secure, and 100% yours.",
           "ctaQuote": "Request a quote",
@@ -340,8 +340,8 @@
     "ecommerce": {
       "label": "E-commerce",
       "badge": "E-commerce",
-      "title": "E-commerce",
-      "titleHighlight": "Solutions",
+      "title": "Custom e-commerce",
+      "titleHighlight": "in Padova",
       "subtitle": "Complete online sales platforms with",
       "subtitleHighlight": "optimized user experience",
       "subtitleEnd": " and advanced management of products, orders, and payments.",
@@ -412,8 +412,8 @@
     "designUIUX": {
       "label": "UI/UX Design",
       "badge": "UI/UX Design",
-      "title": "UI/UX",
-      "titleHighlight": "Design",
+      "title": "Web Design & UI/UX",
+      "titleHighlight": "in Padova",
       "subtitle": "Intuitive and engaging interfaces optimized for a perfect experience on any device.",
       "ctaQuote": "Request Quote",
       "ctaProjects": "View Projects",
@@ -555,8 +555,8 @@
     "seoMarketing": {
       "label": "SEO & Marketing",
       "badge": "SEO & Marketing",
-      "title": "SEO &",
-      "titleHighlight": "Web Marketing",
+      "title": "SEO & Web Marketing",
+      "titleHighlight": "in Padova",
       "subtitle": "Digital strategies to increase online visibility and generate qualified leads.",
       "ctaQuote": "Request Quote",
       "ctaProjects": "View Projects",
@@ -666,8 +666,8 @@
     "aiAutomation": {
       "label": "AI & Automation",
       "badge": "AI & Automation",
-      "title": "AI Integration",
-      "titleHighlight": "& Automation",
+      "title": "AI & Automation",
+      "titleHighlight": "for businesses in Padova",
       "subtitle": "We leverage artificial intelligence to create",
       "subtitleHighlight": "chatbots, predictive analytics, and automations",
       "subtitleEnd": " that transform your business.",
@@ -757,8 +757,8 @@
     "maintenance": {
       "label": "Maintenance",
       "badge": "Maintenance",
-      "title": "Maintenance",
-      "titleHighlight": "& Support",
+      "title": "Website maintenance",
+      "titleHighlight": "in Padova",
       "subtitle": "We offer flexible maintenance plans to ensure your site is always",
       "subtitleHighlight": " updated, secure, and performant",
       "subtitleEnd": ".",
@@ -849,8 +849,8 @@
     "hostingCloud": {
       "label": "Hosting & Cloud",
       "badge": "Hosting & Cloud",
-      "title": "Hosting",
-      "titleHighlight": "& Cloud",
+      "title": "Hosting & Cloud",
+      "titleHighlight": "in Padova",
       "subtitle": "Scalable and secure cloud infrastructure for your web applications.",
       "ctaQuote": "Request Quote",
       "ctaProjects": "View Projects",
@@ -1021,8 +1021,8 @@
     "consulting": {
       "label": "Consulting",
       "badge": "Consulting",
-      "title": "Strategic",
-      "titleHighlight": "Consulting",
+      "title": "IT consulting",
+      "titleHighlight": "in Padova",
       "subtitle": "We support you in",
       "subtitleHighlight": "strategic decisions",
       "subtitleEnd": " for your digital project, from analysis to technology selection.",

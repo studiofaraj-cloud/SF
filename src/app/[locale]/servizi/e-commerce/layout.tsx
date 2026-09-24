@@ -14,14 +14,14 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   };
   
   const seoContent = currentLocale === 'it' ? {
-    title: 'E-commerce e Piattaforme Online — Padova',
-    description: 'Soluzioni e-commerce complete per vendere online. Creiamo negozi digitali performanti con integrazione pagamenti, gestione ordini e marketing. Padova, Veneto.',
+    title: 'Realizzazione E-commerce a Padova',
+    description: 'Realizziamo e-commerce su misura a Padova: pagamenti, ordini e catalogo integrati in un negozio online veloce. Per aziende di tutto il Veneto.',
     keywords: [
         'sviluppo e-commerce su misura Padova',
         'creazione sito web Vicenza','e-commerce', 'negozio online', 'vendita online', 'piattaforma e-commerce', 'shop online', 'e-commerce Veneto'],
   } : {
-    title: 'E-commerce and Online Platforms — Padova',
-    description: 'Complete e-commerce solutions for selling online. We create high-performance digital stores with payment integration, order management and marketing. Padova, Veneto.',
+    title: 'E-commerce Development in Padova, Italy',
+    description: 'Custom e-commerce built in Padova, Italy: payments, orders and catalogue in one fast online store. For businesses across the Veneto region.',
     keywords: [
         'sviluppo e-commerce su misura Padova',
         'creazione sito web Vicenza','e-commerce', 'online store', 'online sales', 'e-commerce platform', 'online shop', 'e-commerce Veneto'],

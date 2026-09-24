@@ -90,7 +90,7 @@ export default function ConsulenzaPage() {
                 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight"
               >
                 {t('title')}
-              </GradientText>
+              </GradientText>{' '}
               <span className="block text-foreground mt-1">
                 {t('titleHighlight')}
               </span>
@@ -134,7 +134,7 @@ export default function ConsulenzaPage() {
                 {t('features.badge')}
               </Badge>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-                <span className="text-foreground">{t('features.title')}</span>
+                <span className="text-foreground">{t('features.title')}</span>{' '}
                 <span className="block text-fuchsia-400">{t('features.titleHighlight')}</span>
               </h2>
             </div>
@@ -171,7 +171,7 @@ export default function ConsulenzaPage() {
                 {t('process.badge')}
               </Badge>
               <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-                <span className="text-foreground">{t('process.title')}</span>
+                <span className="text-foreground">{t('process.title')}</span>{' '}
                 <span className="block text-fuchsia-400">{t('process.titleHighlight')}</span>
               </h2>
             </div>
@@ -231,7 +231,7 @@ export default function ConsulenzaPage() {
                 {t('pricing.badge')}
               </Badge>
               <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-                <span className="text-foreground">{t('pricing.title')}</span>
+                <span className="text-foreground">{t('pricing.title')}</span>{' '}
                 <span className="block text-fuchsia-400">{t('pricing.titleHighlight')}</span>
               </h2>
             </div>
@@ -294,7 +294,7 @@ export default function ConsulenzaPage() {
                 </Badge>
                 
                 <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-                  <span className="text-foreground">{t('cta.title')}</span>
+                  <span className="text-foreground">{t('cta.title')}</span>{' '}
                   <span className="block text-fuchsia-400">{t('cta.titleHighlight')}</span>
                 </h2>
                 

@@ -9,8 +9,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
   const seoContent = {
     it: {
-      title: 'Consulenza Digitale — Strategia e Pianificazione',
-      description: 'Consulenza digitale per aziende e professionisti. Analisi, strategia e pianificazione per progetti web di successo. Consulenza personalizzata a Padova, Veneto.',
+      title: 'Consulenza Informatica e Digitale a Padova',
+      description: 'Consulenza informatica e digitale a Padova: analisi, strategia e pianificazione di progetti web e software per aziende e professionisti del Veneto.',
       keywords: [
         'consulenza strategica digitale PMI Veneto',
         'consulenza digitale',
@@ -22,8 +22,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       ],
     },
     en: {
-      title: 'Digital Consulting — Strategy and Planning',
-      description: 'Digital consulting for companies and professionals. Analysis, strategy and planning for successful web projects. Personalized consulting in Padova, Veneto.',
+      title: 'IT and Digital Consulting in Padova, Italy',
+      description: 'IT and digital consulting in Padova, Italy: analysis, strategy and planning for web and software projects, for businesses across the Veneto region.',
       keywords: [
         'consulenza strategica digitale PMI Veneto',
         'digital consulting',

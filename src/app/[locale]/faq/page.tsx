@@ -154,7 +154,7 @@ export default async function FaqPage({ params }: { params: Promise<{ locale: st
               {tStill('badge')}
             </p>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-4">
-              <span className="text-foreground">{tStill('title')} </span>
+              <span className="text-foreground">{tStill('title')} </span>{' '}
               <span className="text-primary">{tStill('titleHighlight')}</span>
             </h2>
             <p className="text-sm md:text-base text-muted-foreground leading-relaxed mb-7 max-w-md mx-auto">

@@ -9,8 +9,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
   const seoContent = {
     it: {
-      title: 'Hosting e Cloud — Soluzioni di Hosting Professionale',
-      description: 'Servizi di hosting e cloud per siti web e applicazioni. Hosting veloce, sicuro e scalabile con supporto tecnico dedicato. Padova, Veneto.',
+      title: 'Hosting e Cloud per Aziende a Padova',
+      description: 'Hosting e cloud per siti web e applicazioni a Padova: server veloci, sicuri e scalabili con supporto tecnico diretto. Per aziende di tutto il Veneto.',
       keywords: [
         'sviluppo web Triveneto',
         'manutenzione sito web professionale Veneto',
@@ -23,8 +23,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       ],
     },
     en: {
-      title: 'Hosting and Cloud — Professional Hosting Solutions',
-      description: 'Hosting and cloud services for websites and applications. Fast, secure and scalable hosting with dedicated technical support. Padova, Veneto.',
+      title: 'Hosting and Cloud for Businesses in Padova',
+      description: 'Hosting and cloud for websites and apps in Padova, Italy: fast, secure, scalable servers with direct technical support. For businesses across Veneto.',
       keywords: [
         'sviluppo web Triveneto',
         'manutenzione sito web professionale Veneto',

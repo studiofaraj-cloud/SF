@@ -9,8 +9,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
   const seoContent = {
     it: {
-      title: 'AI e Automazione — Soluzioni Intelligenti',
-      description: 'Integrazione intelligenza artificiale e automazione per migliorare i processi aziendali. Chatbot, sistemi di raccomandazione e automazione intelligente.',
+      title: 'AI e Automazione per Aziende a Padova',
+      description: 'Integrazione di intelligenza artificiale e automazioni per aziende a Padova e in Veneto: chatbot, flussi automatici e meno lavoro manuale ripetitivo.',
       keywords: [
         'integrazione AI automazione siti web',
         'intelligenza artificiale',
@@ -22,8 +22,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       ],
     },
     en: {
-      title: 'AI & Automation — Intelligent Solutions',
-      description: 'Artificial intelligence and automation integration to improve business processes. Chatbots, recommendation systems and intelligent automation.',
+      title: 'AI and Automation for Businesses in Padova',
+      description: 'AI and automation for businesses in Padova and the Veneto region: chatbots, automated workflows and less repetitive manual work.',
       keywords: [
         'integrazione AI automazione siti web',
         'artificial intelligence',

@@ -181,7 +181,7 @@ export default function HomepageClient({ heroSlides }: HomepageClientProps = {})
               style={{ color: '#ffffff' }}
               suppressHydrationWarning
             >
-              <span className="block">{en ? 'We build sites that' : 'Costruiamo siti che'}</span>
+              <span className="block">{en ? 'We build sites that' : 'Costruiamo siti che'}</span>{' '}
               <span
                 className="relative block mt-2 md:mt-4"
                 style={{ overflow: 'hidden', paddingBottom: '0.12em' }}

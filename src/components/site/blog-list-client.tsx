@@ -7,12 +7,13 @@ import { BookOpen, Calendar, ChevronRight, Search, ArrowRight } from 'lucide-rea
 import type { Blog } from '@/lib/definitions';
 import { useTranslations, useLocale } from 'next-intl';
 import { useState, useMemo } from 'react';
+// Static import: the hero <h1> text must be in the server HTML for crawlers.
+import GradientText from '@/components/GradientText';
 
 const ScrollFadeIn = dynamic(
   () => import('@/components/site/scroll-fade-in'),
   { ssr: true }
 );
-const GradientText = dynamic(() => import('@/components/GradientText'), { ssr: false });
 
 interface BlogListClientProps {
   blogs: Blog[];
@@ -85,15 +86,16 @@ export function BlogListClient({ blogs: initialBlogs }: BlogListClientProps) {
 
         <div className="relative z-20 container px-4 sm:px-6 md:px-8 text-center max-w-3xl py-14">
 
-          <div className="mb-4 pb-2">
+          <h1 className="mb-4 pb-2 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.2]">
             <GradientText
+              as="span"
               colors={['#10b981', '#059669', '#10b981']}
               animationSpeed={4}
               className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.2]"
             >
               {`${t('hero.title')} ${t('hero.titleHighlight')}`}
             </GradientText>
-          </div>
+          </h1>
 
           <p className="text-base sm:text-lg text-muted-foreground max-w-xl mx-auto mb-8">
             {t('hero.description')}{' '}

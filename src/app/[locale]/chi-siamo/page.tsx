@@ -216,18 +216,20 @@ export default function ChiSiamoPage() {
               {t('hero.badge')}
             </Badge>
 
-            <div className="mb-6">
+            {/* Both lines live inside the <h1> so the full title is the page heading. */}
+            <h1 className="mb-6 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight">
               <GradientText
+                as="span"
                 colors={['#3b82f6', '#8b5cf6', '#3b82f6']}
                 animationSpeed={4}
                 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight"
               >
                 {t('hero.title')}
-              </GradientText>
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-foreground mt-2">
+              </GradientText>{' '}
+              <span className="block text-foreground mt-2">
                 {t('hero.titleHighlight')}
-              </h1>
-            </div>
+              </span>
+            </h1>
 
             <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed">
               {t('hero.subtitle')}{' '}

@@ -83,7 +83,7 @@ export default function SviluppoWebPage() {
                   className="text-4xl sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl font-bold tracking-tight leading-[1.05]"
                 >
                   {t('hero.titleLine1')}
-                </GradientText>
+                </GradientText>{' '}
                 <span className="block text-foreground mt-1">
                   {t('hero.titleLine2')}
                 </span>

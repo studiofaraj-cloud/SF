@@ -10,8 +10,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   
   const seoContent = {
     it: {
-      title: 'Sviluppo Web su Misura — Padova, Veneto',
-      description: 'Sviluppo web professionale e personalizzato a Padova, Veneto. Creiamo siti web moderni, responsive e performanti con le tecnologie più avanzate. Preventivo gratuito.',
+      title: 'Sviluppo Siti Web a Padova — Su Misura',
+      description: 'Realizzazione siti web e applicazioni su misura a Padova: codice scritto da zero, veloce e tuo. Clienti in tutto il Veneto. Preventivo gratuito.',
       keywords: [
         'realizzazione siti web Veneto',
         'sviluppatore React Next.js Padova',
@@ -25,8 +25,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       ],
     },
     en: {
-      title: 'Custom Web Development — Padova, Veneto',
-      description: 'Professional and customized web development in Padova, Veneto. We create modern, responsive and high-performance websites with the most advanced technologies. Free quote.',
+      title: 'Custom Web Development in Padova, Italy',
+      description: 'Custom websites and web apps built in Padova, Italy: hand-written code, fast and fully yours. Clients across the Veneto region and Europe. Free quote.',
       keywords: [
         'realizzazione siti web Veneto',
         'sviluppatore React Next.js Padova',

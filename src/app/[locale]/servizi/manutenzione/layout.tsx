@@ -9,8 +9,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
   const seoContent = {
     it: {
-      title: 'Manutenzione e Supporto Web — Padova',
-      description: 'Servizi di manutenzione e supporto per siti web. Aggiornamenti, backup, sicurezza e ottimizzazione delle performance. Supporto continuo per il tuo sito.',
+      title: 'Manutenzione Siti Web a Padova',
+      description: 'Manutenzione siti web a Padova: aggiornamenti, backup, sicurezza e ottimizzazione delle prestazioni. Supporto continuo per aziende in tutto il Veneto.',
       keywords: [
         'manutenzione siti web',
         'supporto web',
@@ -21,8 +21,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       ],
     },
     en: {
-      title: 'Website Maintenance and Support — Padova',
-      description: 'Website maintenance and support services. Updates, backups, security and performance optimization. Continuous support for your website.',
+      title: 'Website Maintenance in Padova, Italy',
+      description: 'Website maintenance in Padova, Italy: updates, backups, security and performance tuning. Ongoing support for businesses across the Veneto region.',
       keywords: [
         'website maintenance',
         'web support',

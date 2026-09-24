@@ -110,18 +110,20 @@ export default function ContattiPage() {
             </Badge>
 
             {/* Main Title with Gradient */}
-            <div className="mb-3 sm:mb-6">
+            {/* Both lines live inside the <h1> so the full title is the page heading. */}
+            <h1 className="mb-3 sm:mb-6 text-[2.25rem] leading-[1.05] sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight">
               <GradientText
+                as="span"
                 colors={['#3b82f6', '#8b5cf6', '#3b82f6']}
                 animationSpeed={4}
                 className="text-[2.25rem] leading-[1.05] sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight"
               >
                 {getTranslation('hero.title', 'Start a Conversation')}
-              </GradientText>
-              <h1 className="text-[2.25rem] leading-[1.05] sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-foreground mt-1 sm:mt-2">
+              </GradientText>{' '}
+              <span className="block text-foreground mt-1 sm:mt-2">
                 {getTranslation('hero.titleHighlight', 'with Us')}
-              </h1>
-            </div>
+              </span>
+            </h1>
 
             {/* Subtitle — short on mobile, full on desktop */}
             <p className="hidden sm:block text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-6 sm:mb-8 leading-relaxed px-2">
@@ -205,7 +207,7 @@ export default function ContattiPage() {
                 {getContactTranslation('faqSection.badge', 'FAQ')}
               </Badge>
               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4">
-                <span className="text-foreground">{getContactTranslation('faqSection.title', 'Frequently')}</span>
+                <span className="text-foreground">{getContactTranslation('faqSection.title', 'Frequently')}</span>{' '}
                 <span className="block text-primary">{getContactTranslation('faqSection.titleHighlight', 'Asked Questions')}</span>
               </h2>
               <p className="text-base sm:text-lg text-muted-foreground px-2">
@@ -338,7 +340,7 @@ export default function ContattiPage() {
                 </Badge>
                 
                 <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4">
-                  <span className="text-foreground">{getContactTranslation('cta.title', 'Transform Your')}</span>
+                  <span className="text-foreground">{getContactTranslation('cta.title', 'Transform Your')}</span>{' '}
                   <span className="block text-primary">{getContactTranslation('cta.titleHighlight', 'Idea into Reality')}</span>
                 </h2>
                 

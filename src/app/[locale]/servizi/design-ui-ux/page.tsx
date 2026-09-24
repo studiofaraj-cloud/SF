@@ -146,7 +146,7 @@ export default function DesignUiUxPage() {
                 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight"
               >
                 {t('title')}
-              </GradientText>
+              </GradientText>{' '}
               <span className="block text-foreground mt-1">
                 {t('titleHighlight')}
               </span>
@@ -188,7 +188,7 @@ export default function DesignUiUxPage() {
                 {t('features.badge')}
               </Badge>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-                <span className="text-foreground">{t('features.title')}</span>
+                <span className="text-foreground">{t('features.title')}</span>{' '}
                 <span className="block text-violet-400">{t('features.titleHighlight')}</span>
               </h2>
             </div>
@@ -225,7 +225,7 @@ export default function DesignUiUxPage() {
                 {t('process.badge')}
               </Badge>
               <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-                <span className="text-foreground">{t('process.title')}</span>
+                <span className="text-foreground">{t('process.title')}</span>{' '}
                 <span className="block text-violet-400">{t('process.titleHighlight')}</span>
               </h2>
             </div>
@@ -285,7 +285,7 @@ export default function DesignUiUxPage() {
                 {t('plans.badge')}
               </Badge>
               <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-                <span className="text-foreground">{t('plans.title')}</span>
+                <span className="text-foreground">{t('plans.title')}</span>{' '}
                 <span className="block text-violet-400">{t('plans.titleHighlight')}</span>
               </h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
@@ -372,7 +372,7 @@ export default function DesignUiUxPage() {
                 </Badge>
                 
                 <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-                  <span className="text-foreground">{t('cta.title')}</span>
+                  <span className="text-foreground">{t('cta.title')}</span>{' '}
                   <span className="block text-violet-400">{t('cta.titleHighlight')}</span>
                 </h2>
                 

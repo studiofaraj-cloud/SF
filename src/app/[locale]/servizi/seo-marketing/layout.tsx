@@ -10,8 +10,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   
   const seoContent = {
     it: {
-      title: 'SEO e Marketing Digitale — Padova',
-      description: 'Servizi SEO e marketing digitale per aumentare la visibilità online. Ottimizzazione per motori di ricerca, content marketing e campagne pubblicitarie efficaci.',
+      title: 'Consulente SEO e Web Marketing a Padova',
+      description: 'SEO e web marketing a Padova: ottimizzazione on-page, SEO locale, contenuti e campagne a pagamento per farti trovare dai clienti di Padova e del Veneto.',
       keywords: [
         'web agency Verona',
         'agenzia web Venezia',
@@ -24,8 +24,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       ],
     },
     en: {
-      title: 'SEO and Digital Marketing — Padova',
-      description: 'SEO and digital marketing services to increase online visibility. Search engine optimization, content marketing and effective advertising campaigns.',
+      title: 'SEO and Web Marketing in Padova, Italy',
+      description: 'SEO and web marketing in Padova, Italy: on-page SEO, local SEO, content and paid campaigns so customers in Padova and the Veneto region find you.',
       keywords: [
         'web agency Verona',
         'agenzia web Venezia',

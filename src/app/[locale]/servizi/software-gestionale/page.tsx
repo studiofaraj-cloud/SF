@@ -118,11 +118,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (locale !== 'it') return {};
 
   return buildSEOMetadata({
-    title: 'Software gestionale su misura',
+    title: 'Software Gestionale su Misura a Padova',
     description:
-      'Gestionali sviluppati sul vostro processo: commesse, cantieri, rapportini, SAL e magazzino. Nessun canone per utente, codice di proprietà del cliente.',
+      'Software gestionale su misura a Padova: commesse, cantieri, rapportini, SAL e magazzino. Nessun canone per utente, codice di proprietà del cliente.',
     keywords: [
       'software gestionale su misura',
+      'software gestionale Padova',
+      'gestionale su misura Veneto',
       'gestionale personalizzato per aziende',
       'software gestione cantieri',
       'gestionale per imprese edili',
@@ -172,7 +174,7 @@ export default async function GestionalePage({ params }: Props) {
               ← Tutti i servizi
             </Link>
             <h1 className="mt-5 text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-[1.05]">
-              Software gestionale{' '}
+              Software gestionale su misura a Padova,{' '}
               <span className="text-primary">costruito sul vostro processo.</span>
             </h1>
             <p className="mt-6 text-lg text-muted-foreground leading-relaxed">

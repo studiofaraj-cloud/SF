@@ -9,8 +9,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
   const seoContent = {
     it: {
-      title: 'Design UI/UX Professionale — Padova',
-      description: 'Design UI/UX moderno e user-friendly per siti web e applicazioni. Creiamo interfacce intuitive che migliorano l\'esperienza utente e aumentano le conversioni.',
+      title: 'Web Design e UI/UX a Padova',
+      description: 'Web design e UI/UX a Padova: interfacce chiare e siti progettati per convertire, su desktop e mobile. Per aziende e professionisti del Veneto.',
       keywords: [
         'design UI/UX',
         'user experience',
@@ -21,8 +21,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       ],
     },
     en: {
-      title: 'Professional UI/UX Design — Padova',
-      description: 'Modern and user-friendly UI/UX design for websites and applications. We create intuitive interfaces that improve user experience and increase conversions.',
+      title: 'Web Design and UI/UX in Padova, Italy',
+      description: 'Web design and UI/UX in Padova, Italy: clear interfaces and websites designed to convert on desktop and mobile. For businesses across the Veneto region.',
       keywords: [
         'UI/UX design',
         'user experience',
