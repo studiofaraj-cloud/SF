@@ -14,11 +14,13 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   
   const seoContent = {
     it: {
-      title: 'Contatti — Richiedi un Preventivo Gratuito',
-      description: 'Contatta Studio Faraj a Padova, Veneto. Richiedi un preventivo gratuito per il tuo progetto web. Siamo disponibili per consulenze e collaborazioni.',
+      title: 'Contatti — Preventivo Sito Web Padova, Veneto',
+      description: 'Chiedi a Studio Faraj un preventivo gratuito per il tuo sito web o la tua app. Siamo a Padova e lavoriamo in tutto il Veneto. Tel. +39 320 222 3322.',
       keywords: [
         'contatti',
         'preventivo',
+        'preventivo sito web Padova',
+        'preventivo sito web Veneto',
         'consulenza web',
         'studio faraj contatti',
         'Padova',
@@ -26,11 +28,12 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       ],
     },
     en: {
-      title: 'Contact — Request a Free Quote',
-      description: 'Contact Studio Faraj in Padova, Veneto. Request a free quote for your web project. We are available for consultations and collaborations.',
+      title: 'Contact — Website Quote in Padova & Veneto',
+      description: 'Get a free quote from Studio Faraj for your website or web app. Based in Padova, working with businesses across Veneto. Call +39 320 222 3322.',
       keywords: [
         'contact',
         'quote',
+        'website quote Padova',
         'web consultation',
         'studio faraj contact',
         'Padova',

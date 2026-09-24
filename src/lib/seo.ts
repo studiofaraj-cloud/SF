@@ -231,159 +231,6 @@ export function generateMetadata({
   return metadata;
 }
 
-export function generateStructuredDataOrganization(locale: Locale = 'it') {
-  const baseUrl = `${siteConfig.url}/${locale}`;
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    '@id': `${siteConfig.url}#organization`,
-    name: siteConfig.name,
-    url: baseUrl,
-    logo: {
-      '@type': 'ImageObject',
-      url: `${siteConfig.url}/assets/logo.png`,
-      width: 512,
-      height: 512,
-    },
-    image: siteConfig.ogImage,
-    contactPoint: {
-      '@type': 'ContactPoint',
-      telephone: '+39-320-222-3322',
-      contactType: 'customer service',
-      areaServed: ['IT', 'EU'],
-      availableLanguage: locale === 'it' ? ['Italian', 'English'] : ['English', 'Italian'],
-    },
-    address: {
-      '@type': 'PostalAddress',
-      addressLocality: 'Padova',
-      addressRegion: 'Veneto',
-      postalCode: '35100',
-      addressCountry: 'IT',
-    },
-    foundingDate: '2024',
-    numberOfEmployees: {
-      '@type': 'QuantitativeValue',
-      value: '1-10',
-    },
-    sameAs: [
-      'https://www.instagram.com/studiofaraj',
-      'https://www.linkedin.com/company/studiofaraj',
-      'https://www.facebook.com/studiofaraj',
-    ],
-  };
-}
-
-export function generateStructuredDataProfessionalService(locale: Locale = 'it') {
-  const baseUrl = `${siteConfig.url}/${locale}`;
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'ProfessionalService',
-    '@id': `${siteConfig.url}#service`,
-    name: siteConfig.name,
-    url: baseUrl,
-    image: siteConfig.ogImage,
-    telephone: '+39-320-222-3322',
-    email: 'info@studiofaraj.it',
-    address: {
-      '@type': 'PostalAddress',
-      addressLocality: 'Padova',
-      addressRegion: 'Veneto',
-      postalCode: '35100',
-      addressCountry: 'IT',
-    },
-    geo: {
-      '@type': 'GeoCoordinates',
-      latitude: '45.4064',
-      longitude: '11.8768',
-    },
-    priceRange: '$$',
-    openingHoursSpecification: [
-      {
-        '@type': 'OpeningHoursSpecification',
-        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-        opens: '09:00',
-        closes: '18:00',
-      },
-    ],
-    hasOfferCatalog: {
-      '@type': 'OfferCatalog',
-      name: locale === 'it' ? 'Servizi di Sviluppo Web Full-Stack' : 'Full-Stack Web Development Services',
-      itemListElement: [
-        {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: locale === 'it' ? 'Sviluppo Web Full-Stack su Misura' : 'Custom Full-Stack Web Development',
-            description: locale === 'it' ? 'Siti web e applicazioni sviluppati interamente con codice personalizzato' : 'Websites and applications built entirely with custom code',
-          },
-        },
-        {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: locale === 'it' ? 'E-Commerce Personalizzato' : 'Custom E-Commerce',
-            description: locale === 'it' ? 'Piattaforme e-commerce sviluppate da zero senza template o piattaforme terze' : 'E-commerce platforms built from scratch without templates or third-party platforms',
-          },
-        },
-        {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: locale === 'it' ? 'Design UI/UX' : 'UI/UX Design',
-          },
-        },
-        {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: locale === 'it' ? 'SEO e Web Marketing' : 'SEO & Web Marketing',
-            description: locale === 'it' ? 'Strategie SEO, abbonamenti di ottimizzazione continua e campagne di marketing digitale' : 'SEO strategies, ongoing optimization subscriptions and digital marketing campaigns',
-          },
-        },
-        {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: locale === 'it' ? 'AI e Automazione' : 'AI & Automation',
-          },
-        },
-        {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: locale === 'it' ? 'Hosting Gestito e Cloud' : 'Managed Hosting & Cloud',
-            description: locale === 'it' ? 'Infrastruttura cloud ad alte prestazioni con supporto 24/7' : 'High-performance cloud infrastructure with 24/7 support',
-          },
-        },
-        {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: locale === 'it' ? 'Manutenzione e Supporto' : 'Maintenance & Support',
-          },
-        },
-        {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: locale === 'it' ? 'Consulenza IT Strategica' : 'Strategic IT Consulting',
-          },
-        },
-      ],
-    },
-    areaServed: [
-      { '@type': 'City', name: 'Padova' },
-      { '@type': 'AdministrativeArea', name: 'Veneto' },
-      { '@type': 'Country', name: locale === 'it' ? 'Italia' : 'Italy' },
-      { '@type': 'Place', name: locale === 'it' ? 'Unione Europea' : 'European Union' },
-    ],
-    availableLanguage: ['Italian', 'English'],
-    // No aggregateRating: it was hardcoded to 5 stars from 12 reviews here too.
-    // If this builder is ever wired up, take the rating from
-    // getAggregateRating() the way generateStructuredDataLocalBusiness does.
-  };
-}
-
 export function generateStructuredDataWebSite(locale: Locale = 'it') {
   const baseUrl = `${siteConfig.url}/${locale}`;
   return {
@@ -459,7 +306,21 @@ export function generateStructuredDataLocalBusiness(
         opens: '09:00',
         closes: '18:00',
       },
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Saturday'],
+        opens: '10:00',
+        closes: '14:00',
+      },
     ],
+    contactPoint: {
+      '@type': 'ContactPoint',
+      telephone: '+39-320-222-3322',
+      email: 'info@studiofaraj.it',
+      contactType: 'customer service',
+      url: `${baseUrl}/contatti`,
+      availableLanguage: ['Italian', 'English'],
+    },
     priceRange: '$$',
     currenciesAccepted: 'EUR',
     paymentAccepted: locale === 'it' ? 'Bonifico Bancario, PayPal' : 'Bank Transfer, PayPal',
@@ -482,9 +343,9 @@ export function generateStructuredDataLocalBusiness(
       'REST API', 'Headless CMS',
     ],
     sameAs: [
-      'https://www.instagram.com/studiofaraj',
-      'https://www.linkedin.com/company/studiofaraj',
-      'https://www.facebook.com/studiofaraj',
+      'https://www.instagram.com/studiofaraj.it',
+      'https://www.linkedin.com/in/studio-faraj-47923b389/',
+      'https://www.facebook.com/share/18JVysxoGo/?mibextid=wwXIfr',
     ],
     // Only present when real review data was fetched — see the note above.
     ...(rating && {

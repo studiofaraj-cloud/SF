@@ -128,7 +128,7 @@ export async function HeroSection({ locale }: { locale: Locale }) {
           <div className="min-w-0">
             {/* The page's only <h1>. Static, keyword-bearing, in the HTML. */}
             <h1 className="text-5xl font-bold leading-[1.03] tracking-tight sm:text-6xl lg:text-7xl">
-              {copy.h1a}
+              {copy.h1a}{' '}
               <span className="block text-primary">{copy.h1b}</span>
             </h1>
 

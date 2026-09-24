@@ -124,7 +124,7 @@ export default function StatsSection() {
         {/* Section header — credibility */}
         <div className="mb-6 md:mb-10 text-center">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">
-            <span className="brand-wordmark">{t('sinceLabel')}</span>
+            <span className="brand-wordmark">{t('sinceLabel')}</span>{' '}
             <span className="block text-base md:text-lg font-normal text-muted-foreground mt-2">
               {t('sinceTagline')}
             </span>

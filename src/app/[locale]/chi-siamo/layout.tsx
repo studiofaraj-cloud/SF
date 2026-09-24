@@ -15,12 +15,13 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   
   const seoContent = {
     it: {
-      title: 'Chi Siamo — Il Nostro Team e la Nostra Storia',
-      description: 'Scopri Studio Faraj: un team di esperti in sviluppo web, design e marketing digitale con sede a Padova, Veneto. Professionalità, innovazione e risultati garantiti.',
+      title: 'Chi Siamo — Sviluppo Web a Padova dal 2020',
+      description: 'Studio Faraj sviluppa siti web e applicazioni su misura a Padova dal 2020. Scopri il team, la nostra storia e come lavoriamo con le aziende del Veneto.',
       keywords: [
         'web agency Nord Est Italia',
         'agenzia web Italia per aziende europee',
         'chi siamo',
+        'sviluppo web Padova',
         'team sviluppo web',
         'agenzia web Padova',
         'studio faraj',
@@ -29,12 +30,13 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       ],
     },
     en: {
-      title: 'About Us — Our Team and Our Story',
-      description: 'Discover Studio Faraj: a team of experts in web development, design and digital marketing based in Padova, Veneto. Professionalism, innovation and guaranteed results.',
+      title: 'About Us — Padova Web Studio since 2020',
+      description: 'Studio Faraj has built custom websites and web apps in Padova, Italy since 2020. Meet the team, read our story and see how we work with Veneto businesses.',
       keywords: [
         'web agency Nord Est Italia',
         'agenzia web Italia per aziende europee',
         'about us',
+        'web development Padova',
         'web development team',
         'web agency Padova',
         'studio faraj',
