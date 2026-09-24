@@ -12,6 +12,7 @@ import { AppBody } from '@/components/site/app-body';
 import { GoogleAnalytics } from '@/components/analytics/google-analytics';
 import { StructuredDataServer } from '@/components/seo/structured-data-server';
 import { generateStructuredDataWebSite } from '@/lib/seo';
+import { GLOBAL_CLIENT_NAMESPACES, pickMessages } from '@/i18n/client-messages';
 import { RootHtml, sharedViewport } from '../root-html';
 
 // This is a ROOT layout: it owns <html>/<body> for the whole public site.
@@ -102,10 +103,12 @@ export default async function LocaleLayout({ children, params }: Props) {
         disableTransitionOnChange
       >
         <CookieProvider>
+          {/* Only the site-chrome namespaces go to the browser here; routes add
+              their own with <ClientMessages>. See src/i18n/client-messages.ts. */}
           <NextIntlClientProvider
             key={locale}
             locale={locale}
-            messages={messages}
+            messages={pickMessages(messages, GLOBAL_CLIENT_NAMESPACES)}
           >
             <AppBody>
               {children}

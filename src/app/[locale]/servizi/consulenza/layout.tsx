@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { generateMetadata as generateSEOMetadata, generateStructuredDataService, generateStructuredDataBreadcrumbList, siteConfig } from '@/lib/seo';
 import { StructuredDataServer } from '@/components/seo/structured-data-server';
 import { setRequestLocale } from 'next-intl/server';
+import { ClientMessages } from '@/components/i18n/client-messages';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
@@ -83,7 +84,9 @@ export default async function ConsulenzaLayout({
   return (
     <>
       <StructuredDataServer data={[serviceData, breadcrumbData]} />
-      {children}
+      <ClientMessages locale={currentLocale} namespaces={['bookingDialog', 'serverActions', 'services.consulting']}>
+        {children}
+      </ClientMessages>
     </>
   );
 }

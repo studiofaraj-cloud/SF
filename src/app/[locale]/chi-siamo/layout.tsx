@@ -8,6 +8,7 @@ import {
 } from '@/lib/seo';
 import { StructuredDataServer } from '@/components/seo/structured-data-server';
 import { setRequestLocale } from 'next-intl/server';
+import { ClientMessages } from '@/components/i18n/client-messages';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
@@ -101,7 +102,9 @@ export default async function ChiSiamoLayout({
   return (
     <>
       <StructuredDataServer data={jsonLd} id="chi-siamo-schema" />
-      {children}
+      <ClientMessages locale={currentLocale} namespaces={['about']}>
+        {children}
+      </ClientMessages>
     </>
   );
 }

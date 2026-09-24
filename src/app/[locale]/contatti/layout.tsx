@@ -7,6 +7,7 @@ import {
 } from '@/lib/seo';
 import { StructuredDataServer } from '@/components/seo/structured-data-server';
 import { setRequestLocale } from 'next-intl/server';
+import { ClientMessages } from '@/components/i18n/client-messages';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
@@ -82,7 +83,9 @@ export default async function ContattiLayout({
         })}
         id="contatti-breadcrumb"
       />
-      {children}
+      <ClientMessages locale={currentLocale} namespaces={['bookingDialog', 'contact', 'contactPage']}>
+        {children}
+      </ClientMessages>
     </>
   );
 }

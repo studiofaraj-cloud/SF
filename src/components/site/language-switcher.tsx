@@ -11,7 +11,6 @@ import {
 import { locales, localeNames, defaultLocale, type Locale } from '@/i18n/config';
 import { getLocalizedPath, removeLocaleFromPath, getLocaleFromPath } from '@/lib/i18n-helpers';
 import { useMemo, useState, useTransition } from 'react';
-import { loadMessages } from '@/lib/client-messages';
 import { Loader2 } from 'lucide-react';
 
 const flagPaths: Record<Locale, string> = {
@@ -70,13 +69,9 @@ export function LanguageSwitcher() {
     setSwitchingTo(newLocale);
     
     try {
-      // Preload messages for the target locale before navigation
-      // This ensures smooth transition without waiting for server
-      if (process.env.NODE_ENV === 'development') {
-        console.log('[LanguageSwitcher] Preloading messages for locale:', newLocale);
-      }
-      await loadMessages(newLocale);
-      
+      // No client-side message preload: the full page navigation below loads
+      // the target locale's messages from the server anyway.
+
       // Remove current locale from pathname
       const pathWithoutLocale = removeLocaleFromPath(pathname);
       if (process.env.NODE_ENV === 'development') {

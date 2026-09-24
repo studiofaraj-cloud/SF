@@ -2,6 +2,7 @@
 import { Metadata } from 'next';
 import { generateMetadata as generateSEOMetadata, siteConfig } from '@/lib/seo';
 import { setRequestLocale } from 'next-intl/server';
+import { ClientMessages } from '@/components/i18n/client-messages';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
@@ -40,5 +41,9 @@ export default async function ProjectsLayout({
   const { locale } = await params;
   const currentLocale = (locale === 'it' || locale === 'en') ? locale : 'it';
   setRequestLocale(currentLocale);
-  return children;
+  return (
+    <ClientMessages locale={currentLocale} namespaces={['projects']}>
+      {children}
+    </ClientMessages>
+  );
 }

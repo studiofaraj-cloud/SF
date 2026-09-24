@@ -37,6 +37,7 @@ import { getLocalizedPath } from '@/lib/i18n-helpers';
 // wrapper with dynamic() + ssr:false for lazy-loading without breaking chunk resolution.
 import ProcessTimeline from '@/components/site/process-timeline';
 import { HeroSection } from '@/components/site/hero-section';
+import { ClientMessages } from '@/components/i18n/client-messages';
 import HomeCtaSection from '@/components/site/home-cta-section';
 import { TestimonialsServer } from '@/components/site/testimonials-server';
 import StatsSection from '@/components/site/stats-section';
@@ -237,289 +238,291 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
   ];
 
   return (
-    <div className="bg-background text-foreground" suppressHydrationWarning>
-      {/* The hidden keyword-stuffed <h1 class="sr-only"> that used to sit here is
-          gone: HeroSection renders the real, visible <h1> server-side, so the
-          workaround for a client-only hero is no longer needed — and hidden
-          text stuffed with keywords is what Google's spam policies describe. */}
-      <HeroSection locale={currentLocale} />
+    <ClientMessages locale={currentLocale} namespaces={['home', 'quoteDialog', 'serverActions', 'stats']}>
+      <div className="bg-background text-foreground" suppressHydrationWarning>
+        {/* The hidden keyword-stuffed <h1 class="sr-only"> that used to sit here is
+            gone: HeroSection renders the real, visible <h1> server-side, so the
+            workaround for a client-only hero is no longer needed — and hidden
+            text stuffed with keywords is what Google's spam policies describe. */}
+        <HeroSection locale={currentLocale} />
 
-      {/* Stats Section */}
-      <StatsSection />
+        {/* Stats Section */}
+        <StatsSection />
 
-      {/* ============================================
-          TECHNOLOGIES SECTION
-          ============================================ */}
-      <section className="relative py-16 md:py-24 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-secondary/20 to-background" />
+        {/* ============================================
+            TECHNOLOGIES SECTION
+            ============================================ */}
+        <section className="relative py-16 md:py-24 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-b from-background via-secondary/20 to-background" />
 
-        <div className="container relative z-10 px-4 md:px-8">
-          <SectionHeader
-            eyebrow={tTech('badge')}
-            eyebrowIcon={<Code className="w-3.5 h-3.5" />}
-            title={tTech('title')}
-            titleHighlight={tTech('titleHighlight')}
-            subtitle={tTech('subtitle')}
-            className="mb-10 md:mb-14"
-          />
+          <div className="container relative z-10 px-4 md:px-8">
+            <SectionHeader
+              eyebrow={tTech('badge')}
+              eyebrowIcon={<Code className="w-3.5 h-3.5" />}
+              title={tTech('title')}
+              titleHighlight={tTech('titleHighlight')}
+              subtitle={tTech('subtitle')}
+              className="mb-10 md:mb-14"
+            />
 
-          {/* Technology Categories - Mobile Tabs */}
-          <TechSectionMobile categories={[
-            {
-              id: 'frontend',
-              icon: <Monitor className="w-3.5 h-3.5" />,
-              title: tTech('frontend.title'),
-              description: tTech('frontend.description'),
-              badges: ['React', 'Next.js', 'TypeScript', 'JavaScript', 'Tailwind CSS', 'HTML5', 'CSS3'],
-            },
-            {
-              id: 'backend',
-              icon: <Server className="w-3.5 h-3.5" />,
-              title: tTech('backend.title'),
-              description: tTech('backend.description'),
-              badges: ['Node.js', 'Firebase', 'Vercel'],
-            },
-            {
-              id: 'ecommerce',
-              icon: <ShoppingCart className="w-3.5 h-3.5" />,
-              title: tTech('ecommerce.title'),
-              description: tTech('ecommerce.description'),
-              badges: ['Next.js', 'Node.js', tTech('ecommerce.customCoding')],
-            },
-          ]} />
-
-          {/* Technology Categories - Desktop Grid */}
-          <div className="hidden md:grid md:grid-cols-3 gap-6">
-            {[
+            {/* Technology Categories - Mobile Tabs */}
+            <TechSectionMobile categories={[
               {
-                icon: <Monitor className="w-6 h-6" />,
+                id: 'frontend',
+                icon: <Monitor className="w-3.5 h-3.5" />,
                 title: tTech('frontend.title'),
                 description: tTech('frontend.description'),
-                badges: techLogosData.filter(tech => ['React', 'Next.js', 'TypeScript', 'JavaScript', 'Tailwind CSS', 'HTML5', 'CSS3'].includes(tech.title)).map(t => t.title),
-                delay: 0,
-                anim: 'fade-right' as const,
+                badges: ['React', 'Next.js', 'TypeScript', 'JavaScript', 'Tailwind CSS', 'HTML5', 'CSS3'],
               },
               {
-                icon: <Server className="w-6 h-6" />,
+                id: 'backend',
+                icon: <Server className="w-3.5 h-3.5" />,
                 title: tTech('backend.title'),
                 description: tTech('backend.description'),
-                badges: techLogosData.filter(tech => ['Node.js', 'Firebase', 'Vercel'].includes(tech.title)).map(t => t.title),
-                delay: 100,
-                anim: 'fade-up' as const,
+                badges: ['Node.js', 'Firebase', 'Vercel'],
               },
               {
-                icon: <ShoppingCart className="w-6 h-6" />,
+                id: 'ecommerce',
+                icon: <ShoppingCart className="w-3.5 h-3.5" />,
                 title: tTech('ecommerce.title'),
                 description: tTech('ecommerce.description'),
-                badges: [...techLogosData.filter(tech => ['Next.js', 'Node.js'].includes(tech.title)).map(t => t.title), tTech('ecommerce.customCoding')],
-                delay: 200,
-                anim: 'fade-left' as const,
+                badges: ['Next.js', 'Node.js', tTech('ecommerce.customCoding')],
               },
-            ].map((cat) => (
-              <ScrollFadeIn key={cat.title} animation={cat.anim} delay={cat.delay}>
-                <Card className="h-full rounded-xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
-                  <CardHeader className="p-6">
-                    <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                      {cat.icon}
-                    </div>
-                    <CardTitle className="text-lg text-foreground">{cat.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent className="p-6 pt-0">
-                    <p className="mb-4 text-sm text-muted-foreground">{cat.description}</p>
-                    <div className="flex flex-wrap gap-2">
-                      {cat.badges.map((b, i) => (
-                        <Badge key={i} variant="secondary" className="tech-badge">{b}</Badge>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </ScrollFadeIn>
-            ))}
-          </div>
-        </div>
-      </section>
+            ]} />
 
-      {/* ============================================
-          SERVICES SECTION - Compact grid
-          ============================================ */}
-      <section id="services" className="relative py-16 md:py-24 overflow-hidden">
-        <div className="absolute inset-0 bg-secondary/40" />
-
-        <div className="container relative z-10 px-4 md:px-8">
-          <SectionHeader
-            eyebrow={tServices('badge')}
-            eyebrowIcon={<Sparkles className="w-3.5 h-3.5" />}
-            title={tServices('title')}
-            titleHighlight={tServices('titleHighlight')}
-            subtitle={tServices('subtitle')}
-            className="mb-10 md:mb-14"
-          />
-
-          <ServicesGrid services={services} learnMoreLabel={tServices('learnMore')} />
-
-          <ScrollFadeIn animation="fade-up" delay={200}>
-            <div className="text-center mt-12">
-              <Button asChild size="lg" className="group">
-                <Link href={getLocalizedPath('/contatti', locale as any)} title={tServices('cta')} className="flex items-center gap-2">
-                  {tServices('cta')}
-                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                </Link>
-              </Button>
-            </div>
-          </ScrollFadeIn>
-        </div>
-      </section>
-
-      {/* ============================================
-          WHY CHOOSE US
-          ============================================ */}
-      <section className="relative py-16 md:py-24 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-secondary/30 to-background" />
-        {/* Single focal orb (static) */}
-        <div className="pointer-events-none absolute top-1/3 left-1/2 -translate-x-1/2 w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-primary/5 rounded-full blur-[120px]" />
-
-        <div className="container relative z-10 px-4 md:px-8">
-          <SectionHeader
-            eyebrow={tValues('badge')}
-            eyebrowIcon={<Award className="w-3.5 h-3.5" />}
-            title={tValues('title')}
-            titleHighlight={tValues('titleHighlight')}
-            subtitle={tValues('subtitle')}
-            className="mb-10 md:mb-16"
-          />
-
-          {/* Two Column Layout: Cards and Image */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16 items-center">
-            {/* Left Column: Cards */}
-            <div className="space-y-4 md:space-y-6">
-              {values.map((value, index) => (
-                <ScrollFadeIn key={value.title} animation="fade-right" delay={index * 100}>
-                  <Card className={`group relative overflow-hidden transition-all duration-500 hover:shadow-xl hover:shadow-primary/10 ${
-                    value.featured ? 'animated-gradient-border holographic-card' : 'rounded-xl border border-border bg-card'
-                  }`}>
-                    {value.featured && (
-                      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-primary/5 pointer-events-none" />
-                    )}
-                    <CardContent className="relative z-10 p-5 md:p-6">
-                      {value.featured && value.badge && (
-                        <Badge variant="secondary" className="mb-3 bg-primary/15 text-primary border-primary/30 text-xs">
-                          <Trophy className="w-3 h-3 mr-1.5" />
-                          {value.badge}
-                        </Badge>
-                      )}
-                      <div className="flex items-start gap-4 md:gap-5">
-                        <div className="relative flex-shrink-0 inline-flex h-12 w-12 md:h-14 md:w-14 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                          {value.icon}
-                        </div>
-
-                        <div className="flex-1">
-                          <div className="flex items-start justify-between mb-2 gap-4">
-                            <CardTitle className="text-lg md:text-xl font-bold text-foreground group-hover:text-primary transition-colors duration-300">
-                              {value.title}
-                            </CardTitle>
-                            <div className="text-right">
-                              <div className="text-lg md:text-xl font-bold text-primary">{value.metric}</div>
-                              <div className="text-xs text-muted-foreground">{value.metricLabel}</div>
-                            </div>
-                          </div>
-                          <p className="text-muted-foreground leading-relaxed text-sm">
-                            {value.description}
-                          </p>
-                        </div>
+            {/* Technology Categories - Desktop Grid */}
+            <div className="hidden md:grid md:grid-cols-3 gap-6">
+              {[
+                {
+                  icon: <Monitor className="w-6 h-6" />,
+                  title: tTech('frontend.title'),
+                  description: tTech('frontend.description'),
+                  badges: techLogosData.filter(tech => ['React', 'Next.js', 'TypeScript', 'JavaScript', 'Tailwind CSS', 'HTML5', 'CSS3'].includes(tech.title)).map(t => t.title),
+                  delay: 0,
+                  anim: 'fade-right' as const,
+                },
+                {
+                  icon: <Server className="w-6 h-6" />,
+                  title: tTech('backend.title'),
+                  description: tTech('backend.description'),
+                  badges: techLogosData.filter(tech => ['Node.js', 'Firebase', 'Vercel'].includes(tech.title)).map(t => t.title),
+                  delay: 100,
+                  anim: 'fade-up' as const,
+                },
+                {
+                  icon: <ShoppingCart className="w-6 h-6" />,
+                  title: tTech('ecommerce.title'),
+                  description: tTech('ecommerce.description'),
+                  badges: [...techLogosData.filter(tech => ['Next.js', 'Node.js'].includes(tech.title)).map(t => t.title), tTech('ecommerce.customCoding')],
+                  delay: 200,
+                  anim: 'fade-left' as const,
+                },
+              ].map((cat) => (
+                <ScrollFadeIn key={cat.title} animation={cat.anim} delay={cat.delay}>
+                  <Card className="h-full rounded-xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
+                    <CardHeader className="p-6">
+                      <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                        {cat.icon}
+                      </div>
+                      <CardTitle className="text-lg text-foreground">{cat.title}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-6 pt-0">
+                      <p className="mb-4 text-sm text-muted-foreground">{cat.description}</p>
+                      <div className="flex flex-wrap gap-2">
+                        {cat.badges.map((b, i) => (
+                          <Badge key={i} variant="secondary" className="tech-badge">{b}</Badge>
+                        ))}
                       </div>
                     </CardContent>
                   </Card>
                 </ScrollFadeIn>
               ))}
             </div>
+          </div>
+        </section>
 
-            {/* Right Column: Image */}
-            <ScrollFadeIn animation="fade-left" delay={200}>
-              <div className="relative mt-8 lg:mt-0">
-                <div className="absolute -inset-3 md:-inset-6 bg-gradient-to-br from-primary/15 via-primary/5 to-transparent rounded-3xl blur-2xl opacity-50" />
-                <div className="relative rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl border border-border">
-                  <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent z-10" />
-                  <Image
-                    alt="Team Studio Faraj che collabora allo sviluppo web a Padova"
-                    className="w-full h-auto object-cover"
-                    data-ai-hint="collaborative team"
-                    height={600}
-                    src="/assets/studio-faraj-sviluppo-web-padova.webp"
-                    width={1200}
-                  />
-                </div>
+        {/* ============================================
+            SERVICES SECTION - Compact grid
+            ============================================ */}
+        <section id="services" className="relative py-16 md:py-24 overflow-hidden">
+          <div className="absolute inset-0 bg-secondary/40" />
+
+          <div className="container relative z-10 px-4 md:px-8">
+            <SectionHeader
+              eyebrow={tServices('badge')}
+              eyebrowIcon={<Sparkles className="w-3.5 h-3.5" />}
+              title={tServices('title')}
+              titleHighlight={tServices('titleHighlight')}
+              subtitle={tServices('subtitle')}
+              className="mb-10 md:mb-14"
+            />
+
+            <ServicesGrid services={services} learnMoreLabel={tServices('learnMore')} />
+
+            <ScrollFadeIn animation="fade-up" delay={200}>
+              <div className="text-center mt-12">
+                <Button asChild size="lg" className="group">
+                  <Link href={getLocalizedPath('/contatti', locale as any)} title={tServices('cta')} className="flex items-center gap-2">
+                    {tServices('cta')}
+                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  </Link>
+                </Button>
               </div>
             </ScrollFadeIn>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ============================================
-          OUR PROCESS - Timeline Section
-          ============================================ */}
-      <section className="relative w-full py-16 md:py-24 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent" />
+        {/* ============================================
+            WHY CHOOSE US
+            ============================================ */}
+        <section className="relative py-16 md:py-24 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-b from-background via-secondary/30 to-background" />
+          {/* Single focal orb (static) */}
+          <div className="pointer-events-none absolute top-1/3 left-1/2 -translate-x-1/2 w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-primary/5 rounded-full blur-[120px]" />
 
-        <div className="container relative z-10 px-4 md:px-8">
-          <SectionHeader
-            eyebrow={tProcess('badge')}
-            eyebrowIcon={<Rocket className="w-3.5 h-3.5" />}
-            title={tProcess('title')}
-            titleHighlight={tProcess('titleHighlight')}
-            subtitle={tProcess('subtitle')}
-          />
-          <ProcessTimeline steps={processSteps} />
-        </div>
-      </section>
+          <div className="container relative z-10 px-4 md:px-8">
+            <SectionHeader
+              eyebrow={tValues('badge')}
+              eyebrowIcon={<Award className="w-3.5 h-3.5" />}
+              title={tValues('title')}
+              titleHighlight={tValues('titleHighlight')}
+              subtitle={tValues('subtitle')}
+              className="mb-10 md:mb-16"
+            />
 
-      {/* ============================================
-          CHI SIAMO — slim intro band + CTA
-          ============================================ */}
-      <section className="relative py-12 md:py-16 overflow-hidden border-y border-border/60 bg-secondary/30">
-        <div className="container relative z-10 px-4 md:px-8">
-          <ScrollFadeIn animation="fade-up">
-            <div className="mx-auto flex max-w-4xl flex-col items-center gap-6 text-center md:flex-row md:justify-between md:text-left">
-              <div className="max-w-2xl">
-                <p className="mb-2 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-primary">
-                  <Users className="w-3.5 h-3.5" />
-                  {tTeam('badge')}
-                </p>
-                <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-                  {tTeam('title')} <span className="text-primary">{tTeam('titleHighlight')}</span>
-                </h2>
-                <p className="mt-3 text-base leading-relaxed text-muted-foreground">
-                  {tTeam('subtitle')}
-                </p>
+            {/* Two Column Layout: Cards and Image */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16 items-center">
+              {/* Left Column: Cards */}
+              <div className="space-y-4 md:space-y-6">
+                {values.map((value, index) => (
+                  <ScrollFadeIn key={value.title} animation="fade-right" delay={index * 100}>
+                    <Card className={`group relative overflow-hidden transition-all duration-500 hover:shadow-xl hover:shadow-primary/10 ${
+                      value.featured ? 'animated-gradient-border holographic-card' : 'rounded-xl border border-border bg-card'
+                    }`}>
+                      {value.featured && (
+                        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-primary/5 pointer-events-none" />
+                      )}
+                      <CardContent className="relative z-10 p-5 md:p-6">
+                        {value.featured && value.badge && (
+                          <Badge variant="secondary" className="mb-3 bg-primary/15 text-primary border-primary/30 text-xs">
+                            <Trophy className="w-3 h-3 mr-1.5" />
+                            {value.badge}
+                          </Badge>
+                        )}
+                        <div className="flex items-start gap-4 md:gap-5">
+                          <div className="relative flex-shrink-0 inline-flex h-12 w-12 md:h-14 md:w-14 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                            {value.icon}
+                          </div>
+
+                          <div className="flex-1">
+                            <div className="flex items-start justify-between mb-2 gap-4">
+                              <CardTitle className="text-lg md:text-xl font-bold text-foreground group-hover:text-primary transition-colors duration-300">
+                                {value.title}
+                              </CardTitle>
+                              <div className="text-right">
+                                <div className="text-lg md:text-xl font-bold text-primary">{value.metric}</div>
+                                <div className="text-xs text-muted-foreground">{value.metricLabel}</div>
+                              </div>
+                            </div>
+                            <p className="text-muted-foreground leading-relaxed text-sm">
+                              {value.description}
+                            </p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </ScrollFadeIn>
+                ))}
               </div>
-              <Button size="lg" asChild className="group shrink-0 w-full sm:w-auto px-8">
-                <Link href={getLocalizedPath('/chi-siamo', locale as any)} title={tTeam('cta')}>
-                  {tTeam('cta')}
-                  <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
-                </Link>
-              </Button>
+
+              {/* Right Column: Image */}
+              <ScrollFadeIn animation="fade-left" delay={200}>
+                <div className="relative mt-8 lg:mt-0">
+                  <div className="absolute -inset-3 md:-inset-6 bg-gradient-to-br from-primary/15 via-primary/5 to-transparent rounded-3xl blur-2xl opacity-50" />
+                  <div className="relative rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl border border-border">
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent z-10" />
+                    <Image
+                      alt="Team Studio Faraj che collabora allo sviluppo web a Padova"
+                      className="w-full h-auto object-cover"
+                      data-ai-hint="collaborative team"
+                      height={600}
+                      src="/assets/studio-faraj-sviluppo-web-padova.webp"
+                      width={1200}
+                    />
+                  </div>
+                </div>
+              </ScrollFadeIn>
             </div>
-          </ScrollFadeIn>
-        </div>
-      </section>
+          </div>
+        </section>
 
-      {/* ============================================
-          LATEST PROJECTS
-          ============================================ */}
-      <Suspense fallback={<HomeProjectSkeleton />}>
-        <HomeProjectSection />
-      </Suspense>
+        {/* ============================================
+            OUR PROCESS - Timeline Section
+            ============================================ */}
+        <section className="relative w-full py-16 md:py-24 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent" />
 
-      {/* ============================================
-          LATEST BLOG
-          ============================================ */}
-      <Suspense fallback={<HomeBlogSkeleton />}>
-        <HomeBlogSection />
-      </Suspense>
+          <div className="container relative z-10 px-4 md:px-8">
+            <SectionHeader
+              eyebrow={tProcess('badge')}
+              eyebrowIcon={<Rocket className="w-3.5 h-3.5" />}
+              title={tProcess('title')}
+              titleHighlight={tProcess('titleHighlight')}
+              subtitle={tProcess('subtitle')}
+            />
+            <ProcessTimeline steps={processSteps} />
+          </div>
+        </section>
 
-      <TestimonialsServer />
+        {/* ============================================
+            CHI SIAMO — slim intro band + CTA
+            ============================================ */}
+        <section className="relative py-12 md:py-16 overflow-hidden border-y border-border/60 bg-secondary/30">
+          <div className="container relative z-10 px-4 md:px-8">
+            <ScrollFadeIn animation="fade-up">
+              <div className="mx-auto flex max-w-4xl flex-col items-center gap-6 text-center md:flex-row md:justify-between md:text-left">
+                <div className="max-w-2xl">
+                  <p className="mb-2 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-primary">
+                    <Users className="w-3.5 h-3.5" />
+                    {tTeam('badge')}
+                  </p>
+                  <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+                    {tTeam('title')} <span className="text-primary">{tTeam('titleHighlight')}</span>
+                  </h2>
+                  <p className="mt-3 text-base leading-relaxed text-muted-foreground">
+                    {tTeam('subtitle')}
+                  </p>
+                </div>
+                <Button size="lg" asChild className="group shrink-0 w-full sm:w-auto px-8">
+                  <Link href={getLocalizedPath('/chi-siamo', locale as any)} title={tTeam('cta')}>
+                    {tTeam('cta')}
+                    <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  </Link>
+                </Button>
+              </div>
+            </ScrollFadeIn>
+          </div>
+        </section>
 
-      <HomeCtaSection locale={currentLocale} />
-      <StructuredDataServer data={localBusinessData} />
-    </div>
+        {/* ============================================
+            LATEST PROJECTS
+            ============================================ */}
+        <Suspense fallback={<HomeProjectSkeleton />}>
+          <HomeProjectSection />
+        </Suspense>
+
+        {/* ============================================
+            LATEST BLOG
+            ============================================ */}
+        <Suspense fallback={<HomeBlogSkeleton />}>
+          <HomeBlogSection />
+        </Suspense>
+
+        <TestimonialsServer />
+
+        <HomeCtaSection locale={currentLocale} />
+        <StructuredDataServer data={localBusinessData} />
+      </div>
+    </ClientMessages>
   );
 }
