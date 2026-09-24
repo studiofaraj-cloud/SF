@@ -184,15 +184,10 @@ const nextConfig: NextConfig = {
           },
         ],
       },
-      {
-        source: '/_next/static/:path*',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
+      // No custom Cache-Control for /_next/static: Next already marks the hashed
+      // files immutable, and a custom header here also applied to 404s, so a script
+      // requested mid-deploy was cached as "not found" for a year (CDN + browser),
+      // which broke the admin dashboard after deploys.
       {
         // Cache fonts aggressively
         source: '/fonts/:path*',

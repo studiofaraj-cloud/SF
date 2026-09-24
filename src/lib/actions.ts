@@ -34,7 +34,7 @@ import {
     getPublishedCompanyProfiles,
     type HeroSlideData,
 } from './firestore-data';
-import { Timestamp } from 'firebase/firestore';
+import { Timestamp, deleteField } from 'firebase/firestore';
 import { sendTransactionalEmails, normalizeLocale } from './email/send';
 import { redirect } from 'next/navigation';
 import { after } from 'next/server';
@@ -60,6 +60,14 @@ function isValidImageUrl(url: string | undefined): boolean {
     } catch {
         return false;
     }
+}
+
+// Firestore rejects `undefined` field values, and an empty featured image used to
+// be sent as `undefined` — so saving a blog/project without one always failed.
+// On create the field is left empty; on update a removed image is deleted.
+function featuredImageValue(url: string | undefined, mode: 'create' | 'update') {
+    if (url) return url;
+    return mode === 'update' ? deleteField() : '';
 }
 
 // Helper function to filter and validate image URLs
@@ -325,7 +333,7 @@ export async function createBlog(prevState: { message: string; errors?: any }, f
     try {
         const blogData = {
             ...validatedFields.data,
-            featuredImage: featuredImage || undefined,
+            featuredImage: featuredImageValue(featuredImage, 'create'),
             gallery: validGalleryUrls,
         };
 
@@ -407,7 +415,7 @@ export async function updateBlog(id: string, prevState: { message: string; error
     try {
         const blogData = {
             ...validatedFields.data,
-            featuredImage: featuredImage || undefined,
+            featuredImage: featuredImageValue(featuredImage, 'update'),
             gallery: validGalleryUrls,
         };
 
@@ -552,7 +560,7 @@ export async function createProject(prevState: { message: string; errors?: any }
     try {
         const projectData = {
             ...validatedFields.data,
-            featuredImage: featuredImage || undefined,
+            featuredImage: featuredImageValue(featuredImage, 'create'),
             gallery: validGalleryUrls,
         };
         
@@ -650,7 +658,7 @@ export async function updateProject(id: string, prevState: { message: string; er
     try {
         const projectData = {
             ...validatedFields.data,
-            featuredImage: featuredImage || undefined,
+            featuredImage: featuredImageValue(featuredImage, 'update'),
             gallery: validGalleryUrls,
         };
         
