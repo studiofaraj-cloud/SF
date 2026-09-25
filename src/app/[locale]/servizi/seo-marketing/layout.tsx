@@ -88,7 +88,7 @@ export default async function SEOMarketingLayout({
   return (
     <>
       <StructuredDataServer data={[serviceData, breadcrumbData]} />
-      <ClientMessages locale={currentLocale} namespaces={['serverActions', 'services.seoMarketing']}>
+      <ClientMessages locale={currentLocale} namespaces={['services.seoMarketing']}>
         {children}
       </ClientMessages>
     </>

@@ -172,7 +172,7 @@ export default function AiAutomazionePage() {
                 <Zap className="w-4 h-4 mr-2" />
                 {t('useCases.badge')}
               </Badge>
-              <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
                 <span className="text-foreground">{t('useCases.title')}</span>{' '}
                 <span className="block text-pink-400">{t('useCases.titleHighlight')}</span>
               </h2>

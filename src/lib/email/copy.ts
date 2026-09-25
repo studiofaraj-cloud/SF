@@ -4,7 +4,6 @@ export type Scenario =
   | 'quote'
   | 'newsletter'
   | 'booking'
-  | 'plan-request'
   | 'service-request'
   | 'payment-receipt'
   | 'welcome';
@@ -55,14 +54,6 @@ const clientCopy: Record<Locale, Record<Scenario, ClientCopy>> = {
       heading: 'Prenotazione ricevuta!',
       intro: 'Abbiamo ricevuto la tua richiesta di chiamata. Ti contatteremo a breve per confermare data e orario.',
       body: 'Se necessiti di modificare la prenotazione, rispondi a questa email.',
-      signOff: 'A presto,<br/>Il team di Studio Faraj',
-      ctaLabel: 'Visita il sito',
-    },
-    'plan-request': {
-      subject: 'Richiesta piano ricevuta — Studio Faraj',
-      heading: 'Grazie per il tuo interesse!',
-      intro: 'Abbiamo ricevuto la tua richiesta. A breve ti invieremo il link per procedere con il pagamento e attivare il piano.',
-      body: 'Per qualsiasi domanda, rispondi pure a questa email.',
       signOff: 'A presto,<br/>Il team di Studio Faraj',
       ctaLabel: 'Visita il sito',
     },
@@ -124,14 +115,6 @@ const clientCopy: Record<Locale, Record<Scenario, ClientCopy>> = {
       signOff: 'Talk soon,<br/>The Studio Faraj team',
       ctaLabel: 'Visit the website',
     },
-    'plan-request': {
-      subject: 'Plan request received — Studio Faraj',
-      heading: 'Thanks for your interest!',
-      intro: "We've received your request. We'll send you the payment link shortly so you can activate your plan.",
-      body: 'For any questions, just reply to this email.',
-      signOff: 'Talk soon,<br/>The Studio Faraj team',
-      ctaLabel: 'Visit the website',
-    },
     'service-request': {
       subject: 'Request received — Studio Faraj',
       heading: "We've received your request",
@@ -179,11 +162,6 @@ const adminCopy: Record<Scenario, AdminCopy> = {
     subject: (name) => `Nuova prenotazione chiamata${name ? ` da ${name}` : ''}`,
     heading: 'Nuova prenotazione chiamata',
     intro: 'Hai ricevuto una nuova richiesta di prenotazione.',
-  },
-  'plan-request': {
-    subject: (name) => `Richiesta pagamento piano${name ? ` da ${name}` : ''}`,
-    heading: 'Richiesta pagamento piano',
-    intro: 'Un utente ha richiesto il link di pagamento per un piano.',
   },
   'service-request': {
     subject: (name) => `Nuova richiesta di servizio${name ? ` da ${name}` : ''}`,

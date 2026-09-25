@@ -522,56 +522,6 @@
           "Micro-interazioni animate"
         ]
       },
-      "plans": {
-        "badge": "Piani e Prezzi",
-        "title": "Pacchetti UI/UX",
-        "titleHighlight": "Flessibili e Trasparenti",
-        "subtitle": "Soluzioni su misura per ogni esigenza. I prezzi sono orientativi e vengono calibrati sulle stime dei tempi e la mole di lavoro.",
-        "popularBadge": "Più Richiesto",
-        "requestBtn": "Richiedi {planName}",
-        "securePayment": "Pagamento Sicuro",
-        "starter": {
-          "name": "Starter",
-          "unit": "una tantum",
-          "time": "1-2 Settimane di lavoro",
-          "features": [
-            "Sito web Vetrina / Landing Page",
-            "Wireframing e User Flow base",
-            "UI Design personalizzato",
-            "Prototipo interattivo",
-            "Fino a 2 revisioni incluse",
-            "Handoff per Sviluppatori"
-          ]
-        },
-        "pro": {
-          "name": "Pro",
-          "unit": "una tantum",
-          "time": "3-5 Settimane di lavoro",
-          "features": [
-            "Web App / E-commerce Completo",
-            "UX Research / Analisi Competitor",
-            "Architettura dell'informazione",
-            "Design System Base",
-            "Prototipo ad alta fedeltà",
-            "Fino a 4 revisioni incluse",
-            "Supporto in fase di sviluppo"
-          ]
-        },
-        "retainer": {
-          "name": "Retainer",
-          "unit": "/mese",
-          "time": "Supporto Continuo Mensile",
-          "features": [
-            "Design UI/UX continuo",
-            "Design System completo e mantenuto",
-            "A/B Testing e ottimizzazioni UX",
-            "Creazione micro-interazioni",
-            "Revisioni illimitate",
-            "Meeting settimanali di allineamento",
-            "Priorità assoluta"
-          ]
-        }
-      },
       "cta": {
         "badge": "Inizia Ora",
         "title": "Pronto a Migliorare la Tua",
@@ -635,52 +585,6 @@
         "ppc": {
           "title": "Campagne PPC",
           "description": "Gestione campagne Google Ads e social advertising per risultati immediati."
-        }
-      },
-      "plans": {
-        "badge": "Piani",
-        "title": "Scegli il Piano SEO",
-        "titleHighlight": "Adatto al Tuo Business",
-        "popularBadge": "Più Popolare",
-        "requestBtn": "Richiedi {planName}",
-        "securePayment": "Pagamento Sicuro",
-        "starter": {
-          "name": "Starter",
-          "unit": "/mese",
-          "features": [
-            "Audit SEO iniziale",
-            "Ottimizzazione fino a 10 pagine",
-            "Ricerca keyword base",
-            "Report mensile",
-            "Supporto email",
-            "Google Business Profile"
-          ]
-        },
-        "growth": {
-          "name": "Growth",
-          "unit": "/mese",
-          "features": [
-            "Tutto di Starter +",
-            "Ottimizzazione illimitata pagine",
-            "Content strategy mensile",
-            "Link building attivo",
-            "Analisi competitor",
-            "Report settimanali",
-            "Supporto prioritario"
-          ]
-        },
-        "performance": {
-          "name": "Performance",
-          "unit": "/mese",
-          "features": [
-            "Tutto di Growth +",
-            "Campagne PPC Google Ads",
-            "SEO tecnica avanzata",
-            "Contenuti SEO mensili (4 articoli)",
-            "Local SEO multi-sede",
-            "Dashboard analytics dedicata",
-            "Account manager dedicato"
-          ]
         }
       },
       "cta": {
@@ -793,7 +697,7 @@
       "subtitleHighlight": " aggiornato, sicuro e performante",
       "subtitleEnd": ".",
       "ctaSupport": "Richiedi Supporto",
-      "ctaPlans": "Vedi i Piani",
+      "ctaProjects": "Vedi Progetti",
       "features": {
         "badge": "Servizi Inclusi",
         "title": "Protezione",
@@ -821,49 +725,6 @@
         "support": {
           "title": "Supporto Dedicato",
           "description": "Team di supporto disponibile via email, ticket system e telefono."
-        }
-      },
-      "plans": {
-        "badge": "Piani",
-        "title": "Scegli il Piano",
-        "titleHighlight": "Adatto a Te",
-        "popularBadge": "Più Popolare",
-        "requestBtn": "Richiedi {planName}",
-        "securePayment": "Pagamento Sicuro",
-        "essential": {
-          "name": "Essential",
-          "unit": "/ora",
-          "features": [
-            "Interventi su richiesta",
-            "Bug fixing",
-            "Aggiornamenti puntuali",
-            "Supporto email",
-            "Nessun vincolo mensile"
-          ]
-        },
-        "professional": {
-          "name": "Professional",
-          "unit": "/mese",
-          "features": [
-            "Abbonamento mensile",
-            "Aggiornamenti settimanali",
-            "Backup giornalieri",
-            "Monitoraggio sicurezza",
-            "Supporto prioritario",
-            "Ottimizzazione performance"
-          ]
-        },
-        "enterprise": {
-          "name": "Enterprise",
-          "unit": "/mese",
-          "features": [
-            "Manutenzione completa",
-            "Aggiornamenti SEO mensili",
-            "Backup in tempo reale",
-            "Security audit trimestrale",
-            "Supporto 24/7",
-            "Account manager dedicato"
-          ]
         }
       },
       "cta": {
@@ -974,69 +835,10 @@
         "description2": "Per essere trovati online serve un",
         "description2Highlight": "dominio personalizzato",
         "description2End": "(es. tuomarchio.it) configurato correttamente con DNS, SSL e le giuste impostazioni per i motori di ricerca.",
-        "setupBadge": "Setup Dominio",
-        "setupUnit": "una tantum",
-        "setupPrice": "190",
-        "setupFeatures": [
-          "Registrazione e configurazione dominio",
-          "Setup DNS e certificato SSL",
-          "Collegamento al tuo sito esistente",
-          "Ottimizzazione per indicizzazione Google",
-          "Configurazione sitemap e robots.txt",
-          "Verifica su Google Search Console"
-        ],
         "setupButton": "Vai Online con il Tuo Dominio",
         "notIndexedLabel": "Non indicizzato dai motori di ricerca",
         "indexedDomain": "tuomarchio.it",
         "indexedLabel": "Indicizzato e visibile su Google"
-      },
-      "plans": {
-        "badge": "Studio Faraj Cloud",
-        "title": "Hosting sul Nostro Cloud",
-        "titleHighlight": "A Prezzi Accessibili",
-        "subtitle": "Ospita il tuo sito sulla nostra infrastruttura cloud. Piani annuali con prezzi basati sul traffico, senza sorprese.",
-        "popularBadge": "Più Popolare",
-        "requestBtn": "Richiedi {planName}",
-        "securePayment": "Pagamento Sicuro",
-        "starter": {
-          "name": "Starter",
-          "unit": "/anno",
-          "traffic": "Fino a 10.000 visite/mese",
-          "features": [
-            "1 sito web",
-            "5 GB spazio SSD",
-            "Certificato SSL gratuito",
-            "Backup settimanali",
-            "Supporto email"
-          ]
-        },
-        "business": {
-          "name": "Business",
-          "unit": "/anno",
-          "traffic": "Fino a 50.000 visite/mese",
-          "features": [
-            "Fino a 3 siti web",
-            "20 GB spazio SSD",
-            "Certificato SSL gratuito",
-            "Backup giornalieri",
-            "CDN incluso",
-            "Supporto prioritario"
-          ]
-        },
-        "pro": {
-          "name": "Pro",
-          "unit": "/anno",
-          "traffic": "Fino a 200.000 visite/mese",
-          "features": [
-            "Siti web illimitati",
-            "50 GB spazio SSD NVMe",
-            "Certificato SSL gratuito",
-            "Backup in tempo reale",
-            "CDN globale",
-            "Supporto dedicato 24/7",
-            "Monitoraggio uptime"
-          ]
-        }
       },
       "cta": {
         "badge": "Inizia Ora",
@@ -1134,24 +936,6 @@
           "Tech stack selection",
           "Team building digitale"
         ]
-      },
-      "pricing": {
-        "badge": "Tariffa",
-        "title": "Consulenza",
-        "titleHighlight": "Trasparente e Flessibile",
-        "hourlyBadge": "Tariffa Oraria",
-        "unit": "/ora",
-        "hourlyPrice": "45",
-        "features": [
-          "Prima call conoscitiva gratuita (30 min)",
-          "Analisi e strategia personalizzata",
-          "Consulenza tecnica e di business",
-          "Nessun vincolo o abbonamento",
-          "Report e documentazione inclusi",
-          "Supporto email tra le sessioni"
-        ],
-        "button": "Richiedi Consulenza",
-        "securePayment": "Pagamento Sicuro"
       },
       "cta": {
         "badge": "Inizia Ora",
@@ -1993,22 +1777,6 @@
     }
   },
   "dialogs": {
-    "planRequest": {
-      "title": "Richiesta {planName}",
-      "description": "Inserisci la tua email per il servizio di <serviceNameTag>{serviceName}</serviceNameTag>. Ti invieremo il link di pagamento sicuro il prima possibile!",
-      "priceLabel": "Prezzo Indicativo:",
-      "emailPlaceholder": "La tua email (es. mario@azienda.it)",
-      "processing": "Elaborazione...",
-      "submit": "Invia Richiesta",
-      "successTitle": "Richiesta Inviata!",
-      "successDesc": "Ti invieremo un'email con il link di pagamento associato al piano <planNameTag>{planName}</planNameTag> il prima possibile. A presto!",
-      "errors": {
-        "title": "Errore",
-        "default": "Qualcosa è andato storto, riprova.",
-        "connectionTitle": "Errore di connessione",
-        "connectionDesc": "Assicurati di essere connesso a internet e riprova."
-      }
-    },
     "search": {
       "title": "Cerca nel sito",
       "placeholder": "Cerca blog, progetti...",
@@ -2028,7 +1796,6 @@
     "dbError": "Errore nel salvataggio. Riprova più tardi.",
     "unexpectedError": "Si è verificato un errore imprevisto. Riprova più tardi.",
     "successCreated": "Messaggio inviato con successo!",
-    "emailValidationFailed": "Validazione email fallita. Riprova con un'email valida.",
-    "successPlanRequest": "Richiesta ricevuta correttamente!"
+    "emailValidationFailed": "Validazione email fallita. Riprova con un'email valida."
   }
 }

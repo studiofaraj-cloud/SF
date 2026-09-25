@@ -5,8 +5,9 @@
  * explanatory text, FAQ and internal links that search engines need to rank a
  * page for "<servizio> Padova" / "<servizio> Veneto" queries.
  *
- * Keep it factual: only prices, processes and claims that are already stated
- * elsewhere on the site. No invented statistics or client names.
+ * Keep it factual: only processes and claims that are already stated
+ * elsewhere on the site. No prices or plan names — the service pages no
+ * longer list offers — and no invented statistics or client names.
  */
 
 export type ServiceLocalKey =
@@ -19,7 +20,9 @@ export type ServiceLocalKey =
   | 'hostingCloud';
 
 export interface ServiceLocalContent {
+  /** H2, rendered as `heading` + `headingHighlight` (the second part in the service colour). */
   heading: string;
+  headingHighlight: string;
   paragraphs: string[];
   points: { title: string; body: string }[];
   faqs: { question: string; answer: string }[];
@@ -35,7 +38,8 @@ export const SERVICE_AREA = {
 
 export const SERVICE_LOCAL_CONTENT: Record<ServiceLocalKey, ServiceLocalContent> = {
   ecommerce: {
-    heading: 'Realizzazione e-commerce a Padova: un negozio online costruito sul tuo modo di vendere',
+    heading: 'Realizzazione e-commerce a Padova:',
+    headingHighlight: 'un negozio online costruito sul tuo modo di vendere',
     paragraphs: [
       'Un e-commerce non è solo un catalogo con un carrello. Deve gestire i tuoi prodotti e le loro varianti, i pagamenti, le spedizioni e le email ai clienti senza costringerti a lavorare attorno ai limiti di una piattaforma. Per questo a Padova sviluppiamo negozi online su misura: il codice è scritto da zero per il tuo catalogo e il tuo processo, e alla consegna è tuo.',
       'Rispetto a un tema pronto su una piattaforma in abbonamento, un e-commerce su misura ti dà pieno controllo su velocità, struttura delle pagine e SEO. Le schede prodotto sono pensate per posizionarsi su Google, il checkout ha solo i passaggi necessari e il sito resta veloce anche da smartphone, dove arriva la maggior parte degli acquisti.',
@@ -61,7 +65,8 @@ export const SERVICE_LOCAL_CONTENT: Record<ServiceLocalKey, ServiceLocalContent>
   },
 
   seoMarketing: {
-    heading: 'SEO a Padova: farsi trovare dai clienti che cercano quello che fai',
+    heading: 'SEO a Padova:',
+    headingHighlight: 'farsi trovare dai clienti che cercano quello che fai',
     paragraphs: [
       'Quando qualcuno a Padova cerca un servizio su Google, sceglie quasi sempre tra i primi risultati e le attività nella mappa. La SEO serve a portarti lì per le ricerche che contano davvero per il tuo lavoro, non per parole chiave generiche che portano visite ma nessun cliente.',
       'Partiamo da un audit del sito: velocità, struttura delle pagine, contenuti, errori tecnici e come Google lo vede oggi. Poi individuiamo le ricerche che fanno i tuoi clienti — "idraulico Padova", "commercialista Abano Terme", "impresa edile Vicenza" — e ottimizziamo le pagine esistenti o ne creiamo di nuove per rispondere a ognuna.',
@@ -73,9 +78,9 @@ export const SERVICE_LOCAL_CONTENT: Record<ServiceLocalKey, ServiceLocalContent>
       { title: 'Contenuti e campagne', body: 'Articoli e pagine che rispondono alle domande dei clienti, e campagne Google Ads quando servono risultati subito.' },
     ],
     faqs: [
-      { question: 'Quanto costa la SEO per un’attività di Padova?', answer: 'I piani mensili partono da 199 € (Starter) e arrivano a 799 € (Performance), in base al numero di pagine, ai contenuti e alle campagne inclusi. L’audit iniziale è gratuito.' },
+      { question: 'Quanto costa la SEO per un’attività di Padova?', answer: 'Dipende dal numero di pagine da ottimizzare, dai contenuti da produrre e dalle eventuali campagne. L’audit iniziale è gratuito: partendo da quello ti mandiamo un preventivo con le attività e i costi, voce per voce.' },
       { question: 'In quanto tempo si vedono i risultati?', answer: 'I primi miglioramenti su ricerche locali e poco competitive arrivano di solito in qualche settimana; per le ricerche più contese servono diversi mesi di lavoro costante. Nessuno può garantire onestamente una posizione precisa su Google.' },
-      { question: 'Gestite anche la scheda Google Business Profile?', answer: 'Sì, è inclusa già nel piano Starter: categorie, descrizione, orari, foto e gestione delle recensioni.' },
+      { question: 'Gestite anche la scheda Google Business Profile?', answer: 'Sì: curiamo categorie, descrizione, orari, foto e la gestione delle recensioni.' },
       { question: 'Serve rifare il sito per fare SEO?', answer: 'Non sempre. Spesso basta intervenire sulle pagine esistenti. Se il sito ha limiti tecnici che bloccano il posizionamento, te lo diciamo nell’audit.' },
     ],
     related: [
@@ -87,7 +92,8 @@ export const SERVICE_LOCAL_CONTENT: Record<ServiceLocalKey, ServiceLocalContent>
   },
 
   designUIUX: {
-    heading: 'Web design a Padova: siti chiari, che portano contatti',
+    heading: 'Web design a Padova:',
+    headingHighlight: 'siti chiari, che portano contatti',
     paragraphs: [
       'Un buon web design non si misura da quanto è bello il sito, ma da quanto è facile per un visitatore capire cosa fai e contattarti. Progettiamo interfacce per siti e applicazioni partendo da chi le userà: cosa cerca, da quale dispositivo arriva, cosa lo convince a scriverti o a comprare.',
       'Il lavoro parte da un’analisi del tuo brand, dei concorrenti e del pubblico, passa per wireframe e prototipi interattivi e arriva al design definitivo, con tutte le specifiche per lo sviluppo. Vedi e provi il sito prima che venga scritta una riga di codice, quando le modifiche costano poco.',
@@ -101,7 +107,7 @@ export const SERVICE_LOCAL_CONTENT: Record<ServiceLocalKey, ServiceLocalContent>
     faqs: [
       { question: 'Quanto tempo serve per il design di un sito?', answer: 'Per un sito vetrina o una landing page 1–2 settimane; per una web app o un e-commerce completo 3–5 settimane, in base al numero di schermate.' },
       { question: 'Posso fare solo il design e far sviluppare il sito a qualcun altro?', answer: 'Sì. Consegniamo file e specifiche pronte per qualsiasi sviluppatore. Se preferisci, sviluppiamo noi anche il sito.' },
-      { question: 'Quante revisioni sono incluse?', answer: 'Fino a 2 revisioni nel pacchetto Starter e fino a 4 nel Pro; con il Retainer mensile le revisioni sono illimitate.' },
+      { question: 'Quante revisioni sono incluse?', answer: 'Il numero di revisioni è indicato nel preventivo, in base alla dimensione del progetto. Lavorando su wireframe e prototipi, la maggior parte delle modifiche si fa prima dello sviluppo, quando costa poco.' },
     ],
     related: [
       { href: '/servizi/sviluppo-web', label: 'Sviluppo siti web a Padova' },
@@ -111,7 +117,8 @@ export const SERVICE_LOCAL_CONTENT: Record<ServiceLocalKey, ServiceLocalContent>
   },
 
   aiAutomation: {
-    heading: 'AI e automazione per le aziende di Padova e del Veneto',
+    heading: 'AI e automazione',
+    headingHighlight: 'per le aziende di Padova e del Veneto',
     paragraphs: [
       'In molte aziende una parte del tempo se ne va in lavoro ripetitivo: copiare dati da un file all’altro, rispondere alle stesse domande dei clienti, compilare report a mano. Con l’intelligenza artificiale e le automazioni si può eliminare buona parte di questo lavoro, senza stravolgere i software che usi già.',
       'Partiamo da un processo concreto, non dalla tecnologia. Guardiamo come lavorate oggi, individuiamo i passaggi che si possono automatizzare e costruiamo la soluzione più semplice che funziona: un chatbot che risponde alle domande frequenti sul sito, un flusso che smista le email in arrivo, un sistema che estrae dati da documenti e li inserisce nel gestionale.',
@@ -135,7 +142,8 @@ export const SERVICE_LOCAL_CONTENT: Record<ServiceLocalKey, ServiceLocalContent>
   },
 
   consulting: {
-    heading: 'Consulenza informatica a Padova: decisioni tecniche prese con i dati giusti',
+    heading: 'Consulenza informatica a Padova:',
+    headingHighlight: 'decisioni tecniche prese con i dati giusti',
     paragraphs: [
       'Scegliere il software sbagliato, o il fornitore sbagliato, costa caro e si scopre tardi. La consulenza serve a prendere queste decisioni prima di spendere: che tipo di sito o applicazione ti serve davvero, quali tecnologie usare, cosa conviene sviluppare su misura e cosa invece acquistare.',
       'Partiamo da una call per capire il tuo business e i tuoi obiettivi. Poi analizziamo la situazione attuale — sito, strumenti, processi, concorrenti — e ti consegniamo una roadmap con priorità, stime di costo e tempi. Se vuoi, ti affianchiamo anche durante la realizzazione, con noi o con altri fornitori.',
@@ -159,11 +167,12 @@ export const SERVICE_LOCAL_CONTENT: Record<ServiceLocalKey, ServiceLocalContent>
   },
 
   maintenance: {
-    heading: 'Manutenzione siti web a Padova: un sito sempre aggiornato, sicuro e veloce',
+    heading: 'Manutenzione siti web a Padova:',
+    headingHighlight: 'un sito sempre aggiornato, sicuro e veloce',
     paragraphs: [
       'Un sito web non si pubblica e si dimentica. Librerie, plugin e server vanno aggiornati, i backup vanno verificati e le vulnerabilità vanno chiuse prima che qualcuno le sfrutti. Un sito trascurato rallenta, perde posizioni su Google e prima o poi si rompe, di solito nel momento peggiore.',
       'Con la manutenzione ci occupiamo noi di tutto questo: aggiornamenti periodici, backup, monitoraggio della sicurezza e delle prestazioni, correzione dei problemi e piccole modifiche ai contenuti. Seguiamo siti sviluppati da noi e anche siti realizzati da altri, dopo una verifica iniziale del codice.',
-      'Puoi scegliere interventi singoli quando ti servono, a 45 € l’ora e senza vincoli, oppure un abbonamento mensile da 149 € con aggiornamenti settimanali, backup giornalieri e monitoraggio della sicurezza. Lavoriamo con aziende di Padova, della provincia e del resto del Veneto.',
+      'Puoi chiederci interventi singoli quando ti servono, senza vincoli, oppure affidarci la manutenzione continuativa del sito, con aggiornamenti, backup e monitoraggio della sicurezza programmati. Lavoriamo con aziende di Padova, della provincia e del resto del Veneto.',
     ],
     points: [
       { title: 'Aggiornamenti e sicurezza', body: 'Teniamo aggiornati codice, dipendenze e server, e controlliamo che il sito non sia esposto a vulnerabilità note.' },
@@ -171,9 +180,9 @@ export const SERVICE_LOCAL_CONTENT: Record<ServiceLocalKey, ServiceLocalContent>
       { title: 'Prestazioni', body: 'Controlliamo velocità e Core Web Vitals, che incidono sia sull’esperienza dei visitatori sia sul posizionamento.' },
     ],
     faqs: [
-      { question: 'Fate manutenzione anche su siti che non avete realizzato voi?', answer: 'Sì. Prima facciamo una verifica del sito per capire com’è costruito e in che stato è, poi ti proponiamo il piano adatto.' },
-      { question: 'C’è un vincolo di durata?', answer: 'Il piano Essential è a ore, senza vincoli mensili. Per gli abbonamenti ti indichiamo durata e condizioni nel preventivo, prima di iniziare.' },
-      { question: 'Quanto velocemente intervenite se il sito ha un problema?', answer: 'Con il piano Professional hai supporto prioritario, con l’Enterprise supporto 24/7 e backup in tempo reale. Gli interventi sono gestiti in base alla gravità del problema.' },
+      { question: 'Fate manutenzione anche su siti che non avete realizzato voi?', answer: 'Sì. Prima facciamo una verifica del sito per capire com’è costruito e in che stato è, poi ti proponiamo la soluzione adatta.' },
+      { question: 'C’è un vincolo di durata?', answer: 'Per gli interventi singoli no, nessun vincolo. Per la manutenzione continuativa ti indichiamo durata e condizioni nel preventivo, prima di iniziare.' },
+      { question: 'Quanto velocemente intervenite se il sito ha un problema?', answer: 'Gli interventi sono gestiti in base alla gravità del problema. Per i siti che seguiamo con la manutenzione continuativa i tempi di intervento sono concordati nel preventivo.' },
     ],
     related: [
       { href: '/servizi/hosting-cloud', label: 'Hosting e Cloud' },
@@ -183,21 +192,22 @@ export const SERVICE_LOCAL_CONTENT: Record<ServiceLocalKey, ServiceLocalContent>
   },
 
   hostingCloud: {
-    heading: 'Hosting a Padova: il tuo sito su un’infrastruttura veloce, con un referente vero',
+    heading: 'Hosting a Padova:',
+    headingHighlight: 'il tuo sito su un’infrastruttura veloce, con un referente vero',
     paragraphs: [
       'La velocità e la stabilità di un sito dipendono molto da dove è ospitato. Un hosting condiviso economico rallenta nei momenti di traffico, e quando qualcosa non va ti ritrovi ad aprire ticket con un call center. Con il nostro hosting il sito gira su un’infrastruttura cloud configurata per le prestazioni, e se c’è un problema parli direttamente con chi lo gestisce.',
-      'I piani sono annuali e dimensionati sul traffico: Starter a 59 € l’anno fino a 10.000 visite al mese, Business a 99 € e Pro a 179 €. Tutti includono certificato SSL e backup; ci occupiamo anche di dominio, DNS e caselle email, e della migrazione dal tuo hosting attuale.',
+      'Dimensioniamo l’hosting sul traffico reale del sito, con certificato SSL e backup sempre inclusi. Ci occupiamo anche di dominio, DNS e caselle email, e della migrazione dal tuo hosting attuale.',
       'Un errore comune è pubblicare il sito su un sottodominio gratuito: Google fatica a indicizzarlo e il sito non si posiziona. Ti aiutiamo a registrare un dominio tuo e a configurarlo correttamente. Seguiamo aziende e professionisti di Padova e di tutto il Veneto.',
     ],
     points: [
-      { title: 'Prestazioni', body: 'Server SSD NVMe e, dal piano Business, CDN inclusa: pagine che si caricano in fretta, anche da smartphone.' },
+      { title: 'Prestazioni', body: 'Server SSD NVMe e CDN quando il traffico lo richiede: pagine che si caricano in fretta, anche da smartphone.' },
       { title: 'Migrazione gratuita', body: 'Spostiamo noi il sito dal fornitore attuale, pianificando il passaggio per evitare interruzioni.' },
       { title: 'Supporto diretto', body: 'Nessun call center: ti risponde lo stesso team che gestisce il server.' },
     ],
     faqs: [
       { question: 'Potete trasferire il mio sito dal fornitore attuale?', answer: 'Sì, la migrazione è gratuita e la gestiamo noi, pianificandola per evitare interruzioni. Ti aiutiamo anche a spostare dominio ed email.' },
       { question: 'L’hosting include il dominio e le email?', answer: 'Possiamo registrare e gestire il dominio e configurare le caselle email aziendali; ti indichiamo i costi nel preventivo.' },
-      { question: 'Cosa succede se il traffico cresce?', answer: 'Si passa al piano superiore senza cambiare infrastruttura né migrare di nuovo il sito.' },
+      { question: 'Cosa succede se il traffico cresce?', answer: 'Adeguiamo le risorse del server senza cambiare infrastruttura né migrare di nuovo il sito.' },
     ],
     related: [
       { href: '/servizi/manutenzione', label: 'Manutenzione siti web' },

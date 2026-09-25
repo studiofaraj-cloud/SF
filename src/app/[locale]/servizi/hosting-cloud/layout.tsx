@@ -86,7 +86,7 @@ export default async function HostingCloudLayout({
   return (
     <>
       <StructuredDataServer data={[serviceData, breadcrumbData]} />
-      <ClientMessages locale={currentLocale} namespaces={['serverActions', 'services.hostingCloud']}>
+      <ClientMessages locale={currentLocale} namespaces={['services.hostingCloud']}>
         {children}
       </ClientMessages>
     </>

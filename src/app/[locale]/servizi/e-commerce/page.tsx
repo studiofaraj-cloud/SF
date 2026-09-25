@@ -170,7 +170,7 @@ export default function EcommercePage() {
                 <Zap className="w-4 h-4 mr-2" />
                 {t('platforms.badge')}
               </Badge>
-              <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
                 <span className="text-foreground">{t('platforms.title')}</span>{' '}
                 <span className="block text-emerald-400">{t('platforms.titleHighlight')}</span>
               </h2>
@@ -214,8 +214,9 @@ export default function EcommercePage() {
         </div>
       </section>
 
-      {/* Local SEO copy, FAQ and related services (Italian only) */}
-      <ServiceLocalSection service="ecommerce" locale={locale} />
+      {/* Local SEO copy, FAQ and related services (Italian only). The
+          platforms section above is already a band, so start with the gradient. */}
+      <ServiceLocalSection service="ecommerce" locale={locale} firstBackground="gradient" />
 
       {/* CTA Section */}
       <section className="relative py-20 md:py-32 overflow-hidden">

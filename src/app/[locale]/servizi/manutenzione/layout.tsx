@@ -82,7 +82,7 @@ export default async function ManutenzioneLayout({
   return (
     <>
       <StructuredDataServer data={[serviceData, breadcrumbData]} />
-      <ClientMessages locale={currentLocale} namespaces={['serverActions', 'services.maintenance']}>
+      <ClientMessages locale={currentLocale} namespaces={['services.maintenance']}>
         {children}
       </ClientMessages>
     </>

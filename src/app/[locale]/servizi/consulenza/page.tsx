@@ -2,11 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { CheckCircle, ArrowRight, Sparkles, Zap, Clock, ShieldCheck, Target, Users, FileText, Presentation, Compass, TrendingUp, ChevronDown, Globe, Lock, CreditCard } from 'lucide-react';
+import { CheckCircle, ArrowRight, Sparkles, Zap, Clock, ShieldCheck, Target, Users, FileText, Presentation, Compass, TrendingUp, ChevronDown, Globe } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { PlanRequestDialog } from '@/components/site/plan-request-dialog';
 import ScrollFadeIn from '@/components/site/scroll-fade-in';
 import GradientText from '@/components/GradientText';
 import { BookingDialog } from '@/components/site/booking-dialog';
@@ -171,7 +170,7 @@ export default function ConsulenzaPage() {
                 <Zap className="w-4 h-4 mr-2" />
                 {t('process.badge')}
               </Badge>
-              <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
                 <span className="text-foreground">{t('process.title')}</span>{' '}
                 <span className="block text-fuchsia-400">{t('process.titleHighlight')}</span>
               </h2>
@@ -211,65 +210,6 @@ export default function ConsulenzaPage() {
                         <span>{item}</span>
                       </div>
                     ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </ScrollFadeIn>
-          </div>
-        </div>
-      </section>
-
-      {/* Pricing Section */}
-      <section id="tariffa" className="relative py-20 md:py-32 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-secondary/30 to-background" />
-        <div className="absolute inset-0 bg-circuit opacity-30" />
-
-        <div className="container relative z-10 px-4 sm:px-6 md:px-8">
-          <ScrollFadeIn animation="fade-up">
-            <div className="text-center max-w-3xl mx-auto mb-16">
-              <Badge className="badge-futuristic mb-4 bg-fuchsia-500/20 text-fuchsia-400 border-fuchsia-500/30">
-                <Zap className="w-4 h-4 mr-2" />
-                {t('pricing.badge')}
-              </Badge>
-              <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-                <span className="text-foreground">{t('pricing.title')}</span>{' '}
-                <span className="block text-fuchsia-400">{t('pricing.titleHighlight')}</span>
-              </h2>
-            </div>
-          </ScrollFadeIn>
-
-          <div className="max-w-lg mx-auto">
-            <ScrollFadeIn animation="fade-up" delay={100}>
-              <Card className="holographic-card neon-border relative border-fuchsia-500/50 border-2 shadow-lg shadow-fuchsia-500/10 !overflow-visible">
-                <div className="absolute -top-4 sm:-top-3 left-1/2 -translate-x-1/2 z-20">
-                  <Badge className="bg-gradient-to-r from-fuchsia-500 to-fuchsia-600 text-white px-4 py-1.5 text-xs sm:text-sm font-semibold shadow-lg shadow-fuchsia-500/30">
-                    {t('pricing.hourlyBadge')}
-                  </Badge>
-                </div>
-                <CardContent className="p-6 sm:p-7 md:p-8 pt-8 sm:pt-9">
-                  <div className="text-center mb-6 sm:mb-8">
-                    <span className="text-5xl sm:text-6xl md:text-7xl font-bold text-foreground">€{t('pricing.hourlyPrice')}</span>
-                    <span className="text-muted-foreground text-lg sm:text-xl ml-1">{t('pricing.unit')}</span>
-                  </div>
-                  <ul className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
-                    {Array.from({ length: 6 }, (_, i) => (
-                      <li key={i} className="flex items-start gap-3 text-sm sm:text-base">
-                        <CheckCircle className="w-5 h-5 text-fuchsia-500 shrink-0 mt-0.5" />
-                        <span className="text-foreground/90 leading-relaxed">{t(`pricing.features.${i}`)}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <PlanRequestDialog
-                    planName={t('pricing.hourlyBadge')}
-                    planPrice={t('pricing.hourlyPrice')}
-                    serviceName={t('label')}
-                    btnClassName="w-full h-11 sm:h-12 md:h-14 text-sm sm:text-base font-semibold bg-gradient-to-r from-fuchsia-600 to-fuchsia-700 hover:from-fuchsia-700 hover:to-fuchsia-800 text-white shadow-lg shadow-fuchsia-500/30 hover:shadow-xl hover:shadow-fuchsia-500/40 transition-all duration-300"
-                    btnLabel={t('pricing.button')}
-                  />
-                  <div className="mt-4 flex items-center justify-center gap-1.5 text-[11px] sm:text-xs text-muted-foreground font-medium opacity-80">
-                    <Lock className="w-3.5 h-3.5" />
-                    <span>{t('pricing.securePayment')}</span>
-                    <CreditCard className="w-3.5 h-3.5 ml-1" />
                   </div>
                 </CardContent>
               </Card>

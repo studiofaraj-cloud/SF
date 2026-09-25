@@ -82,7 +82,7 @@ export default async function DesignUIUXLayout({
   return (
     <>
       <StructuredDataServer data={[serviceData, breadcrumbData]} />
-      <ClientMessages locale={currentLocale} namespaces={['serverActions', 'services.designUIUX']}>
+      <ClientMessages locale={currentLocale} namespaces={['services.designUIUX']}>
         {children}
       </ClientMessages>
     </>

@@ -84,7 +84,7 @@ export default async function ConsulenzaLayout({
   return (
     <>
       <StructuredDataServer data={[serviceData, breadcrumbData]} />
-      <ClientMessages locale={currentLocale} namespaces={['bookingDialog', 'serverActions', 'services.consulting']}>
+      <ClientMessages locale={currentLocale} namespaces={['bookingDialog', 'services.consulting']}>
         {children}
       </ClientMessages>
     </>
