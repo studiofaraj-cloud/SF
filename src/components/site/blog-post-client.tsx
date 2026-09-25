@@ -163,20 +163,23 @@ export function BlogPostClient({
           2. ARTICLE HEADER — breadcrumb + badge + title + excerpt + meta
           ══════════════════════════════════════════════════════ */}
       <section className="container mx-auto px-4 sm:px-6 pt-12 md:pt-16 pb-8">
-        {/* Breadcrumb */}
+        {/* Breadcrumb — always one line: the current title truncates into
+            the space left. On touch screens globals.css gives every link a
+            48px min tap size; the links centre their text in it and `-my-4`
+            stops the taller box from pushing the row apart. */}
         <nav
           aria-label="breadcrumb"
-          className="flex flex-wrap items-center gap-x-1.5 text-xs text-muted-foreground/60 mb-6"
+          className="flex items-center gap-x-1.5 text-xs text-muted-foreground/60 mb-6"
         >
-          <Link href={`/${locale}`} className="hover:text-muted-foreground transition-colors">
+          <Link href={`/${locale}`} className="-my-4 flex min-w-0 shrink-0 items-center hover:text-muted-foreground transition-colors">
             Home
           </Link>
-          <ChevronRight className="h-3 w-3 shrink-0" />
-          <Link href={`/${locale}/blog`} className="hover:text-muted-foreground transition-colors">
+          <ChevronRight className="h-3 w-3 shrink-0 text-muted-foreground/40" />
+          <Link href={`/${locale}/blog`} className="-my-4 flex min-w-0 shrink-0 items-center hover:text-muted-foreground transition-colors">
             Blog
           </Link>
-          <ChevronRight className="h-3 w-3 shrink-0" />
-          <span className="text-muted-foreground/40 truncate max-w-[200px]">{blog.title}</span>
+          <ChevronRight className="h-3 w-3 shrink-0 text-muted-foreground/40" />
+          <span aria-current="page" className="text-muted-foreground/40 min-w-0 truncate">{blog.title}</span>
         </nav>
 
         {/* Badge */}

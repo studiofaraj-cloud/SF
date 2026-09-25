@@ -180,17 +180,20 @@ export function ProjectPostClient({
           aria-hidden
         />
         <div className="container max-w-5xl px-4 sm:px-6 md:px-8">
-          {/* Breadcrumb */}
-          <nav aria-label="breadcrumb" className="mb-6 flex flex-wrap items-center gap-x-1.5 text-xs text-muted-foreground">
-            <Link href={`/${locale}`} className="transition-colors hover:text-foreground">
+          {/* Breadcrumb — always one line: the current title truncates into
+              the space left. On touch screens globals.css gives every link a
+              48px min tap size; the links centre their text in it and `-my-4`
+              stops the taller box from pushing the row apart. */}
+          <nav aria-label="breadcrumb" className="mb-6 flex items-center gap-x-1.5 text-xs text-muted-foreground">
+            <Link href={`/${locale}`} className="-my-4 flex min-w-0 shrink-0 items-center transition-colors hover:text-foreground">
               {t('home')}
             </Link>
-            <ChevronRight className="h-3 w-3 shrink-0" />
-            <Link href={`/${locale}/projects`} className="transition-colors hover:text-foreground">
+            <ChevronRight className="h-3 w-3 shrink-0 text-muted-foreground/60" />
+            <Link href={`/${locale}/projects`} className="-my-4 flex min-w-0 shrink-0 items-center transition-colors hover:text-foreground">
               {t('projects')}
             </Link>
-            <ChevronRight className="h-3 w-3 shrink-0" />
-            <span className="truncate text-foreground/70">{project.title}</span>
+            <ChevronRight className="h-3 w-3 shrink-0 text-muted-foreground/60" />
+            <span aria-current="page" className="min-w-0 truncate text-foreground/70">{project.title}</span>
           </nav>
 
           {project.category && (
@@ -239,7 +242,11 @@ export function ProjectPostClient({
       {/* ── Featured Image ── */}
       {project.featuredImage && (
         <div className="container max-w-5xl px-4 sm:px-6 md:px-8">
-          <div className="-mt-8 overflow-hidden rounded-2xl border border-border shadow-2xl shadow-violet-950/10 ring-1 ring-black/5">
+          {/* The card overlaps the hero by `-mt-8`. The hero is `relative`, so
+              it paints above non-positioned siblings — `relative z-10` keeps
+              the hero's bottom border from drawing across the image, and the
+              background hides it while the image is still loading. */}
+          <div className="relative z-10 -mt-8 overflow-hidden rounded-2xl border border-border bg-secondary shadow-2xl shadow-violet-950/10 ring-1 ring-black/5">
             <FirebaseImage
               src={project.featuredImage}
               alt={`${project.title}${project.category ? ` — ${formatCategory(project.category)}` : ''}`}
