@@ -169,11 +169,11 @@ export async function HeroSection({ locale }: { locale: Locale }) {
           <figure className="relative min-w-0 lg:col-span-6 lg:pl-4">
             {/* Build log */}
             <div className="w-[94%] max-w-[32rem] rounded-xl border border-white/10 bg-[#0e1f3b] font-mono text-[12.5px] leading-relaxed shadow-2xl sm:w-[84%] sm:text-[13px]">
-              <div className="border-b border-white/10 px-4 py-2.5 text-white/40">
+              <div className="border-b border-white/10 px-4 py-2.5 text-white/55">
                 progetti/{handle(showcase.clientName || showcase.slug)}
               </div>
               <div className="px-4 pb-10 pt-4 sm:pb-12">
-                <p className="build-line text-white/45" style={{ '--i': 0 } as React.CSSProperties}>
+                <p className="build-line text-white/60" style={{ '--i': 0 } as React.CSSProperties}>
                   $ npm run build
                 </p>
                 {/* Rows share the label column through subgrid, so labels size
@@ -186,7 +186,7 @@ export async function HeroSection({ locale }: { locale: Locale }) {
                       className="build-line col-span-full grid grid-cols-subgrid"
                       style={{ '--i': i + 1 } as React.CSSProperties}
                     >
-                      <dt className="text-white/45">
+                      <dt className="text-white/60">
                         <span aria-hidden className="mr-1.5 text-sky-400">
                           ✓
                         </span>
