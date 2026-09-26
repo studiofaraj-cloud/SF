@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Facebook, Instagram, Linkedin, Mail, Phone, MapPin, Shield, Award, Zap } from 'lucide-react';
+import { Facebook, Instagram, Linkedin, Mail, Phone, MapPin, Shield, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Image from 'next/image';
@@ -12,6 +12,9 @@ import { useEffect, useRef } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { useTranslations, useLocale } from 'next-intl';
 import { getLocalizedPath } from '@/lib/i18n-helpers';
+
+const STUDIO_MAPS_URL =
+  'https://www.google.com/maps/search/?api=1&query=Studio%20Faraj%2C%20Via%20Ludovico%20Ariosto%2042%2C%2035128%20Padova&query_place_id=ChIJV_YxeITzBAERefznEKaDrkc';
 
 function NewsletterForm() {
   const formRef = useRef<HTMLFormElement>(null);
@@ -73,12 +76,7 @@ export function SiteFooter() {
   const tServices = useTranslations('services');
 
   return (
-    <footer className="relative bg-gradient-to-b from-background via-secondary/40 to-secondary border-t border-border/50 overflow-hidden">
-      {/* Background glows */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute bottom-0 left-0 w-80 h-80 bg-primary/4 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-0 w-80 h-80 bg-primary/4 rounded-full blur-3xl" />
-      </div>
+    <footer className="relative border-t border-border bg-secondary/40">
 
       <div className="container relative z-10 px-4 sm:px-6 lg:px-8 pt-12 pb-8 md:pt-16 md:pb-10">
 
@@ -106,12 +104,12 @@ export function SiteFooter() {
               </span>
               +39 320 222 3322
             </a>
-            <div className="flex items-center gap-2.5 text-sm text-muted-foreground">
+            <a href={STUDIO_MAPS_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2.5 text-sm text-muted-foreground hover:text-primary transition-colors">
               <span className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
                 <MapPin className="w-3.5 h-3.5 text-primary" />
               </span>
-              Padova, Italia
-            </div>
+              Via Ludovico Ariosto 42, 35128 Padova
+            </a>
           </div>
 
           {/* Social */}
@@ -155,12 +153,12 @@ export function SiteFooter() {
                 </span>
                 +39 320 222 3322
               </a>
-              <div className="flex items-center gap-3 text-sm text-muted-foreground">
+              <a href={STUDIO_MAPS_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors">
                 <span className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
                   <MapPin className="w-4 h-4 text-primary" />
                 </span>
-                Padova, Italia
-              </div>
+                Via Ludovico Ariosto 42, 35128 Padova
+              </a>
             </div>
             <div className="flex items-center gap-3 pt-1">
               {[
@@ -222,7 +220,7 @@ export function SiteFooter() {
 
           {/* Newsletter */}
           <div className="col-span-2 lg:col-span-3">
-            <div className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl p-4 md:p-6">
+            <div className="bg-background border border-border rounded-2xl p-4 md:p-6">
               <div className="flex items-center gap-2 mb-2">
                 <Zap className="w-4 h-4 text-primary" />
                 <p className="font-semibold text-foreground text-sm">{t('newsletter.title')}</p>
@@ -236,10 +234,6 @@ export function SiteFooter() {
               <Badge variant="outline" className="border-primary/30 text-primary bg-primary/5 text-xs">
                 <Shield className="w-3 h-3 mr-1.5" />
                 {t('badges.gdpr')}
-              </Badge>
-              <Badge variant="outline" className="border-primary/30 text-primary bg-primary/5 text-xs">
-                <Award className="w-3 h-3 mr-1.5" />
-                {t('badges.certified')}
               </Badge>
             </div>
           </div>

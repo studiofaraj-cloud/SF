@@ -282,157 +282,6 @@
     scroll-behavior: smooth;
   }
 
-  /* Modern angled header styles with rounded angles */
-  .header-modern-angled {
-    position: relative;
-    background: hsl(var(--background) / 0.95);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid hsl(var(--border) / 0.3);
-    border-radius: var(--radius);
-    box-shadow: 
-      0 4px 6px -1px hsl(var(--foreground) / 0.1),
-      0 2px 4px -1px hsl(var(--foreground) / 0.06),
-      inset 0 1px 0 0 hsl(var(--primary) / 0.1);
-    overflow: hidden;
-  }
-
-  /* Top accent line */
-  .header-modern-angled::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      hsl(var(--primary) / 0.6) 20%,
-      hsl(var(--primary) / 0.9) 50%,
-      hsl(var(--primary) / 0.6) 80%,
-      transparent 100%
-    );
-    border-radius: var(--radius) var(--radius) 0 0;
-    z-index: 1;
-  }
-
-  /* Left rounded angled accent */
-  .header-modern-angled::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 50px;
-    height: 100%;
-    background: linear-gradient(
-      135deg,
-      hsl(var(--primary) / 0.25) 0%,
-      hsl(var(--primary) / 0.15) 50%,
-      transparent 100%
-    );
-    border-radius: var(--radius) 0 0 var(--radius);
-    clip-path: polygon(
-      0 0, 
-      100% 0, 
-      calc(100% - 16px) 100%,
-      0 100%
-    );
-    z-index: 0;
-  }
-
-  /* Right side rounded angled accent */
-  .header-modern-angled-right {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 50px;
-    height: 100%;
-    background: linear-gradient(
-      225deg,
-      hsl(var(--primary) / 0.25) 0%,
-      hsl(var(--primary) / 0.15) 50%,
-      transparent 100%
-    );
-    border-radius: 0 var(--radius) var(--radius) 0;
-    clip-path: polygon(
-      16px 0,
-      100% 0,
-      100% 100%,
-      0 100%
-    );
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  /* Angled border effect on hover */
-  .header-angled-border {
-    position: relative;
-  }
-
-  .header-angled-border:hover {
-    border-color: hsl(var(--primary) / 0.4);
-    box-shadow: 
-      0 4px 6px -1px hsl(var(--foreground) / 0.1),
-      0 2px 4px -1px hsl(var(--foreground) / 0.06),
-      0 0 20px hsl(var(--primary) / 0.2),
-      inset 0 1px 0 0 hsl(var(--primary) / 0.2);
-  }
-
-  /* Rounded decorative corner angles */
-  .header-angle-accent {
-    position: absolute;
-    z-index: 1;
-    transition: all 0.3s ease;
-    border-radius: var(--radius);
-  }
-
-  .header-angle-accent-top-left {
-    top: 0;
-    left: 0;
-    width: 24px;
-    height: 24px;
-    background: linear-gradient(
-      135deg,
-      hsl(var(--primary) / 0.3) 0%,
-      hsl(var(--primary) / 0.15) 100%
-    );
-    border-radius: var(--radius) 0 var(--radius) 0;
-    clip-path: polygon(0 0, 100% 0, 0 100%);
-  }
-
-  .header-angle-accent-bottom-right {
-    bottom: 0;
-    right: 0;
-    width: 24px;
-    height: 24px;
-    background: linear-gradient(
-      225deg,
-      hsl(var(--primary) / 0.3) 0%,
-      hsl(var(--primary) / 0.15) 100%
-    );
-    border-radius: 0 var(--radius) 0 var(--radius);
-    clip-path: polygon(100% 0, 100% 100%, 0 100%);
-  }
-
-  .header-angled-border:hover .header-angle-accent-top-left {
-    background: linear-gradient(
-      135deg,
-      hsl(var(--primary) / 0.5) 0%,
-      hsl(var(--primary) / 0.3) 100%
-    );
-    transform: scale(1.1);
-  }
-
-  .header-angled-border:hover .header-angle-accent-bottom-right {
-    background: linear-gradient(
-      225deg,
-      hsl(var(--primary) / 0.5) 0%,
-      hsl(var(--primary) / 0.3) 100%
-    );
-    transform: scale(1.1);
-  }
-
   /* ========================================
      2050 FUTURISTIC UTILITIES
      ======================================== */
@@ -994,23 +843,7 @@
 }
 
 /* iPad and Tablet specific fixes for header alignment */
-@media (min-width: 768px) and (max-width: 1024px) {
-  .header-modern-angled {
-    display: flex;
-    align-items: center;
-  }
-  
-  .header-modern-angled > * {
-    display: flex;
-    align-items: center;
-    height: 100%;
-  }
-  
-  /* Ensure all header children are vertically centered */
-  .header-modern-angled .flex {
-    align-items: center;
-  }
-}
+
 
 @media (max-width: 767px) {
   /* iOS Safari viewport height compatibility */
@@ -1029,26 +862,6 @@
     :root {
       height: 100dvh;
     }
-  }
-
-  /* Floating capsule header on mobile */
-  .header-modern-angled {
-    border-radius: 20px !important;
-    background: hsl(var(--background) / 0.88) !important;
-    backdrop-filter: blur(16px) !important;
-    -webkit-backdrop-filter: blur(16px) !important;
-    border-color: hsl(var(--primary) / 0.12) !important;
-    box-shadow:
-      0 4px 24px rgba(0, 0, 0, 0.06),
-      0 0 0 1px hsl(var(--primary) / 0.06),
-      inset 0 1px 0 0 hsla(0, 0%, 100%, 0.06) !important;
-  }
-
-  /* Hide angular accents on mobile — capsule doesn't need them */
-  .header-angle-accent,
-  .header-modern-angled-right,
-  .header-modern-angled::after {
-    display: none !important;
   }
 
   /* Preserve background opacity for holographic cards on mobile for better contrast */

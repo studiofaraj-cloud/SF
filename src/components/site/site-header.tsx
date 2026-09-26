@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Search, Menu, Home, Users, Sparkles, FolderOpen, BookOpen, Mail, Code, ShoppingCart, Palette, TrendingUp, Bot, Wrench, Server, MessageSquare, ChevronDown, ArrowRight, X, Building2 } from 'lucide-react';
+import { Search, Menu, Home, Users, Sparkles, FolderOpen, BookOpen, Mail, Code, ShoppingCart, Palette, TrendingUp, Bot, Wrench, Server, MessageSquare, ChevronDown, X, Building2 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { LanguageSwitcher } from './language-switcher';
 import { ThemeToggle } from './theme-toggle';
@@ -67,14 +67,13 @@ function MobileNav({ onSearchOpen }: { onSearchOpen: () => void }) {
                 </Button>
             </SheetTrigger>
 
-            <SheetContent side="left" className="w-[300px] sm:w-[340px] p-0 border-r border-primary/15 gap-0 bg-gradient-to-b from-background/85 to-secondary/40 backdrop-blur-xl">
+            <SheetContent side="left" className="w-[300px] sm:w-[340px] p-0 border-r border-border gap-0 bg-background">
                 <VisuallyHidden><SheetTitle>Navigation</SheetTitle></VisuallyHidden>
 
                 {/* ═══ HEADER ═══ */}
                 <div className="relative px-5 pt-6 pb-5">
                     <Link href="/" title="Studio Faraj — Home" className="flex items-center gap-3 group" onClick={() => setSheetOpen(false)}>
                         <div className="relative shrink-0">
-                            <div className="absolute -inset-1 bg-primary/25 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                             <Image src="/assets/logo.png" alt="Studio Faraj" width={40} height={40}
                                 className="relative transition-transform duration-300 group-hover:scale-110" unoptimized />
                         </div>
@@ -83,8 +82,7 @@ function MobileNav({ onSearchOpen }: { onSearchOpen: () => void }) {
                             <p className="text-[9px] font-semibold tracking-[0.2em] text-primary/50 uppercase">Web Development Agency</p>
                         </div>
                     </Link>
-                    {/* Glow line */}
-                    <div className="absolute bottom-0 inset-x-4 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+                    <div className="absolute bottom-0 inset-x-4 h-px bg-border" />
                 </div>
 
                 {/* ═══ NAV LIST ═══ */}
@@ -202,8 +200,7 @@ function MobileNav({ onSearchOpen }: { onSearchOpen: () => void }) {
                     <Link href={getLocalizedPath('/contatti', locale as any)} title={locale === 'it' ? 'Inizia un Progetto con Studio Faraj' : 'Start a Project with Studio Faraj'} onClick={() => setSheetOpen(false)}
                         className="flex items-center justify-center gap-2 w-full py-3 px-4 rounded-xl bg-primary text-primary-foreground text-[13px] font-bold tracking-wide hover:brightness-110 transition-all duration-200 shadow-lg shadow-primary/20 hover:shadow-primary/40 active:scale-[0.98]"
                     >
-                        Inizia un Progetto
-                        <ArrowRight className="w-4 h-4" />
+                        {locale === 'it' ? 'Inizia un progetto' : 'Start a project'}
                     </Link>
                     {/* Client area */}
                     <Link href={`/${locale}/hub/login`} title={locale === 'it' ? 'Area Clienti' : 'Client Area'} onClick={() => setSheetOpen(false)}
@@ -239,7 +236,7 @@ function DesktopNav({ onSearchOpen }: { onSearchOpen: () => void }) {
               <Link
                 href={`/${locale}/hub/login`}
                 title={locale === 'it' ? 'Accedi alla tua area clienti' : 'Sign in to your client area'}
-                className="ml-1 hidden lg:inline-flex items-center h-9 px-3 rounded-full text-[12.5px] font-semibold text-foreground hover:text-primary transition-colors whitespace-nowrap"
+                className="ml-1 hidden xl:inline-flex items-center h-9 px-3 rounded-full text-[12.5px] font-semibold text-foreground hover:text-primary transition-colors whitespace-nowrap"
               >
                 {locale === 'it' ? 'Area Clienti' : 'Client Area'}
               </Link>
@@ -249,7 +246,6 @@ function DesktopNav({ onSearchOpen }: { onSearchOpen: () => void }) {
                 className="ml-1 hidden xl:inline-flex items-center gap-1.5 h-9 px-4 rounded-full bg-primary text-primary-foreground text-[12.5px] font-bold tracking-wide hover:brightness-110 transition-all duration-200 shadow-md shadow-primary/20 hover:shadow-primary/40 active:scale-[0.98] whitespace-nowrap"
               >
                 {locale === 'it' ? 'Preventivo' : 'Get a Quote'}
-                <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
           </div>
@@ -278,7 +274,7 @@ export function SiteHeader() {
       <SearchDialog open={isSearchOpen} onOpenChange={setSearchOpen} />
       <header
         className={cn(
-          'fixed top-0 z-50 left-0 right-0 animate-fade-in-up transition-all duration-300',
+          'fixed top-0 z-50 left-0 right-0 transition-all duration-300',
           scrolled
             ? 'p-2 md:p-2.5 lg:px-6 xl:px-10 2xl:px-24'
             : 'p-3 md:p-4 lg:px-6 xl:px-10 2xl:px-24'
@@ -286,19 +282,10 @@ export function SiteHeader() {
       >
         <div
           className={cn(
-            'header-modern-angled header-angled-border relative flex items-center justify-between mx-auto w-full max-w-[1600px] px-4 md:px-5 lg:px-6 xl:px-8 animate-fade-in-up transition-all duration-300',
+            'relative mx-auto flex w-full max-w-[1600px] items-center justify-between rounded-2xl border border-border/70 bg-background px-4 shadow-[0_2px_14px_rgba(10,22,40,0.07)] transition-all duration-300 md:px-5 lg:px-6 xl:px-8',
             scrolled ? 'h-12 md:h-14' : 'h-14 md:h-16'
           )}
         >
-          {/* Left angled accent */}
-          <div className="header-angle-accent header-angle-accent-top-left"></div>
-
-          {/* Right angled accent */}
-          <div className="header-angle-accent header-angle-accent-bottom-right"></div>
-
-          {/* Right side angle overlay */}
-          <div className="header-modern-angled-right"></div>
-
           <div className="hidden md:flex flex-1 relative z-10 h-full items-center">
             <DesktopNav onSearchOpen={handleSearchOpen} />
           </div>
