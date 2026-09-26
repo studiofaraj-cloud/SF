@@ -9,6 +9,7 @@ import { ThemeProvider } from "next-themes";
 import { CookieConsent } from '@/components/site/cookie-consent';
 import { CookieProvider } from '@/contexts/cookie-context';
 import { AppBody } from '@/components/site/app-body';
+import { getAggregateRating } from '@/lib/google-reviews';
 import { GoogleAnalytics } from '@/components/analytics/google-analytics';
 import { StructuredDataServer } from '@/components/seo/structured-data-server';
 import { generateStructuredDataWebSite } from '@/lib/seo';
@@ -93,6 +94,10 @@ export default async function LocaleLayout({ children, params }: Props) {
   // `lang` comes straight from the [locale] route param, so the SERVED html is
   // correct for crawlers — no post-hydration patching, and hreflang annotations
   // are no longer contradicted by the document's own language declaration.
+  // The mobile menu's trust card shows the live Google average (cached and
+  // shared with the pages that also show it); null leaves the line out.
+  const googleRating = await getAggregateRating(locale).catch(() => null);
+
   return (
     <RootHtml lang={locale}>
       <StructuredDataServer data={websiteData} />
@@ -110,7 +115,7 @@ export default async function LocaleLayout({ children, params }: Props) {
             locale={locale}
             messages={pickMessages(messages, GLOBAL_CLIENT_NAMESPACES)}
           >
-            <AppBody>
+            <AppBody rating={googleRating ? { value: googleRating.ratingValue } : null}>
               {children}
             </AppBody>
             <Toaster />

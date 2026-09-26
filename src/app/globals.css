@@ -221,6 +221,57 @@
   to   { stroke-dashoffset: 0; }
 }
 
+/* ── Mobile menu ────────────────────────────────────────────────────────────
+   The panel grows out of the menu button as a circle (--mm-x/--mm-y is the
+   button's centre) and shrinks back into it; items rise in one after another
+   (--i); the close button's two lines go from the menu icon's to an X. The
+   finished state is the default, so reduced motion simply shows the menu. */
+@layer components {
+  .mm-x {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 20px;
+    height: 2px;
+    border-radius: 9999px;
+    background: currentColor;
+  }
+  .mm-x-a { transform: translateY(-50%) rotate(45deg); }
+  .mm-x-b { transform: translateY(-50%) rotate(-45deg); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .mm-panel[data-state='open'] { animation: mm-grow 0.6s cubic-bezier(0.7, 0, 0.2, 1) both; }
+  .mm-panel[data-state='closed'] { animation: mm-shrink 0.38s cubic-bezier(0.6, 0, 0.4, 1) both; }
+  .mm-panel[data-state='open'] .mm-item {
+    animation: mm-rise 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    animation-delay: calc(220ms + var(--i, 0) * 45ms);
+  }
+  .mm-panel[data-state='open'] .mm-x-a { animation: mm-x-a 0.45s cubic-bezier(0.6, 0, 0.2, 1) 0.2s both; }
+  .mm-panel[data-state='open'] .mm-x-b { animation: mm-x-b 0.45s cubic-bezier(0.6, 0, 0.2, 1) 0.2s both; }
+}
+@keyframes mm-grow {
+  from { clip-path: circle(0 at var(--mm-x) var(--mm-y)); }
+  to   { clip-path: circle(150% at var(--mm-x) var(--mm-y)); }
+}
+@keyframes mm-shrink {
+  from { clip-path: circle(150% at var(--mm-x) var(--mm-y)); }
+  to   { clip-path: circle(0 at var(--mm-x) var(--mm-y)); }
+}
+@keyframes mm-rise {
+  from { opacity: 0; translate: 0 18px; }
+  to   { opacity: 1; translate: 0 0; }
+}
+/* The menu icon's lines sit 3.5px above and below centre; the lower one is
+   12px wide, right-aligned. */
+@keyframes mm-x-a {
+  from { transform: translateY(calc(-50% - 3.5px)) rotate(0deg); }
+  to   { transform: translateY(-50%) rotate(45deg); }
+}
+@keyframes mm-x-b {
+  from { left: 8px; width: 12px; transform: translateY(calc(-50% + 3.5px)) rotate(0deg); }
+  to   { left: 0; width: 20px; transform: translateY(-50%) rotate(-45deg); }
+}
+
 /* ── Homepage work rail ─────────────────────────────────────────────────────
    Full-bleed horizontal rail whose first slide lines up with the page grid:
    --inset is the distance from the edge to the .container content at each

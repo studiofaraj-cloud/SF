@@ -1,218 +1,18 @@
 'use client';
 
 import Link from 'next/link';
-import { Search, Menu, Home, Users, Sparkles, FolderOpen, BookOpen, Mail, Code, ShoppingCart, Palette, TrendingUp, Bot, Wrench, Server, MessageSquare, ChevronDown, X, Building2 } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { LanguageSwitcher } from './language-switcher';
 import { ThemeToggle } from './theme-toggle';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet';
 import { SearchDialog } from './search-dialog';
 import { NavigationMenu } from './navigation-menu';
-import { navItems } from '@/lib/definitions';
+import { MobileMenu, type HeaderRating } from './mobile-menu';
 import Image from 'next/image';
-import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
-import { usePathname } from 'next/navigation';
 import { useLocale } from 'next-intl';
 import { getLocalizedPath } from '@/lib/i18n-helpers';
 import { cn } from '@/lib/utils';
-
-// Icon mapping for navigation items
-const navIcons: Record<string, React.ComponentType<{ className?: string }>> = {
-  '/': Home,
-  '/chi-siamo': Users,
-  '/#services': Sparkles,
-  '/pagine-aziendali': Building2,
-  '/projects': FolderOpen,
-  '/blog': BookOpen,
-  '/contatti': Mail,
-};
-
-// Service items with icons and accent colors
-const serviceItems = [
-  { href: '/servizi/sviluppo-web',   label: 'Sviluppo Web',     icon: Code,           color: 'text-blue-400' },
-  { href: '/servizi/e-commerce',     label: 'E-commerce',       icon: ShoppingCart,   color: 'text-emerald-400' },
-  { href: '/servizi/design-ui-ux',   label: 'Design UI/UX',     icon: Palette,        color: 'text-violet-400' },
-  { href: '/servizi/seo-marketing',  label: 'SEO & Marketing',  icon: TrendingUp,     color: 'text-teal-400' },
-  { href: '/servizi/ai-automazione', label: 'AI & Automazione', icon: Bot,            color: 'text-pink-400' },
-  { href: '/servizi/manutenzione',   label: 'Manutenzione',     icon: Wrench,         color: 'text-orange-400' },
-  { href: '/servizi/hosting-cloud',  label: 'Hosting & Cloud',  icon: Server,         color: 'text-indigo-400' },
-  { href: '/servizi/consulenza',     label: 'Consulenza',       icon: MessageSquare,  color: 'text-fuchsia-400' },
-];
-
-function MobileNav({ onSearchOpen }: { onSearchOpen: () => void }) {
-    const [isSheetOpen, setSheetOpen] = useState(false);
-    const [isServicesOpen, setServicesOpen] = useState(false);
-    const pathname = usePathname();
-    const locale = useLocale();
-    const [mounted, setMounted] = useState(false);
-
-    useEffect(() => {
-        setMounted(true);
-    }, []);
-
-    const isServicePage = mounted && pathname?.startsWith('/servizi/');
-
-    useEffect(() => {
-        if (isServicePage && isSheetOpen) {
-            setServicesOpen(true);
-        }
-    }, [isServicePage, isSheetOpen]);
-
-    return (
-        <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
-            <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="lg:hidden hover:bg-primary/10 text-foreground" aria-label="Open mobile menu">
-                    <Menu className="h-6 w-6" />
-                </Button>
-            </SheetTrigger>
-
-            <SheetContent side="left" className="w-[300px] sm:w-[340px] p-0 border-r border-border gap-0 bg-background">
-                <VisuallyHidden><SheetTitle>Navigation</SheetTitle></VisuallyHidden>
-
-                {/* ═══ HEADER ═══ */}
-                <div className="relative px-5 pt-6 pb-5">
-                    <Link href="/" title="Studio Faraj — Home" className="flex items-center gap-3 group" onClick={() => setSheetOpen(false)}>
-                        <div className="relative shrink-0">
-                            <Image src="/assets/logo.png" alt="Studio Faraj" width={40} height={40}
-                                className="relative transition-transform duration-300 group-hover:scale-110" unoptimized />
-                        </div>
-                        <div>
-                            <p className="font-brand text-lg font-bold brand-wordmark transition-colors">Studio Faraj</p>
-                            <p className="text-[9px] font-semibold tracking-[0.2em] text-primary/50 uppercase">Web Development Agency</p>
-                        </div>
-                    </Link>
-                    <div className="absolute bottom-0 inset-x-4 h-px bg-border" />
-                </div>
-
-                {/* ═══ NAV LIST ═══ */}
-                <nav className="flex-1 overflow-y-auto overflow-x-hidden px-3 py-3 space-y-1">
-                    {navItems?.map((item, index) => {
-                        const Icon = navIcons[item.href] || Home;
-                        const isActive = mounted && (
-                            item.href === '/#services'
-                                ? isServicePage
-                                : pathname === item.href || (item.href !== '/' && pathname?.startsWith(item.href))
-                        );
-
-                        /* ── Services dropdown ── */
-                        if (item.href === '/#services') {
-                            return (
-                                <div key={item.href}>
-                                    <button
-                                        onClick={() => setServicesOpen(!isServicesOpen)}
-                                        className={cn(
-                                            'flex flex-row items-center gap-3 w-full px-3 py-2.5 rounded-xl text-left transition-all duration-300',
-                                            'hover:bg-primary/8 active:scale-[0.98]',
-                                            isActive
-                                                ? 'bg-primary/10 text-primary'
-                                                : 'text-foreground'
-                                        )}
-                                    >
-                                        <span className={cn(
-                                            'flex items-center justify-center w-9 h-9 rounded-lg shrink-0 transition-all duration-200',
-                                            isActive
-                                                ? 'bg-primary/20 text-primary shadow-[0_0_12px_hsl(var(--primary)/0.25)]'
-                                                : 'bg-primary/8 text-primary/70'
-                                        )}>
-                                            <Icon className="w-[18px] h-[18px]" />
-                                        </span>
-                                        <span className="flex-1 text-[13px] font-semibold">{item.label}</span>
-                                        <ChevronDown className={cn(
-                                            'w-4 h-4 text-muted-foreground transition-transform duration-300 shrink-0',
-                                            isServicesOpen && 'rotate-180 text-primary'
-                                        )} />
-                                    </button>
-
-                                    {/* Service sub-items */}
-                                    {isServicesOpen && (
-                                        <div className="mt-1 ml-[22px] pl-3 border-l-2 border-primary/15 space-y-0.5">
-                                            {serviceItems.map((service) => {
-                                                const SIcon = service.icon;
-                                                const localizedServiceHref = getLocalizedPath(service.href, locale as any);
-                                                const isServiceActive = mounted && pathname === localizedServiceHref;
-                                                return (
-                                                    <Link
-                                                        key={service.href}
-                                                        href={localizedServiceHref}
-                                                        title={service.label}
-                                                        onClick={() => { setSheetOpen(false); setServicesOpen(false); }}
-                                                        className={cn(
-                                                            'flex flex-row items-center gap-2.5 px-3 py-2 rounded-lg transition-all duration-200',
-                                                            'hover:bg-primary/8 hover:translate-x-0.5 active:scale-[0.98]',
-                                                            isServiceActive
-                                                                ? 'bg-primary/10 text-primary'
-                                                                : 'text-muted-foreground hover:text-foreground'
-                                                        )}
-                                                    >
-                                                        <SIcon className={cn('w-4 h-4 shrink-0', isServiceActive ? 'text-primary' : service.color)} />
-                                                        <span className="text-[12px] font-medium">{service.label}</span>
-                                                    </Link>
-                                                );
-                                            })}
-                                        </div>
-                                    )}
-                                </div>
-                            );
-                        }
-
-                        /* ── Regular nav item ── */
-                        return (
-                            <Link
-                                key={item.href}
-                                href={item.href}
-                                title={item.label}
-                                onClick={() => setSheetOpen(false)}
-                                className={cn(
-                                    'flex flex-row items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200',
-                                    'hover:bg-primary/8 active:scale-[0.98]',
-                                    isActive
-                                        ? 'bg-primary/10 text-primary'
-                                        : 'text-foreground'
-                                )}
-                            >
-                                <span className={cn(
-                                    'flex items-center justify-center w-9 h-9 rounded-lg shrink-0 transition-all duration-200',
-                                    isActive
-                                        ? 'bg-primary/20 text-primary shadow-[0_0_12px_hsl(var(--primary)/0.25)]'
-                                        : 'bg-primary/8 text-primary/70'
-                                )}>
-                                    <Icon className="w-[18px] h-[18px]" />
-                                </span>
-                                <span className="text-[13px] font-semibold">{item.label}</span>
-                            </Link>
-                        );
-                    })}
-                </nav>
-
-                {/* ═══ FOOTER ═══ */}
-                <div className="px-3 pb-4 pt-2 space-y-2 border-t border-border/30">
-                    {/* Search */}
-                    <button onClick={() => { setSheetOpen(false); setTimeout(() => onSearchOpen(), 150); }}
-                        className="flex flex-row items-center gap-3 px-3 py-2.5 rounded-xl text-muted-foreground hover:text-foreground hover:bg-primary/8 transition-all duration-200 active:scale-[0.98] w-full"
-                    >
-                        <span className="flex items-center justify-center w-9 h-9 rounded-lg bg-primary/8 text-primary/70 shrink-0">
-                            <Search className="w-[18px] h-[18px]" />
-                        </span>
-                        <span className="text-[13px] font-semibold">{locale === 'it' ? 'Cerca' : 'Search'}</span>
-                    </button>
-                    {/* CTA */}
-                    <Link href={getLocalizedPath('/contatti', locale as any)} title={locale === 'it' ? 'Inizia un Progetto con Studio Faraj' : 'Start a Project with Studio Faraj'} onClick={() => setSheetOpen(false)}
-                        className="flex items-center justify-center gap-2 w-full py-3 px-4 rounded-xl bg-primary text-primary-foreground text-[13px] font-bold tracking-wide hover:brightness-110 transition-all duration-200 shadow-lg shadow-primary/20 hover:shadow-primary/40 active:scale-[0.98]"
-                    >
-                        {locale === 'it' ? 'Inizia un progetto' : 'Start a project'}
-                    </Link>
-                    {/* Client area */}
-                    <Link href={`/${locale}/hub/login`} title={locale === 'it' ? 'Area Clienti' : 'Client Area'} onClick={() => setSheetOpen(false)}
-                        className="flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl border border-primary/30 text-[13px] font-semibold text-foreground hover:bg-primary/8 transition-all duration-200 active:scale-[0.98]"
-                    >
-                        {locale === 'it' ? 'Area Clienti' : 'Client Area'}
-                    </Link>
-                </div>
-            </SheetContent>
-        </Sheet>
-    )
-}
 
 function DesktopNav({ onSearchOpen }: { onSearchOpen: () => void }) {
     const locale = useLocale();
@@ -254,7 +54,7 @@ function DesktopNav({ onSearchOpen }: { onSearchOpen: () => void }) {
 }
 
 
-export function SiteHeader() {
+export function SiteHeader({ rating = null }: { rating?: HeaderRating }) {
   const [mounted, setMounted] = useState(false);
   const [isSearchOpen, setSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -300,17 +100,15 @@ export function SiteHeader() {
               <>
                 <ThemeToggle />
                 <LanguageSwitcher />
-                <MobileNav onSearchOpen={handleSearchOpen} />
               </>
             ) : (
               <>
                 <div className="h-9 w-9 bg-muted/50 rounded animate-pulse" />
                 <div className="h-9 w-9 bg-muted/50 rounded animate-pulse" />
-                <div className="px-2">
-                  <div className="h-6 w-6 bg-muted/50 rounded animate-pulse" />
-                </div>
               </>
             )}
+            {/* Server-rendered: the menu button is there from the first paint. */}
+            <MobileMenu rating={rating} onSearchOpen={handleSearchOpen} />
           </div>
         </div>
       </header>
