@@ -38,7 +38,7 @@ const COPY = {
     ctaStart: 'Inizia il tuo progetto',
     ctaWork: 'Guarda i lavori',
     available: 'Disponibili per nuovi progetti',
-    rating: (value: string, count: number) => `${value} su Google, ${count} recensioni`,
+    rating: (value: string, perfect: boolean) => (perfect ? 'Recensioni a 5 stelle su Google' : `Valutazione ${value} su Google`),
     code: 'Estratto del codice del nostro modulo di richiesta preventivo.',
     preview: 'Anteprima',
     open: 'Prova il modulo di richiesta preventivo',
@@ -52,7 +52,7 @@ const COPY = {
     ctaStart: 'Start your project',
     ctaWork: 'See the work',
     available: 'Available for new projects',
-    rating: (value: string, count: number) => `${value} on Google, ${count} reviews`,
+    rating: (value: string, perfect: boolean) => (perfect ? '5-star reviews on Google' : `Rated ${value} on Google`),
     code: 'Code excerpt from our quote request form.',
     preview: 'Preview',
     open: 'Try the quote request form',
@@ -176,13 +176,14 @@ export async function HeroSection({ locale }: { locale: Locale }) {
   const copy = COPY[locale];
 
   const rating = await getAggregateRating(locale).catch(() => null);
+  // No review count on the page; "5 stars" only while the average rounds to 5,0.
   const ratingText = rating
     ? copy.rating(
         rating.ratingValue.toLocaleString(locale === 'it' ? 'it-IT' : 'en-GB', {
           minimumFractionDigits: 1,
           maximumFractionDigits: 1,
         }),
-        rating.reviewCount,
+        Math.round(rating.ratingValue * 10) >= 50,
       )
     : null;
 

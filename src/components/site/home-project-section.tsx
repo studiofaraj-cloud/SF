@@ -16,7 +16,7 @@ export async function HomeProjectSection({ locale }: { locale: Locale }) {
     const projects = published
       .slice(0, 6)
       .map(({ content: _content, gallery: _gallery, ...rest }) => rest);
-    return <HomeProjectContent projects={projects} total={published.length} locale={locale} />;
+    return <HomeProjectContent projects={projects} locale={locale} />;
   } catch (error) {
     // Firestore unavailable with nothing cached: leave the section out.
     console.warn('Failed to fetch projects for the homepage:', error);

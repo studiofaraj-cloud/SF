@@ -12,7 +12,7 @@ const COPY = {
   it: {
     title: 'Lavori recenti',
     lead: 'Siti e piattaforme che abbiamo progettato e scritto per aziende in Italia e all’estero. Sono tutti online: puoi visitarli.',
-    all: (n: number) => `Tutti i ${n} progetti`,
+    all: 'Tutti i progetti',
     archive: 'Archivio',
     caseStudy: 'Leggi il caso studio',
     visit: (host: string) => `Visita ${host}`,
@@ -23,7 +23,7 @@ const COPY = {
   en: {
     title: 'Recent work',
     lead: 'Websites and platforms we designed and built for companies in Italy and abroad. They are all live: you can visit them.',
-    all: (n: number) => `All ${n} projects`,
+    all: 'All projects',
     archive: 'Archive',
     caseStudy: 'Read the case study',
     visit: (host: string) => `Visit ${host}`,
@@ -51,11 +51,9 @@ function hostOf(url?: string) {
  */
 export function HomeProjectContent({
   projects,
-  total,
   locale,
 }: {
   projects: ProjectSummary[];
-  total: number;
   locale: Locale;
 }) {
   if (projects.length === 0) return null;
@@ -78,7 +76,7 @@ export function HomeProjectContent({
               href={allHref}
               className="mt-4 inline-block font-medium text-foreground underline decoration-border decoration-2 underline-offset-[6px] transition-colors hover:decoration-primary"
             >
-              {copy.all(total)}
+              {copy.all}
             </Link>
           </div>
         </header>
@@ -191,7 +189,7 @@ export function HomeProjectContent({
               <span aria-hidden className="tech-grid pointer-events-none absolute inset-0 opacity-60" />
               <span className="relative font-mono text-[11px] uppercase tracking-[0.16em] text-white/50">{copy.archive}</span>
               <span className="relative mt-16 font-display text-3xl font-bold leading-[1.05] tracking-[-0.02em] md:text-4xl">
-                {copy.all(total)}
+                {copy.all}
               </span>
               <span className="relative mt-8 grid h-14 w-14 place-items-center rounded-full bg-white text-navy transition-transform duration-300 group-hover:translate-x-1.5">
                 <ArrowRight aria-hidden className="h-6 w-6" />

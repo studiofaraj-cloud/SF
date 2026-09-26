@@ -10,14 +10,14 @@ const FEATURED_MAX_CHARS = 460;
 const COPY = {
   it: {
     title: 'Cosa dicono i clienti',
-    rating: (value: string, count: number) => `${value} su Google, da ${count} recensioni`,
+    rating: (value: string, perfect: boolean) => (perfect ? 'Recensioni a 5 stelle su Google' : `Valutazione ${value} su Google`),
     all: 'Leggi tutte le recensioni su Google',
     more: 'Altre recensioni',
     google: 'Recensione Google',
   },
   en: {
     title: 'What clients say',
-    rating: (value: string, count: number) => `${value} on Google, from ${count} reviews`,
+    rating: (value: string, perfect: boolean) => (perfect ? '5-star reviews on Google' : `Rated ${value} on Google`),
     all: 'Read all reviews on Google',
     more: 'More reviews',
     google: 'Google review',
@@ -97,7 +97,7 @@ export default function TestimonialsSection({ place, locale }: { place: PlaceSum
           {place.isLive && place.totalRatings > 0 && (
             <p className="flex items-center gap-3 text-muted-foreground md:col-span-5 md:justify-end">
               <Stars rating={place.rating} />
-              {copy.rating(ratingValue, place.totalRatings)}
+              {copy.rating(ratingValue, Math.round(place.rating * 10) >= 50)}
             </p>
           )}
         </header>
