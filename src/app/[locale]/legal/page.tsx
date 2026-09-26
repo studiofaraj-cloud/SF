@@ -3,7 +3,7 @@ import { generateMetadata as generateSEOMetadata, siteConfig } from '@/lib/seo';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Shield, Cookie, FileText, Lock, Mail, Globe, Eye, Settings, BarChart3, Target, Zap, CheckCircle2, AlertCircle, Info } from 'lucide-react';
+import { Shield, Cookie, FileText, Lock, Mail, Globe, Eye, Settings, BarChart3, Target, Zap, CheckCircle2, AlertCircle, Info, MapPin } from 'lucide-react';
 
 export const metadata: Metadata = generateSEOMetadata({
   title: 'Privacy Policy e Cookie Policy',
@@ -999,6 +999,28 @@ export default function LegalPage() {
                         </a>.
                       </p>
                     </div>
+                  </CardContent>
+                </Card>
+                <Card className="bg-muted/30 border-border/50 mt-4">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-lg flex items-center gap-2">
+                      <MapPin className="w-5 h-5 text-primary" />
+                      Google Maps
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm mb-3">
+                      La pagina Contatti mostra una mappa di Google Maps con la posizione del nostro studio. La mappa
+                      viene caricata solo se hai accettato i cookie funzionali oppure se clicchi su &quot;Mostra la
+                      mappa&quot;. Una volta caricata, Google riceve alcuni dati di navigazione (come l&apos;indirizzo IP)
+                      e può impostare propri cookie.
+                    </p>
+                    <p className="text-sm">
+                      Per maggiori informazioni consultare la{' '}
+                      <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium">
+                        Privacy Policy di Google
+                      </a>.
+                    </p>
                   </CardContent>
                 </Card>
               </div>

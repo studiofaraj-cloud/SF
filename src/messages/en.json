@@ -1744,6 +1744,19 @@
         "title": "Send Us a Message",
         "subtitle": "Fill out the form and we'll respond within 24 hours."
       }
+    },
+    "map": {
+      "badge": "Where We Are",
+      "title": "How to",
+      "titleHighlight": "Find Us",
+      "subtitle": "Our studio is in Padova. Open the map to get directions.",
+      "addressLabel": "Address",
+      "directions": "Get directions",
+      "openInMaps": "Open in Google Maps",
+      "loadMap": "Show the map",
+      "consentNote": "The map is loaded from Google Maps: Google will receive some browsing data, such as your IP address, and may set cookies.",
+      "privacyLink": "Google Privacy Policy",
+      "iframeTitle": "Studio Faraj on Google Maps"
     }
   },
   "dialogs": {

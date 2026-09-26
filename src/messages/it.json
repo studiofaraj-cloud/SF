@@ -1774,6 +1774,19 @@
         "title": "Inviaci un Messaggio",
         "subtitle": "Compila il form e ti risponderemo entro 24 ore."
       }
+    },
+    "map": {
+      "badge": "Dove Siamo",
+      "title": "Come",
+      "titleHighlight": "Raggiungerci",
+      "subtitle": "Il nostro studio è a Padova. Apri la mappa per calcolare il percorso.",
+      "addressLabel": "Indirizzo",
+      "directions": "Indicazioni stradali",
+      "openInMaps": "Apri in Google Maps",
+      "loadMap": "Mostra la mappa",
+      "consentNote": "La mappa viene caricata da Google Maps: Google riceverà alcuni dati di navigazione, come il tuo indirizzo IP, e potrà impostare dei cookie.",
+      "privacyLink": "Privacy Policy di Google",
+      "iframeTitle": "Mappa di Studio Faraj su Google Maps"
     }
   },
   "dialogs": {

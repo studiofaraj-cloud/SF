@@ -17,6 +17,7 @@ import { useTranslations, useLocale } from 'next-intl';
 import { getLocalizedPath } from '@/lib/i18n-helpers';
 import ContactSection from '@/components/site/contact-section';
 import ContattiQuickStrip from '@/components/site/contatti-quick-strip';
+import ContattiMap from '@/components/site/contatti-map';
 
 export default function ContattiPage() {
   const locale = useLocale();
@@ -193,7 +194,12 @@ export default function ContattiPage() {
       </div>
 
       {/* ============================================
-          4. FAQ SECTION - Knowledge Base
+          4. MAP - Where we are
+          ============================================ */}
+      <ContattiMap />
+
+      {/* ============================================
+          5. FAQ SECTION - Knowledge Base
           ============================================ */}
       <section className="relative py-16 sm:py-20 md:py-24 lg:py-32 overflow-hidden">
         {/* Background */}
@@ -292,7 +298,7 @@ export default function ContattiPage() {
         </section>
 
       {/* ============================================
-          5. CTA SECTION - Final Connection
+          6. CTA SECTION - Final Connection
           Mobile: collapsed into a quiet handoff card to avoid duplicating
           the form/footer. Desktop: full card with availability + buttons.
           ============================================ */}
