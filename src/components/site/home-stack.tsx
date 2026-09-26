@@ -1,4 +1,5 @@
 import type { Locale } from '@/i18n/config';
+import { SectionEdge } from './section-edge';
 
 type Layer = { name: string; tools: string[]; why: string };
 
@@ -44,7 +45,9 @@ export function HomeStack({ locale }: { locale: Locale }) {
   const copy = COPY[locale];
 
   return (
-    <section className="bg-navy py-20 text-white md:py-28 lg:py-32">
+    <section className="relative bg-navy py-20 text-white md:py-28 lg:py-32">
+      <SectionEdge shape="steps" edge="top" />
+      <SectionEdge shape="wave" edge="bottom" />
       <div className="container mx-auto px-5 md:px-8">
         <header className="grid gap-6 md:grid-cols-12 md:items-end">
           <h2 className="font-display text-[2.4rem] font-bold leading-[1.02] tracking-[-0.03em] md:col-span-6 md:text-[3.4rem]">

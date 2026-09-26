@@ -8,6 +8,7 @@ import { getLocalizedPath } from '@/lib/i18n-helpers';
 import type { Locale } from '@/i18n/config';
 import { HeroPointer } from './hero-pointer';
 import { HeroQuotePreview } from './hero-quote-preview';
+import { SectionEdge } from './section-edge';
 
 /**
  * HOMEPAGE HERO — "codice → prodotto". Server component.
@@ -244,6 +245,7 @@ export async function HeroSection({ locale }: { locale: Locale }) {
           <CodeWindow locale={locale} copy={copy} />
         </div>
       </div>
+      <SectionEdge shape="arc" edge="bottom" />
     </section>
   );
 }

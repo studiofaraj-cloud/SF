@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { getLocalizedPath } from '@/lib/i18n-helpers';
+import { SectionTail } from './section-edge';
 
 const MAPS_URL =
   'https://www.google.com/maps/search/?api=1&query=Studio%20Faraj%2C%20Via%20Ludovico%20Ariosto%2042%2C%2035128%20Padova&query_place_id=ChIJV_YxeITzBAERefznEKaDrkc';
@@ -39,9 +40,10 @@ export default function HomeCtaSection({ locale }: { locale: 'it' | 'en' }) {
   ];
 
   return (
-    <section className="relative overflow-hidden bg-navy text-white">
+    <section className="relative bg-navy text-white">
       <div aria-hidden className="tech-grid pointer-events-none absolute inset-0 opacity-70" />
       <div className="container relative mx-auto grid gap-14 px-5 py-20 md:px-8 md:py-28 lg:grid-cols-12 lg:gap-10 lg:py-32">
+        <SectionTail className="left-5 md:left-8" />
         <div className="lg:col-span-7">
           <h2 className="text-balance font-display text-[2.6rem] font-extrabold leading-[0.98] tracking-[-0.035em] md:text-6xl lg:text-[4.2rem]">
             {copy.title[0]} <span className="block">{copy.title[1]}</span>
