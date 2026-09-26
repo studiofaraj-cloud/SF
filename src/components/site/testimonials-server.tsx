@@ -11,5 +11,5 @@ export async function TestimonialsServer() {
   // No real reviews available (Firestore and Places both failed): leave the
   // section out rather than render an empty carousel.
   if (place.reviews.length === 0) return null;
-  return <TestimonialsSection place={place} />;
+  return <TestimonialsSection place={place} locale={locale === 'en' ? 'en' : 'it'} />;
 }

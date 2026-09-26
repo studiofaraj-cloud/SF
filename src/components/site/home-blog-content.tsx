@@ -1,204 +1,78 @@
-'use client';
-
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
-import { FirebaseImage } from '@/components/ui/firebase-image';
-import { ArrowRight, Sparkles, Calendar, Tag, Clock, BookOpen } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import type { Blog } from '@/lib/definitions';
-import { useTranslations, useLocale } from 'next-intl';
 import { getLocalizedPath } from '@/lib/i18n-helpers';
-import ScrollFadeIn from '@/components/site/scroll-fade-in';
-import { SectionHeader } from '@/components/site/section-header';
+import type { Locale } from '@/i18n/config';
 
-interface HomeBlogContentProps {
-  blogs: Blog[];
-}
+export type HomeBlogPost = {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string;
+  createdAt: string;
+  minutes: number;
+};
 
-export function HomeBlogContent({ blogs }: HomeBlogContentProps) {
-  const locale = useLocale();
-  const t = useTranslations('home.blog');
-  if (blogs.length === 0) {
-    return null;
-  }
+const COPY = {
+  it: {
+    title: 'Dal blog',
+    lead: 'Guide pratiche su siti web, SEO e prestazioni, scritte da chi le mette in pratica ogni giorno.',
+    all: 'Tutti gli articoli',
+    minutes: (n: number) => `${n} min di lettura`,
+  },
+  en: {
+    title: 'From the blog',
+    lead: 'Practical guides on websites, SEO and performance, written by people who apply them every day.',
+    all: 'All articles',
+    minutes: (n: number) => `${n} min read`,
+  },
+} as const;
+
+/** Latest articles as a text index (date, title, excerpt) — server component. */
+export function HomeBlogContent({ posts, locale }: { posts: HomeBlogPost[]; locale: Locale }) {
+  if (posts.length === 0) return null;
+  const copy = COPY[locale];
+  const dateFormat = new Intl.DateTimeFormat(locale === 'it' ? 'it-IT' : 'en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
 
   return (
-    <section className="relative w-full py-16 md:py-24 overflow-hidden suspense-reveal">
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-secondary/30 via-background to-background" />
-
-      <div className="container relative z-10 px-4 md:px-8">
-        {/* Header */}
-        <SectionHeader
-          eyebrow={t('title')}
-          eyebrowIcon={<BookOpen className="w-3.5 h-3.5" />}
-          title={t('title')}
-          subtitle={t('subtitle')}
-          className="mb-10 md:mb-14"
-        />
-
-        {/* Featured Blog Post + Grid Layout */}
-        {blogs.length > 0 && blogs[0] && (
-          <div className="space-y-6 md:space-y-8">
-            {/* Featured Blog Post - First item */}
-            <ScrollFadeIn animation="fade-up" delay={100}>
-              <Link href={`/${locale}/blog/${blogs[0]?.slug || ''}`} title={blogs[0]?.title} className="block group" aria-label={blogs[0]?.title}>
-                <Card className="relative overflow-hidden holographic-card neon-border transition-all duration-700 hover:shadow-2xl hover:shadow-primary/20">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
-                    {/* Image Side */}
-                    <div className="relative aspect-video md:aspect-auto md:h-[450px] overflow-hidden">
-                      {blogs[0]?.featuredImage && (
-                        <FirebaseImage
-                          alt={blogs[0]?.title || 'Blog post'}
-                          className="object-cover transition-all duration-700 group-hover:scale-105"
-                          src={blogs[0].featuredImage}
-                          fill
-                          data-ai-hint="technology abstract"
-                        />
-                      )}
-                      {/* Gradient overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-background/80 lg:block hidden" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent lg:hidden" />
-                      
-                      {/* Featured Badge */}
-                      <div className="absolute top-4 left-4 md:top-6 md:left-6">
-                        <Badge className="badge-futuristic shadow-lg px-3 md:px-4 py-1 md:py-1.5 text-xs md:text-sm">
-                          <Sparkles className="w-3 h-3 mr-1 md:mr-2" />
-                          Articolo in Evidenza
-                        </Badge>
-                      </div>
-                    </div>
-                    
-                    {/* Content Side */}
-                    <div className="relative p-5 md:p-8 lg:p-12 flex flex-col justify-center">
-                      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                      
-                      <div className="relative z-10">
-                        <div className="flex flex-wrap items-center gap-2 md:gap-4 mb-3 md:mb-4">
-                          <Badge variant="outline" className="border-primary/30 text-primary text-xs md:text-sm">
-                            <Tag className="w-3 h-3 mr-1 md:mr-2" />
-                            Digital
-                          </Badge>
-                          <span className="flex items-center text-xs md:text-sm text-muted-foreground">
-                            <Calendar className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
-                            {blogs[0]?.createdAt && new Date(blogs[0].createdAt).toLocaleDateString('it-IT', {
-                              year: 'numeric',
-                              month: 'long',
-                              day: 'numeric',
-                            })}
-                          </span>
-                        </div>
-                        
-                        <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3 md:mb-4 text-foreground group-hover:text-primary transition-colors duration-300">
-                          {blogs[0]?.title || ''}
-                        </h3>
-                        
-                        <p className="text-base md:text-lg text-muted-foreground mb-4 md:mb-6 leading-relaxed line-clamp-3">
-                          {blogs[0]?.excerpt || ''}
-                        </p>
-                        
-                        <div className="flex flex-wrap items-center gap-4 md:gap-6">
-                          <span className="inline-flex items-center text-primary font-semibold group-hover:underline text-sm md:text-base">
-                            Leggi l&apos;Articolo
-                            <ArrowRight className="w-4 h-4 md:w-5 md:h-5 ml-2 transition-transform group-hover:translate-x-2" />
-                          </span>
-                          <span className="flex items-center text-xs md:text-sm text-muted-foreground">
-                            <Clock className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
-                            5 min lettura
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </Card>
-              </Link>
-            </ScrollFadeIn>
-
-            {/* Remaining Blog Posts Grid */}
-            {blogs.length > 1 && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 auto-rows-fr">
-                {blogs.slice(1).map((blog, index) => (
-                  <ScrollFadeIn key={blog.id || blog.slug || index} animation="fade-up" delay={(index + 1) * 100} className="h-full">
-                    <Link href={`/${locale}/blog/${blog.slug}`} title={blog.title} className="block group h-full" aria-label={blog.title}>
-                      <Card className="relative overflow-hidden h-full flex flex-col holographic-card neon-border transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 md:hover:-translate-y-2">
-                        {/* Image */}
-                        <div className="relative aspect-video overflow-hidden shrink-0">
-                          {blog.featuredImage && (
-                            <FirebaseImage
-                              alt={blog.title || 'Blog post'}
-                              className="object-cover transition-all duration-700 group-hover:scale-110"
-                              src={blog.featuredImage}
-                              fill
-                              data-ai-hint="technology abstract"
-                            />
-                          )}
-                          {/* Overlay */}
-                          <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
-                          
-                          {/* Category Badge */}
-                          <div className="absolute top-3 left-3 md:top-4 md:left-4">
-                            <Badge variant="secondary" className="bg-white/90 dark:bg-black/70 backdrop-blur-sm shadow-lg text-xs md:text-sm">
-                              <Tag className="w-3 h-3 mr-1 md:mr-2" />
-                              Digital
-                            </Badge>
-                          </div>
-                        </div>
-                        
-                        {/* Content */}
-                        <CardContent className="relative z-10 p-4 md:p-6 flex flex-col flex-1">
-                          {/* Date and Reading Time */}
-                          <div className="flex items-center gap-3 md:gap-4 mb-2 md:mb-3 text-xs md:text-sm text-muted-foreground">
-                            <span className="flex items-center">
-                              <Calendar className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
-                              {new Date(blog.createdAt).toLocaleDateString('it-IT', {
-                                year: 'numeric',
-                                month: 'short',
-                                day: 'numeric',
-                              })}
-                            </span>
-                            <span className="flex items-center">
-                              <Clock className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
-                              4 min
-                            </span>
-                          </div>
-                          
-                          {/* Title */}
-                          <p className="text-lg md:text-xl font-bold mb-2 md:mb-3 text-foreground group-hover:text-primary transition-colors line-clamp-2">
-                            {blog.title}
-                          </p>
-                          
-                          {/* Excerpt */}
-                          <p className="text-sm text-muted-foreground line-clamp-2 mb-3 md:mb-4">
-                            {blog.excerpt}
-                          </p>
-                          
-                          {/* CTA */}
-                          <span className="inline-flex items-center text-sm font-medium text-primary group-hover:underline mt-auto">
-                            Leggi l&apos;articolo
-                            <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-2" />
-                          </span>
-                        </CardContent>
-                      </Card>
-                    </Link>
-                  </ScrollFadeIn>
-                ))}
-              </div>
-            )}
+    <section className="bg-background py-20 md:py-28 lg:py-32">
+      <div className="container mx-auto px-5 md:px-8">
+        <header className="grid gap-6 md:grid-cols-12 md:items-end">
+          <h2 className="font-display text-[2.4rem] font-bold leading-[1.02] tracking-[-0.03em] text-foreground md:col-span-6 md:text-[3.4rem]">
+            {copy.title}
+          </h2>
+          <div className="md:col-span-5 md:col-start-8">
+            <p className="text-lg leading-relaxed text-muted-foreground">{copy.lead}</p>
+            <Link
+              href={getLocalizedPath('/blog', locale)}
+              className="mt-4 inline-block font-medium text-foreground underline decoration-border decoration-2 underline-offset-[6px] transition-colors hover:decoration-primary"
+            >
+              {copy.all}
+            </Link>
           </div>
-        )}
+        </header>
 
-        {/* CTA Button */}
-        <ScrollFadeIn animation="fade-up" delay={400}>
-          <div className="text-center mt-10 md:mt-16">
-            <Button asChild size="lg" variant="outline" className="group border-2 border-primary/50 hover:bg-primary hover:text-primary-foreground hover:border-primary w-full sm:w-auto neon-border">
-              <Link href={getLocalizedPath('/blog', locale as any)} title={t('readMore')} className="flex items-center justify-center gap-2">
-                {t('readMore')}
-                <BookOpen className="w-4 h-4 transition-transform group-hover:scale-110" />
-              </Link>
-            </Button>
-          </div>
-        </ScrollFadeIn>
+        <ul className="mt-12 divide-y divide-border border-y border-border md:mt-16">
+          {posts.map((post) => (
+            <li key={post.id || post.slug} className="group relative grid gap-3 py-8 md:grid-cols-12 md:gap-8 md:py-10">
+              <p className="text-sm text-muted-foreground md:col-span-3">
+                {post.createdAt && <time dateTime={post.createdAt}>{dateFormat.format(new Date(post.createdAt))}</time>}
+                <span className="block">{copy.minutes(post.minutes)}</span>
+              </p>
+              <h3 className="font-display text-xl font-bold leading-snug tracking-[-0.015em] text-foreground transition-colors group-hover:text-primary md:col-span-5 md:text-2xl">
+                <Link
+                  href={getLocalizedPath(`/blog/${post.slug}`, locale)}
+                  className="after:absolute after:inset-0 after:content-[''] focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-ring"
+                >
+                  {post.title}
+                </Link>
+              </h3>
+              <p className="line-clamp-3 leading-relaxed text-muted-foreground md:col-span-4">{post.excerpt}</p>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );

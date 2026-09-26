@@ -1,4 +1,3 @@
-import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
 import {
@@ -17,7 +16,6 @@ import { HomeStack } from '@/components/site/home-stack';
 import { HomeStudio } from '@/components/site/home-studio';
 import { TestimonialsServer } from '@/components/site/testimonials-server';
 import { HomeBlogSection } from '@/components/site/home-blog-section';
-import { HomeBlogSkeleton } from '@/components/site/home-blog-skeleton';
 import HomeCtaSection from '@/components/site/home-cta-section';
 
 // Use ISR instead of static prerendering to avoid Turbopack worker timeouts on this large page
@@ -77,9 +75,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
 
         <TestimonialsServer />
 
-        <Suspense fallback={<HomeBlogSkeleton />}>
-          <HomeBlogSection />
-        </Suspense>
+        <HomeBlogSection locale={currentLocale} />
 
         <HomeCtaSection locale={currentLocale} />
         <StructuredDataServer data={localBusinessData} />

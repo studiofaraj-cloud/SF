@@ -144,12 +144,10 @@ async function fetchGoogleReviewsUncached(locale = 'it'): Promise<PlaceSummary> 
   if (firestoreReviews.length > 0) {
     // Compute aggregate rating from stored reviews
     const avg = firestoreReviews.reduce((s, r) => s + r.rating, 0) / firestoreReviews.length;
-    // Cap at 12 reviews and truncate long texts — each review adds ~1 KB to RSC
-    // flight data (serialized for client hydration) and to the HTML (marquee duplicate).
-    const cappedReviews = firestoreReviews.slice(0, 12).map((r) => ({
-      ...r,
-      text: r.text.length > 320 ? r.text.slice(0, 317) + '…' : r.text,
-    }));
+    // Cap at 12 reviews. Texts stay whole: the reviews section is a server
+    // component (only name + photo reach the client) and clamps long cards
+    // with CSS, so truncating here would only cut the featured quote short.
+    const cappedReviews = firestoreReviews.slice(0, 12);
     return {
       name: 'Studio Faraj',
       rating: Math.round(avg * 10) / 10,

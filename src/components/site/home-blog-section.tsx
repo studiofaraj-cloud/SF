@@ -1,22 +1,31 @@
 import { getBlogsAction } from '@/lib/actions';
-import { HomeBlogContent } from './home-blog-content';
+import { estimateReadingTime } from '@/lib/tiptap-utils';
+import type { Locale } from '@/i18n/config';
+import type { Blog } from '@/lib/definitions';
+import { HomeBlogContent, type HomeBlogPost } from './home-blog-content';
 
-export async function HomeBlogSection() {
+export async function HomeBlogSection({ locale }: { locale: Locale }) {
   try {
-    const blogs = await getBlogsAction();
-    // Strip the full TipTap `content` field — the homepage only needs
-    // title, slug, excerpt, featuredImage, createdAt. Including the full
-    // content body embeds ~20 KB of JSON per post in the RSC flight data.
-    const latestBlogs = (blogs || [])
-      .filter(b => b.published)
+    const blogs = (await getBlogsAction()) as Blog[];
+    // Reading time is computed here, then the full TipTap content is dropped:
+    // the list only needs the summary fields.
+    const posts: HomeBlogPost[] = (blogs || [])
+      .filter((b) => b.published)
       .slice(0, 3)
-      .map(({ content: _content, gallery: _gallery, ...rest }) => rest);
+      .map((b) => {
+        let minutes = 1;
+        try {
+          minutes = estimateReadingTime(b.content);
+        } catch {
+          // keep the 1-minute fallback
+        }
+        return { id: b.id, slug: b.slug, title: b.title, excerpt: b.excerpt, createdAt: b.createdAt, minutes };
+      });
 
-    return <HomeBlogContent blogs={latestBlogs as any} />;
+    return <HomeBlogContent posts={posts} locale={locale} />;
   } catch (error) {
-    // Gracefully handle Firestore connection errors
-    // Return empty array if Firestore is unavailable (offline mode)
-    console.warn('Failed to fetch blogs, using empty array:', error);
-    return <HomeBlogContent blogs={[]} />;
+    // Firestore unavailable with nothing cached: leave the section out.
+    console.warn('Failed to fetch blogs for the homepage:', error);
+    return null;
   }
 }
