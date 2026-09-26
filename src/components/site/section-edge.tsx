@@ -47,24 +47,3 @@ export function SectionEdge({ shape, edge }: { shape: keyof typeof SHAPES; edge:
     </svg>
   );
 }
-
-/**
- * Speech-bubble tail rising from a navy band's top edge: the closing call to
- * action ("Parliamone") reads as a bubble. Place it in the band's positioned
- * container, aligned with the content; the band must not clip overflow.
- */
-export function SectionTail({ className }: { className?: string }) {
-  return (
-    <svg
-      aria-hidden
-      viewBox="0 0 56 46"
-      preserveAspectRatio="none"
-      className={cn(
-        'pointer-events-none absolute bottom-[calc(100%_-_1px)] h-[clamp(28px,3.2vw,46px)] w-[clamp(34px,3.9vw,56px)] text-navy',
-        className,
-      )}
-    >
-      <path fill="currentColor" d="M14 46C12 30 7 13 0 0C15 17 33 37 56 46Z" />
-    </svg>
-  );
-}
