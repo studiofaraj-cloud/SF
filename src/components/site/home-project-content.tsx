@@ -40,9 +40,8 @@ function hostOf(url?: string) {
 /**
  * "Recent work" — server component. Each project is presented as its real,
  * live website (a minimal browser frame showing the domain) next to what was
- * built and, where the project has them, measured results. The hero already
- * features the showcase project, so these are the next ones (see
- * selectHomeProjects).
+ * built and, where the project has them, measured results: the three newest
+ * projects.
  */
 export function HomeProjectContent({
   projects,

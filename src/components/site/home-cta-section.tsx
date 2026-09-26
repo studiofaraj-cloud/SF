@@ -40,7 +40,7 @@ export default function HomeCtaSection({ locale }: { locale: 'it' | 'en' }) {
 
   return (
     <section className="relative overflow-hidden bg-navy text-white">
-      <div aria-hidden className="hero-grid pointer-events-none absolute inset-0 opacity-70" />
+      <div aria-hidden className="tech-grid pointer-events-none absolute inset-0 opacity-70" />
       <div className="container relative mx-auto grid gap-14 px-5 py-20 md:px-8 md:py-28 lg:grid-cols-12 lg:gap-10 lg:py-32">
         <div className="lg:col-span-7">
           <h2 className="text-balance font-display text-[2.6rem] font-extrabold leading-[0.98] tracking-[-0.035em] md:text-6xl lg:text-[4.2rem]">

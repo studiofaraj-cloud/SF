@@ -1,26 +1,27 @@
 import Link from 'next/link';
 import { Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { FirebaseImage } from '@/components/ui/firebase-image';
-import { getProjectsAction } from '@/lib/actions';
 import { getAggregateRating } from '@/lib/google-reviews';
 import { getLocalizedPath } from '@/lib/i18n-helpers';
-import { selectHomeProjects } from '@/lib/showcase';
 import type { Locale } from '@/i18n/config';
-import type { Project } from '@/lib/definitions';
 
 /**
- * HOMEPAGE HERO — server component, no client JavaScript.
+ * HOMEPAGE HERO — "editor tipografico". Server component, no client JavaScript.
+ *
+ * Set like a file open in a code editor: numbered lines in a gutter, the
+ * headline as the code, and a cursor after it that blinks three times (the
+ * studio writes its sites "riga per riga"). Rows are logical lines numbered
+ * with editor soft-wrap: a paragraph that wraps keeps a single number. Blank
+ * numbered lines are the vertical rhythm, not margins.
+ *
+ * Numbers stay on their lines without JS: each gutter cell uses the same
+ * font-size/line-height as the content it labels and holds a box exactly one
+ * line tall (h-[<leading>em]), with the small number centred inside it.
  *
  * The <h1> is static, keyword-bearing ("agenzia web a Padova", the term the
- * homepage owns in src/lib/seo-keywords.ts) and the page's only h1.
- *
- * The right-hand side shows what the studio actually does: a real delivered
- * project "builds" in front of the visitor. The build log is generated from
- * that project's Firestore data (client, stack, measured results, live
- * domain), so it changes when the portfolio does and never invents a number.
- * The sequence is CSS-only and plays once (see .build-line / .build-render in
- * globals.css); without motion the visitor simply sees the finished frame.
+ * homepage owns in src/lib/seo-keywords.ts) and the page's only h1. Nothing
+ * textual is animated, so the first paint is final (LCP); the caret is
+ * aria-hidden and has no text, and blinks only when motion is allowed.
  */
 
 const COPY = {
@@ -32,10 +33,6 @@ const COPY = {
     ctaWork: 'Guarda i lavori',
     available: 'Disponibili per nuovi progetti',
     rating: (value: string, count: number) => `${value} su Google, ${count} recensioni`,
-    client: 'Cliente',
-    stack: 'Stack',
-    live: 'Online',
-    caseStudy: 'Leggi il caso studio',
   },
   en: {
     h1a: 'Web agency',
@@ -45,43 +42,35 @@ const COPY = {
     ctaWork: 'See the work',
     available: 'Available for new projects',
     rating: (value: string, count: number) => `${value} on Google, ${count} reviews`,
-    client: 'Client',
-    stack: 'Stack',
-    live: 'Live',
-    caseStudy: 'Read the case study',
   },
 } as const;
 
-/** "A-Infissi" → "a-infissi": a folder-style handle for the build log. */
-function handle(name: string) {
-  return name
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '');
-}
+// Type settings shared by each line and its gutter cell (see the note above).
+const H1_TYPE = 'text-[clamp(3rem,9vw,8.5rem)] leading-[0.93]';
+const LEAD_TYPE = 'text-lg leading-relaxed sm:text-xl';
+const BLANK_LINE = 'h-6 md:h-9';
+const CONTENT = 'min-w-0 pl-4 md:pl-8';
 
-function hostOf(url?: string) {
-  if (!url) return null;
-  try {
-    return new URL(url).hostname.replace(/^www\./, '');
-  } catch {
-    return null;
-  }
+/**
+ * One editor line number. `box` sets the height of the line it labels, in the
+ * gutter cell's own font-size, so the number sits on that line.
+ */
+function LineNumber({ n, box, active = false }: { n: number; box: string; active?: boolean }) {
+  return (
+    <span aria-hidden className={`flex items-center justify-end pr-3 md:pr-4 ${box}`}>
+      <span
+        className={`font-mono text-[11px] tabular-nums md:text-[13px] ${
+          active ? 'text-foreground' : 'text-muted-foreground/60'
+        }`}
+      >
+        {n}
+      </span>
+    </span>
+  );
 }
 
 export async function HeroSection({ locale }: { locale: Locale }) {
   const copy = COPY[locale];
-
-  // Shares the cached getProjectsAction/getAggregateRating results with the
-  // sections further down the page rather than issuing fresh reads.
-  let showcase: Project | null = null;
-  try {
-    showcase = selectHomeProjects(await getProjectsAction()).showcase;
-  } catch {
-    showcase = null;
-  }
 
   const rating = await getAggregateRating(locale).catch(() => null);
   const ratingText = rating
@@ -94,54 +83,72 @@ export async function HeroSection({ locale }: { locale: Locale }) {
       )
     : null;
 
-  const host = hostOf(showcase?.projectUrl);
-  const log = showcase
-    ? [
-        showcase.clientName && { k: copy.client, v: showcase.clientName },
-        showcase.technologies?.length && {
-          k: copy.stack,
-          v: showcase.technologies.slice(0, 3).join(', '),
-        },
-        ...(showcase.metrics ?? []).slice(0, 2).map((m) => ({ k: m.label, v: m.value })),
-        host && { k: copy.live, v: host },
-      ].filter((l): l is { k: string; v: string } => Boolean(l))
-    : [];
-  // The render pass starts once the last log line has printed.
-  const renderDelay = `${250 + (log.length + 1) * 120 + 200}ms`;
-
   return (
-    <section className="relative overflow-hidden bg-navy text-white">
-      <div aria-hidden className="hero-grid pointer-events-none absolute inset-0" />
+    <section className="relative border-b border-border bg-background">
+      <div className="container relative mx-auto px-5 md:px-8">
+        {/* Gutter rule, full height of the hero (padding + gutter width). */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-y-0 left-[3.25rem] w-px bg-border md:left-[5rem] lg:left-[6rem]"
+        />
 
-      <div className="container relative mx-auto grid gap-14 px-5 pb-20 pt-32 md:px-8 lg:min-h-[92svh] lg:grid-cols-12 lg:items-center lg:gap-10 lg:pb-24 lg:pt-36">
-        {/* ── Statement ─────────────────────────────────────────────────── */}
-        <div className="min-w-0 lg:col-span-6">
-          <h1 className="font-display text-[3.35rem] font-extrabold leading-[0.93] tracking-[-0.035em] sm:text-7xl lg:text-[4.6rem] xl:text-[5.6rem]">
-            {copy.h1a} <span className="block">{copy.h1b}</span>
+        <div className="grid grid-cols-[2rem_minmax(0,1fr)] grid-rows-[repeat(9,auto)_1fr] pb-16 pt-28 md:grid-cols-[3rem_minmax(0,1fr)] md:pb-24 md:pt-36 lg:min-h-[86svh] lg:grid-cols-[4rem_minmax(0,1fr)]">
+          {/* 1 */}
+          <LineNumber n={1} box={BLANK_LINE} />
+          <div className={BLANK_LINE} />
+
+          {/* 2–3 — the headline; the cursor rests on line 3 */}
+          <div className={H1_TYPE}>
+            <LineNumber n={2} box="h-[0.93em]" />
+            <LineNumber n={3} box="h-[0.93em]" active />
+          </div>
+          <h1 className={`${H1_TYPE} ${CONTENT} font-display font-extrabold tracking-[-0.04em] text-foreground`}>
+            {copy.h1a}{' '}
+            <span className="block">
+              {copy.h1b}
+              <span
+                aria-hidden
+                className="hero-caret ml-[0.05em] inline-block h-[0.74em] w-[0.075em] bg-primary"
+              />
+            </span>
           </h1>
 
-          <p className="mt-8 max-w-[33rem] text-lg leading-relaxed text-white/70 sm:text-xl sm:leading-relaxed">
-            {copy.lead}
-          </p>
+          {/* 4 */}
+          <LineNumber n={4} box={BLANK_LINE} />
+          <div className={BLANK_LINE} />
 
-          <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+          {/* 5 — lead (soft-wrapped: one number) */}
+          <div className={LEAD_TYPE}>
+            <LineNumber n={5} box="h-[1.625em]" />
+          </div>
+          <p className={`${LEAD_TYPE} ${CONTENT} max-w-[40rem] text-muted-foreground`}>{copy.lead}</p>
+
+          {/* 6 */}
+          <LineNumber n={6} box={BLANK_LINE} />
+          <div className={BLANK_LINE} />
+
+          {/* 7 — calls to action */}
+          <LineNumber n={7} box="h-[52px]" />
+          <div className={`${CONTENT} flex flex-col gap-3 sm:flex-row`}>
             <Button asChild size="lg" className="min-h-[52px] px-7 text-base font-semibold">
               <Link href={getLocalizedPath('/inizia', locale)}>{copy.ctaStart}</Link>
             </Button>
-            <Button
-              asChild
-              size="lg"
-              variant="outline"
-              className="min-h-[52px] border-white/25 bg-transparent px-7 text-base font-semibold text-white hover:border-white hover:bg-white hover:text-navy"
-            >
+            <Button asChild size="lg" variant="outline" className="min-h-[52px] px-7 text-base font-semibold">
               <Link href="#lavori">{copy.ctaWork}</Link>
             </Button>
           </div>
 
-          {/* Trust line — the rating is real or absent, never invented. */}
-          <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-3 text-sm text-white/60">
+          {/* 8 */}
+          <LineNumber n={8} box={BLANK_LINE} />
+          <div className={BLANK_LINE} />
+
+          {/* 9 — trust line: the rating is real or absent, never invented */}
+          <div className="text-sm">
+            <LineNumber n={9} box="h-5" />
+          </div>
+          <div className={`${CONTENT} flex flex-wrap items-center gap-x-8 gap-y-2 text-sm text-muted-foreground`}>
             <span className="inline-flex items-center gap-2">
-              <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+              <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
               {copy.available}
             </span>
             {rating && ratingText && (
@@ -153,7 +160,7 @@ export async function HeroSection({ locale }: { locale: Locale }) {
                       className={
                         i < Math.round(rating.ratingValue)
                           ? 'h-3.5 w-3.5 fill-amber-400 text-amber-400'
-                          : 'h-3.5 w-3.5 text-white/25'
+                          : 'h-3.5 w-3.5 text-muted-foreground/30'
                       }
                     />
                   ))}
@@ -163,75 +170,6 @@ export async function HeroSection({ locale }: { locale: Locale }) {
             )}
           </div>
         </div>
-
-        {/* ── The work, building ────────────────────────────────────────── */}
-        {showcase && (
-          <figure className="relative min-w-0 lg:col-span-6 lg:pl-4">
-            {/* Build log */}
-            <div className="w-[94%] max-w-[32rem] rounded-xl border border-white/10 bg-[#0e1f3b] font-mono text-[12.5px] leading-relaxed shadow-2xl sm:w-[84%] sm:text-[13px]">
-              <div className="border-b border-white/10 px-4 py-2.5 text-white/55">
-                progetti/{handle(showcase.clientName || showcase.slug)}
-              </div>
-              <div className="px-4 pb-10 pt-4 sm:pb-12">
-                <p className="build-line text-white/60" style={{ '--i': 0 } as React.CSSProperties}>
-                  $ npm run build
-                </p>
-                {/* Rows share the label column through subgrid, so labels size
-                    to the longest one and only values truncate. Each row stays
-                    its own box so it can animate on its own. */}
-                <dl className="mt-3 grid grid-cols-[max-content_minmax(0,1fr)] gap-x-5 gap-y-1.5">
-                  {log.map((line, i) => (
-                    <div
-                      key={line.k}
-                      className="build-line col-span-full grid grid-cols-subgrid"
-                      style={{ '--i': i + 1 } as React.CSSProperties}
-                    >
-                      <dt className="text-white/60">
-                        <span aria-hidden className="mr-1.5 text-sky-400">
-                          ✓
-                        </span>
-                        {line.k}
-                      </dt>
-                      <dd className="min-w-0 truncate text-white">{line.v}</dd>
-                    </div>
-                  ))}
-                </dl>
-              </div>
-            </div>
-
-            {/* The finished site */}
-            <div
-              className="build-render relative -mt-7 ml-auto w-[94%] overflow-hidden rounded-xl border border-white/15 bg-white shadow-[0_40px_90px_-25px_rgba(0,0,0,0.7)] sm:-mt-9 sm:w-[86%]"
-              style={{ '--render-delay': renderDelay } as React.CSSProperties}
-            >
-              <div className="flex items-center border-b border-black/5 bg-[#eef1f6] px-3 py-2">
-                <span className="truncate rounded-md bg-white px-3 py-1 font-mono text-[11.5px] text-slate-500">
-                  {host ?? showcase.clientName}
-                </span>
-              </div>
-              <div className="relative aspect-[16/10] bg-slate-100">
-                <FirebaseImage
-                  src={showcase.featuredImage}
-                  alt={showcase.title}
-                  fill
-                  priority
-                  sizes="(min-width: 1280px) 560px, (min-width: 1024px) 45vw, 94vw"
-                  className="object-cover object-top"
-                />
-              </div>
-            </div>
-
-            <figcaption className="ml-auto mt-5 flex w-[94%] flex-wrap items-baseline justify-between gap-x-6 gap-y-1 text-sm sm:w-[86%]">
-              <span className="text-white/55">{showcase.title}</span>
-              <Link
-                href={getLocalizedPath(`/projects/${showcase.slug}`, locale)}
-                className="font-medium text-white underline decoration-white/30 underline-offset-4 transition-colors hover:decoration-white"
-              >
-                {copy.caseStudy}
-              </Link>
-            </figcaption>
-          </figure>
-        )}
       </div>
     </section>
   );
