@@ -6,6 +6,7 @@ import {
   doc,
   getDoc,
   getDocs,
+  getDocsFromServer,
   addDoc,
   updateDoc,
   deleteDoc,
@@ -737,23 +738,39 @@ export interface ReviewDocument {
   createdAt: Timestamp;
 }
 
+async function queryReviews(onlyVisible: boolean): Promise<ReviewDocument[]> {
+  const ref = collection(db, COLLECTIONS.REVIEWS);
+  // Use only a single-field filter to avoid needing a composite Firestore index.
+  // Sorting is done in memory so no (visible + publishTime) composite index is required.
+  // getDocsFromServer, not getDocs: once the client SDK decides it is offline
+  // (one failed stream, or no answer within 10s), getDocs() resolves with an
+  // empty snapshot from the local cache, which looks exactly like "no reviews".
+  const snap = await getDocsFromServer(
+    onlyVisible ? query(ref, where('visible', '==', true)) : query(ref)
+  );
+  const docs = snap.docs.map((d) => ({ id: d.id, ...d.data() } as ReviewDocument));
+  // Sort newest-first in memory
+  return docs.sort((a, b) =>
+    new Date(b.publishTime || 0).getTime() - new Date(a.publishTime || 0).getTime()
+  );
+}
+
 export async function getReviews(onlyVisible = false): Promise<ReviewDocument[]> {
   try {
-    const ref = collection(db, COLLECTIONS.REVIEWS);
-    // Use only a single-field filter to avoid needing a composite Firestore index.
-    // Sorting is done in memory so no (visible + publishTime) composite index is required.
-    const snap = await getDocs(
-      onlyVisible ? query(ref, where('visible', '==', true)) : query(ref)
-    );
-    const docs = snap.docs.map((d) => ({ id: d.id, ...d.data() } as ReviewDocument));
-    // Sort newest-first in memory
-    return docs.sort((a, b) =>
-      new Date(b.publishTime || 0).getTime() - new Date(a.publishTime || 0).getTime()
-    );
+    return await queryReviews(onlyVisible);
   } catch (err) {
     console.error('Error fetching reviews from Firestore:', err);
     return [];
   }
+}
+
+/**
+ * Visible reviews for the public site. Throws when Firestore can't be reached,
+ * so callers can tell a failed read apart from an empty collection and never
+ * cache the failure.
+ */
+export async function getVisibleReviewsOrThrow(): Promise<ReviewDocument[]> {
+  return queryReviews(true);
 }
 
 export async function upsertReview(review: Omit<ReviewDocument, 'id' | 'createdAt'>): Promise<string> {

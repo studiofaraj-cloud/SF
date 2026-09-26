@@ -8,5 +8,8 @@ import TestimonialsSection from './testimonials-section';
 export async function TestimonialsServer() {
   const locale = await getLocale();
   const place = await fetchGoogleReviews(locale);
+  // No real reviews available (Firestore and Places both failed): leave the
+  // section out rather than render an empty carousel.
+  if (place.reviews.length === 0) return null;
   return <TestimonialsSection place={place} />;
 }
