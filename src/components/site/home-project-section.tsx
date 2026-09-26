@@ -14,7 +14,7 @@ export async function HomeProjectSection({ locale }: { locale: Locale }) {
     // summary fields. Including the full content body embeds ~20 KB of JSON
     // per project in the RSC flight data.
     const projects = published
-      .slice(0, 3)
+      .slice(0, 6)
       .map(({ content: _content, gallery: _gallery, ...rest }) => rest);
     return <HomeProjectContent projects={projects} total={published.length} locale={locale} />;
   } catch (error) {

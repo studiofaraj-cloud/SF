@@ -221,6 +221,55 @@
   to   { stroke-dashoffset: 0; }
 }
 
+/* ── Homepage work rail ─────────────────────────────────────────────────────
+   Full-bleed horizontal rail whose first slide lines up with the page grid:
+   --inset is the distance from the edge to the .container content at each
+   breakpoint (100cqw = the section's width, so the scrollbar is excluded).
+   Slides fill most of the content width so the next one peeks in. Where
+   scroll-driven animations exist, slides dim and shrink a little as they
+   move away from the active position. */
+@layer components {
+  .work-rail {
+    --inset: 1.25rem;
+    --slide: calc((100cqw - 2 * var(--inset)) * 0.88);
+    --end: max(15rem, calc(var(--slide) * 0.62));
+    padding-inline: var(--inset);
+    scroll-padding-inline: var(--inset);
+  }
+  .work-rail.is-dragging {
+    scroll-snap-type: none;
+    cursor: grabbing;
+    user-select: none;
+  }
+}
+@media (min-width: 640px) { .work-rail { --inset: calc((100cqw - 640px) / 2 + 1.25rem); } }
+@media (min-width: 768px) {
+  .work-rail {
+    --inset: calc((100cqw - 768px) / 2 + 2rem);
+    --slide: calc((100cqw - 2 * var(--inset)) * 0.86);
+    --end: calc(var(--slide) * 0.36);
+  }
+}
+@media (min-width: 1024px) { .work-rail { --inset: calc((100cqw - 1024px) / 2 + 2rem); } }
+@media (min-width: 1280px) { .work-rail { --inset: calc((100cqw - 1280px) / 2 + 2rem); } }
+@media (min-width: 1536px) { .work-rail { --inset: calc((100cqw - 1536px) / 2 + 2rem); } }
+@media (pointer: fine) { .work-rail { cursor: grab; } }
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .work-slide {
+      animation: work-slide linear both;
+      animation-timeline: view(inline);
+    }
+  }
+}
+/* Fully lit from 25%: the archive card, last on the rail, never reaches the
+   active position, and a peeking slide sits below ~12%. */
+@keyframes work-slide {
+  from     { opacity: 0.4; scale: 0.94; }
+  25%, 62% { opacity: 1; scale: 1; }
+  to       { opacity: 0.4; scale: 0.94; }
+}
+
 @layer utilities {
   /* Service detail panel — fast fade+slide used on service switch */
   .service-panel-enter {
