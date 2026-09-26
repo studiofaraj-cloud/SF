@@ -1,9 +1,7 @@
 import Link from 'next/link';
-import { ArrowRight, Star } from 'lucide-react';
+import { Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { FirebaseImage } from '@/components/ui/firebase-image';
-import { HeroRotatingWord } from '@/components/site/hero-rotating-word';
-import { HeroQuoteButton } from '@/components/site/hero-quote-button';
 import { getProjectsAction } from '@/lib/actions';
 import { getAggregateRating } from '@/lib/google-reviews';
 import { getLocalizedPath } from '@/lib/i18n-helpers';
@@ -11,251 +9,233 @@ import type { Locale } from '@/i18n/config';
 import type { Project } from '@/lib/definitions';
 
 /**
- * HOMEPAGE HERO — server component.
+ * HOMEPAGE HERO — server component, no client JavaScript.
  *
- * Replaces a hero that was rendered client-only (`dynamic(..., { ssr: false })`),
- * which meant none of the above-the-fold copy existed in the served HTML. The
- * workaround for that was a hidden keyword-stuffed <h1 class="sr-only">, which
- * is the pattern Google's spam policies describe. Both are gone: the real
- * headline is now the page's only <h1> and ships in the markup.
+ * The <h1> is static, keyword-bearing ("agenzia web a Padova", the term the
+ * homepage owns in src/lib/seo-keywords.ts) and the page's only h1.
  *
- * Three deliberate changes from the old design:
- *
- *  1. The <h1> is static and leads on "agenzia web a Padova" — the term the
- *     homepage owns in src/lib/seo-keywords.ts. It previously read "Costruiamo
- *     siti che [crescono|convertono|scalano|ispirano]", which carried no keyword
- *     and changed every 2.4s. The rotation moved to the subhead.
- *     Note it does NOT say "realizzazione siti web": that term belongs to
- *     /servizi/sviluppo-web, and two pages chasing it would split the signal.
- *
- *  2. Real delivered work replaces stock photography. For a web agency the work
- *     is the pitch, and the portfolio has nameable clients. One optimised image
- *     also costs far less than four full-bleed crossfading ones.
- *
- *  3. Decoration cut from six simultaneous systems (crossfade, Ken Burns,
- *     constellation, bottom fade, three blur orbs, four floating shapes) to a
- *     single glow. The old stack competed with itself and was expensive to
- *     paint on mobile.
+ * The right-hand side shows what the studio actually does: a real delivered
+ * project "builds" in front of the visitor. The build log is generated from
+ * that project's Firestore data (client, stack, measured results, live
+ * domain), so it changes when the portfolio does and never invents a number.
+ * The sequence is CSS-only and plays once (see .build-line / .build-render in
+ * globals.css); without motion the visitor simply sees the finished frame.
  */
-
-const ROTATING_IT = ['crescono', 'convertono', 'scalano', 'durano'] as const;
-const ROTATING_EN = ['grow', 'convert', 'scale', 'last'] as const;
 
 const COPY = {
   it: {
     h1a: 'Agenzia web',
     h1b: 'a Padova.',
-    leadBefore: 'Siti, e-commerce e piattaforme che',
-    leadAfter: 'Scritti riga per riga, senza template e senza WordPress — il codice resta tuo.',
+    lead: 'Siti, e-commerce e piattaforme scritti riga per riga. Niente template, niente WordPress: il codice resta tuo.',
     ctaStart: 'Inizia il tuo progetto',
-    ctaProjects: 'Guarda i lavori',
-    ctaQuote: 'Oppure richiedi un preventivo',
+    ctaWork: 'Guarda i lavori',
     available: 'Disponibili per nuovi progetti',
-    worksTitle: 'Lavori recenti',
-    allWorks: 'Tutti i progetti',
+    rating: (value: string, count: number) => `${value} su Google, ${count} recensioni`,
+    client: 'Cliente',
+    stack: 'Stack',
+    live: 'Online',
+    caseStudy: 'Leggi il caso studio',
   },
   en: {
     h1a: 'Web agency',
     h1b: 'in Padova, Italy.',
-    leadBefore: 'Websites, e-commerce and platforms that',
-    leadAfter: 'Written line by line — no templates, no WordPress, and the code stays yours.',
+    lead: 'Websites, e-commerce and platforms written line by line. No templates, no WordPress: the code stays yours.',
     ctaStart: 'Start your project',
-    ctaProjects: 'See the work',
-    ctaQuote: 'Or request a quote',
+    ctaWork: 'See the work',
     available: 'Available for new projects',
-    worksTitle: 'Recent work',
-    allWorks: 'All projects',
+    rating: (value: string, count: number) => `${value} on Google, ${count} reviews`,
+    client: 'Client',
+    stack: 'Stack',
+    live: 'Live',
+    caseStudy: 'Read the case study',
   },
 } as const;
 
-function formatCategory(c?: string) {
-  if (!c) return '';
-  return c.charAt(0).toUpperCase() + c.slice(1).replace(/-/g, ' ');
+/** "A-Infissi" → "a-infissi": a folder-style handle for the build log. */
+function handle(name: string) {
+  return name
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+function hostOf(url?: string) {
+  if (!url) return null;
+  try {
+    return new URL(url).hostname.replace(/^www\./, '');
+  } catch {
+    return null;
+  }
 }
 
 export async function HeroSection({ locale }: { locale: Locale }) {
   const copy = COPY[locale];
-  const rotating = locale === 'en' ? ROTATING_EN : ROTATING_IT;
 
-  // Both are cached (getProjectsAction via unstable_cache, reviews via React
-  // cache), so this shares work with the sections further down the page rather
-  // than issuing fresh reads.
-  let featured: Project[] = [];
+  // Shares the cached getProjectsAction/getAggregateRating results with the
+  // sections further down the page rather than issuing fresh reads.
+  let showcase: Project | null = null;
   try {
-    const all = await getProjectsAction();
-    featured = all.filter((p) => p.published && p.featuredImage).slice(0, 3);
+    const published = (await getProjectsAction()).filter(
+      (p: Project) => p.published && p.featuredImage,
+    );
+    // Prefer the most recent project with measured results; fall back to the
+    // most recent one.
+    showcase = published.find((p: Project) => p.metrics?.length) ?? published[0] ?? null;
   } catch {
-    featured = [];
+    showcase = null;
   }
 
   const rating = await getAggregateRating(locale).catch(() => null);
+  const ratingText = rating
+    ? copy.rating(
+        rating.ratingValue.toLocaleString(locale === 'it' ? 'it-IT' : 'en-GB', {
+          minimumFractionDigits: 1,
+          maximumFractionDigits: 1,
+        }),
+        rating.reviewCount,
+      )
+    : null;
+
+  const host = hostOf(showcase?.projectUrl);
+  const log = showcase
+    ? [
+        showcase.clientName && { k: copy.client, v: showcase.clientName },
+        showcase.technologies?.length && {
+          k: copy.stack,
+          v: showcase.technologies.slice(0, 3).join(', '),
+        },
+        ...(showcase.metrics ?? []).slice(0, 2).map((m) => ({ k: m.label, v: m.value })),
+        host && { k: copy.live, v: host },
+      ].filter((l): l is { k: string; v: string } => Boolean(l))
+    : [];
+  // The render pass starts once the last log line has printed.
+  const renderDelay = `${250 + (log.length + 1) * 120 + 200}ms`;
 
   return (
-    <section className="relative overflow-hidden bg-[#0a1628] text-white">
-      {/* Single accent glow. The previous hero stacked three of these plus a
-          constellation texture and four floating shapes. */}
-      <div className="pointer-events-none absolute -top-40 left-1/4 h-[420px] w-[420px] rounded-full bg-primary/20 blur-[130px]" />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0a1628]" />
+    <section className="relative overflow-hidden bg-navy text-white">
+      <div aria-hidden className="hero-grid pointer-events-none absolute inset-0" />
 
-      {/* `lg:flex lg:items-center` is what actually centres the content: the
-          min-height alone just made the container taller and left the grid
-          sitting at the top with dead space underneath. The grid needs w-full
-          because as a flex child it would otherwise shrink to its content. */}
-      {/* `flex flex-col justify-center` is what actually centres the content:
-          a min-height alone just made the container taller and left the grid
-          sitting at the top with dead space underneath.
+      <div className="container relative mx-auto grid gap-14 px-5 pb-20 pt-32 md:px-8 lg:min-h-[92svh] lg:grid-cols-12 lg:items-center lg:gap-10 lg:pb-24 lg:pt-36">
+        {/* ── Statement ─────────────────────────────────────────────────── */}
+        <div className="min-w-0 lg:col-span-6">
+          <h1 className="font-display text-[3.35rem] font-extrabold leading-[0.93] tracking-[-0.035em] sm:text-7xl lg:text-[4.6rem] xl:text-[5.6rem]">
+            {copy.h1a} <span className="block">{copy.h1b}</span>
+          </h1>
 
-          `min-h-screen` is unprefixed on purpose. The lg: variant of it had
-          never been generated on a long-running dev server, so the height
-          silently stayed at auto; the unprefixed class already exists in this
-          project. It also costs nothing on mobile, where the stacked hero
-          content is taller than the viewport regardless. */}
-      <div className="container relative z-10 mx-auto flex min-h-screen flex-col justify-center px-5 pb-16 pt-28 md:px-8 md:pb-20 md:pt-32 lg:pb-24">
-        {/* Two equal columns via grid-cols-2 rather than grid-cols-12 + col-span-6.
-            The 12-col version depended on `col-span-6`, which is used nowhere
-            else in the project — so a dev server whose Tailwind scan predated
-            this file generated no rule for it and both columns silently
-            collapsed to a single 64px track. Equal halves don't need a
-            12-column grid; this has no span dependency at all. */}
-        <div className="grid w-full items-center gap-12 lg:grid-cols-2 lg:gap-16">
-          {/* ── Statement ─────────────────────────────────────────────── */}
-          {/* min-w-0: grid items default to min-width:auto, so a track cannot
-              shrink below its content's min-content size. The project cards
-              contain `truncate` text (white-space: nowrap), whose min-content is
-              the full untruncated string — which forced the column to 420px
-              inside a 335px grid on mobile and pushed the hero out of the
-              viewport. min-w-0 lets the track shrink so truncation can do its job. */}
-          <div className="min-w-0">
-            {/* The page's only <h1>. Static, keyword-bearing, in the HTML. */}
-            <h1 className="text-5xl font-bold leading-[1.03] tracking-tight sm:text-6xl lg:text-7xl">
-              {copy.h1a}{' '}
-              <span className="block text-primary">{copy.h1b}</span>
-            </h1>
+          <p className="mt-8 max-w-[33rem] text-lg leading-relaxed text-white/70 sm:text-xl sm:leading-relaxed">
+            {copy.lead}
+          </p>
 
-            {/* The rotating word deliberately ends the first line. Nothing sits
-                to its right, so a shorter word cannot leave a gap before the
-                period and the rest of the copy never reflows as it cycles. */}
-            <p className="mt-7 max-w-xl text-lg leading-relaxed text-white/75">
-              <span className="block">
-                {copy.leadBefore} <HeroRotatingWord words={rotating} />.
-              </span>
-              <span className="mt-1 block">{copy.leadAfter}</span>
-            </p>
-
-            <div className="mt-12 flex flex-col gap-3 sm:flex-row sm:items-center">
-              <Button asChild size="lg" className="group neon-glow-intense min-h-[52px] px-8 font-semibold">
-                <Link href={getLocalizedPath('/inizia', locale)}>
-                  {copy.ctaStart}
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Link>
-              </Button>
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="min-h-[52px] border-2 border-white/25 bg-white/5 px-8 font-semibold text-white backdrop-blur-md hover:border-primary hover:text-primary"
-              >
-                <Link href={getLocalizedPath('/projects', locale)}>{copy.ctaProjects}</Link>
-              </Button>
-            </div>
-
-            <div className="mt-7">
-              <HeroQuoteButton label={copy.ctaQuote} />
-            </div>
-
-            {/* Trust strip — the rating is real or absent, never invented. */}
-            <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-white/70">
-              <span className="inline-flex items-center gap-2">
-                <span className="relative flex h-1.5 w-1.5">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                </span>
-                {copy.available}
-              </span>
-              {rating && (
-                <>
-                  <span className="text-white/20">·</span>
-                  {/* Stars only — no rating number, no review count. Filled
-                      stars follow the real rating rather than always showing
-                      five, so this stays truthful if the average ever drops. */}
-                  <span
-                    className="inline-flex items-center gap-1"
-                    aria-label={`${rating.ratingValue}/5`}
-                  >
-                    {Array.from({ length: 5 }, (_, i) => (
-                      <Star
-                        key={i}
-                        aria-hidden
-                        className={
-                          i < Math.round(rating.ratingValue)
-                            ? 'h-4 w-4 fill-yellow-400 text-yellow-400'
-                            : 'h-4 w-4 text-white/25'
-                        }
-                      />
-                    ))}
-                  </span>
-                </>
-              )}
-            </div>
+          <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+            <Button asChild size="lg" className="min-h-[52px] px-7 text-base font-semibold">
+              <Link href={getLocalizedPath('/inizia', locale)}>{copy.ctaStart}</Link>
+            </Button>
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="min-h-[52px] border-white/25 bg-transparent px-7 text-base font-semibold text-white hover:border-white hover:bg-white hover:text-navy"
+            >
+              <Link href="#lavori">{copy.ctaWork}</Link>
+            </Button>
           </div>
 
-          {/* ── The work ──────────────────────────────────────────────── */}
-          {featured.length > 0 && (
-            <div className="min-w-0">
-              <div className="mb-4 flex items-baseline justify-between gap-3">
-                <h2 className="text-sm font-semibold uppercase tracking-wider text-white/50">
-                  {copy.worksTitle}
-                </h2>
-                <Link
-                  href={getLocalizedPath('/projects', locale)}
-                  className="text-sm font-medium text-primary hover:underline"
-                >
-                  {copy.allWorks}
-                </Link>
-              </div>
-
-              <ul className="space-y-3">
-                {featured.map((p, i) => (
-                  // Third card is desktop-only: on a phone the statement plus
-                  // three cards makes the hero ~1.5 screens tall before the
-                  // visitor reaches anything else.
-                  <li key={p.id} className={i === 2 ? 'hidden sm:block' : undefined}>
-                    <Link
-                      href={getLocalizedPath(`/projects/${p.slug}`, locale)}
-                      className="group flex items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.04] p-3 backdrop-blur-sm transition-colors hover:border-primary/40 hover:bg-white/[0.07] sm:gap-5 sm:p-4"
-                    >
-                      <div className="relative h-20 w-28 shrink-0 overflow-hidden rounded-xl bg-white/5 sm:h-24 sm:w-36">
-                        {/* All three cards are above the fold, so none should be
-                            lazy — next/image defaults to loading="lazy", which
-                            defers images the visitor can already see. Only the
-                            first gets `priority` (a preload): preloading all
-                            three would have them compete with the LCP element. */}
-                        <FirebaseImage
-                          src={p.featuredImage}
-                          alt={p.title}
-                          fill
-                          sizes="(max-width: 640px) 112px, 144px"
-                          {...(i === 0 ? { priority: true } : { loading: 'eager' as const })}
-                          className="object-cover transition-transform duration-500 group-hover:scale-105"
-                        />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <p className="truncate text-xs font-medium uppercase tracking-wide text-primary">
-                          {p.clientName || formatCategory(p.category)}
-                        </p>
-                        <p className="mt-1 line-clamp-2 text-sm font-semibold leading-snug text-white sm:text-base">
-                          {p.title}
-                        </p>
-                        {p.year && <p className="mt-1 text-xs text-white/45">{p.year}</p>}
-                      </div>
-                      <ArrowRight className="h-4 w-4 shrink-0 text-white/30 transition-all group-hover:translate-x-0.5 group-hover:text-primary" />
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+          {/* Trust line — the rating is real or absent, never invented. */}
+          <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-3 text-sm text-white/60">
+            <span className="inline-flex items-center gap-2">
+              <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+              {copy.available}
+            </span>
+            {rating && ratingText && (
+              <span className="inline-flex items-center gap-2">
+                <span className="inline-flex gap-0.5" aria-hidden>
+                  {Array.from({ length: 5 }, (_, i) => (
+                    <Star
+                      key={i}
+                      className={
+                        i < Math.round(rating.ratingValue)
+                          ? 'h-3.5 w-3.5 fill-amber-400 text-amber-400'
+                          : 'h-3.5 w-3.5 text-white/25'
+                      }
+                    />
+                  ))}
+                </span>
+                {ratingText}
+              </span>
+            )}
+          </div>
         </div>
+
+        {/* ── The work, building ────────────────────────────────────────── */}
+        {showcase && (
+          <figure className="relative min-w-0 lg:col-span-6 lg:pl-4">
+            {/* Build log */}
+            <div className="w-[94%] max-w-[32rem] rounded-xl border border-white/10 bg-[#0e1f3b] font-mono text-[12.5px] leading-relaxed shadow-2xl sm:w-[84%] sm:text-[13px]">
+              <div className="border-b border-white/10 px-4 py-2.5 text-white/40">
+                progetti/{handle(showcase.clientName || showcase.slug)}
+              </div>
+              <div className="px-4 pb-10 pt-4 sm:pb-12">
+                <p className="build-line text-white/45" style={{ '--i': 0 } as React.CSSProperties}>
+                  $ npm run build
+                </p>
+                {/* Rows share the label column through subgrid, so labels size
+                    to the longest one and only values truncate. Each row stays
+                    its own box so it can animate on its own. */}
+                <dl className="mt-3 grid grid-cols-[max-content_minmax(0,1fr)] gap-x-5 gap-y-1.5">
+                  {log.map((line, i) => (
+                    <div
+                      key={line.k}
+                      className="build-line col-span-full grid grid-cols-subgrid"
+                      style={{ '--i': i + 1 } as React.CSSProperties}
+                    >
+                      <dt className="text-white/45">
+                        <span aria-hidden className="mr-1.5 text-sky-400">
+                          ✓
+                        </span>
+                        {line.k}
+                      </dt>
+                      <dd className="min-w-0 truncate text-white">{line.v}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            </div>
+
+            {/* The finished site */}
+            <div
+              className="build-render relative -mt-7 ml-auto w-[94%] overflow-hidden rounded-xl border border-white/15 bg-white shadow-[0_40px_90px_-25px_rgba(0,0,0,0.7)] sm:-mt-9 sm:w-[86%]"
+              style={{ '--render-delay': renderDelay } as React.CSSProperties}
+            >
+              <div className="flex items-center border-b border-black/5 bg-[#eef1f6] px-3 py-2">
+                <span className="truncate rounded-md bg-white px-3 py-1 font-mono text-[11.5px] text-slate-500">
+                  {host ?? showcase.clientName}
+                </span>
+              </div>
+              <div className="relative aspect-[16/10] bg-slate-100">
+                <FirebaseImage
+                  src={showcase.featuredImage}
+                  alt={showcase.title}
+                  fill
+                  priority
+                  sizes="(min-width: 1280px) 560px, (min-width: 1024px) 45vw, 94vw"
+                  className="object-cover object-top"
+                />
+              </div>
+            </div>
+
+            <figcaption className="ml-auto mt-5 flex w-[94%] flex-wrap items-baseline justify-between gap-x-6 gap-y-1 text-sm sm:w-[86%]">
+              <span className="text-white/55">{showcase.title}</span>
+              <Link
+                href={getLocalizedPath(`/projects/${showcase.slug}`, locale)}
+                className="font-medium text-white underline decoration-white/30 underline-offset-4 transition-colors hover:decoration-white"
+              >
+                {copy.caseStudy}
+              </Link>
+            </figcaption>
+          </figure>
+        )}
       </div>
     </section>
   );

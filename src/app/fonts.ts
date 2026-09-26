@@ -1,4 +1,4 @@
-import { Poppins, Lora, Tomorrow } from 'next/font/google';
+import { Poppins, Lora, Tomorrow, Schibsted_Grotesk } from 'next/font/google';
 
 /**
  * Font singletons, shared by every root layout.
@@ -47,4 +47,15 @@ export const tomorrow = Tomorrow({
   adjustFontFallback: true,
 });
 
-export const fontVariables = `${poppins.variable} ${lora.variable} ${tomorrow.variable}`;
+// Display face — headings and large figures. A grotesk, so it reads clearly
+// apart from Poppins (geometric) in body text rather than as a near-duplicate.
+// Variable font: one file covers every heading weight.
+export const schibsted = Schibsted_Grotesk({
+  subsets: ['latin'],
+  variable: '--font-display',
+  display: 'swap',
+  preload: false,
+  adjustFontFallback: true,
+});
+
+export const fontVariables = `${poppins.variable} ${lora.variable} ${tomorrow.variable} ${schibsted.variable}`;

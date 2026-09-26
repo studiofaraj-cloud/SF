@@ -32,12 +32,19 @@ export default {
         // Brand wordmark now uses Poppins to match the rest of the site.
         // (Tomorrow remains available via --font-tomorrow for techy accents.)
         brand: ['var(--font-poppins)', 'system-ui', 'sans-serif'],
+        // Schibsted Grotesk — headings and large figures
+        display: ['var(--font-display)', 'var(--font-poppins)', 'system-ui', 'sans-serif'],
+        // System monospace, only where the content is actual code (no download)
+        mono: ['ui-monospace', 'SFMono-Regular', '"Cascadia Code"', 'Consolas', 'monospace'],
         code: ['monospace'],
       },
       transitionDuration: {
         '1500': '1500ms',
       },
       colors: {
+        // Fixed brand surfaces (don't flip with the theme)
+        navy: '#0A1628',
+        mist: '#F4F6FA',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {
