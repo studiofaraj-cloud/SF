@@ -3,9 +3,9 @@
 import { useEffect } from 'react';
 
 /**
- * Pointer-driven depth for the hero's interface fragments: writes --mx/--my
- * (-0.5…0.5) on the target element, which .ui-card turns into a small offset
- * per card (see globals.css). Renders nothing. Skipped for reduced motion and
+ * Pointer-driven depth for the hero's code window: writes --mx/--my
+ * (-0.5…0.5) on the target element, which .hero-window turns into a small
+ * offset (see globals.css). Renders nothing. Skipped for reduced motion and
  * touch screens, so it's purely an enhancement.
  */
 export function HeroPointer({ targetId }: { targetId: string }) {

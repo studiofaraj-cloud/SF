@@ -55,13 +55,12 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
 
   return (
     // No page-level ClientMessages: every section is a server component with its
-    // own copy, so no translations need to reach the client from this page.
+    // own copy. The hero wraps its one client island (the quote form) itself.
     <div className="bg-background text-foreground" suppressHydrationWarning>
       {/* HeroSection renders the page's only, visible <h1> server-side. */}
       <HeroSection locale={currentLocale} />
 
-      {/* Recent work — straight after the hero: the work is the pitch. No
-          Suspense: the hero already awaited the same cached projects read. */}
+      {/* Recent work — straight after the hero: the work is the pitch. */}
       <HomeProjectSection locale={currentLocale} />
 
       {/* Services as one ecosystem: build / grow / run */}
