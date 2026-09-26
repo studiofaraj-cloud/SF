@@ -201,6 +201,26 @@
   100% { opacity: 0; transform: translateX(100%); }
 }
 
+/* ── Quote dialog ───────────────────────────────────────────────────────────
+   Its contents settle in with a short stagger (--d), and the success tick
+   draws itself (the SVG paths use pathLength="1"). With reduced motion both
+   are simply shown. */
+@media (prefers-reduced-motion: no-preference) {
+  .qd-rise { animation: qd-rise 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) var(--d, 0s) both; }
+  .qd-draw {
+    stroke-dasharray: 1;
+    animation: qd-draw 0.6s cubic-bezier(0.6, 0, 0.2, 1) var(--d, 0.1s) both;
+  }
+}
+@keyframes qd-rise {
+  from { opacity: 0; translate: 0 12px; }
+  to   { opacity: 1; translate: 0 0; }
+}
+@keyframes qd-draw {
+  from { stroke-dashoffset: 1; }
+  to   { stroke-dashoffset: 0; }
+}
+
 @layer utilities {
   /* Service detail panel — fast fade+slide used on service switch */
   .service-panel-enter {

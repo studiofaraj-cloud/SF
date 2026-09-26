@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
-import { ChevronDown, Star } from 'lucide-react';
+import { ArrowRight, ChevronDown, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ClientMessages } from '@/components/i18n/client-messages';
 import { getAggregateRating } from '@/lib/google-reviews';
@@ -101,10 +101,10 @@ async function CodeWindow({ locale, copy }: { locale: Locale; copy: (typeof COPY
   const submit = t('form.submit');
 
   const lines: Line[] = [
+    { indent: 0, text: '<DialogTitle>' },
+    { indent: 1, text: title },
+    { indent: 0, text: '</DialogTitle>' },
     { indent: 0, text: '<form onSubmit={handleSubmit}>' },
-    { indent: 1, text: '<GradientText>' },
-    { indent: 2, text: title },
-    { indent: 1, text: '</GradientText>' },
     { indent: 1, text: '<Select name="service"', short: true },
     { indent: 2, text: `placeholder="${service}" />`, short: true },
     { indent: 1, text: '<Input name="budget"', short: true },
@@ -140,20 +140,21 @@ async function CodeWindow({ locale, copy }: { locale: Locale; copy: (typeof COPY
               className="group relative block w-full min-w-0 overflow-hidden bg-white text-left text-slate-900 outline-none focus-visible:ring-4 focus-visible:ring-inset focus-visible:ring-sky-400"
             >
               <span aria-hidden className="hero-render block px-5 py-6 sm:px-6 xl:py-7">
-                <span className="block bg-gradient-to-r from-blue-500 via-violet-500 to-blue-500 bg-clip-text font-display text-lg font-bold leading-snug tracking-[-0.01em] text-transparent">
+                <span className="block font-display text-xl font-extrabold leading-tight tracking-[-0.03em]">
                   {title}
                 </span>
                 <span className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
-                  <span className="flex h-11 items-center justify-between gap-2 rounded-lg border border-slate-200 px-3 text-[13.5px] text-slate-400 transition-colors group-hover:border-slate-300">
+                  <span className="flex h-11 items-center justify-between gap-2 rounded-xl border border-slate-200 px-3.5 text-[13.5px] text-slate-400 shadow-sm transition-colors group-hover:border-slate-300">
                     <span className="truncate">{service}</span>
                     <ChevronDown className="h-4 w-4 shrink-0 opacity-60" />
                   </span>
-                  <span className="flex h-11 items-center rounded-lg border border-slate-200 px-3 text-[13.5px] text-slate-400 transition-colors group-hover:border-slate-300">
+                  <span className="flex h-11 items-center rounded-xl border border-slate-200 px-3.5 text-[13.5px] text-slate-400 shadow-sm transition-colors group-hover:border-slate-300">
                     <span className="truncate">{budget}</span>
                   </span>
                 </span>
-                <span className="mt-5 flex h-11 items-center justify-center rounded-xl bg-primary text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/30 transition-colors group-hover:bg-primary/90">
+                <span className="mt-5 flex h-12 items-center justify-center gap-2 rounded-xl bg-primary text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/25 transition-colors group-hover:bg-primary/90">
                   {submit}
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                 </span>
               </span>
               <span aria-hidden className="hero-scan" />

@@ -1123,18 +1123,50 @@
   "quoteDialog": {
     "title": "Request a Quote",
     "description": "Tell us your idea. We usually respond within 24 hours. For urgent matters, don't hesitate to contact us directly.",
-    "infoTitle": "Information",
-    "infoText": "Do you have a project in mind? Write us an email or fill out the form.",
-    "operationalHQ": "Operational Headquarters",
+    "available": "Available for new projects",
     "operatesIn": "We operate throughout Italy",
+    "close": "Close",
+    "sections": {
+      "you": "About you",
+      "project": "Your project"
+    },
+    "next": {
+      "title": "What happens next",
+      "analysis": {
+        "title": "Analysis",
+        "text": "We listen to your needs and define the goals together."
+      },
+      "proposal": {
+        "title": "Quote",
+        "text": "You receive a tailored proposal, clear item by item."
+      },
+      "build": {
+        "title": "Development",
+        "text": "The same team from design to launch, with every step visible in your client area."
+      }
+    },
     "form": {
       "name": "Your Name / Company",
       "email": "Your E-mail Address",
       "service": "Service of interest",
+      "serviceWebsite": "Website development",
       "budget": "What is your budget?",
       "message": "Briefly describe your project",
-      "privacy": "I accept the Privacy Policy and authorize the processing of personal data.",
-      "submit": "Send Request"
+      "privacy": "I accept the <link>Privacy Policy</link> and authorize the processing of personal data.",
+      "submit": "Send Request",
+      "sending": "Sending…",
+      "optional": "optional",
+      "requiredNote": "Required fields"
+    },
+    "errors": {
+      "name": "Please enter your name or company.",
+      "email": "Please enter a valid e-mail address.",
+      "message": "Tell us about your project in a few lines."
+    },
+    "hub": {
+      "or": "or",
+      "cta": "Create an account & track your request",
+      "note": "Chat, files, quotes and online payments, all in your client area."
     },
     "success": {
       "title": "Message Sent",

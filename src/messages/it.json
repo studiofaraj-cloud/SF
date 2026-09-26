@@ -1153,18 +1153,50 @@
   "quoteDialog": {
     "title": "Richiedi un Preventivo",
     "description": "Raccontaci la tua idea. Rispondiamo solitamente entro 24 ore. Per urgenze, non esitare a contattarci direttamente.",
-    "infoTitle": "Informazioni",
-    "infoText": "Hai un progetto in mente? Scrivici una mail o compila il form.",
-    "operationalHQ": "Sede Operativa",
+    "available": "Disponibili per nuovi progetti",
     "operatesIn": "Operiamo in tutta Italia",
+    "close": "Chiudi",
+    "sections": {
+      "you": "Chi sei",
+      "project": "Il progetto"
+    },
+    "next": {
+      "title": "Cosa succede dopo",
+      "analysis": {
+        "title": "Analisi",
+        "text": "Ascoltiamo le tue esigenze e definiamo insieme gli obiettivi."
+      },
+      "proposal": {
+        "title": "Preventivo",
+        "text": "Ricevi una proposta su misura, chiara voce per voce."
+      },
+      "build": {
+        "title": "Sviluppo",
+        "text": "Lo stesso team dal design al lancio, con ogni passaggio visibile nella tua area clienti."
+      }
+    },
     "form": {
       "name": "Il tuo Nome / Azienda",
       "email": "Il tuo Indirizzo E-mail",
       "service": "Servizio di interesse",
+      "serviceWebsite": "Sviluppo sito web",
       "budget": "Qual è il tuo budget?",
       "message": "Descrivi brevemente il tuo progetto",
-      "privacy": "Accetto la Privacy Policy e autorizzo il trattamento dei dati personali.",
-      "submit": "Invia Richiesta"
+      "privacy": "Accetto la <link>Privacy Policy</link> e autorizzo il trattamento dei dati personali.",
+      "submit": "Invia Richiesta",
+      "sending": "Invio in corso…",
+      "optional": "facoltativo",
+      "requiredNote": "Campi obbligatori"
+    },
+    "errors": {
+      "name": "Inserisci il tuo nome o quello dell'azienda.",
+      "email": "Inserisci un indirizzo e-mail valido.",
+      "message": "Raccontaci il tuo progetto in poche righe."
+    },
+    "hub": {
+      "or": "oppure",
+      "cta": "Crea un account e segui la tua richiesta",
+      "note": "Chat, file, preventivi e pagamenti online, tutto nella tua area clienti."
     },
     "success": {
       "title": "Messaggio Inviato",
