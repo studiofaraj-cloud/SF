@@ -7,7 +7,6 @@ import {
 } from '@/lib/seo';
 import { StructuredDataServer } from '@/components/seo/structured-data-server';
 import { getAggregateRating } from '@/lib/google-reviews';
-import { ClientMessages } from '@/components/i18n/client-messages';
 import { HeroSection } from '@/components/site/hero-section';
 import { HomeProjectSection } from '@/components/site/home-project-section';
 import { HomeServices } from '@/components/site/home-services';
@@ -55,31 +54,31 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
   const localBusinessData = generateStructuredDataLocalBusiness(currentLocale, aggregateRating);
 
   return (
-    <ClientMessages locale={currentLocale} namespaces={['home', 'quoteDialog', 'serverActions']}>
-      <div className="bg-background text-foreground" suppressHydrationWarning>
-        {/* HeroSection renders the page's only, visible <h1> server-side. */}
-        <HeroSection locale={currentLocale} />
+    // No page-level ClientMessages: every section is a server component with its
+    // own copy, so no translations need to reach the client from this page.
+    <div className="bg-background text-foreground" suppressHydrationWarning>
+      {/* HeroSection renders the page's only, visible <h1> server-side. */}
+      <HeroSection locale={currentLocale} />
 
-        {/* Recent work — straight after the hero: the work is the pitch. No
-            Suspense: the hero already awaited the same cached projects read. */}
-        <HomeProjectSection locale={currentLocale} />
+      {/* Recent work — straight after the hero: the work is the pitch. No
+          Suspense: the hero already awaited the same cached projects read. */}
+      <HomeProjectSection locale={currentLocale} />
 
-        {/* Services as one ecosystem: build / grow / run */}
-        <HomeServices locale={currentLocale} />
+      {/* Services as one ecosystem: build / grow / run */}
+      <HomeServices locale={currentLocale} />
 
-        <HomeProcess locale={currentLocale} />
+      <HomeProcess locale={currentLocale} />
 
-        <HomeStack locale={currentLocale} />
+      <HomeStack locale={currentLocale} />
 
-        <HomeStudio locale={currentLocale} />
+      <HomeStudio locale={currentLocale} />
 
-        <TestimonialsServer />
+      <TestimonialsServer />
 
-        <HomeBlogSection locale={currentLocale} />
+      <HomeBlogSection locale={currentLocale} />
 
-        <HomeCtaSection locale={currentLocale} />
-        <StructuredDataServer data={localBusinessData} />
-      </div>
-    </ClientMessages>
+      <HomeCtaSection locale={currentLocale} />
+      <StructuredDataServer data={localBusinessData} />
+    </div>
   );
 }
