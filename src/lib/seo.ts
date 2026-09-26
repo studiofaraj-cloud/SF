@@ -287,17 +287,20 @@ export function generateStructuredDataLocalBusiness(
     telephone: '+39-320-222-3322',
     email: 'info@studiofaraj.it',
     description: seoConfig[locale].description,
+    // Must match the Google Business Profile listing (place ChIJV_YxeITzBAERefznEKaDrkc)
+    // exactly — the same address the /contatti map shows.
     address: {
       '@type': 'PostalAddress',
+      streetAddress: 'Via Ludovico Ariosto, 42',
       addressLocality: 'Padova',
       addressRegion: 'Veneto',
-      postalCode: '35100',
+      postalCode: '35128',
       addressCountry: 'IT',
     },
     geo: {
       '@type': 'GeoCoordinates',
-      latitude: '45.4064',
-      longitude: '11.8768',
+      latitude: '45.4082042',
+      longitude: '11.9020704',
     },
     openingHoursSpecification: [
       {
