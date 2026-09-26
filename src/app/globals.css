@@ -160,18 +160,34 @@
   }
 }
 
-/* ── Homepage hero: the editor caret ────────────────────────────────────────
-   The cursor after the headline blinks three times, then rests: its base
-   state is solid, so reduced motion, no-JS and crawlers just see it steady.
-   Only the caret moves — no text is animated, so the first paint is final. */
-@media (prefers-reduced-motion: no-preference) {
-  .hero-caret {
-    animation: hero-caret 1.05s linear 400ms 3;
+/* ── Homepage hero: interface fragments ─────────────────────────────────────
+   Depth: HeroPointer sets --mx/--my (-0.5…0.5) on the hero; each card moves
+   by its own --z. Entrance: cards rise in, bars and the score fill — once.
+   The end state is the default, so reduced motion, no-JS and crawlers get the
+   finished frame. `translate` (entrance) and `transform` (depth) are separate
+   properties, so the two never fight. */
+@layer components {
+  .ui-card {
+    transform: translate(calc(var(--mx, 0) * var(--z, 0.5) * 26px), calc(var(--my, 0) * var(--z, 0.5) * 26px));
+    transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
   }
 }
-@keyframes hero-caret {
-  0%, 49.9% { opacity: 1; }
-  50%, 100% { opacity: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .ui-card { animation: ui-rise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) var(--d, 0s) both; }
+  .ui-bar { transform-origin: left; animation: ui-grow 1s cubic-bezier(0.3, 0, 0.2, 1) 0.6s both; }
+  .ui-arc { animation: ui-arc 1.2s cubic-bezier(0.3, 0, 0.2, 1) 1.1s both; }
+}
+@keyframes ui-rise {
+  from { opacity: 0; translate: 0 26px; }
+  to   { opacity: 1; translate: 0 0; }
+}
+@keyframes ui-grow {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+@keyframes ui-arc {
+  from { stroke-dashoffset: 201; }
+  to   { stroke-dashoffset: 0; }
 }
 
 @layer utilities {
