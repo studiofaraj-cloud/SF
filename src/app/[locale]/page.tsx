@@ -42,7 +42,7 @@ import HomeCtaSection from '@/components/site/home-cta-section';
 import { TestimonialsServer } from '@/components/site/testimonials-server';
 import ScrollFadeIn from '@/components/site/scroll-fade-in';
 import { TechSectionMobile } from '@/components/site/tech-section-mobile';
-import { ServicesGrid } from '@/components/site/services-grid';
+import { HomeServices } from '@/components/site/home-services';
 import { SectionHeader } from '@/components/site/section-header';
 // Server Components
 import { HomeProjectSection } from '@/components/site/home-project-section';
@@ -88,7 +88,6 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
   // Safely get locale and translations with error handling
   let locale: string;
   let t: any;
-  let tServices: any;
   let tValues: any;
   let tProcess: any;
   let tTech: any;
@@ -97,7 +96,6 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
   try {
     locale = await getLocale();
     t = await getTranslations('home');
-    tServices = await getTranslations('home.services');
     tValues = await getTranslations('home.values');
     tProcess = await getTranslations('home.process');
     tTech = await getTranslations('home.technologies');
@@ -108,63 +106,11 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
     locale = currentLocale;
     const emptyT = (key: string) => key;
     t = emptyT;
-    tServices = emptyT;
     tValues = emptyT;
     tProcess = emptyT;
     tTech = emptyT;
     tTeam = emptyT;
   }
-
-  const services = [
-    {
-      icon: <Code />,
-      title: tServices('webDevelopment.title'),
-      description: tServices('webDevelopment.description'),
-      slug: 'sviluppo-web',
-    },
-    {
-      icon: <ShoppingCart />,
-      title: tServices('ecommerce.title'),
-      description: tServices('ecommerce.description'),
-      slug: 'e-commerce',
-    },
-    {
-      icon: <Smartphone />,
-      title: tServices('designUIUX.title'),
-      description: tServices('designUIUX.description'),
-      slug: 'design-ui-ux',
-    },
-    {
-      icon: <Wrench />,
-      title: tServices('maintenance.title'),
-      description: tServices('maintenance.description'),
-      slug: 'manutenzione',
-    },
-    {
-      icon: <Bot />,
-      title: tServices('aiAutomation.title'),
-      description: tServices('aiAutomation.description'),
-      slug: 'ai-automazione',
-    },
-    {
-      icon: <LineChart />,
-      title: tServices('seoMarketing.title'),
-      description: tServices('seoMarketing.description'),
-      slug: 'seo-marketing',
-    },
-    {
-      icon: <Server />,
-      title: tServices('hostingCloud.title'),
-      description: tServices('hostingCloud.description'),
-      slug: 'hosting-cloud',
-    },
-    {
-      icon: <DraftingCompass />,
-      title: tServices('consulting.title'),
-      description: tServices('consulting.description'),
-      slug: 'consulenza',
-    },
-  ];
 
   const values = [
     {
@@ -247,6 +193,9 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
         {/* Recent work — straight after the hero: the work is the pitch. No
             Suspense: the hero already awaited the same cached projects read. */}
         <HomeProjectSection locale={currentLocale} />
+
+        {/* Services as one ecosystem: build / grow / run */}
+        <HomeServices locale={currentLocale} />
 
         {/* ============================================
             TECHNOLOGIES SECTION
@@ -337,37 +286,6 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                 </ScrollFadeIn>
               ))}
             </div>
-          </div>
-        </section>
-
-        {/* ============================================
-            SERVICES SECTION - Compact grid
-            ============================================ */}
-        <section id="services" className="relative py-16 md:py-24 overflow-hidden">
-          <div className="absolute inset-0 bg-secondary/40" />
-
-          <div className="container relative z-10 px-4 md:px-8">
-            <SectionHeader
-              eyebrow={tServices('badge')}
-              eyebrowIcon={<Sparkles className="w-3.5 h-3.5" />}
-              title={tServices('title')}
-              titleHighlight={tServices('titleHighlight')}
-              subtitle={tServices('subtitle')}
-              className="mb-10 md:mb-14"
-            />
-
-            <ServicesGrid services={services} learnMoreLabel={tServices('learnMore')} />
-
-            <ScrollFadeIn animation="fade-up" delay={200}>
-              <div className="text-center mt-12">
-                <Button asChild size="lg" className="group">
-                  <Link href={getLocalizedPath('/contatti', locale as any)} title={tServices('cta')} className="flex items-center gap-2">
-                    {tServices('cta')}
-                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                  </Link>
-                </Button>
-              </div>
-            </ScrollFadeIn>
           </div>
         </section>
 
