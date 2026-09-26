@@ -1,176 +1,186 @@
-'use client';
-
-import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
+import { ArrowUpRight } from 'lucide-react';
 import { FirebaseImage } from '@/components/ui/firebase-image';
-import { ArrowRight, Sparkles, Tag, ExternalLink } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { getLocalizedPath } from '@/lib/i18n-helpers';
+import type { Locale } from '@/i18n/config';
 import type { Project } from '@/lib/definitions';
-import { useLocale } from 'next-intl';
-import ScrollFadeIn from '@/components/site/scroll-fade-in';
-import { SectionHeader } from '@/components/site/section-header';
 
-interface HomeProjectContentProps {
-  projects: Project[];
-}
+type ProjectSummary = Omit<Project, 'content' | 'gallery'>;
 
-export function HomeProjectContent({ projects }: HomeProjectContentProps) {
-  const locale = useLocale();
-  if (projects.length === 0) {
+const COPY = {
+  it: {
+    title: 'Lavori recenti',
+    lead: 'Siti e piattaforme che abbiamo progettato e scritto per aziende in Italia e all’estero. Sono tutti online: puoi visitarli.',
+    all: (n: number) => `Tutti i ${n} progetti`,
+    caseStudy: 'Leggi il caso studio',
+    visit: (host: string) => `Visita ${host}`,
+    stack: 'Stack',
+    categories: { corporate: 'Sito aziendale', 'landing-page': 'Landing page', 'e-commerce': 'E-commerce' },
+  },
+  en: {
+    title: 'Recent work',
+    lead: 'Websites and platforms we designed and built for companies in Italy and abroad. They are all live: you can visit them.',
+    all: (n: number) => `All ${n} projects`,
+    caseStudy: 'Read the case study',
+    visit: (host: string) => `Visit ${host}`,
+    stack: 'Stack',
+    categories: { corporate: 'Company website', 'landing-page': 'Landing page', 'e-commerce': 'E-commerce' },
+  },
+} as const;
+
+function hostOf(url?: string) {
+  if (!url) return null;
+  try {
+    return new URL(url).hostname.replace(/^www\./, '');
+  } catch {
     return null;
   }
+}
+
+/**
+ * "Recent work" — server component. Each project is presented as its real,
+ * live website (a minimal browser frame showing the domain) next to what was
+ * built and, where the project has them, measured results. The hero already
+ * features the showcase project, so these are the next ones (see
+ * selectHomeProjects).
+ */
+export function HomeProjectContent({
+  projects,
+  total,
+  locale,
+}: {
+  projects: ProjectSummary[];
+  total: number;
+  locale: Locale;
+}) {
+  if (projects.length === 0) return null;
+  const copy = COPY[locale];
+  const allHref = getLocalizedPath('/projects', locale);
 
   return (
-    <section className="relative w-full py-16 md:py-24 overflow-hidden suspense-reveal" suppressHydrationWarning>
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-secondary/20 to-background" />
+    <section id="lavori" className="scroll-mt-24 bg-background py-20 md:py-28 lg:py-32">
+      <div className="container mx-auto px-5 md:px-8">
+        <header className="grid gap-6 border-b border-border pb-10 md:grid-cols-12 md:items-end md:pb-14">
+          <h2 className="font-display text-[2.6rem] font-bold leading-[1] tracking-[-0.03em] text-foreground md:col-span-6 md:text-6xl">
+            {copy.title}
+          </h2>
+          <div className="md:col-span-5 md:col-start-8">
+            <p className="text-lg leading-relaxed text-muted-foreground">{copy.lead}</p>
+            <Link
+              href={allHref}
+              className="mt-4 inline-block font-medium text-foreground underline decoration-border decoration-2 underline-offset-[6px] transition-colors hover:decoration-primary"
+            >
+              {copy.all(total)}
+            </Link>
+          </div>
+        </header>
 
-      <div className="container relative z-10 px-4 md:px-8">
-        {/* Header */}
-        <SectionHeader
-          eyebrow="Portfolio"
-          eyebrowIcon={<Tag className="w-3.5 h-3.5" />}
-          title="I Nostri"
-          titleHighlight="Ultimi Lavori"
-          subtitle="Dai un'occhiata ad alcuni dei progetti che abbiamo realizzato con passione per i nostri clienti."
-          className="mb-10 md:mb-14"
-        />
+        <ul className="divide-y divide-border">
+          {projects.map((p) => {
+            const host = hostOf(p.projectUrl);
+            const category =
+              p.category && p.category in copy.categories
+                ? copy.categories[p.category as keyof typeof copy.categories]
+                : null;
+            const meta = [category, p.year].filter(Boolean).join(', ');
+            const href = getLocalizedPath(`/projects/${p.slug}`, locale);
 
-        {/* Featured Project + Grid Layout */}
-        {projects.length > 0 && projects[0] && (
-          <div className="space-y-6 md:space-y-8">
-            {/* Featured Project - First item */}
-            <ScrollFadeIn animation="fade-up" delay={100}>
-              <Link href={`/${locale}/projects/${projects[0]?.slug || ''}`} title={projects[0]?.title} className="block group" aria-label={projects[0]?.title}>
-                <Card className="relative overflow-hidden holographic-card neon-border transition-all duration-700 hover:shadow-2xl hover:shadow-primary/20">
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
-                    {/* Image Side */}
-                    <div className="relative aspect-video lg:aspect-auto lg:h-[500px] overflow-hidden">
-                      {projects[0]?.featuredImage && (
-                        <FirebaseImage
-                          alt={projects[0]?.title || 'Project'}
-                          className="object-cover transition-all duration-700 group-hover:scale-105"
-                          src={projects[0].featuredImage}
-                          fill
-                          data-ai-hint="creative design"
-                        />
-                      )}
-                      {/* Gradient overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-background/80 lg:block hidden" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent lg:hidden" />
-                      
-                      {/* Featured Badge */}
-                      <div className="absolute top-4 left-4 md:top-6 md:left-6">
-                        <Badge className="badge-futuristic shadow-lg px-3 md:px-4 py-1 md:py-1.5 text-xs md:text-sm">
-                          <Sparkles className="w-3 h-3 mr-1 md:mr-2" />
-                          Progetto in Evidenza
-                        </Badge>
-                      </div>
-                    </div>
-                    
-                    {/* Content Side */}
-                    <div className="relative p-5 md:p-8 lg:p-12 flex flex-col justify-center">
-                      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                      
-                      <div className="relative z-10">
-                        <Badge variant="outline" className="mb-3 md:mb-4 border-primary/30 text-primary text-xs md:text-sm">
-                          <Tag className="w-3 h-3 mr-1 md:mr-2" />
-                          Web Development
-                        </Badge>
-                        
-                        <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3 md:mb-4 text-foreground group-hover:text-primary transition-colors duration-300">
-                          {projects[0]?.title || ''}
-                        </h3>
-                        
-                        <p className="text-base md:text-lg text-muted-foreground mb-4 md:mb-6 leading-relaxed line-clamp-3">
-                          {projects[0]?.description || ''}
-                        </p>
-                        
-                        <div className="flex items-center gap-4">
-                          <span className="inline-flex items-center text-primary font-semibold group-hover:underline text-sm md:text-base">
-                            Scopri il Progetto
-                            <ArrowRight className="w-4 h-4 md:w-5 md:h-5 ml-2 transition-transform group-hover:translate-x-2" />
-                          </span>
+            return (
+              <li key={p.id || p.slug} className="group relative grid gap-8 py-12 md:py-16 lg:grid-cols-12 lg:gap-12">
+                {/* What was built */}
+                <div className="flex min-w-0 flex-col lg:col-span-5">
+                  <p className="text-sm">
+                    <span className="font-semibold text-foreground">{p.clientName}</span>
+                    {meta && <span className="mt-0.5 block text-muted-foreground">{meta}</span>}
+                  </p>
+
+                  <h3 className="mt-5 font-display text-2xl font-bold leading-tight tracking-[-0.02em] text-foreground md:text-[1.9rem]">
+                    {/* Stretched link: the whole row opens the case study. */}
+                    <Link href={href} className="after:absolute after:inset-0 after:content-['']">
+                      {p.title}
+                    </Link>
+                  </h3>
+
+                  <p className="mt-4 line-clamp-3 leading-relaxed text-muted-foreground">{p.description}</p>
+
+                  {p.metrics?.length ? (
+                    <dl className="mt-8 grid grid-cols-3 gap-5 border-t border-border pt-6">
+                      {p.metrics.slice(0, 3).map((m) => (
+                        <div key={m.label} className="flex min-w-0 flex-col-reverse">
+                          <dt className="mt-1 text-xs leading-snug text-muted-foreground">{m.label}</dt>
+                          <dd className="font-display text-3xl font-bold tracking-[-0.02em] text-foreground">
+                            {m.value}
+                          </dd>
                         </div>
-                      </div>
+                      ))}
+                    </dl>
+                  ) : p.highlights?.length ? (
+                    <ul className="mt-8 space-y-2 border-t border-border pt-6 text-sm text-foreground/80">
+                      {p.highlights.slice(0, 3).map((h) => (
+                        <li key={h} className="flex gap-3">
+                          <span aria-hidden className="mt-2 h-1 w-3 shrink-0 bg-primary" />
+                          <span>{h}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : p.technologies?.length ? (
+                    <p className="mt-8 border-t border-border pt-6 text-sm text-muted-foreground">
+                      <span className="font-medium text-foreground">{copy.stack}</span>{' '}
+                      {p.technologies.join(', ')}
+                    </p>
+                  ) : null}
+
+                  <div className="relative z-10 mt-8 flex flex-wrap items-center gap-x-8 gap-y-3 text-sm font-medium lg:mt-auto lg:pt-8">
+                    <span className="text-primary underline decoration-primary/30 underline-offset-[6px] transition-colors group-hover:decoration-primary">
+                      {copy.caseStudy}
+                    </span>
+                    {host && (
+                      <a
+                        href={p.projectUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground"
+                      >
+                        {copy.visit(host)}
+                        <ArrowUpRight aria-hidden className="h-4 w-4" />
+                      </a>
+                    )}
+                  </div>
+                </div>
+
+                {/* The live site — first on phones (the site is the proof),
+                    beside the text from lg. DOM order keeps the title first. */}
+                <div className="order-first min-w-0 lg:order-none lg:col-span-7">
+                  <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-shadow duration-500 group-hover:shadow-xl">
+                    <div className="flex items-center border-b border-border bg-muted/60 px-3 py-2">
+                      <span className="truncate rounded-md bg-background px-3 py-1 font-mono text-xs text-muted-foreground">
+                        {host ?? p.clientName}
+                      </span>
+                    </div>
+                    <div className="relative aspect-[16/10] overflow-hidden bg-muted">
+                      <FirebaseImage
+                        src={p.featuredImage}
+                        alt={p.title}
+                        fill
+                        sizes="(min-width: 1280px) 700px, (min-width: 1024px) 56vw, 100vw"
+                        className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                      />
                     </div>
                   </div>
-                </Card>
-              </Link>
-            </ScrollFadeIn>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
 
-            {/* Remaining Projects Grid */}
-            {projects.length > 1 && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
-                {projects.slice(1).map((project, index) => (
-                  <ScrollFadeIn key={project.id || project.slug || index} animation="fade-up" delay={(index + 1) * 100}>
-                    <Link href={`/${locale}/projects/${project.slug}`} title={project.title} className="block group" aria-label={project.title}>
-                      <Card className="relative overflow-hidden h-[300px] md:h-[400px] holographic-card neon-border transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 md:hover:-translate-y-2">
-                        {/* Background Image */}
-                        {project.featuredImage && (
-                          <FirebaseImage
-                            alt={project.title || 'Project'}
-                            className="object-cover transition-all duration-700 group-hover:scale-110"
-                            src={project.featuredImage}
-                            fill
-                            data-ai-hint="creative design"
-                          />
-                        )}
-                        
-                        {/* Gradient overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/20 group-hover:from-black/95 group-hover:via-black/60 transition-all duration-500" />
-                        
-                        {/* Decorative corner accent */}
-                        <div className="hidden md:block absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-primary/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                        
-                        {/* Badge at top */}
-                        <div className="absolute top-4 left-4 md:top-6 md:left-6 z-20">
-                          <Badge variant="secondary" className="bg-white/20 backdrop-blur-sm border-0 text-white text-xs">
-                            <Tag className="w-3 h-3 mr-1 md:mr-2" />
-                            Progetto
-                          </Badge>
-                        </div>
-
-                        {/* Content */}
-                        <div className="relative z-10 h-full flex flex-col justify-end p-5 md:p-8 text-white">
-                          {/* Bottom content */}
-                          <div className="relative transition-transform duration-500 ease-out md:group-hover:-translate-y-4">
-                            <p className="text-xl md:text-2xl font-bold mb-0">
-                              {project.title}
-                            </p>
-
-                            <div className="max-h-0 overflow-hidden opacity-0 group-hover:max-h-24 group-hover:opacity-100 transition-all duration-500 ease-out">
-                              <p className="text-white/80 text-sm mt-2 mb-2">
-                                {project.description?.split(/(?<=[.!?])\s+/).slice(0, 2).join(' ')}
-                              </p>
-                              <span className="inline-flex items-center text-primary text-sm font-medium group-hover:underline">
-                                Scopri di più
-                                <ArrowRight className="w-3.5 h-3.5 ml-1 transition-transform group-hover:translate-x-1" />
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      </Card>
-                    </Link>
-                  </ScrollFadeIn>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* CTA Button */}
-        <ScrollFadeIn animation="fade-up" delay={400}>
-          <div className="text-center mt-10 md:mt-16">
-            <Button asChild size="lg" className="group neon-glow w-full sm:w-auto">
-              <Link href={`/${locale}/projects`} title="Vedi Tutti i Progetti di Studio Faraj" className="flex items-center justify-center gap-2">
-                Vedi Tutti i Progetti
-                <ExternalLink className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </Link>
-            </Button>
-          </div>
-        </ScrollFadeIn>
+        <div className="border-t border-border pt-10">
+          <Link
+            href={allHref}
+            className="font-display text-2xl font-bold tracking-[-0.02em] text-foreground underline decoration-border decoration-2 underline-offset-8 transition-colors hover:decoration-primary md:text-3xl"
+          >
+            {copy.all(total)}
+          </Link>
+        </div>
       </div>
     </section>
   );

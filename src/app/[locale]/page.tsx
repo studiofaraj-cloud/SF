@@ -47,7 +47,6 @@ import { SectionHeader } from '@/components/site/section-header';
 // Server Components
 import { HomeProjectSection } from '@/components/site/home-project-section';
 import { HomeBlogSection } from '@/components/site/home-blog-section';
-import { HomeProjectSkeleton } from '@/components/site/home-project-skeleton';
 import { HomeBlogSkeleton } from '@/components/site/home-blog-skeleton';
 
 // Use ISR instead of static prerendering to avoid Turbopack worker timeouts on this large page
@@ -244,6 +243,10 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
             workaround for a client-only hero is no longer needed — and hidden
             text stuffed with keywords is what Google's spam policies describe. */}
         <HeroSection locale={currentLocale} />
+
+        {/* Recent work — straight after the hero: the work is the pitch. No
+            Suspense: the hero already awaited the same cached projects read. */}
+        <HomeProjectSection locale={currentLocale} />
 
         {/* ============================================
             TECHNOLOGIES SECTION
@@ -499,13 +502,6 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
             </ScrollFadeIn>
           </div>
         </section>
-
-        {/* ============================================
-            LATEST PROJECTS
-            ============================================ */}
-        <Suspense fallback={<HomeProjectSkeleton />}>
-          <HomeProjectSection />
-        </Suspense>
 
         {/* ============================================
             LATEST BLOG

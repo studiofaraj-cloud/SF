@@ -5,6 +5,7 @@ import { FirebaseImage } from '@/components/ui/firebase-image';
 import { getProjectsAction } from '@/lib/actions';
 import { getAggregateRating } from '@/lib/google-reviews';
 import { getLocalizedPath } from '@/lib/i18n-helpers';
+import { selectHomeProjects } from '@/lib/showcase';
 import type { Locale } from '@/i18n/config';
 import type { Project } from '@/lib/definitions';
 
@@ -77,12 +78,7 @@ export async function HeroSection({ locale }: { locale: Locale }) {
   // sections further down the page rather than issuing fresh reads.
   let showcase: Project | null = null;
   try {
-    const published = (await getProjectsAction()).filter(
-      (p: Project) => p.published && p.featuredImage,
-    );
-    // Prefer the most recent project with measured results; fall back to the
-    // most recent one.
-    showcase = published.find((p: Project) => p.metrics?.length) ?? published[0] ?? null;
+    showcase = selectHomeProjects(await getProjectsAction()).showcase;
   } catch {
     showcase = null;
   }
