@@ -950,14 +950,6 @@
       "titlePart2": "your business.",
       "payoff": "A web development studio in Padova, Italy. We turn ideas into fast, accessible digital products built to last — code crafted by hand, designed to scale with you."
     },
-    "stats": {
-      "title": "Our Numbers",
-      "projects": "Completed Projects",
-      "clients": "Satisfied Clients",
-      "experience": "Years of Experience",
-      "support": "24/7 Support",
-      "technologies": "Technologies Mastered"
-    },
     "services": {
       "badge": "Services",
       "title": "Digital Solutions for",
@@ -1098,20 +1090,6 @@
         "title": "Ambitious Vision",
         "description": "Hussein Faraj leads Studio Faraj towards ambitious goals: becoming a reference point in the digital sector, constantly innovating and exceeding client expectations with excellent technological solutions."
       },
-      "stats": {
-        "experience": {
-          "label": "Years of Experience",
-          "value": "5+"
-        },
-        "clients": {
-          "label": "Satisfied Clients",
-          "value": "100+"
-        },
-        "projects": {
-          "label": "Completed Projects",
-          "value": "200+"
-        }
-      },
       "cta": "Learn More About Our Team"
     },
     "projects": {
@@ -1187,14 +1165,6 @@
       "dateRequired": "Date Required",
       "dateRequiredDesc": "Select a date for the call."
     }
-  },
-  "stats": {
-    "projects": "Completed Projects",
-    "clients": "Satisfied Clients",
-    "experience": "Years of Experience",
-    "technologies": "Technologies Mastered",
-    "sinceLabel": "Since 2020",
-    "sinceTagline": "serving people who build businesses"
   },
   "contact": {
     "badge": "Contact Us",

@@ -980,14 +980,6 @@
       "titlePart2": "il tuo business.",
       "payoff": "Studio di sviluppo web a Padova. Trasformiamo idee in prodotti digitali veloci, accessibili e fatti per durare — codice scritto a mano, pensato per crescere con te."
     },
-    "stats": {
-      "title": "I Nostri Numeri",
-      "projects": "Progetti Completati",
-      "clients": "Clienti Soddisfatti",
-      "experience": "Anni di Esperienza",
-      "support": "Supporto 24/7",
-      "technologies": "Tecnologie Padroneggiate"
-    },
     "services": {
       "badge": "Servizi",
       "title": "Soluzioni Digitali",
@@ -1128,20 +1120,6 @@
         "title": "Visione Ambiziosa",
         "description": "Hussein Faraj guida Studio Faraj verso obiettivi ambiziosi: diventare un punto di riferimento nel settore digitale, innovando costantemente e superando le aspettative dei clienti con soluzioni tecnologiche d'eccellenza."
       },
-      "stats": {
-        "experience": {
-          "label": "Anni di Esperienza",
-          "value": "5+"
-        },
-        "clients": {
-          "label": "Clienti Soddisfatti",
-          "value": "100+"
-        },
-        "projects": {
-          "label": "Progetti Completati",
-          "value": "200+"
-        }
-      },
       "cta": "Scopri di Più sul Nostro Team"
     },
     "projects": {
@@ -1217,14 +1195,6 @@
       "dateRequired": "Data Richiesta",
       "dateRequiredDesc": "Seleziona una data per la chiamata."
     }
-  },
-  "stats": {
-    "projects": "Progetti Completati",
-    "clients": "Clienti Soddisfatti",
-    "experience": "Anni di Esperienza",
-    "technologies": "Tecnologie Padroneggiate",
-    "sinceLabel": "Dal 2020",
-    "sinceTagline": "al servizio di chi fa impresa"
   },
   "contact": {
     "badge": "Contattaci",

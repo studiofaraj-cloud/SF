@@ -40,7 +40,6 @@ import { HeroSection } from '@/components/site/hero-section';
 import { ClientMessages } from '@/components/i18n/client-messages';
 import HomeCtaSection from '@/components/site/home-cta-section';
 import { TestimonialsServer } from '@/components/site/testimonials-server';
-import StatsSection from '@/components/site/stats-section';
 import ScrollFadeIn from '@/components/site/scroll-fade-in';
 import { TechSectionMobile } from '@/components/site/tech-section-mobile';
 import { ServicesGrid } from '@/components/site/services-grid';
@@ -238,16 +237,13 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
   ];
 
   return (
-    <ClientMessages locale={currentLocale} namespaces={['home', 'quoteDialog', 'serverActions', 'stats']}>
+    <ClientMessages locale={currentLocale} namespaces={['home', 'quoteDialog', 'serverActions']}>
       <div className="bg-background text-foreground" suppressHydrationWarning>
         {/* The hidden keyword-stuffed <h1 class="sr-only"> that used to sit here is
             gone: HeroSection renders the real, visible <h1> server-side, so the
             workaround for a client-only hero is no longer needed — and hidden
             text stuffed with keywords is what Google's spam policies describe. */}
         <HeroSection locale={currentLocale} />
-
-        {/* Stats Section */}
-        <StatsSection />
 
         {/* ============================================
             TECHNOLOGIES SECTION
