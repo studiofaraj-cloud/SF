@@ -62,7 +62,7 @@ function MobileNav({ onSearchOpen }: { onSearchOpen: () => void }) {
     return (
         <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
             <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="md:hidden hover:bg-primary/10 text-foreground" aria-label="Open mobile menu">
+                <Button variant="ghost" size="icon" className="lg:hidden hover:bg-primary/10 text-foreground" aria-label="Open mobile menu">
                     <Menu className="h-6 w-6" />
                 </Button>
             </SheetTrigger>
@@ -218,7 +218,7 @@ function DesktopNav({ onSearchOpen }: { onSearchOpen: () => void }) {
     const locale = useLocale();
     return (
         <>
-         <div className="hidden flex-1 items-center justify-between md:flex h-full">
+         <div className="hidden flex-1 items-center justify-between lg:flex h-full">
             <Link href="/" title="Studio Faraj — Home" className="mr-4 md:mr-6 flex items-center space-x-2 h-full">
               <Image src="/assets/logo.png" alt="Studio Faraj Logo" width={32} height={32} className="md:w-8 md:h-8 lg:w-10 lg:h-10 flex-shrink-0" unoptimized />
               <span className="font-brand font-semibold text-sm md:text-base lg:text-lg whitespace-nowrap brand-wordmark">Studio Faraj</span>
@@ -286,16 +286,16 @@ export function SiteHeader() {
             scrolled ? 'h-12 md:h-14' : 'h-14 md:h-16'
           )}
         >
-          <div className="hidden md:flex flex-1 relative z-10 h-full items-center">
+          <div className="hidden lg:flex flex-1 relative z-10 h-full items-center">
             <DesktopNav onSearchOpen={handleSearchOpen} />
           </div>
-          <div className="flex items-center md:hidden relative z-10 h-full">
+          <div className="flex items-center lg:hidden relative z-10 h-full">
             <Link href="/" title="Studio Faraj — Home" className="flex items-center space-x-2 h-full">
               <Image src="/assets/logo.png" alt="Studio Faraj Logo" width={32} height={32} className="md:w-8 md:h-8 flex-shrink-0" unoptimized />
               <span className="font-brand font-semibold text-sm md:text-base whitespace-nowrap brand-wordmark">Studio Faraj</span>
             </Link>
           </div>
-          <div className="md:hidden relative z-10 flex items-center h-full gap-2">
+          <div className="lg:hidden relative z-10 flex items-center h-full gap-2">
             {mounted ? (
               <>
                 <ThemeToggle />
