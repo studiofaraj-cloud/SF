@@ -55,12 +55,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
   const currentLocale = (locale === 'it' || locale === 'en' ? locale : 'it') as Locale;
 
-  let blog: Blog | null = null;
-  try {
-    blog = await getBlogBySlugAction(slug);
-  } catch {
-    // handled below
-  }
+  // A failed read throws rather than falling through to "not found" — see the page below.
+  const blog: Blog | null = await getBlogBySlugAction(slug);
 
   if (!blog || !blog.published) {
     return { title: 'Articolo non trovato | Studio Faraj' };
@@ -96,13 +92,10 @@ export default async function BlogPostPage({ params }: Props) {
   const currentLocale = (locale === 'it' || locale === 'en' ? locale : 'it') as Locale;
   setRequestLocale(currentLocale);
 
-  // Fetch post
-  let blog: Blog | null = null;
-  try {
-    blog = await getBlogBySlugAction(slug);
-  } catch {
-    notFound();
-  }
+  // Fetch post. Only a post that doesn't exist is a 404: a failed read throws,
+  // so Next keeps serving the last good version of this page instead of
+  // caching "not found" for a real article.
+  const blog: Blog | null = await getBlogBySlugAction(slug);
 
   if (!blog || !blog.published) notFound();
 

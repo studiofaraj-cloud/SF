@@ -867,7 +867,8 @@ export async function getBlogs(filters?: {
     }
 
     const q = query(blogsRef, ...constraints);
-    const querySnapshot = await getDocs(q);
+    // FromServer so an offline SDK throws instead of returning [] (see queryReviews).
+    const querySnapshot = await getDocsFromServer(q);
 
     return querySnapshot.docs.map((doc) => ({
       id: doc.id,
@@ -908,7 +909,8 @@ export async function getBlogBySlug(slug: string): Promise<Blog | null> {
 
     const blogsRef = collection(db, COLLECTIONS.BLOGS);
     const q = query(blogsRef, where('slug', '==', slug.trim()), limit(1));
-    const querySnapshot = await getDocs(q);
+    // FromServer so an offline SDK throws instead of reporting "not found" (see queryReviews).
+    const querySnapshot = await getDocsFromServer(q);
 
     if (querySnapshot.empty) {
       return null;
@@ -984,7 +986,8 @@ export async function getProjects(filters?: {
     }
 
     const q = query(projectsRef, ...constraints);
-    const querySnapshot = await getDocs(q);
+    // FromServer so an offline SDK throws instead of returning [] (see queryReviews).
+    const querySnapshot = await getDocsFromServer(q);
 
     return querySnapshot.docs.map((doc) => ({
       id: doc.id,
@@ -1025,7 +1028,8 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
 
     const projectsRef = collection(db, COLLECTIONS.PROJECTS);
     const q = query(projectsRef, where('slug', '==', slug.trim()), limit(1));
-    const querySnapshot = await getDocs(q);
+    // FromServer so an offline SDK throws instead of reporting "not found" (see queryReviews).
+    const querySnapshot = await getDocsFromServer(q);
 
     if (querySnapshot.empty) {
       return null;

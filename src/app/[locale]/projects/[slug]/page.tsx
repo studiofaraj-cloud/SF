@@ -43,12 +43,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
   const currentLocale = (locale === 'it' || locale === 'en' ? locale : 'it') as Locale;
 
-  let project: Project | null = null;
-  try {
-    project = await getProjectBySlugAction(slug);
-  } catch {
-    // handled below
-  }
+  // A failed read throws rather than falling through to "not found" — see the page below.
+  const project: Project | null = await getProjectBySlugAction(slug);
 
   if (!project || !project.published) {
     return { title: 'Progetto non trovato | Studio Faraj' };
@@ -79,12 +75,10 @@ export default async function ProjectPostPage({ params }: Props) {
   const currentLocale = (locale === 'it' || locale === 'en' ? locale : 'it') as Locale;
   setRequestLocale(currentLocale);
 
-  let project: Project | null = null;
-  try {
-    project = await getProjectBySlugAction(slug);
-  } catch {
-    notFound();
-  }
+  // Only a project that doesn't exist is a 404: a failed read throws, so Next
+  // keeps serving the last good version of this page instead of caching
+  // "not found" for a real project.
+  const project: Project | null = await getProjectBySlugAction(slug);
 
   if (!project || !project.published) notFound();
 
