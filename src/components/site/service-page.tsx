@@ -1,19 +1,17 @@
 import Link from 'next/link';
 import type { CSSProperties, ReactNode } from 'react';
 import { ArrowRight, ArrowUpRight, Check } from 'lucide-react';
-import { FirebaseImage } from '@/components/ui/firebase-image';
 import { getLocalizedPath } from '@/lib/i18n-helpers';
-import { categoryLabel, hostOf } from '@/lib/project-display';
 import { SERVICES, serviceGroupsFor, type ServiceSlug } from '@/lib/services-catalog';
 import type { ServiceLocalKey } from '@/lib/service-local-content';
 import type { Locale } from '@/i18n/config';
-import type { Project } from '@/lib/definitions';
 import HomeCtaSection from './home-cta-section';
 import { RevealWords } from './reveal-words';
 import { ServiceLocal } from './service-local';
+import { ServicePanel, type ServiceProof } from './service-panel';
 import { ServiceQuoteButton } from './service-quote-button';
 
-export type ServiceProof = Pick<Project, 'slug' | 'title' | 'clientName' | 'year' | 'category' | 'featuredImage' | 'projectUrl'>;
+export type { ServiceProof };
 
 export type ServiceSection =
   | { kind: 'steps'; title: string; items: { title: string; description: string; meta?: string }[] }
@@ -34,6 +32,8 @@ export type ServicePageContent = {
   primary?: { label: string; href: string };
   /** Second hero button; defaults to the portfolio. */
   secondary?: { label: string; href: string };
+  /** The hero panel's list; defaults to the feature titles. */
+  panel?: string[];
   /** Heading of the features section; defaults to "Cosa facciamo". */
   featuresTitle?: string;
   features: { title: string; description: string }[];
@@ -48,8 +48,6 @@ const COPY = {
   it: {
     services: 'Servizi',
     work: 'Guarda i lavori',
-    proof: 'Un progetto reale',
-    caseStudy: 'Leggi il caso studio',
     get: 'Cosa ottieni',
     what: 'Cosa facciamo',
     others: 'Altri servizi',
@@ -57,8 +55,6 @@ const COPY = {
   en: {
     services: 'Services',
     work: 'See the work',
-    proof: 'A real project',
-    caseStudy: 'Read the case study',
     get: 'What you get',
     what: 'What we do',
     others: 'Other services',
@@ -158,16 +154,16 @@ function Section({ section, locale }: { section: ServiceSection; locale: Locale 
 
 /**
  * A /servizi/* page — server component. Hero with the page's H1 and, beside
- * it, a real portfolio project for the service (or what the client gets, when
- * no project shows it honestly), then what we do, the page's own sections,
+ * it, what the client gets, naming a real portfolio project of the kind when
+ * one shows it honestly; then what we do, the page's own sections,
  * the Italian local-SEO block with its FAQ, links to the other services and
  * the closing call to action. The only client code is the quote button.
  */
 export function ServicePage({ content, proof, locale }: { content: ServicePageContent; proof: ServiceProof | null; locale: Locale }) {
   const copy = COPY[locale];
   const service = SERVICES[content.slug];
-  // Beside the H1: the real project, or else the list of what the page covers.
-  const aside = proof !== null || content.features.length > 0;
+  // Beside the H1: what the client gets, with the real project as an example.
+  const panelItems = content.panel ?? content.features.map((f) => f.title);
   const others = serviceGroupsFor(locale)
     .flatMap((g) => g.services)
     .filter((s) => s !== content.slug);
@@ -189,7 +185,7 @@ export function ServicePage({ content, proof, locale }: { content: ServicePageCo
         </nav>
 
         <div className="mt-8 grid gap-12 lg:grid-cols-12 lg:items-center lg:gap-12">
-          <div className={`min-w-0 ${aside ? 'lg:col-span-6' : 'lg:col-span-9'}`}>
+          <div className={`min-w-0 ${panelItems.length > 0 ? 'lg:col-span-6' : 'lg:col-span-9'}`}>
             <h1 className="font-display text-[2.6rem] font-extrabold leading-[0.98] tracking-[-0.035em] md:text-6xl lg:text-[4.2rem]">
               {content.title}
             </h1>
@@ -225,60 +221,9 @@ export function ServicePage({ content, proof, locale }: { content: ServicePageCo
             )}
           </div>
 
-          {aside && (
+          {panelItems.length > 0 && (
             <div className="min-w-0 lg:col-span-6">
-              {proof ? (
-                <figure>
-                  <Link href={getLocalizedPath(`/projects/${proof.slug}`, locale)} className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
-                    <div className="overflow-clip rounded-2xl border border-border bg-card shadow-[0_40px_90px_-40px_rgba(10,22,40,0.45)]">
-                      <div className="flex items-center gap-3 border-b border-border bg-muted/60 px-4 py-2.5">
-                        <span aria-hidden className="flex gap-1.5">
-                          <span className="h-2.5 w-2.5 rounded-full bg-border" />
-                          <span className="h-2.5 w-2.5 rounded-full bg-border" />
-                          <span className="h-2.5 w-2.5 rounded-full bg-border" />
-                        </span>
-                        <span className="truncate rounded-md bg-background px-3 py-1 font-mono text-xs text-muted-foreground">
-                          {hostOf(proof.projectUrl) ?? proof.clientName}
-                        </span>
-                      </div>
-                      <div className="relative aspect-[16/10] bg-muted">
-                        <FirebaseImage
-                          src={proof.featuredImage}
-                          alt={proof.title}
-                          fill
-                          priority
-                          sizes="(min-width: 1280px) 600px, (min-width: 1024px) 50vw, 100vw"
-                          className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.02]"
-                        />
-                      </div>
-                    </div>
-                    <figcaption className="mt-4 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-                      <span className="text-sm">
-                        <span className={MONO}>{copy.proof}</span>
-                        <span className="mt-1 block font-semibold">
-                          {[proof.clientName, categoryLabel(proof.category, locale), proof.year].filter(Boolean).join(' · ')}
-                        </span>
-                      </span>
-                      <span className="inline-flex items-center gap-1 text-sm font-medium text-primary">
-                        {copy.caseStudy}
-                        <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                      </span>
-                    </figcaption>
-                  </Link>
-                </figure>
-              ) : (
-                <div className="rounded-3xl bg-navy p-8 text-white md:p-10">
-                  <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-white/50">{content.featuresTitle ?? copy.get}</p>
-                  <ol className="mt-6 divide-y divide-white/10">
-                    {content.features.map((f, i) => (
-                      <li key={f.title} className="flex items-baseline gap-5 py-3.5">
-                        <span className="w-6 shrink-0 font-mono text-xs text-sky-300">{String(i + 1).padStart(2, '0')}</span>
-                        <span className="font-display text-lg font-semibold tracking-[-0.01em] md:text-xl">{f.title}</span>
-                      </li>
-                    ))}
-                  </ol>
-                </div>
-              )}
+              <ServicePanel label={copy.get} items={panelItems} example={proof} locale={locale} />
             </div>
           )}
         </div>

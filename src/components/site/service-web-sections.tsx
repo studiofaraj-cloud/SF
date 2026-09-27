@@ -1,14 +1,12 @@
 import Link from 'next/link';
 import type { CSSProperties } from 'react';
-import { ArrowRight, Check } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { getLocalizedPath } from '@/lib/i18n-helpers';
-import { hostOf } from '@/lib/project-display';
 import type { Locale } from '@/i18n/config';
-import { BrowserFrame } from './project-case-study';
 import { RevealWords } from './reveal-words';
+import { ServicePanel, type ServiceProof } from './service-panel';
 import { ServiceQuoteButton } from './service-quote-button';
 import { FaqSection } from './service-faq';
-import type { ServiceProof } from './service-page';
 
 /*
  * The sections only /servizi/sviluppo-web has, fed by its
@@ -33,12 +31,9 @@ function Header({ title, lead }: { title: string; lead?: string }) {
   );
 }
 
-const CAPTION: Record<Locale, { example: string; read: string }> = {
-  it: { example: 'Ad esempio', read: 'Leggi il caso studio' },
-  en: { example: 'For example', read: 'Read the case study' },
-};
+const INCLUDES: Record<Locale, string> = { it: 'Cosa include', en: "What's included" };
 
-/** The three ways the studio works with a client, each beside a real project of that kind. */
+/** The three ways the studio works with a client: what each includes, and a real project of that kind. */
 export function WebScenarios({
   m,
   examples,
@@ -57,7 +52,6 @@ export function WebScenarios({
       <div className="mt-12 space-y-16 md:mt-16 md:space-y-24">
         {(['vetrina', 'dashboard', 'platform'] as const).map((k, i) => {
           const x = a[k];
-          const ex = examples[k];
           return (
             <article key={k} className="grid gap-10 border-t border-border pt-10 lg:grid-cols-12 lg:items-center lg:gap-14">
               <div className={`min-w-0 lg:col-span-6 ${i % 2 === 1 ? 'lg:order-2' : ''}`}>
@@ -69,16 +63,6 @@ export function WebScenarios({
                 {x.painLine && (
                   <blockquote className="mt-5 border-l-2 border-primary pl-4 leading-relaxed text-foreground/80">{x.painLine}</blockquote>
                 )}
-                <ul className="mt-6 space-y-2.5">
-                  {(x.bullets as string[]).map((b) => (
-                    <li key={b} className="flex items-start gap-3 leading-relaxed">
-                      <span aria-hidden className="mt-1 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">
-                        <Check className="h-3 w-3" strokeWidth={3} />
-                      </span>
-                      {b}
-                    </li>
-                  ))}
-                </ul>
                 {Array.isArray(x.examples) && x.examples.length > 0 && (
                   <div className="mt-6">
                     <p className="text-sm font-semibold">{x.examplesTitle}</p>
@@ -97,28 +81,9 @@ export function WebScenarios({
                 </div>
               </div>
 
-              {ex && (
-                <figure className={`rv-img min-w-0 [--rv-r:1rem] lg:col-span-6 ${i % 2 === 1 ? 'lg:order-1' : ''}`}>
-                  <Link href={getLocalizedPath(`/projects/${ex.slug}`, locale)} className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
-                    <BrowserFrame
-                      src={ex.featuredImage}
-                      host={hostOf(ex.projectUrl) ?? ex.clientName ?? ''}
-                      alt={ex.title}
-                      sizes="(min-width: 1280px) 600px, (min-width: 1024px) 50vw, 100vw"
-                    />
-                    <figcaption className="mt-4 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 text-sm">
-                      <span>
-                        <span className={MONO}>{CAPTION[locale].example}</span>
-                        <span className="mt-1 block font-semibold">{ex.clientName}</span>
-                      </span>
-                      <span className="inline-flex items-center gap-1 font-medium text-primary">
-                        {CAPTION[locale].read}
-                        <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                      </span>
-                    </figcaption>
-                  </Link>
-                </figure>
-              )}
+              <div className={`rv min-w-0 lg:col-span-6 ${i % 2 === 1 ? 'lg:order-1' : ''}`}>
+                <ServicePanel label={INCLUDES[locale]} items={x.bullets as string[]} example={examples[k]} locale={locale} />
+              </div>
             </article>
           );
         })}

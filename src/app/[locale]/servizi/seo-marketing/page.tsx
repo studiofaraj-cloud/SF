@@ -3,7 +3,7 @@ import { ServicePage } from '@/components/site/service-page';
 import { buildServiceContent, getServiceProof } from '@/lib/service-content';
 import type { Locale } from '@/i18n/config';
 
-// Refreshed hourly, like the portfolio project it shows.
+// Refreshed hourly, like the portfolio project it cites.
 export const revalidate = 3600;
 
 export default async function SeoMarketingPage({ params }: { params: Promise<{ locale: string }> }) {

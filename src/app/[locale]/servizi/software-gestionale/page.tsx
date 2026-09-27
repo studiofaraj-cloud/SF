@@ -29,7 +29,7 @@ import {
 
 type Props = { params: Promise<{ locale: string }> };
 
-// Refreshed hourly, like the portfolio project it shows.
+// Refreshed hourly, like the portfolio project it cites.
 export const revalidate = 3600;
 
 const PATH = '/servizi/software-gestionale';
@@ -234,6 +234,15 @@ export default async function GestionalePage({ params }: Props) {
     quoteLabel: 'Parliamo del vostro processo',
     quoteMessage: 'Vorrei valutare un software gestionale su misura per la nostra azienda.',
     secondary: { label: 'Come lavoriamo su un\'idea', href: '/dall-idea-al-progetto' },
+    // What the client gets, as the page itself states it (table, approach, FAQ).
+    panel: [
+      'Costruito sul vostro processo',
+      'Integrato con quello che già usate',
+      'Rapportini e dati anche da telefono',
+      'Nessun canone per utente',
+      'Codice e dati vostri',
+      'Cresce con l\'uso reale',
+    ],
     featuresTitle: 'Quando serve davvero',
     features: SIGNS,
     sections: [

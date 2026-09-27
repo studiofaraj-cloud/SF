@@ -142,12 +142,10 @@ export async function getServiceProof(slug: ServiceSlug): Promise<ServiceProof |
   const proofSlug = SERVICES[slug].proof;
   if (!proofSlug) return null;
   try {
-    const p = ((await getProjectsAction()) as Project[]).find((x) => x.slug === proofSlug && x.published && x.featuredImage);
-    return p
-      ? { slug: p.slug, title: p.title, clientName: p.clientName, year: p.year, category: p.category, featuredImage: p.featuredImage, projectUrl: p.projectUrl }
-      : null;
+    const p = ((await getProjectsAction()) as Project[]).find((x) => x.slug === proofSlug && x.published);
+    return p ? { slug: p.slug, title: p.title, clientName: p.clientName, year: p.year, category: p.category } : null;
   } catch {
-    // The portfolio is unavailable: the page shows what the client gets instead.
+    // The portfolio is unavailable: the page names no example.
     return null;
   }
 }

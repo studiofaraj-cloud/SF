@@ -6,7 +6,7 @@ import { SERVICES } from '@/lib/services-catalog';
 import type { Locale } from '@/i18n/config';
 import type { Project } from '@/lib/definitions';
 
-// Refreshed hourly, like the portfolio projects it shows.
+// Refreshed hourly, like the portfolio projects it cites.
 export const revalidate = 3600;
 
 /** A real project for each of the three scenarios. */
@@ -31,15 +31,13 @@ export default async function SviluppoWebPage({ params }: { params: Promise<{ lo
 
   let projects: Project[] = [];
   try {
-    projects = ((await getProjectsAction()) as Project[]).filter((p) => p.published && p.featuredImage);
+    projects = ((await getProjectsAction()) as Project[]).filter((p) => p.published);
   } catch {
     // Portfolio unavailable: the page renders without the example projects.
   }
   const proofOf = (slug?: string): ServiceProof | undefined => {
     const p = projects.find((x) => x.slug === slug);
-    return p
-      ? { slug: p.slug, title: p.title, clientName: p.clientName, year: p.year, category: p.category, featuredImage: p.featuredImage, projectUrl: p.projectUrl }
-      : undefined;
+    return p ? { slug: p.slug, title: p.title, clientName: p.clientName, year: p.year, category: p.category } : undefined;
   };
 
   const content: ServicePageContent = {
@@ -48,6 +46,10 @@ export default async function SviluppoWebPage({ params }: { params: Promise<{ lo
     lead: m.hero.subtitle,
     notes: Object.values(m.hero.trust as Record<string, string>),
     quoteLabel: m.hero.ctaQuote,
+    // The hero panel lists the feature titles; the page's own sections replace the features list.
+    panel: Object.values(messages.services.webDevelopment.features as Record<string, unknown>)
+      .filter((f): f is { title: string } => !!f && typeof f === 'object' && typeof (f as { title?: unknown }).title === 'string')
+      .map((f) => f.title),
     features: [],
     sections: [
       {
