@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { getLocalizedPath } from '@/lib/i18n-helpers';
 import type { Locale } from '@/i18n/config';
+import { RevealWords } from './reveal-words';
 
 export type HomeBlogPost = {
   id: string;
@@ -40,8 +41,8 @@ export function HomeBlogContent({ posts, locale }: { posts: HomeBlogPost[]; loca
     <section className="bg-background py-20 md:py-28 lg:py-32">
       <div className="container mx-auto px-5 md:px-8">
         <header className="grid gap-6 md:grid-cols-12 md:items-end">
-          <h2 className="font-display text-[2.4rem] font-bold leading-[1.02] tracking-[-0.03em] text-foreground md:col-span-6 md:text-[3.4rem]">
-            {copy.title}
+          <h2 className="rv-title font-display text-[2.4rem] font-bold leading-[1.02] tracking-[-0.03em] text-foreground md:col-span-6 md:text-[3.4rem]">
+            <RevealWords text={copy.title} />
           </h2>
           <div className="md:col-span-5 md:col-start-8">
             <p className="text-lg leading-relaxed text-muted-foreground">{copy.lead}</p>
@@ -55,8 +56,8 @@ export function HomeBlogContent({ posts, locale }: { posts: HomeBlogPost[]; loca
         </header>
 
         <ul className="mt-12 divide-y divide-border border-y border-border md:mt-16">
-          {posts.map((post) => (
-            <li key={post.id || post.slug} className="group relative grid gap-3 py-8 md:grid-cols-12 md:gap-8 md:py-10">
+          {posts.map((post, pi) => (
+            <li key={post.id || post.slug} style={{ '--i': pi } as React.CSSProperties} className="rv group relative grid gap-3 py-8 md:grid-cols-12 md:gap-8 md:py-10">
               <p className="text-sm text-muted-foreground md:col-span-3">
                 {post.createdAt && <time dateTime={post.createdAt}>{dateFormat.format(new Date(post.createdAt))}</time>}
                 <span className="block">{copy.minutes(post.minutes)}</span>

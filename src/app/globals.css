@@ -1304,3 +1304,174 @@ select {
    ============================================ */
 [data-slot="sheet-overlay"] { z-index: 60; }
 
+
+/* ============================================
+   HOMEPAGE MOTION (scroll-driven, CSS only)
+   ============================================
+   No JavaScript: every reveal is tied to the element's own position in the
+   viewport. All of it sits behind @supports and prefers-reduced-motion, so
+   browsers without scroll-driven animations, reduced motion and crawlers get
+   the final, static page (a crawler's tall render viewport also puts every
+   element past its reveal). Only opacity, translate/rotate/scale and
+   clip-path animate: no layout shift.
+
+   Ranges are in pixels after an element's top enters the viewport ("entry
+   0% → entry 230px"), so the pace is the same on every screen and element
+   height, and everything finishes before the page can run out of scroll.
+   --i staggers siblings or words. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* Titles: each word rises out of its own slot, straightening as it goes. */
+    .rv-title { view-timeline: --rv-title block; }
+    .rv-title .rw {
+      display: inline-block;
+      clip-path: inset(-0.25em -0.2em -0.3em -0.2em);
+    }
+    .rv-title .rw-i {
+      display: inline-block;
+      transform-origin: 0 100%;
+      animation: rv-word cubic-bezier(0.2, 0.7, 0.2, 1) both;
+      animation-timeline: --rv-title;
+      animation-range: entry calc(var(--i, 0) * 24px) entry calc(180px + var(--i, 0) * 24px);
+    }
+
+    /* Blocks: rise and fade in. */
+    .rv {
+      animation: rv-rise cubic-bezier(0.2, 0.7, 0.2, 1) both;
+      animation-timeline: view();
+      animation-range: entry calc(var(--i, 0) * 50px) entry calc(230px + var(--i, 0) * 50px);
+    }
+
+    /* Numbers roll up in their slot. */
+    .rv-slot {
+      display: inline-block;
+      clip-path: inset(-0.1em -0.1em -0.15em -0.1em);
+    }
+    .rv-slot > * {
+      display: inline-block;
+      animation: rv-word cubic-bezier(0.2, 0.7, 0.2, 1) both;
+      animation-timeline: view();
+      animation-range: entry calc(40px + var(--i, 0) * 50px) entry calc(220px + var(--i, 0) * 50px);
+    }
+
+    /* Heavy rules draw from the left (the border itself is hidden). */
+    .rv-rule-t, .rv-rule-b { position: relative; }
+    .rv-rule-t { border-top-color: transparent; }
+    .rv-rule-b { border-bottom-color: transparent; }
+    .rv-rule-t::before, .rv-rule-b::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: hsl(var(--foreground));
+      transform-origin: 0 50%;
+      animation: rv-draw cubic-bezier(0.6, 0, 0.2, 1) both;
+      animation-timeline: view();
+      animation-range: entry calc(var(--i, 0) * 50px) entry calc(260px + var(--i, 0) * 50px);
+    }
+    .rv-rule-t::before { top: -2px; }
+    .rv-rule-b::after { bottom: -2px; }
+
+    /* Tools appear left to right, as if typed: one sweep per row (one
+       animation per list, not per tool, keeps the count low). */
+    .rv-type {
+      animation: rv-type linear both;
+      animation-timeline: view();
+      animation-range: entry 20px entry 240px;
+    }
+
+    /* Images: a curtain rises while the photo settles from a slight zoom. */
+    .rv-img {
+      animation: rv-curtain cubic-bezier(0.6, 0, 0.2, 1) both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 320px;
+    }
+    .rv-img img {
+      animation: rv-settle cubic-bezier(0.2, 0.7, 0.2, 1) both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 360px;
+    }
+
+    /* The featured review fills with ink, line after line, as it's read. */
+    .rv-ink {
+      color: transparent;
+      background-image:
+        linear-gradient(hsl(var(--foreground)), hsl(var(--foreground))),
+        linear-gradient(hsl(var(--foreground) / 0.2), hsl(var(--foreground) / 0.2));
+      background-size: 0% 100%, 100% 100%;
+      background-repeat: no-repeat;
+      -webkit-background-clip: text;
+      background-clip: text;
+      animation: rv-ink linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 460px;
+    }
+
+    /* The projects rail glides in from the right. */
+    .rv-rail {
+      animation: rv-slide cubic-bezier(0.2, 0.7, 0.2, 1) both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 320px;
+    }
+
+    /* The closing call to action slides up, like the sheet it is drawn as. */
+    .rv-sheet {
+      animation: rv-sheet cubic-bezier(0.2, 0.7, 0.2, 1) both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 360px;
+    }
+
+    /* Leaving the hero: text and code window drift apart, for depth. */
+    .rv-exit-a, .rv-exit-b {
+      animation: rv-exit-a linear both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 100%;
+    }
+    .rv-exit-b { animation-name: rv-exit-b; }
+  }
+}
+@media (forced-colors: active) {
+  .rv-ink { color: CanvasText; background: none; }
+}
+@keyframes rv-word {
+  from { translate: 0 110%; rotate: 6deg; }
+  to   { translate: 0 0; rotate: 0deg; }
+}
+@keyframes rv-rise {
+  from { opacity: 0; translate: 0 32px; }
+  to   { opacity: 1; translate: 0 0; }
+}
+@keyframes rv-draw {
+  from { scale: 0 1; }
+  to   { scale: 1 1; }
+}
+@keyframes rv-type {
+  from { opacity: 0.15; clip-path: inset(0 100% 0 0); }
+  to   { opacity: 1; clip-path: inset(0 0 0 0); }
+}
+@keyframes rv-curtain {
+  from { clip-path: inset(100% 0 0 0 round var(--rv-r, 0px)); }
+  to   { clip-path: inset(0 0 0 0 round var(--rv-r, 0px)); }
+}
+@keyframes rv-settle {
+  from { scale: 1.18; }
+  to   { scale: 1; }
+}
+@keyframes rv-ink {
+  to { background-size: 100% 100%, 100% 100%; }
+}
+@keyframes rv-slide {
+  from { opacity: 0; translate: 14% 0; }
+  to   { opacity: 1; translate: 0 0; }
+}
+@keyframes rv-sheet {
+  from { translate: 0 110px; }
+  to   { translate: 0 0; }
+}
+@keyframes rv-exit-a {
+  to { translate: 0 90px; opacity: 0.2; }
+}
+@keyframes rv-exit-b {
+  to { translate: 0 36px; opacity: 0.55; }
+}

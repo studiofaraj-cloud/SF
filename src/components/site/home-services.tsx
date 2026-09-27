@@ -3,6 +3,7 @@ import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { getLocalizedPath } from '@/lib/i18n-helpers';
 import type { Locale } from '@/i18n/config';
+import { RevealWords } from './reveal-words';
 
 type Service = { name: string; line: string; href: string };
 type Group = { title: string; about: string; services: Service[] };
@@ -94,16 +95,16 @@ export function HomeServices({ locale }: { locale: Locale }) {
     <section id="services" className="scroll-mt-24 bg-secondary/50 py-20 md:py-28 lg:py-32">
       <div className="container mx-auto px-5 md:px-8">
         <header className="grid gap-6 md:grid-cols-12 md:items-end">
-          <h2 className="font-display text-[2.4rem] font-bold leading-[1.02] tracking-[-0.03em] text-foreground md:col-span-7 md:text-[3.4rem]">
-            {copy.title}
+          <h2 className="rv-title font-display text-[2.4rem] font-bold leading-[1.02] tracking-[-0.03em] text-foreground md:col-span-7 md:text-[3.4rem]">
+            <RevealWords text={copy.title} />
           </h2>
-          <p className="text-lg leading-relaxed text-muted-foreground md:col-span-4 md:col-start-9">{copy.lead}</p>
+          <p className="rv text-lg leading-relaxed text-muted-foreground md:col-span-4 md:col-start-9" style={{ '--i': 1 } as React.CSSProperties}>{copy.lead}</p>
         </header>
 
         <div className="mt-14 grid gap-12 md:mt-20 lg:grid-cols-3 lg:gap-10">
-          {copy.groups.map((group) => (
-            <div key={group.title} className="min-w-0">
-              <div className="border-b-2 border-foreground pb-4">
+          {copy.groups.map((group, gi) => (
+            <div key={group.title} className="rv min-w-0" style={{ '--i': gi } as React.CSSProperties}>
+              <div className="rv-rule-b border-b-2 border-foreground pb-4">
                 <h3 className="font-display text-2xl font-bold tracking-[-0.02em] text-foreground md:text-[1.75rem]">
                   {group.title}
                 </h3>
@@ -134,7 +135,7 @@ export function HomeServices({ locale }: { locale: Locale }) {
           ))}
         </div>
 
-        <div className="mt-14 flex flex-col gap-6 border-t border-border pt-10 md:mt-20 md:flex-row md:items-center md:justify-between">
+        <div className="rv mt-14 flex flex-col gap-6 border-t border-border pt-10 md:mt-20 md:flex-row md:items-center md:justify-between">
           <p className="max-w-xl text-lg leading-relaxed text-foreground">{copy.ctaLead}</p>
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-8">
             <Button asChild size="lg" className="min-h-[52px] px-7 text-base font-semibold">

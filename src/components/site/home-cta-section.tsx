@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { getLocalizedPath } from '@/lib/i18n-helpers';
+import { RevealWords } from './reveal-words';
 
 const MAPS_URL =
   'https://www.google.com/maps/search/?api=1&query=Studio%20Faraj%2C%20Via%20Ludovico%20Ariosto%2042%2C%2035128%20Padova&query_place_id=ChIJV_YxeITzBAERefznEKaDrkc';
@@ -41,16 +42,19 @@ export default function HomeCtaSection({ locale }: { locale: 'it' | 'en' }) {
   return (
     // Rises like a bottom sheet: rounded top corners, a grabber, a soft shadow
     // on the section above. Its only neighbour above uses bg-background.
-    <section className="relative overflow-hidden rounded-t-[clamp(28px,6vw,112px)] bg-navy text-white shadow-[0_-30px_80px_-40px_rgba(10,22,40,0.5)]">
+    <section className="rv-sheet relative overflow-clip rounded-t-[clamp(28px,6vw,112px)] bg-navy text-white shadow-[0_-30px_80px_-40px_rgba(10,22,40,0.5)]">
       <div aria-hidden className="tech-grid pointer-events-none absolute inset-0 opacity-70" />
       <div aria-hidden className="absolute left-1/2 top-3 h-1.5 w-12 -translate-x-1/2 rounded-full bg-white/25 md:top-5 md:w-16" />
       <div className="container relative mx-auto grid gap-14 px-5 py-20 md:px-8 md:py-28 lg:grid-cols-12 lg:gap-10 lg:py-32">
         <div className="lg:col-span-7">
-          <h2 className="text-balance font-display text-[2.6rem] font-extrabold leading-[0.98] tracking-[-0.035em] md:text-6xl lg:text-[4.2rem]">
-            {copy.title[0]} <span className="block">{copy.title[1]}</span>
+          <h2 className="rv-title text-balance font-display text-[2.6rem] font-extrabold leading-[0.98] tracking-[-0.035em] md:text-6xl lg:text-[4.2rem]">
+            <RevealWords text={copy.title[0]} />{' '}
+            <span className="block">
+              <RevealWords text={copy.title[1]} offset={copy.title[0].split(' ').length} />
+            </span>
           </h2>
-          <p className="mt-7 max-w-xl text-lg leading-relaxed text-white/70">{copy.lead}</p>
-          <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+          <p className="rv mt-7 max-w-xl text-lg leading-relaxed text-white/70" style={{ '--i': 1 } as React.CSSProperties}>{copy.lead}</p>
+          <div className="rv mt-10 flex flex-col gap-3 sm:flex-row" style={{ '--i': 2 } as React.CSSProperties}>
             <Button asChild size="lg" className="min-h-[52px] px-7 text-base font-semibold">
               <Link href={getLocalizedPath('/inizia', locale)}>{copy.start}</Link>
             </Button>
@@ -65,7 +69,7 @@ export default function HomeCtaSection({ locale }: { locale: 'it' | 'en' }) {
           </div>
         </div>
 
-        <dl className="self-end border-t border-white/15 lg:col-span-4 lg:col-start-9">
+        <dl style={{ '--i': 1 } as React.CSSProperties} className="rv self-end border-t border-white/15 lg:col-span-4 lg:col-start-9">
           {contacts.map((c) => (
             <div key={c.label} className="border-b border-white/15 py-5">
               <dt className="text-sm text-white/50">{c.label}</dt>

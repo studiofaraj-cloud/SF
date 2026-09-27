@@ -1,5 +1,6 @@
 import type { Locale } from '@/i18n/config';
 import { SectionEdge } from './section-edge';
+import { RevealWords } from './reveal-words';
 
 type Layer = { name: string; tools: string[]; why: string };
 
@@ -66,18 +67,18 @@ export function HomeStack({ locale }: { locale: Locale }) {
       <SectionEdge shape="wave" edge="bottom" />
       <div className="container mx-auto px-5 md:px-8">
         <header className="grid gap-6 md:grid-cols-12 md:items-end">
-          <h2 className="font-display text-[2.4rem] font-bold leading-[1.02] tracking-[-0.03em] md:col-span-6 md:text-[3.4rem]">
-            {copy.title}
+          <h2 className="rv-title font-display text-[2.4rem] font-bold leading-[1.02] tracking-[-0.03em] md:col-span-6 md:text-[3.4rem]">
+            <RevealWords text={copy.title} />
           </h2>
-          <p className="text-lg leading-relaxed text-white/60 md:col-span-5 md:col-start-8">{copy.lead}</p>
+          <p className="rv text-lg leading-relaxed text-white/60 md:col-span-5 md:col-start-8" style={{ '--i': 1 } as React.CSSProperties}>{copy.lead}</p>
         </header>
 
         <dl className="mt-14 border-t border-white/15 md:mt-20">
           {copy.layers.map((layer) => (
-            <div key={layer.name} className="grid gap-3 border-b border-white/15 py-7 md:grid-cols-12 md:gap-8 md:py-8">
+            <div key={layer.name} className="rv grid gap-3 border-b border-white/15 py-7 md:grid-cols-12 md:gap-8 md:py-8">
               <dt className="font-display text-xl font-bold tracking-[-0.01em] md:col-span-3 md:text-2xl">{layer.name}</dt>
               <dd className="md:col-span-9">
-                <ul className="flex flex-wrap gap-x-6 gap-y-2 font-mono text-[15px] text-sky-300">
+                <ul className="rv-type flex flex-wrap gap-x-6 gap-y-2 font-mono text-[15px] text-sky-300">
                   {layer.tools.map((tool) => (
                     <li key={tool}>{tool}</li>
                   ))}

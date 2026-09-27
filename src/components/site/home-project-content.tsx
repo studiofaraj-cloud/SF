@@ -5,6 +5,7 @@ import { getLocalizedPath } from '@/lib/i18n-helpers';
 import type { Locale } from '@/i18n/config';
 import type { Project } from '@/lib/definitions';
 import { WorkRail } from './work-rail';
+import { RevealWords } from './reveal-words';
 
 type ProjectSummary = Omit<Project, 'content' | 'gallery'>;
 
@@ -67,10 +68,10 @@ export function HomeProjectContent({
     >
       <div className="container mx-auto px-5 md:px-8">
         <header className="grid gap-6 md:grid-cols-12 md:items-end">
-          <h2 className="font-display text-[2.6rem] font-bold leading-[1] tracking-[-0.03em] text-foreground md:col-span-6 md:text-6xl">
-            {copy.title}
+          <h2 className="rv-title font-display text-[2.6rem] font-bold leading-[1] tracking-[-0.03em] text-foreground md:col-span-6 md:text-6xl">
+            <RevealWords text={copy.title} />
           </h2>
-          <div className="md:col-span-5 md:col-start-8">
+          <div className="rv md:col-span-5 md:col-start-8" style={{ '--i': 1 } as React.CSSProperties}>
             <p className="text-lg leading-relaxed text-muted-foreground">{copy.lead}</p>
             <Link
               href={allHref}
@@ -82,7 +83,7 @@ export function HomeProjectContent({
         </header>
       </div>
 
-      <div className="mt-10 md:mt-14">
+      <div className="rv-rail mt-10 md:mt-14">
         <WorkRail count={projects.length} labels={copy.rail}>
           {projects.map((p, i) => {
             const host = hostOf(p.projectUrl);

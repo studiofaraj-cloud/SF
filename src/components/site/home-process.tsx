@@ -1,4 +1,5 @@
 import type { Locale } from '@/i18n/config';
+import { RevealWords } from './reveal-words';
 
 const COPY: Record<Locale, { title: string; lead: string; steps: { title: string; text: string }[] }> = {
   it: {
@@ -31,17 +32,19 @@ export function HomeProcess({ locale }: { locale: Locale }) {
     <section className="bg-background py-20 md:py-28 lg:py-32">
       <div className="container mx-auto px-5 md:px-8">
         <header className="grid gap-6 md:grid-cols-12 md:items-end">
-          <h2 className="font-display text-[2.4rem] font-bold leading-[1.02] tracking-[-0.03em] text-foreground md:col-span-6 md:text-[3.4rem]">
-            {copy.title}
+          <h2 className="rv-title font-display text-[2.4rem] font-bold leading-[1.02] tracking-[-0.03em] text-foreground md:col-span-6 md:text-[3.4rem]">
+            <RevealWords text={copy.title} />
           </h2>
-          <p className="text-lg leading-relaxed text-muted-foreground md:col-span-5 md:col-start-8">{copy.lead}</p>
+          <p className="rv text-lg leading-relaxed text-muted-foreground md:col-span-5 md:col-start-8" style={{ '--i': 1 } as React.CSSProperties}>{copy.lead}</p>
         </header>
 
         <ol className="mt-14 grid gap-10 sm:grid-cols-2 md:mt-20 lg:grid-cols-4 lg:gap-8">
           {copy.steps.map((step, i) => (
-            <li key={step.title} className="border-t-2 border-foreground pt-6">
-              <span aria-hidden className="font-display text-4xl font-bold tracking-[-0.02em] text-primary">
-                {String(i + 1).padStart(2, '0')}
+            <li key={step.title} className="rv rv-rule-t border-t-2 border-foreground pt-6" style={{ '--i': i } as React.CSSProperties}>
+              <span aria-hidden className="rv-slot">
+                <span className="font-display text-4xl font-bold tracking-[-0.02em] text-primary">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
               </span>
               <h3 className="mt-4 font-display text-xl font-bold tracking-[-0.01em] text-foreground">{step.title}</h3>
               <p className="mt-2 leading-relaxed text-muted-foreground">{step.text}</p>

@@ -2,6 +2,7 @@ import { Star } from 'lucide-react';
 import type { PlaceSummary, GoogleReview } from '@/lib/google-reviews';
 import type { Locale } from '@/i18n/config';
 import { ReviewAvatar } from './review-avatar';
+import { RevealWords } from './reveal-words';
 
 const GOOGLE_REVIEWS_URL = 'https://www.google.com/maps/place/?q=place_id:ChIJV_YxeITzBAERefznEKaDrkc';
 // Longest review that still reads well as the large pull-quote.
@@ -91,11 +92,11 @@ export default function TestimonialsSection({ place, locale }: { place: PlaceSum
     <section className="bg-secondary/50 py-20 md:py-28 lg:py-32">
       <div className="container mx-auto px-5 md:px-8">
         <header className="grid gap-5 md:grid-cols-12 md:items-end">
-          <h2 className="font-display text-[2.4rem] font-bold leading-[1.02] tracking-[-0.03em] text-foreground md:col-span-7 md:text-[3.4rem]">
-            {copy.title}
+          <h2 className="rv-title font-display text-[2.4rem] font-bold leading-[1.02] tracking-[-0.03em] text-foreground md:col-span-7 md:text-[3.4rem]">
+            <RevealWords text={copy.title} />
           </h2>
           {place.isLive && place.totalRatings > 0 && (
-            <p className="flex items-center gap-3 text-muted-foreground md:col-span-5 md:justify-end">
+            <p className="rv flex items-center gap-3 text-muted-foreground md:col-span-5 md:justify-end" style={{ '--i': 1 } as React.CSSProperties}>
               <Stars rating={place.rating} />
               {copy.rating(ratingValue, Math.round(place.rating * 10) >= 50)}
             </p>
@@ -104,9 +105,9 @@ export default function TestimonialsSection({ place, locale }: { place: PlaceSum
 
         <figure className="mt-12 grid gap-8 border-t border-border pt-10 md:mt-16 lg:grid-cols-12 lg:gap-12">
           <blockquote className="font-display text-[1.45rem] font-medium leading-snug tracking-[-0.015em] text-foreground md:text-[2rem] lg:col-span-9">
-            “{featured.text}”
+            <span className="rv-ink">“{featured.text}”</span>
           </blockquote>
-          <div className="lg:col-span-3 lg:self-end">
+          <div className="rv lg:col-span-3 lg:self-end">
             <Reviewer review={featured} googleLabel={copy.google} />
           </div>
         </figure>
@@ -116,7 +117,7 @@ export default function TestimonialsSection({ place, locale }: { place: PlaceSum
             role="region"
             aria-label={copy.more}
             tabIndex={0}
-            className="-mx-5 mt-14 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-4 [scrollbar-width:thin] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:-mx-8 md:mt-20 md:px-8"
+            className="rv -mx-5 mt-14 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-4 [scrollbar-width:thin] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:-mx-8 md:mt-20 md:px-8"
           >
             {others.map((r, i) => (
               <figure

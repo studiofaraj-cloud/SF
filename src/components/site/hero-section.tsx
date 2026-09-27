@@ -188,11 +188,11 @@ export async function HeroSection({ locale }: { locale: Locale }) {
     : null;
 
   return (
-    <section id="hero" className="relative overflow-hidden bg-navy text-white">
+    <section id="hero" className="relative overflow-clip bg-navy text-white">
       <HeroPointer targetId="hero" />
-      <div className="container relative mx-auto grid gap-14 px-5 pb-20 pt-32 md:px-8 lg:min-h-[92svh] lg:grid-cols-12 lg:items-center lg:gap-10 lg:pb-24 lg:pt-36">
+      <div className="container relative mx-auto grid gap-14 px-5 pb-20 pt-32 md:px-8 lg:min-h-[min(92svh,60rem)] lg:grid-cols-12 lg:items-center lg:gap-10 lg:pb-24 lg:pt-36">
         {/* ── Statement ─────────────────────────────────────────────────── */}
-        <div className="min-w-0 lg:col-span-6">
+        <div className="rv-exit-a min-w-0 lg:col-span-6">
           <h1 className="font-display text-[3.25rem] font-extrabold leading-[0.93] tracking-[-0.035em] sm:text-7xl lg:text-[4.6rem] xl:text-[5.6rem]">
             {copy.h1a} <span className="block">{copy.h1b}</span>
           </h1>
@@ -242,7 +242,7 @@ export async function HeroSection({ locale }: { locale: Locale }) {
         </div>
 
         {/* ── Code → product ────────────────────────────────────────────── */}
-        <div className="min-w-0 lg:col-span-6">
+        <div className="rv-exit-b min-w-0 lg:col-span-6">
           <CodeWindow locale={locale} copy={copy} />
         </div>
       </div>

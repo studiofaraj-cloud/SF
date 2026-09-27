@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { getLocalizedPath } from '@/lib/i18n-helpers';
 import type { Locale } from '@/i18n/config';
+import { RevealWords } from './reveal-words';
 
 const COPY: Record<
   Locale,
@@ -50,7 +51,7 @@ export function HomeStudio({ locale }: { locale: Locale }) {
         {/* Phones: a small portrait beside the name, so the heading isn't a
             full screen away. From lg: the large portrait. */}
         <figure className="flex items-center gap-4 lg:col-span-4 lg:block">
-          <div className="relative aspect-square w-24 shrink-0 overflow-hidden rounded-xl bg-muted lg:w-full lg:max-w-[22rem]">
+          <div className="rv-img relative aspect-square w-24 shrink-0 overflow-clip rounded-xl bg-muted [--rv-r:0.75rem] lg:w-full lg:max-w-[22rem]">
             <Image
               src="/assets/hussein-faraj-fondatore-studio-faraj.webp"
               alt={copy.alt}
@@ -66,14 +67,14 @@ export function HomeStudio({ locale }: { locale: Locale }) {
         </figure>
 
         <div className="lg:col-span-8">
-          <h2 className="font-display text-[2.4rem] font-bold leading-[1.02] tracking-[-0.03em] text-foreground md:text-[3.4rem]">
-            {copy.title}
+          <h2 className="rv-title font-display text-[2.4rem] font-bold leading-[1.02] tracking-[-0.03em] text-foreground md:text-[3.4rem]">
+            <RevealWords text={copy.title} />
           </h2>
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">{copy.body}</p>
+          <p className="rv mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground" style={{ '--i': 1 } as React.CSSProperties}>{copy.body}</p>
 
           <ul className="mt-12 grid gap-8 md:grid-cols-3 md:gap-6">
-            {copy.principles.map((p) => (
-              <li key={p.title} className="border-t border-border pt-5">
+            {copy.principles.map((p, pi) => (
+              <li key={p.title} className="rv border-t border-border pt-5" style={{ '--i': pi } as React.CSSProperties}>
                 <h3 className="font-display text-lg font-bold tracking-[-0.01em] text-foreground">{p.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{p.text}</p>
               </li>
