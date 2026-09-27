@@ -1715,6 +1715,8 @@
       "placeholder": "Your email",
       "subscribe": "Subscribe",
       "success": "Success!",
+      "done": "You're subscribed: thank you!",
+      "failed": "We couldn't subscribe you. Check the address and try again.",
       "error": "Error"
     },
     "badges": {

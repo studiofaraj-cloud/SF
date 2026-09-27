@@ -1745,6 +1745,8 @@
       "placeholder": "La tua email",
       "subscribe": "Iscriviti",
       "success": "Successo!",
+      "done": "Iscrizione completata: grazie!",
+      "failed": "Iscrizione non riuscita. Controlla l'indirizzo e riprova.",
       "error": "Errore"
     },
     "badges": {

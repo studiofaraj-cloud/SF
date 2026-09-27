@@ -7,7 +7,6 @@ import { Input } from '@/components/ui/input';
 import Image from 'next/image';
 import { useActionState } from 'react';
 import { createSubscriber } from '@/lib/actions';
-import { useToast } from '@/hooks/use-toast';
 import { useEffect, useRef } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { useTranslations, useLocale } from 'next-intl';
@@ -19,23 +18,17 @@ const STUDIO_MAPS_URL =
 
 function NewsletterForm() {
   const formRef = useRef<HTMLFormElement>(null);
-  const { toast } = useToast();
   const t = useTranslations('footer');
   const locale = useLocale();
   const [state, formAction] = useActionState(createSubscriber, { message: null, success: false });
 
   useEffect(() => {
-    if (state?.message) {
-      toast({
-        title: state.success ? t('newsletter.success') : t('newsletter.error'),
-        description: state.message,
-        variant: state.success ? 'default' : 'destructive',
-      });
-      if (state.success) formRef.current?.reset();
-    }
-  }, [state, toast, t]);
+    if (state?.success) formRef.current?.reset();
+  }, [state]);
 
+  // The result shows under the field (no toast system on the public site).
   return (
+    <>
     <form ref={formRef} action={formAction} className="flex gap-2 w-full">
       <input type="hidden" name="locale" value={locale} />
       <Input
@@ -49,13 +42,18 @@ function NewsletterForm() {
         <Mail className="w-4 h-4" />
       </Button>
     </form>
+    <p role="status" aria-live="polite" className={`mt-2 min-h-[1.25rem] text-xs ${state?.success ? 'text-emerald-700 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}`}>
+      {state?.message ? t(state.success ? 'newsletter.done' : 'newsletter.failed') : null}
+    </p>
+    </>
   );
 }
 
-function FooterLink({ href, children, highlight }: { href: string; children: React.ReactNode; highlight?: boolean }) {
+function FooterLink({ href, children, highlight, prefetch }: { href: string; children: React.ReactNode; highlight?: boolean; prefetch?: boolean }) {
   return (
     <Link
       href={href}
+      prefetch={prefetch}
       className={`flex items-center gap-2 text-sm py-1 transition-colors group ${
         highlight
           ? 'font-medium text-primary hover:text-primary/80'
@@ -212,7 +210,7 @@ export function SiteFooter() {
             </p>
             <ul className="space-y-1">
               <li><FooterLink href={`/${locale}/inizia`} highlight>{locale === 'it' ? 'Inizia il progetto' : 'Start your project'}</FooterLink></li>
-              <li><FooterLink href={`/${locale}/hub/login`}>{locale === 'it' ? 'Area Clienti' : 'Client Area'}</FooterLink></li>
+              <li><FooterLink href={`/${locale}/hub/login`} prefetch={false}>{locale === 'it' ? 'Area Clienti' : 'Client Area'}</FooterLink></li>
               <li><FooterLink href={getLocalizedPath('/servizi/hosting-cloud', locale as any)}>{tServices('hostingCloud.label')}</FooterLink></li>
               <li><FooterLink href={getLocalizedPath('/servizi/consulenza', locale as any)}>{tServices('consulting.label')}</FooterLink></li>
               <li><FooterLink href={getLocalizedPath('/faq', locale as any)}>FAQ</FooterLink></li>

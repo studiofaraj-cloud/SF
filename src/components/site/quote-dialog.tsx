@@ -311,6 +311,7 @@ function QuoteForm({
           </p>
           <Link
             href={`/${locale}/hub/login?mode=register&next=${encodeURIComponent(`/${locale}/hub/requests/new`)}`}
+            prefetch={false}
             className="mt-1.5 inline-flex items-center gap-1 font-semibold text-foreground transition-colors hover:text-primary"
           >
             {t('hub.cta')}

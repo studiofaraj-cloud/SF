@@ -4,7 +4,6 @@ import { notFound } from 'next/navigation';
 import { locales, defaultLocale, type Locale } from '@/i18n/config';
 import { setRequestLocale } from 'next-intl/server';
 import { NextIntlClientProvider } from 'next-intl';
-import { Toaster } from "@/components/ui/toaster"
 import { ThemeProvider } from "next-themes";
 import { CookieConsent } from '@/components/site/cookie-consent';
 import { CookieProvider } from '@/contexts/cookie-context';
@@ -118,7 +117,6 @@ export default async function LocaleLayout({ children, params }: Props) {
             <AppBody rating={googleRating ? { value: googleRating.ratingValue } : null}>
               {children}
             </AppBody>
-            <Toaster />
             <CookieConsent />
             {/* No-ops unless NEXT_PUBLIC_GA_MEASUREMENT_ID is set AND the
                 visitor granted the analytics cookie category. */}

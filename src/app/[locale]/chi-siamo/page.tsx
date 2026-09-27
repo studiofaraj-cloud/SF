@@ -70,7 +70,7 @@ function FounderImage() {
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-primary/10 via-primary/5 to-background">
       {/* Decorative rings */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      <div className="absolute inset-0 overflow-clip pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full border border-primary/10" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 rounded-full border border-primary/15" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full border border-primary/20" />
@@ -196,12 +196,12 @@ export default function ChiSiamoPage() {
   const localeParam = locale as 'it' | 'en';
 
   return (
-    <div className="bg-background text-foreground overflow-x-hidden">
+    <div className="bg-background text-foreground overflow-x-clip">
 
       {/* ══════════════════════════════════════════
           1. HERO
           ══════════════════════════════════════════ */}
-      <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[min(85svh,56rem)] flex items-center justify-center overflow-clip">
         {/* Soft gradient blobs */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute -top-32 -left-32 w-[500px] h-[500px] bg-primary/8 rounded-full blur-[120px]" />
@@ -266,7 +266,7 @@ export default function ChiSiamoPage() {
               <div className="relative mx-auto lg:mx-0 max-w-md lg:max-w-none">
                 {/* Offset shadow border */}
                 <div className="absolute -inset-0 rounded-3xl bg-gradient-to-br from-primary/20 to-primary/5 translate-x-3 translate-y-3" />
-                <div className="relative aspect-[4/5] rounded-3xl overflow-hidden border border-border/60 bg-secondary/50 shadow-2xl shadow-primary/10">
+                <div className="relative aspect-[4/5] rounded-3xl overflow-clip border border-border/60 bg-secondary/50 shadow-2xl shadow-primary/10">
                   <FounderImage />
                 </div>
                 {/* Floating experience badge */}
@@ -344,7 +344,7 @@ export default function ChiSiamoPage() {
             <div className="mt-16 max-w-6xl mx-auto">
               <div className="flex flex-col sm:flex-row items-start gap-6 p-6 md:p-8 rounded-3xl border border-border/60 bg-card hover:border-primary/20 transition-colors duration-300">
                 {/* Photo */}
-                <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden border border-border/60 shrink-0 bg-secondary/50">
+                <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-clip border border-border/60 shrink-0 bg-secondary/50">
                   <CoFounderImage />
                 </div>
                 {/* Info */}
@@ -513,7 +513,7 @@ export default function ChiSiamoPage() {
         <div className="container px-4 sm:px-6">
           <div className="max-w-5xl mx-auto">
             <ScrollFadeIn animation="fade-up">
-              <div className="rounded-3xl border border-border/60 bg-card overflow-hidden">
+              <div className="rounded-3xl border border-border/60 bg-card overflow-clip">
                 {/* Top accent bar */}
                 <div className="h-1 w-full bg-gradient-to-r from-blue-500 via-primary to-violet-500" />
                 <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-border/60">
@@ -573,7 +573,7 @@ export default function ChiSiamoPage() {
       {/* ══════════════════════════════════════════
           7. CTA
           ══════════════════════════════════════════ */}
-      <section className="py-20 md:py-28 relative overflow-hidden">
+      <section className="py-20 md:py-28 relative overflow-clip">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-primary/6 rounded-full blur-[100px]" />
         </div>

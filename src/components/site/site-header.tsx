@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Search } from 'lucide-react';
@@ -12,9 +13,11 @@ import type { Locale } from '@/i18n/config';
 import { HeaderServicesMenu } from './header-services-menu';
 import { LocaleSwitch } from './locale-switch';
 import { MobileMenu, type HeaderRating } from './mobile-menu';
-import { SearchDialog } from './search-dialog';
 import { ServiceQuoteButton } from './service-quote-button';
 import { ThemeToggle } from './theme-toggle';
+
+// Loaded on the first search, not with every page.
+const SearchDialog = dynamic(() => import('./search-dialog').then((m) => m.SearchDialog), { ssr: false });
 
 const COPY = {
   it: {
@@ -59,6 +62,11 @@ export function SiteHeader({ rating = null }: { rating?: HeaderRating }) {
   const pathname = usePathname();
   const copy = COPY[locale];
   const [searchOpen, setSearchOpen] = useState(false);
+  const [searchUsed, setSearchUsed] = useState(false);
+  const openSearch = () => {
+    setSearchUsed(true);
+    setSearchOpen(true);
+  };
   const [scrolled, setScrolled] = useState(false);
   const sentinel = useRef<HTMLSpanElement>(null);
 
@@ -100,7 +108,7 @@ export function SiteHeader({ rating = null }: { rating?: HeaderRating }) {
   return (
     <>
       <span ref={sentinel} aria-hidden className="pointer-events-none absolute left-0 top-0 h-6 w-px" />
-      <SearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
+      {searchUsed && <SearchDialog open={searchOpen} onOpenChange={setSearchOpen} />}
       <header
         className={cn(
           'fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,color] duration-300',
@@ -154,7 +162,8 @@ export function SiteHeader({ rating = null }: { rating?: HeaderRating }) {
           <div className="ml-auto flex items-center gap-0.5 lg:ml-0">
             <button
               type="button"
-              onClick={() => setSearchOpen(true)}
+              onClick={openSearch}
+              onPointerEnter={() => void import('./search-dialog')}
               aria-label={copy.search}
               className={cn('hidden h-10 w-10 place-items-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary lg:grid', tool)}
             >
@@ -164,6 +173,8 @@ export function SiteHeader({ rating = null }: { rating?: HeaderRating }) {
             <LocaleSwitch className={onDark ? 'text-white' : 'text-foreground'} />
             <Link
               href={`/${locale}/hub/login`}
+              // The client area ships the Firebase SDK: don't fetch it for every visitor.
+              prefetch={false}
               title={copy.areaTitle}
               className={cn('hidden h-10 items-center whitespace-nowrap rounded-full px-3 text-sm font-semibold xl:inline-flex', tool)}
             >
@@ -178,7 +189,7 @@ export function SiteHeader({ rating = null }: { rating?: HeaderRating }) {
               <span className="hidden xl:inline">{copy.quote}</span>
             </ServiceQuoteButton>
             {/* Server-rendered: the menu button is there from the first paint. */}
-            <MobileMenu rating={rating} onSearchOpen={() => setSearchOpen(true)} triggerClassName={onDark ? 'text-white hover:bg-white/10' : undefined} />
+            <MobileMenu rating={rating} onSearchOpen={openSearch} triggerClassName={onDark ? 'text-white hover:bg-white/10' : undefined} />
           </div>
         </div>
       </header>

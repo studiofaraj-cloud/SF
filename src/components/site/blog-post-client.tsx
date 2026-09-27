@@ -3,7 +3,7 @@
 import { useState, useEffect, useActionState } from 'react';
 import { FirebaseImage } from '@/components/ui/firebase-image';
 import Link from 'next/link';
-import dynamic from 'next/dynamic';
+import ScrollFadeIn from '@/components/site/scroll-fade-in';
 import {
   ArrowLeft,
   Calendar,
@@ -29,10 +29,6 @@ import type { Blog } from '@/lib/definitions';
 import { contactServices } from '@/lib/definitions';
 import { createSubscriber } from '@/lib/actions';
 
-const ScrollFadeIn = dynamic(
-  () => import('@/components/site/scroll-fade-in'),
-  { ssr: true }
-);
 
 interface BlogPostClientProps {
   blog: Blog;
@@ -126,7 +122,7 @@ export function BlogPostClient({
       ];
 
   return (
-    <div className="bg-background text-foreground overflow-x-hidden pt-20 md:pt-24">
+    <div className="bg-background text-foreground overflow-x-clip pt-20 md:pt-24">
 
       {/* ══════════════════════════════════════════════════════
           READING PROGRESS BAR (fixed, z-[60], above header)
@@ -278,7 +274,7 @@ export function BlogPostClient({
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
                   {blog.gallery.map((imgUrl, i) => (
                     <ScrollFadeIn key={i} animation="scale" delay={i * 80}>
-                      <div className="relative aspect-square rounded-xl overflow-hidden holographic-card neon-border group">
+                      <div className="relative aspect-square rounded-xl overflow-clip holographic-card neon-border group">
                         <FirebaseImage
                           src={imgUrl}
                           alt={`${blog.title} — ${isIT ? 'immagine' : 'image'} ${i + 1}`}
@@ -475,7 +471,7 @@ export function BlogPostClient({
           10. RELATED ARTICLES
           ══════════════════════════════════════════════════════ */}
       {related.length > 0 && (
-        <section className="relative border-t border-border/20 overflow-hidden">
+        <section className="relative border-t border-border/20 overflow-clip">
           <div className="absolute inset-0 bg-secondary/5" />
           <div className="absolute inset-0 opacity-[0.02] bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:3rem_3rem]" />
 
@@ -500,10 +496,10 @@ export function BlogPostClient({
                 <ScrollFadeIn key={post.id} animation="fade-up" delay={idx * 120} className="h-full">
                   <Link
                     href={`/${locale}/blog/${post.slug}`}
-                    className="group flex flex-col h-full rounded-xl overflow-hidden holographic-card neon-border hover:shadow-lg hover:shadow-primary/10 transition-all duration-300"
+                    className="group flex flex-col h-full rounded-xl overflow-clip holographic-card neon-border hover:shadow-lg hover:shadow-primary/10 transition-all duration-300"
                   >
                     {post.featuredImage ? (
-                      <div className="relative h-48 shrink-0 overflow-hidden">
+                      <div className="relative h-48 shrink-0 overflow-clip">
                         <FirebaseImage
                           src={post.featuredImage}
                           alt={post.title}
@@ -514,7 +510,7 @@ export function BlogPostClient({
                         <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent" />
                       </div>
                     ) : (
-                      <div className="h-48 shrink-0 bg-gradient-to-br from-primary/10 via-background to-secondary/10 flex items-center justify-center relative overflow-hidden">
+                      <div className="h-48 shrink-0 bg-gradient-to-br from-primary/10 via-background to-secondary/10 flex items-center justify-center relative overflow-clip">
                         <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:2rem_2rem]" />
                         <div className="h-14 w-14 rounded-full bg-primary/10 flex items-center justify-center neon-border">
                           <BookOpen className="h-6 w-6 text-primary/40" />

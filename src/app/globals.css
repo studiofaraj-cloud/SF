@@ -323,81 +323,18 @@
 
 @layer utilities {
   /* Service detail panel — fast fade+slide used on service switch */
-  .service-panel-enter {
-    animation: service-panel-in 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-  @keyframes service-panel-in {
-    from { opacity: 0; transform: translateY(10px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
 
-  .animate-fade-in-up {
-    animation: fade-in-up 0.8s ease-in-out forwards;
-  }
+  
 
-  .animate-fade-in-down {
-    animation: fade-in-down 0.5s ease-in-out forwards;
-    opacity: 0;
-    animation-fill-mode: forwards;
-  }
+  
 
-  @keyframes fade-in-up {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
+  
 
-  @keyframes fade-in-down {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
+  
 
-  @keyframes fade-out {
-    from { 
-      opacity: 1; 
-    }
-    to { 
-      opacity: 0; 
-      pointer-events: none;
-    }
-  }
-
-  @keyframes loading-bar {
-    0% { width: 0%; }
-    50% { width: 70%; }
-    100% { width: 100%; }
-  }
-
-  .animate-fade-out {
-    animation: fade-out 0.5s ease-out forwards;
-  }
-
-  .animate-loading-bar {
-    animation: loading-bar 1.5s ease-in-out infinite;
-  }
+  
 
   /* Scroll reveal animations */
-  .scroll-reveal {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-  }
-
-  .scroll-reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
 
   @keyframes float {
     0%, 100% { transform: translateY(0); }
@@ -421,14 +358,6 @@
       0 0 40px hsl(var(--primary) / 0.2);
   }
 
-  .neon-glow-intense {
-    box-shadow: 
-      0 0 10px hsl(var(--primary) / 0.8),
-      0 0 30px hsl(var(--primary) / 0.5),
-      0 0 60px hsl(var(--primary) / 0.3),
-      0 0 100px hsl(var(--primary) / 0.2);
-  }
-
   .neon-border {
     border: 1px solid hsl(var(--primary) / 0.5);
     box-shadow:
@@ -442,40 +371,10 @@
      reduce raw HTML weight (and the React Server Components streaming
      payload that mirrors them). No visual change.
      ───────────────────────────────────────────────────────────────────── */
-  .tech-badge {
-    @apply bg-primary/10 text-primary border-primary/20;
-  }
 
   /* Constellation Background */
-  .bg-constellation {
-    position: relative;
-    overflow: hidden;
-  }
 
-  .bg-constellation::before {
-    content: '';
-    position: absolute;
-    top: 0; right: 0; bottom: 0; left: 0;
-    background-image: 
-      radial-gradient(2px 2px at 20px 30px, hsl(var(--primary) / 0.5), transparent),
-      radial-gradient(2px 2px at 40px 70px, hsl(var(--primary) / 0.4), transparent),
-      radial-gradient(1px 1px at 90px 40px, hsl(var(--primary) / 0.6), transparent),
-      radial-gradient(2px 2px at 130px 80px, hsl(var(--primary) / 0.3), transparent),
-      radial-gradient(1px 1px at 160px 120px, hsl(var(--primary) / 0.5), transparent),
-      radial-gradient(2px 2px at 200px 50px, hsl(var(--primary) / 0.4), transparent),
-      radial-gradient(1px 1px at 250px 100px, hsl(var(--primary) / 0.6), transparent),
-      radial-gradient(2px 2px at 300px 60px, hsl(var(--primary) / 0.3), transparent),
-      radial-gradient(1px 1px at 350px 140px, hsl(var(--primary) / 0.5), transparent),
-      radial-gradient(2px 2px at 400px 90px, hsl(var(--primary) / 0.4), transparent);
-    background-size: 450px 200px;
-    animation: constellation-drift 60s linear infinite;
-    pointer-events: none;
-  }
-
-  @keyframes constellation-drift {
-    0% { transform: translate(0, 0); }
-    100% { transform: translate(-450px, -200px); }
-  }
+  
 
   /* Holographic Card Effect */
   .holographic-card {
@@ -526,39 +425,10 @@
   }
 
   /* Animated Gradient Border */
-  .animated-gradient-border {
-    position: relative;
-    background: hsl(var(--card));
-    border-radius: var(--radius);
-  }
 
-  .animated-gradient-border::before {
-    content: '';
-    position: absolute;
-    top: -2px; right: -2px; bottom: -2px; left: -2px;
-    border-radius: inherit;
-    background: linear-gradient(
-      90deg,
-      hsl(var(--primary)),
-      hsl(280, 80%, 60%),
-      hsl(var(--primary)),
-      hsl(180, 80%, 60%),
-      hsl(var(--primary))
-    );
-    background-size: 400% 100%;
-    animation: gradient-rotate 4s linear infinite;
-    z-index: -1;
-  }
-
-  @keyframes gradient-rotate {
-    0% { background-position: 0% 50%; }
-    100% { background-position: 400% 50%; }
-  }
+  
 
   /* Hexagonal Clip Path */
-  .clip-hexagon {
-    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-  }
 
   /* Circuit Board Pattern */
   .bg-circuit {
@@ -603,31 +473,8 @@
   }
 
   /* Particle Float */
-  .particle {
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background: hsl(var(--primary) / 0.6);
-    border-radius: 50%;
-    animation: particle-float 8s ease-in-out infinite;
-  }
 
-  @keyframes particle-float {
-    0%, 100% {
-      transform: translateY(0) translateX(0);
-      opacity: 0;
-    }
-    10% {
-      opacity: 1;
-    }
-    90% {
-      opacity: 1;
-    }
-    100% {
-      transform: translateY(-100px) translateX(20px);
-      opacity: 0;
-    }
-  }
+  
 
   /* Metric Counter Glow */
   .metric-glow {
@@ -902,55 +749,13 @@
    ======================================== */
 
 /* Hero section viewport height — shorter on mobile so users see content below */
-.hero-section-mobile {
-  min-height: 80vh;
-  min-height: -webkit-fill-available;
-}
 
-@supports (min-height: 80svh) {
-  .hero-section-mobile {
-    min-height: 80svh;
-  }
-}
 
-@supports (min-height: 80dvh) {
-  .hero-section-mobile {
-    min-height: 80dvh;
-  }
-}
 
 /* Ken Burns slow zoom on hero image, restarted per slide via key */
-.hero-kenburns {
-  animation: hero-kenburns 5s ease-out forwards;
-  will-change: transform;
-}
-@keyframes hero-kenburns {
-  from { transform: scale(1.06); }
-  to   { transform: scale(1); }
-}
 
-@media (prefers-reduced-motion: reduce) {
-  .hero-kenburns {
-    animation: none;
-  }
-}
 
 /* Full-height hero on tablets and up */
-@media (min-width: 768px) {
-  .hero-section-mobile {
-    min-height: 100vh;
-  }
-  @supports (min-height: 100svh) {
-    .hero-section-mobile {
-      min-height: 100svh;
-    }
-  }
-  @supports (min-height: 100dvh) {
-    .hero-section-mobile {
-      min-height: 100dvh;
-    }
-  }
-}
 
 /* Device-specific optimizations for older phones */
 @media (max-width: 767px) and (max-resolution: 2dppx),
@@ -970,7 +775,6 @@
 }
 
 /* iPad and Tablet specific fixes for header alignment */
-
 
 @media (max-width: 767px) {
   /* iOS Safari viewport height compatibility */
@@ -1015,20 +819,9 @@
   }
 
   /* Simplify scroll reveal animations with hardware acceleration */
-  .scroll-reveal {
-    transform: translateY(20px) translateZ(0) !important;
-    transition-duration: 0.4s !important;
-    transition-property: transform, opacity !important;
-    will-change: transform, opacity;
-  }
 
   /* Reduce animation durations for better performance with hardware acceleration */
-  .animate-fade-in-up,
-  .animate-fade-in-down {
-    animation-duration: 0.4s !important;
-    will-change: transform, opacity;
-    transform: translateZ(0);
-  }
+
   
   /* Disable hover transforms on mobile */
   .hover\:-translate-y-1:hover,
@@ -1051,11 +844,6 @@
   }
   
   /* Simplify scroll reveal animations */
-  .scroll-reveal {
-    transition-duration: 0.2s !important;
-    transition-property: opacity !important;
-    transform: none !important;
-  }
 
   /* Reduce glow intensity on mobile */
   .neon-glow,
@@ -1074,9 +862,6 @@
   }
 
   /* Simplify particle animations */
-  .particle {
-    animation-duration: 6s !important;
-  }
 
   button:active,
   a:active,
@@ -1085,9 +870,6 @@
   }
 
   /* Reduce constellation drift speed */
-  .bg-constellation::before {
-    animation-duration: 40s !important;
-  }
 
   /* Optimize transitions to use GPU-accelerated properties */
   * {
@@ -1112,19 +894,8 @@
   }
 
   /* Keep only opacity transitions for reduced motion */
-  .scroll-reveal {
-    transform: none !important;
-    transition-property: opacity !important;
-    transition-duration: 0.2s !important;
-  }
 
   /* Simplify fade animations */
-  .animate-fade-in-up,
-  .animate-fade-in-down {
-    animation: none !important;
-    transform: none !important;
-    transition: opacity 0.2s ease-out !important;
-  }
 
   /* Disable complex animations */
   .floating-shape {
@@ -1281,20 +1052,6 @@ select {
 }
 
 /* Smooth content reveal for Suspense-resolved sections */
-.suspense-reveal {
-  animation: suspenseReveal 600ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes suspenseReveal {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
 /* ========================================
    MOBILE MENU STYLES
@@ -1303,7 +1060,6 @@ select {
    MOBILE MENU
    ============================================ */
 [data-slot="sheet-overlay"] { z-index: 60; }
-
 
 /* ============================================
    PROJECTS INDEX

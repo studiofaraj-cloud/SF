@@ -1,7 +1,3 @@
-'use client';
-
-import { useEffect, useState } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
 import Link from 'next/link';
 import {
   ArrowRight,
@@ -44,25 +40,7 @@ const ICON_MAP: Record<string, any> = {
   Facebook,
 };
 
-// Shared scroll-in animation — fades + slides each section into view.
-const SECTION_INITIAL = { opacity: 0, y: 40 };
-const SECTION_IN = { opacity: 1, y: 0 };
-const SECTION_VIEWPORT = { once: true, margin: '-80px' as const };
-const SECTION_TRANSITION = { duration: 0.7, ease: 'easeOut' as const };
-
 export function PaginaAziendaliBody({ lang }: { lang: Lang }) {
-  const reduced = useReducedMotion();
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // Gate framer's `initial: { opacity: 0 }` on mount. Without this, SSR bakes
-  // opacity:0 into the section HTML and content stays invisible on mobile when
-  // hydration is slow, blocked (ad-blocker / CSP), or fails — the page would
-  // render only the hero and look blank below.
-  const canAnimate = mounted && !reduced;
-
   const showItems = pick('showItems', lang);
   const faqs = pick('faqs', lang);
 
@@ -70,18 +48,8 @@ export function PaginaAziendaliBody({ lang }: { lang: Lang }) {
     `/${lang}/hub/company-profile/edit`
   )}`;
 
-  // Build the framer-motion section props once so each section is identical.
-  const sectionProps = canAnimate
-    ? {
-        initial: SECTION_INITIAL,
-        whileInView: SECTION_IN,
-        viewport: SECTION_VIEWPORT,
-        transition: SECTION_TRANSITION,
-      }
-    : {};
-
   return (
-    <main className="relative overflow-hidden bg-background text-foreground">
+    <main className="relative overflow-clip bg-background text-foreground">
       {/* ── Local CSS for floating orbs ─────────────────────────────── */}
       <style>{`
         @keyframes orb-float-a {
@@ -123,7 +91,7 @@ export function PaginaAziendaliBody({ lang }: { lang: Lang }) {
       </div>
 
       {/* ── Hero ────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden py-20 md:py-28">
+      <section className="relative overflow-clip py-20 md:py-28">
         {/* Hero-specific moving objects */}
         <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
           <div className="absolute inset-0 bg-gradient-to-br from-primary/15 via-background to-secondary/10" />
@@ -136,12 +104,7 @@ export function PaginaAziendaliBody({ lang }: { lang: Lang }) {
         </div>
 
         <div className="container mx-auto px-4">
-          <motion.div
-            className="mx-auto max-w-4xl text-center"
-            initial={canAnimate ? { opacity: 0, y: 30 } : false}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
-          >
+          <div className="mx-auto max-w-4xl text-center">
             <Badge
               variant="outline"
               className="mb-6 border-primary/30 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-primary"
@@ -159,7 +122,7 @@ export function PaginaAziendaliBody({ lang }: { lang: Lang }) {
 
             <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
               <Button asChild size="lg" className="group h-12 px-8 text-base shadow-lg transition-transform hover:scale-105">
-                <Link href={ctaHref}>
+                <Link href={ctaHref} prefetch={false}>
                   {pick('ctaPrimary', lang)}
                   <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Link>
@@ -180,12 +143,12 @@ export function PaginaAziendaliBody({ lang }: { lang: Lang }) {
                 <ShieldCheck className="h-4 w-4 text-primary" /> {pick('heroFeat3', lang)}
               </span>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* ── Who it's for ───────────────────────────────────────────── */}
-      <motion.section className="relative py-20" {...sectionProps}>
+      <section className="relative py-20">
         {/* Section-level "light sweep" — appears once on scroll */}
         <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-32 bg-gradient-to-b from-primary/5 to-transparent" />
         <div className="container mx-auto px-4">
@@ -200,13 +163,7 @@ export function PaginaAziendaliBody({ lang }: { lang: Lang }) {
               { icon: Link2, title: pick('who2Title', lang), desc: pick('who2Desc', lang) },
               { icon: MapPin, title: pick('who3Title', lang), desc: pick('who3Desc', lang) },
             ].map((c, i) => (
-              <motion.div
-                key={c.title}
-                initial={canAnimate ? { opacity: 0, y: 20 } : false}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={SECTION_VIEWPORT}
-                transition={{ duration: 0.5, delay: i * 0.1, ease: 'easeOut' }}
-              >
+              <div key={c.title} className="rv">
                 <Card className="group h-full border-primary/20 bg-card/50 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:bg-card/70 hover:shadow-xl hover:shadow-primary/10">
                   <CardContent className="p-7">
                     <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl border border-primary/20 bg-primary/10 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
@@ -216,15 +173,15 @@ export function PaginaAziendaliBody({ lang }: { lang: Lang }) {
                     <p className="text-sm leading-relaxed text-muted-foreground">{c.desc}</p>
                   </CardContent>
                 </Card>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
-      </motion.section>
+      </section>
 
       {/* ── What shows on your page ────────────────────────────────── */}
-      <motion.section className="relative bg-muted/30 py-20" {...sectionProps}>
-        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+      <section className="relative bg-muted/30 py-20">
+        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-clip">
           <div className="orb-a absolute right-1/4 top-10 h-72 w-72 rounded-full bg-primary/8 blur-3xl" />
         </div>
         <div className="container mx-auto px-4">
@@ -237,46 +194,33 @@ export function PaginaAziendaliBody({ lang }: { lang: Lang }) {
             {showItems.map((item, i) => {
               const Icon = ICON_MAP[item.icon] ?? Building2;
               return (
-                <motion.div
+                <div
                   key={item.title}
-                  initial={canAnimate ? { opacity: 0, y: 15 } : false}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={SECTION_VIEWPORT}
-                  transition={{ duration: 0.4, delay: i * 0.05, ease: 'easeOut' }}
-                  className="group relative cursor-default rounded-xl border border-border/50 bg-card/70 p-5 transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:bg-card hover:shadow-lg hover:shadow-primary/10"
+                  className="rv group relative cursor-default rounded-xl border border-border/50 bg-card/70 p-5 transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:bg-card hover:shadow-lg hover:shadow-primary/10"
                 >
                   <Icon className="mb-3 h-5 w-5 text-primary transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6" />
                   <h3 className="mb-1 text-sm font-semibold">{item.title}</h3>
                   <p className="text-xs text-muted-foreground">{item.desc}</p>
-                </motion.div>
+                </div>
               );
             })}
           </div>
         </div>
-      </motion.section>
+      </section>
 
       {/* ── Preview mockup — slides up dramatically from below ───── */}
       <section id="preview" className="relative py-20">
-        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-clip">
           <div className="orb-b absolute left-10 top-1/3 h-64 w-64 rounded-full bg-purple-500/10 blur-3xl" />
           <div className="orb-c absolute right-10 bottom-1/4 h-72 w-72 rounded-full bg-cyan-500/10 blur-3xl" />
         </div>
         <div className="container mx-auto px-4">
-          <motion.div
-            className="mx-auto max-w-3xl text-center"
-            {...sectionProps}
-          >
+          <div className="mx-auto max-w-3xl text-center">
             <h2 className="text-3xl font-bold md:text-4xl">{pick('previewTitle', lang)}</h2>
             <p className="mt-3 text-muted-foreground">{pick('previewSub', lang)}</p>
-          </motion.div>
+          </div>
 
-          <motion.div
-            className="mx-auto mt-12 max-w-5xl overflow-hidden rounded-2xl border border-border/60 bg-background shadow-2xl"
-            initial={canAnimate ? { opacity: 0, y: 120, scale: 0.95 } : false}
-            whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            viewport={{ once: true, margin: '-150px' }}
-            transition={{ duration: 1, ease: 'easeOut' }}
-          >
+          <div className="rv mx-auto mt-12 max-w-5xl overflow-clip rounded-2xl border border-border/60 bg-background shadow-2xl">
             {/* Browser chrome */}
             <div className="flex items-center gap-2 border-b border-border/40 bg-muted/40 px-4 py-3">
               <div className="flex gap-1.5">
@@ -293,7 +237,7 @@ export function PaginaAziendaliBody({ lang }: { lang: Lang }) {
             </div>
 
             {/* Fake hero */}
-            <div className="relative overflow-hidden">
+            <div className="relative overflow-clip">
               <div className="h-48 w-full bg-gradient-to-br from-primary/40 via-purple-500/30 to-secondary/30" />
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-background to-transparent pt-16">
                 <div className="container mx-auto px-6 pb-6 text-center">
@@ -371,16 +315,15 @@ export function PaginaAziendaliBody({ lang }: { lang: Lang }) {
             <div className="border-t border-border/40 px-6 py-3 text-center text-xs text-muted-foreground">
               P.IVA IT01234567890 <CheckCircle2 className="ml-1 inline h-3 w-3 text-primary" />
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* ── Tech section ───────────────────────────────────────────── */}
-      <motion.section
+      <section
         className="relative bg-gradient-to-b from-background via-muted/10 to-background py-20"
-        {...sectionProps}
       >
-        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-clip">
           <div className="orb-c absolute -left-20 top-1/2 h-96 w-96 rounded-full bg-primary/8 blur-3xl" />
         </div>
         <div className="container mx-auto px-4">
@@ -402,13 +345,7 @@ export function PaginaAziendaliBody({ lang }: { lang: Lang }) {
               { icon: Search, title: pick('tech3Title', lang), desc: pick('tech3Desc', lang) },
               { icon: ShieldCheck, title: pick('tech4Title', lang), desc: pick('tech4Desc', lang) },
             ].map((c, i) => (
-              <motion.div
-                key={c.title}
-                initial={canAnimate ? { opacity: 0, y: 25 } : false}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={SECTION_VIEWPORT}
-                transition={{ duration: 0.5, delay: i * 0.08, ease: 'easeOut' }}
-              >
+              <div key={c.title} className="rv">
                 <Card className="group h-full border-primary/20 bg-card/60 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/60 hover:bg-card hover:shadow-xl hover:shadow-primary/15">
                   <CardContent className="p-6">
                     <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15 transition-all duration-300 group-hover:bg-primary/25 group-hover:scale-110">
@@ -418,14 +355,14 @@ export function PaginaAziendaliBody({ lang }: { lang: Lang }) {
                     <p className="text-sm leading-relaxed text-muted-foreground">{c.desc}</p>
                   </CardContent>
                 </Card>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
-      </motion.section>
+      </section>
 
       {/* ── FAQ ────────────────────────────────────────────────────── */}
-      <motion.section className="relative py-20" {...sectionProps}>
+      <section className="relative py-20">
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-3xl">
             <h2 className="mb-10 text-center text-3xl font-bold md:text-4xl">
@@ -433,13 +370,9 @@ export function PaginaAziendaliBody({ lang }: { lang: Lang }) {
             </h2>
             <div className="space-y-3">
               {faqs.map((f, i) => (
-                <motion.details
+                <details
                   key={i}
-                  initial={canAnimate ? { opacity: 0, x: -20 } : false}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={SECTION_VIEWPORT}
-                  transition={{ duration: 0.4, delay: i * 0.06, ease: 'easeOut' }}
-                  className="group rounded-xl border border-border/50 bg-card/60 p-5 transition-all hover:border-primary/40 hover:bg-card/80 open:border-primary/30 open:bg-card/80"
+                  className="rv group rounded-xl border border-border/50 bg-card/60 p-5 transition-all hover:border-primary/40 hover:bg-card/80 open:border-primary/30 open:bg-card/80"
                 >
                   <summary className="cursor-pointer list-none text-base font-semibold">
                     <span className="mr-2 text-primary group-open:hidden">+</span>
@@ -447,19 +380,18 @@ export function PaginaAziendaliBody({ lang }: { lang: Lang }) {
                     {f.q}
                   </summary>
                   <p className="mt-3 pl-6 text-sm leading-relaxed text-muted-foreground">{f.a}</p>
-                </motion.details>
+                </details>
               ))}
             </div>
           </div>
         </div>
-      </motion.section>
+      </section>
 
       {/* ── Final CTA ─────────────────────────────────────────────── */}
-      <motion.section
-        className="relative overflow-hidden border-t border-border/40 bg-gradient-to-br from-primary/10 via-background to-secondary/10 py-20"
-        {...sectionProps}
+      <section
+        className="relative overflow-clip border-t border-border/40 bg-gradient-to-br from-primary/10 via-background to-secondary/10 py-20"
       >
-        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-clip">
           <div className="orb-a absolute -left-20 top-0 h-96 w-96 rounded-full bg-primary/10 blur-3xl" />
           <div className="orb-b absolute -right-20 bottom-0 h-80 w-80 rounded-full bg-purple-500/10 blur-3xl" />
         </div>
@@ -467,13 +399,13 @@ export function PaginaAziendaliBody({ lang }: { lang: Lang }) {
           <h2 className="text-3xl font-bold md:text-5xl">{pick('finalTitle', lang)}</h2>
           <p className="mx-auto mt-3 max-w-xl text-muted-foreground">{pick('finalSub', lang)}</p>
           <Button asChild size="lg" className="group mt-8 h-12 px-8 text-base shadow-lg transition-transform hover:scale-105">
-            <Link href={ctaHref}>
+            <Link href={ctaHref} prefetch={false}>
               {pick('ctaPrimary', lang)}
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </Button>
         </div>
-      </motion.section>
+      </section>
     </main>
   );
 }

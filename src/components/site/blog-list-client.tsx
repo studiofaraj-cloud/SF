@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { FirebaseImage } from '@/components/ui/firebase-image';
-import dynamic from 'next/dynamic';
+import ScrollFadeIn from '@/components/site/scroll-fade-in';
 import { BookOpen, Calendar, ChevronRight, Search, ArrowRight } from 'lucide-react';
 import type { Blog } from '@/lib/definitions';
 import { useTranslations, useLocale } from 'next-intl';
@@ -10,10 +10,6 @@ import { useState, useMemo } from 'react';
 // Static import: the hero <h1> text must be in the server HTML for crawlers.
 import GradientText from '@/components/GradientText';
 
-const ScrollFadeIn = dynamic(
-  () => import('@/components/site/scroll-fade-in'),
-  { ssr: true }
-);
 
 interface BlogListClientProps {
   blogs: Blog[];
@@ -78,10 +74,10 @@ export function BlogListClient({ blogs: initialBlogs }: BlogListClientProps) {
   const featured = publishedBlogs[0] ?? null;
 
   return (
-    <div className="bg-background text-foreground overflow-x-hidden">
+    <div className="bg-background text-foreground overflow-x-clip">
 
       {/* ── Hero ── */}
-      <section className="relative min-h-[65vh] min-h-[65svh] flex flex-col justify-end overflow-hidden pt-20">
+      <section className="relative min-h-[min(65svh,44rem)] flex flex-col justify-end overflow-clip pt-20">
         <div className="absolute inset-0 bg-gradient-to-b from-background/85 via-background/55 to-background z-10" />
 
         <div className="relative z-20 container px-4 sm:px-6 md:px-8 text-center max-w-3xl py-14">
@@ -166,7 +162,7 @@ export function BlogListClient({ blogs: initialBlogs }: BlogListClientProps) {
                               {/* Thumbnail */}
                               <div className="shrink-0 mt-0.5">
                                 {blog.featuredImage ? (
-                                  <div className="w-16 h-12 sm:w-20 sm:h-14 rounded-md overflow-hidden border border-border/30 relative">
+                                  <div className="w-16 h-12 sm:w-20 sm:h-14 rounded-md overflow-clip border border-border/30 relative">
                                     <FirebaseImage
                                       src={blog.featuredImage}
                                       alt={blog.title}
@@ -219,14 +215,14 @@ export function BlogListClient({ blogs: initialBlogs }: BlogListClientProps) {
                 {/* Featured article box */}
                 {featured && (
                   <ScrollFadeIn animation="fade-up" delay={100}>
-                    <div className="rounded-xl border border-border/40 bg-card/60 backdrop-blur-sm overflow-hidden holographic-card">
+                    <div className="rounded-xl border border-border/40 bg-card/60 backdrop-blur-sm overflow-clip holographic-card">
                       <div className="px-4 py-2.5 border-b border-border/30 bg-emerald-500/5">
                         <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">
                           {locale === 'it' ? 'Articolo in evidenza' : 'Featured article'}
                         </p>
                       </div>
                       {featured.featuredImage && (
-                        <div className="relative h-36 overflow-hidden">
+                        <div className="relative h-36 overflow-clip">
                           <FirebaseImage
                             src={featured.featuredImage}
                             alt={featured.title}
@@ -260,7 +256,7 @@ export function BlogListClient({ blogs: initialBlogs }: BlogListClientProps) {
 
                 {/* Stats box */}
                 <ScrollFadeIn animation="fade-up" delay={200}>
-                  <div className="rounded-xl border border-border/40 bg-card/60 backdrop-blur-sm overflow-hidden">
+                  <div className="rounded-xl border border-border/40 bg-card/60 backdrop-blur-sm overflow-clip">
                     <div className="px-4 py-2.5 border-b border-border/30 bg-secondary/20">
                       <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
                         {locale === 'it' ? 'Statistiche' : 'Statistics'}
@@ -290,7 +286,7 @@ export function BlogListClient({ blogs: initialBlogs }: BlogListClientProps) {
                 {/* Quick links — all years */}
                 {byYear.length > 1 && (
                   <ScrollFadeIn animation="fade-up" delay={300}>
-                    <div className="rounded-xl border border-border/40 bg-card/60 backdrop-blur-sm overflow-hidden">
+                    <div className="rounded-xl border border-border/40 bg-card/60 backdrop-blur-sm overflow-clip">
                       <div className="px-4 py-2.5 border-b border-border/30 bg-secondary/20">
                         <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
                           {locale === 'it' ? 'Archivio' : 'Archive'}
