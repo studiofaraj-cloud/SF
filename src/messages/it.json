@@ -1702,6 +1702,42 @@
     "cookie": "Cookie"
   },
   "contactPage": {
+    "v2": {
+      "available": "Disponibili per nuovi progetti",
+      "title": "Parliamo del tuo progetto.",
+      "lead": "Scrivici e ti rispondiamo entro 24 ore. Preferisci parlarne a voce? Chiamaci o prenota una call.",
+      "channels": {
+        "email": "Email",
+        "whatsapp": "WhatsApp",
+        "phone": "Telefono",
+        "call": "Call",
+        "studio": "Studio"
+      },
+      "emailNote": "Risposta entro 24 ore",
+      "whatsappCta": "Scrivici su WhatsApp",
+      "whatsappNote": "Messaggio di benvenuto già pronto",
+      "whatsappGreeting": "Ciao Studio Faraj! Vi scrivo dal sito: vorrei informazioni per un progetto.",
+      "hours": "Lun–Ven 9–18 · Sab 10–14",
+      "bookCall": "Prenota una call",
+      "bookCallNote": "La prima consulenza è gratuita",
+      "studioNote": "35128 Padova (PD)",
+      "mapTitle": "Come raggiungerci",
+      "faqTitle": "Domande frequenti",
+      "form": {
+        "you": "Chi sei",
+        "message": "Il messaggio",
+        "phone": "Telefono",
+        "messagePlaceholder": "Scrivi qui la tua richiesta",
+        "submit": "Invia il messaggio",
+        "whatsapp": "Oppure invia su WhatsApp",
+        "whatsappNote": "il messaggio è già scritto",
+        "waHello": "Ciao Studio Faraj! Vi scrivo dal sito.",
+        "waHelloNamed": "Ciao Studio Faraj, sono {name}. Vi scrivo dal sito.",
+        "waService": "Servizio: {service}",
+        "waDefault": "Vorrei informazioni per un progetto.",
+        "another": "Scrivi un altro messaggio"
+      }
+    },
     "hero": {
       "badge": "Mettiti in Contatto",
       "title": "Inizia una Conversazione",

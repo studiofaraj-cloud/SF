@@ -13,10 +13,10 @@ import { DialogDescription, DialogTitle } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { createMessage } from '@/lib/message-actions';
-import { contactServices } from '@/lib/definitions';
 import { getLocalizedPath } from '@/lib/i18n-helpers';
 import { cn } from '@/lib/utils';
 import type { Locale } from '@/i18n/config';
+import { FIELD, FieldError, FieldMark, SectionLabel, SentMark, useServiceOptions } from './form-fields';
 
 export type QuoteDialogPrefill = {
   service?: string;
@@ -40,26 +40,9 @@ type ActionState = {
   errors?: Record<string, string[] | undefined>;
 };
 
-// Map service values to translation keys
-const serviceValueToKey: Record<string, string> = {
-  'sviluppo-web': 'webDevelopment',
-  'e-commerce': 'ecommerce',
-  'design-ui-ux': 'designUIUX',
-  'manutenzione': 'maintenance',
-  'ai-automazione': 'aiAutomation',
-  'seo-marketing': 'seoMarketing',
-  'hosting-cloud': 'hostingCloud',
-  'consulenza': 'consulting',
-  'altro': 'other',
-};
-
 const STEPS = ['analysis', 'proposal', 'build'] as const;
 
 const EMPTY_DRAFT: Draft = { service: '', budget: '', message: '' };
-
-// One look for every field: tall, soft-cornered, a clear focus ring.
-const FIELD =
-  'h-12 rounded-xl border-input bg-background px-4 text-[15px] shadow-sm transition-[border-color,box-shadow] placeholder:text-muted-foreground hover:border-foreground/25 focus-visible:border-primary focus-visible:ring-4 focus-visible:ring-primary/15 focus-visible:ring-offset-0 md:text-[15px] aria-[invalid=true]:border-red-500/70';
 
 /**
  * Quote request dialog: a navy side with what happens next, and the form.
@@ -189,43 +172,6 @@ function Aside() {
   );
 }
 
-function SectionLabel({ index, children, id }: { index: string; children: React.ReactNode; id: string }) {
-  return (
-    <p id={id} className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-      <span className="text-primary">{index}</span>
-      {children}
-      <span aria-hidden className="h-px flex-1 bg-border" />
-    </p>
-  );
-}
-
-/** In-field marker that stays visible while typing: * or "optional". */
-function FieldMark({ optional }: { optional?: boolean }) {
-  const t = useTranslations('quoteDialog');
-  return (
-    <span
-      aria-hidden
-      className={cn(
-        'pointer-events-none absolute right-4 top-6 -translate-y-1/2',
-        optional ? 'text-xs text-muted-foreground' : 'text-base font-semibold text-primary',
-      )}
-    >
-      {optional ? t('form.optional') : '*'}
-    </span>
-  );
-}
-
-// The action's validation messages are English, so show our own per field.
-function FieldError({ id, field, errors }: { id: string; field: 'name' | 'email' | 'message'; errors?: string[] }) {
-  const t = useTranslations('quoteDialog');
-  if (!errors?.length) return null;
-  return (
-    <p id={id} className="mt-1.5 text-xs text-red-600 dark:text-red-400">
-      {t(`errors.${field}`)}
-    </p>
-  );
-}
-
 function QuoteForm({
   draft,
   onDraftChange,
@@ -236,8 +182,8 @@ function QuoteForm({
   onSent: () => void;
 }) {
   const t = useTranslations('quoteDialog');
-  const tServices = useTranslations('services');
   const tServer = useTranslations('serverActions');
+  const serviceOptions = useServiceOptions();
   const locale = useLocale() as Locale;
   const [state, dispatch] = useActionState<ActionState, FormData>(createMessage, {
     message: null,
@@ -261,20 +207,7 @@ function QuoteForm({
   if (state.success) {
     return (
       <div role="status" className="flex min-h-[26rem] flex-col items-start justify-center py-6 lg:min-h-[34rem]">
-        <svg viewBox="0 0 64 64" aria-hidden className="h-16 w-16 text-primary">
-          <circle className="qd-draw" cx="32" cy="32" r="29" fill="none" stroke="currentColor" strokeWidth="3" pathLength={1} />
-          <path
-            className="qd-draw"
-            style={{ '--d': '0.45s' } as React.CSSProperties}
-            d="M20 33.5l8 8 16-18"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="3.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            pathLength={1}
-          />
-        </svg>
+        <SentMark />
         <h3 className="mt-7 font-display text-3xl font-bold tracking-[-0.02em] sm:text-4xl">{t('success.title')}</h3>
         <p className="mt-3 max-w-sm leading-relaxed text-muted-foreground">{t('success.description')}</p>
         <DialogPrimitive.Close asChild>
@@ -356,22 +289,11 @@ function QuoteForm({
                 </span>
               </SelectTrigger>
               <SelectContent className="z-[80] max-h-[280px] rounded-xl p-1 shadow-xl">
-                {contactServices.map((service) => {
-                  const serviceKey = serviceValueToKey[service.value];
-                  // Clients ask for "a website", so this option says so here
-                  // (the nav and footer keep the service's own name).
-                  const label =
-                    service.value === 'sviluppo-web'
-                      ? t('form.serviceWebsite')
-                      : serviceKey
-                        ? tServices(`${serviceKey}.label`)
-                        : service.label;
-                  return (
-                    <SelectItem key={service.value} value={service.value} className="min-h-[44px] cursor-pointer rounded-lg py-2.5 text-[15px]">
-                      {label}
-                    </SelectItem>
-                  );
-                })}
+                {serviceOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value} className="min-h-[44px] cursor-pointer rounded-lg py-2.5 text-[15px]">
+                    {option.label}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>

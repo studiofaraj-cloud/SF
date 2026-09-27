@@ -73,7 +73,6 @@ export default async function ContattiLayout({
   // Enable static rendering by setting the request locale
   setRequestLocale(currentLocale);
 
-  // Emitted here because contatti/page.tsx is a client component.
   return (
     <>
       <StructuredDataServer
@@ -83,7 +82,8 @@ export default async function ContattiLayout({
         })}
         id="contatti-breadcrumb"
       />
-      <ClientMessages locale={currentLocale} namespaces={['bookingDialog', 'contact', 'contactPage']}>
+      {/* The page is server-rendered; the form and the map embed need these in the browser. */}
+      <ClientMessages locale={currentLocale} namespaces={['quoteDialog', 'serverActions', 'contactPage']}>
         {children}
       </ClientMessages>
     </>

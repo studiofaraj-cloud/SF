@@ -1672,6 +1672,42 @@
     "cookie": "Cookie"
   },
   "contactPage": {
+    "v2": {
+      "available": "Available for new projects",
+      "title": "Let's talk about your project.",
+      "lead": "Write to us and we'll reply within 24 hours. Rather talk it through? Call us or book a call.",
+      "channels": {
+        "email": "Email",
+        "whatsapp": "WhatsApp",
+        "phone": "Phone",
+        "call": "Call",
+        "studio": "Studio"
+      },
+      "emailNote": "Reply within 24 hours",
+      "whatsappCta": "Message us on WhatsApp",
+      "whatsappNote": "Welcome message ready to send",
+      "whatsappGreeting": "Hi Studio Faraj! I'm writing from your website: I'd like some information about a project.",
+      "hours": "Mon–Fri 9am–6pm · Sat 10am–2pm",
+      "bookCall": "Book a call",
+      "bookCallNote": "The first consultation is free",
+      "studioNote": "35128 Padova (PD), Italy",
+      "mapTitle": "How to find us",
+      "faqTitle": "Frequently asked questions",
+      "form": {
+        "you": "About you",
+        "message": "Your message",
+        "phone": "Phone",
+        "messagePlaceholder": "Write your request here",
+        "submit": "Send message",
+        "whatsapp": "Or send it on WhatsApp",
+        "whatsappNote": "the message is written for you",
+        "waHello": "Hi Studio Faraj! I'm writing from your website.",
+        "waHelloNamed": "Hi Studio Faraj, I'm {name}. I'm writing from your website.",
+        "waService": "Service: {service}",
+        "waDefault": "I'd like some information about a project.",
+        "another": "Send another message"
+      }
+    },
     "hero": {
       "badge": "Get in Touch",
       "title": "Start a Conversation",
