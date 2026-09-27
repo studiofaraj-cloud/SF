@@ -29,10 +29,19 @@ const COPY = {
 
 /**
  * Closing call to action — navy band that bookends the hero. What happens
- * next, plus the real ways to reach the studio. Server component.
+ * next, plus the real ways to reach the studio. Server component. Other
+ * pages can give it their own heading (two lines) and lead.
  */
-export default function HomeCtaSection({ locale }: { locale: 'it' | 'en' }) {
-  const copy = COPY[locale];
+export default function HomeCtaSection({
+  locale,
+  title,
+  lead,
+}: {
+  locale: 'it' | 'en';
+  title?: readonly [string, string];
+  lead?: string;
+}) {
+  const copy = { ...COPY[locale], ...(title ? { title } : {}), ...(lead ? { lead } : {}) };
   const contacts = [
     { label: copy.email, value: 'info@studiofaraj.it', href: 'mailto:info@studiofaraj.it', external: false },
     { label: copy.phone, value: '+39 320 222 3322', href: 'tel:+393202223322', external: false },

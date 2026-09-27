@@ -82,7 +82,8 @@ export default async function ManutenzioneLayout({
   return (
     <>
       <StructuredDataServer data={[serviceData, breadcrumbData]} />
-      <ClientMessages locale={currentLocale} namespaces={['services.maintenance']}>
+      {/* The page is server-rendered; only the quote form needs translations in the browser. */}
+      <ClientMessages locale={currentLocale} namespaces={['quoteDialog', 'serverActions']}>
         {children}
       </ClientMessages>
     </>

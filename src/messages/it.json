@@ -776,7 +776,7 @@
           "description": "Certificati SSL, firewall WAF, protezione DDoS e backup automatici."
         },
         "uptime": {
-          "title": "Uptime 99.9%",
+          "title": "Alta disponibilità",
           "description": "Infrastruttura ridondante con monitoraggio 24/7 e failover automatico."
         },
         "databases": {

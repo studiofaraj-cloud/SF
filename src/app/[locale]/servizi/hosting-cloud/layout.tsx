@@ -86,7 +86,8 @@ export default async function HostingCloudLayout({
   return (
     <>
       <StructuredDataServer data={[serviceData, breadcrumbData]} />
-      <ClientMessages locale={currentLocale} namespaces={['services.hostingCloud']}>
+      {/* The page is server-rendered; only the quote form needs translations in the browser. */}
+      <ClientMessages locale={currentLocale} namespaces={['quoteDialog', 'serverActions']}>
         {children}
       </ClientMessages>
     </>
