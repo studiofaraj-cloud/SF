@@ -10,13 +10,21 @@ const COPY: Record<Locale, { title: string; lead: string; layers: Layer[] }> = {
     layers: [
       {
         name: 'Interfaccia',
-        tools: ['React', 'Next.js', 'TypeScript', 'JavaScript', 'Tailwind CSS', 'HTML', 'CSS'],
+        tools: ['React', 'Next.js', 'Astro', 'Vue', 'Angular', 'TypeScript', 'JavaScript', 'Tailwind CSS', 'HTML', 'CSS'],
         why: 'Pagine generate sul server: si caricano in fretta e Google le legge senza fatica.',
       },
-      { name: 'Server', tools: ['Node.js'], why: 'Logica, API e integrazioni scritte su misura, senza plugin di terze parti.' },
-      { name: 'Dati', tools: ['Firebase', 'PostgreSQL'], why: 'Il database giusto per il progetto, in tempo reale o relazionale.' },
+      {
+        name: 'Server',
+        tools: ['Node.js', '.NET', 'Java', 'Python', 'PHP', 'REST API', 'GraphQL'],
+        why: 'Logica, API e integrazioni scritte su misura, nel linguaggio più adatto al progetto e senza plugin di terze parti.',
+      },
+      {
+        name: 'Dati',
+        tools: ['PostgreSQL', 'MongoDB', 'Firebase', 'NoSQL'],
+        why: 'Il database giusto per il progetto: relazionale, NoSQL o in tempo reale.',
+      },
       { name: 'Pagamenti', tools: ['Stripe', 'PayPal'], why: 'Checkout, abbonamenti e pagamenti integrati direttamente nel sito.' },
-      { name: 'Infrastruttura', tools: ['Vercel', 'Google Cloud'], why: 'Hosting veloce, certificati SSL e backup gestiti da noi.' },
+      { name: 'Infrastruttura', tools: ['Vercel', 'Google Cloud', 'AWS', 'Docker'], why: 'Hosting veloce, certificati SSL e backup gestiti da noi.' },
     ],
   },
   en: {
@@ -25,13 +33,21 @@ const COPY: Record<Locale, { title: string; lead: string; layers: Layer[] }> = {
     layers: [
       {
         name: 'Interface',
-        tools: ['React', 'Next.js', 'TypeScript', 'JavaScript', 'Tailwind CSS', 'HTML', 'CSS'],
+        tools: ['React', 'Next.js', 'Astro', 'Vue', 'Angular', 'TypeScript', 'JavaScript', 'Tailwind CSS', 'HTML', 'CSS'],
         why: 'Pages rendered on the server: they load fast and Google reads them easily.',
       },
-      { name: 'Server', tools: ['Node.js'], why: 'Logic, APIs and integrations written to measure, with no third-party plugins.' },
-      { name: 'Data', tools: ['Firebase', 'PostgreSQL'], why: 'The right database for the project, real-time or relational.' },
+      {
+        name: 'Server',
+        tools: ['Node.js', '.NET', 'Java', 'Python', 'PHP', 'REST API', 'GraphQL'],
+        why: 'Logic, APIs and integrations written to measure, in the language that suits the project, with no third-party plugins.',
+      },
+      {
+        name: 'Data',
+        tools: ['PostgreSQL', 'MongoDB', 'Firebase', 'NoSQL'],
+        why: 'The right database for the project: relational, NoSQL or real-time.',
+      },
       { name: 'Payments', tools: ['Stripe', 'PayPal'], why: 'Checkout, subscriptions and payments built straight into the site.' },
-      { name: 'Infrastructure', tools: ['Vercel', 'Google Cloud'], why: 'Fast hosting, SSL certificates and backups, managed by us.' },
+      { name: 'Infrastructure', tools: ['Vercel', 'Google Cloud', 'AWS', 'Docker'], why: 'Fast hosting, SSL certificates and backups, managed by us.' },
     ],
   },
 };
