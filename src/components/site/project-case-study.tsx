@@ -60,7 +60,7 @@ function paragraphs(text?: string) {
 }
 
 /** The site in a browser frame; tall full-page screenshots scroll as the page does (.pd-shot). */
-function BrowserFrame({ src, host, alt, priority, sizes }: { src: string; host: string; alt: string; priority?: boolean; sizes: string }) {
+export function BrowserFrame({ src, host, alt, priority, sizes }: { src: string; host: string; alt: string; priority?: boolean; sizes: string }) {
   return (
     <div className="overflow-clip rounded-2xl border border-border bg-card shadow-[0_40px_90px_-40px_rgba(10,22,40,0.45)]">
       <div className="flex items-center gap-3 border-b border-border bg-muted/60 px-4 py-2.5">

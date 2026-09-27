@@ -169,11 +169,11 @@
           },
           "rows": [
             { "feature": "Source code", "noCode": "Closed, owned by platform", "freelance": "Variable, often undocumented", "us": "100% open, delivered to you" },
-            { "feature": "Performance", "noCode": "Average, theme-dependent", "freelance": "Variable", "us": "Lighthouse 95+ guaranteed" },
+            { "feature": "Performance", "noCode": "Average, theme-dependent", "freelance": "Variable", "us": "Performance measured with Lighthouse" },
             { "feature": "Admin dashboard", "noCode": "Limited or absent", "freelance": "Rarely included", "us": "Custom, multi-user" },
             { "feature": "Scalability", "noCode": "Pricing-locked", "freelance": "Often needs rewrite", "us": "Next.js + cloud, unlimited" },
             { "feature": "Domain knowledge", "noCode": "None", "freelance": "Generalist", "us": "Technical onboarding of your industry" },
-            { "feature": "Support", "noCode": "Chatbot", "freelance": "\"When I can\"", "us": "Dedicated team, clear SLAs" }
+            { "feature": "Support", "noCode": "Chatbot", "freelance": "\"When I can\"", "us": "Dedicated team, clear response times" }
           ],
           "cta": "Talk to us for 15 minutes"
         },

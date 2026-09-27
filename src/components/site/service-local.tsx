@@ -1,11 +1,10 @@
 import Link from 'next/link';
 import type { CSSProperties } from 'react';
-import { ArrowUpRight, MapPin, Plus } from 'lucide-react';
-import { StructuredDataServer } from '@/components/seo/structured-data-server';
-import { generateStructuredDataFAQPage } from '@/lib/seo';
+import { ArrowUpRight, MapPin } from 'lucide-react';
 import { getLocalizedPath } from '@/lib/i18n-helpers';
 import { SERVICE_AREA, SERVICE_LOCAL_CONTENT, type ServiceLocalKey } from '@/lib/service-local-content';
 import { RevealWords } from './reveal-words';
+import { FaqSection } from './service-faq';
 
 const MONO = 'font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground';
 
@@ -55,43 +54,23 @@ export function ServiceLocal({ service }: { service: ServiceLocalKey }) {
         </ol>
       </section>
 
-      <section className="container mx-auto px-5 md:px-8">
-        <StructuredDataServer data={generateStructuredDataFAQPage(c.faqs)} id={`faq-${service}`} />
-        <div className="grid gap-10 lg:grid-cols-12">
-          <h2 className="rv-title font-display text-[2.2rem] font-bold leading-[1.02] tracking-[-0.03em] md:text-[3rem] lg:col-span-4">
-            <RevealWords text="Domande frequenti" />
-          </h2>
-          <div className="lg:col-span-8">
-            <div className="border-t border-border">
-              {c.faqs.map((f) => (
-                <details key={f.question} className="group border-b border-border">
-                  <summary className="flex cursor-pointer list-none items-start justify-between gap-6 py-5 font-display text-lg font-semibold tracking-[-0.01em] marker:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary md:text-xl [&::-webkit-details-marker]:hidden">
-                    {f.question}
-                    <Plus aria-hidden className="mt-1 h-5 w-5 shrink-0 text-muted-foreground transition-transform duration-300 group-open:rotate-45 group-open:text-primary" />
-                  </summary>
-                  <p className="pb-6 pr-10 leading-relaxed text-muted-foreground">{f.answer}</p>
-                </details>
-              ))}
-            </div>
-
-            {c.related.length > 0 && (
-              <ul className="mt-10 flex flex-wrap gap-2">
-                {c.related.map((r) => (
-                  <li key={r.href}>
-                    <Link
-                      href={getLocalizedPath(r.href, 'it')}
-                      className="inline-flex min-h-[44px] items-center gap-1.5 rounded-full px-4 text-sm font-medium ring-1 ring-inset ring-border transition-colors hover:bg-foreground hover:text-background hover:ring-foreground"
-                    >
-                      {r.label}
-                      <ArrowUpRight aria-hidden className="h-4 w-4" />
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        </div>
-      </section>
+      <FaqSection title="Domande frequenti" faqs={c.faqs} id={`faq-${service}`}>
+        {c.related.length > 0 && (
+          <ul className="mt-10 flex flex-wrap gap-2">
+            {c.related.map((r) => (
+              <li key={r.href}>
+                <Link
+                  href={getLocalizedPath(r.href, 'it')}
+                  className="inline-flex min-h-[44px] items-center gap-1.5 rounded-full px-4 text-sm font-medium ring-1 ring-inset ring-border transition-colors hover:bg-foreground hover:text-background hover:ring-foreground"
+                >
+                  {r.label}
+                  <ArrowUpRight aria-hidden className="h-4 w-4" />
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+      </FaqSection>
     </>
   );
 }

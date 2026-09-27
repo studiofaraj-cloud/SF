@@ -16,8 +16,8 @@ import { ServiceQuoteButton } from './service-quote-button';
 export type ServiceProof = Pick<Project, 'slug' | 'title' | 'clientName' | 'year' | 'category' | 'featuredImage' | 'projectUrl'>;
 
 export type ServiceSection =
-  | { kind: 'steps'; title: string; items: { title: string; description: string }[] }
-  | { kind: 'checklist'; title: string; lead?: string; items: string[] }
+  | { kind: 'steps'; title: string; items: { title: string; description: string; meta?: string }[] }
+  | { kind: 'checklist'; title: string; lead?: string; items: string[]; more?: { label: string; href: string } }
   | { kind: 'pairs'; title: string; lead?: string; items: { name: string; description: string }[] }
   | { kind: 'callout'; title: string; body: string }
   | { kind: 'node'; node: ReactNode };
@@ -28,11 +28,19 @@ export type ServicePageContent = {
   lead: string;
   notes: string[];
   quoteLabel: string;
+  /** Prefilled quote message, for services the form has no option for. */
+  quoteMessage?: string;
   /** Main action as a link instead of the quote form (e.g. consulting books a call). */
   primary?: { label: string; href: string };
+  /** Second hero button; defaults to the portfolio. */
+  secondary?: { label: string; href: string };
+  /** Heading of the features section; defaults to "Cosa facciamo". */
+  featuresTitle?: string;
   features: { title: string; description: string }[];
   sections: ServiceSection[];
   closing?: { title: readonly [string, string]; lead?: string };
+  /** Replaces the shared closing call to action (e.g. a page with its own two paths). */
+  closingNode?: ReactNode;
   localKey?: ServiceLocalKey;
 };
 
@@ -71,8 +79,10 @@ function SectionHeader({ title, lead }: { title: string; lead?: string }) {
   );
 }
 
-function Section({ section }: { section: ServiceSection }) {
+function Section({ section, locale }: { section: ServiceSection; locale: Locale }) {
   if (section.kind === 'node') return <>{section.node}</>;
+  // Four steps sit on one row; other counts fill rows of three.
+  const fourUp = section.kind === 'steps' && section.items.length % 4 === 0 && section.items.length % 3 !== 0;
 
   if (section.kind === 'callout') {
     return (
@@ -90,13 +100,14 @@ function Section({ section }: { section: ServiceSection }) {
       <SectionHeader title={section.title} lead={section.kind === 'steps' ? undefined : section.lead} />
 
       {section.kind === 'steps' && (
-        <ol className="mt-12 grid gap-10 sm:grid-cols-2 md:mt-16 lg:grid-cols-3 lg:gap-8">
+        <ol className={`mt-12 grid gap-10 sm:grid-cols-2 md:mt-16 lg:gap-8 ${fourUp ? 'lg:grid-cols-4' : 'lg:grid-cols-3'}`}>
           {section.items.map((step, i) => (
-            <li key={step.title} className="rv rv-rule-t border-t-2 border-foreground pt-6" style={{ '--i': i % 3 } as CSSProperties}>
+            <li key={step.title} className="rv rv-rule-t border-t-2 border-foreground pt-6" style={{ '--i': i % (fourUp ? 4 : 3) } as CSSProperties}>
               <span aria-hidden className="rv-slot">
                 <span className="font-display text-4xl font-bold tracking-[-0.02em] text-primary">{String(i + 1).padStart(2, '0')}</span>
               </span>
               <h3 className="mt-4 font-display text-xl font-bold tracking-[-0.01em]">{step.title}</h3>
+              {step.meta && <p className="mt-1 font-mono text-xs uppercase tracking-[0.14em] text-muted-foreground">{step.meta}</p>}
               <p className="mt-2 leading-relaxed text-muted-foreground">{step.description}</p>
             </li>
           ))}
@@ -118,6 +129,17 @@ function Section({ section }: { section: ServiceSection }) {
             </li>
           ))}
         </ul>
+      )}
+      {section.kind === 'checklist' && section.more && (
+        <p className="mt-8">
+          <Link
+            href={getLocalizedPath(section.more.href, locale)}
+            className="inline-flex items-center gap-1.5 font-medium text-foreground underline decoration-border decoration-2 underline-offset-[6px] transition-colors hover:decoration-primary"
+          >
+            {section.more.label}
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </p>
       )}
 
       {section.kind === 'pairs' && (
@@ -144,6 +166,8 @@ function Section({ section }: { section: ServiceSection }) {
 export function ServicePage({ content, proof, locale }: { content: ServicePageContent; proof: ServiceProof | null; locale: Locale }) {
   const copy = COPY[locale];
   const service = SERVICES[content.slug];
+  // Beside the H1: the real project, or else the list of what the page covers.
+  const aside = proof !== null || content.features.length > 0;
   const others = serviceGroupsFor(locale)
     .flatMap((g) => g.services)
     .filter((s) => s !== content.slug);
@@ -165,28 +189,28 @@ export function ServicePage({ content, proof, locale }: { content: ServicePageCo
         </nav>
 
         <div className="mt-8 grid gap-12 lg:grid-cols-12 lg:items-center lg:gap-12">
-          <div className="min-w-0 lg:col-span-6">
+          <div className={`min-w-0 ${aside ? 'lg:col-span-6' : 'lg:col-span-9'}`}>
             <h1 className="font-display text-[2.6rem] font-extrabold leading-[0.98] tracking-[-0.035em] md:text-6xl lg:text-[4.2rem]">
               {content.title}
             </h1>
             <p className="mt-7 max-w-xl text-lg leading-relaxed text-muted-foreground md:text-xl">{content.lead}</p>
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               {content.primary ? (
                 <Link
                   href={getLocalizedPath(content.primary.href, locale)}
-                  className="group inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl bg-primary px-7 text-base font-semibold text-primary-foreground shadow-lg shadow-primary/25 transition-[filter] hover:brightness-110"
+                  className="group inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl bg-primary px-7 text-base font-semibold text-primary-foreground shadow-lg shadow-primary/25 transition-[filter] hover:brightness-110 sm:whitespace-nowrap"
                 >
                   {content.primary.label}
                   <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
               ) : (
-                <ServiceQuoteButton label={content.quoteLabel} service={service.quoteValue} />
+                <ServiceQuoteButton label={content.quoteLabel} service={service.quoteValue} message={content.quoteMessage} className="sm:whitespace-nowrap" />
               )}
               <Link
-                href={getLocalizedPath('/projects', locale)}
-                className="inline-flex min-h-[52px] items-center justify-center rounded-xl px-7 text-base font-semibold ring-1 ring-inset ring-border transition-colors hover:bg-muted"
+                href={getLocalizedPath(content.secondary?.href ?? '/projects', locale)}
+                className="inline-flex min-h-[52px] items-center justify-center rounded-xl px-7 text-base font-semibold ring-1 ring-inset ring-border transition-colors hover:bg-muted sm:whitespace-nowrap"
               >
-                {copy.work}
+                {content.secondary?.label ?? copy.work}
               </Link>
             </div>
             {content.notes.length > 0 && (
@@ -201,82 +225,86 @@ export function ServicePage({ content, proof, locale }: { content: ServicePageCo
             )}
           </div>
 
-          <div className="min-w-0 lg:col-span-6">
-            {proof ? (
-              <figure>
-                <Link href={getLocalizedPath(`/projects/${proof.slug}`, locale)} className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
-                  <div className="overflow-clip rounded-2xl border border-border bg-card shadow-[0_40px_90px_-40px_rgba(10,22,40,0.45)]">
-                    <div className="flex items-center gap-3 border-b border-border bg-muted/60 px-4 py-2.5">
-                      <span aria-hidden className="flex gap-1.5">
-                        <span className="h-2.5 w-2.5 rounded-full bg-border" />
-                        <span className="h-2.5 w-2.5 rounded-full bg-border" />
-                        <span className="h-2.5 w-2.5 rounded-full bg-border" />
-                      </span>
-                      <span className="truncate rounded-md bg-background px-3 py-1 font-mono text-xs text-muted-foreground">
-                        {hostOf(proof.projectUrl) ?? proof.clientName}
-                      </span>
+          {aside && (
+            <div className="min-w-0 lg:col-span-6">
+              {proof ? (
+                <figure>
+                  <Link href={getLocalizedPath(`/projects/${proof.slug}`, locale)} className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+                    <div className="overflow-clip rounded-2xl border border-border bg-card shadow-[0_40px_90px_-40px_rgba(10,22,40,0.45)]">
+                      <div className="flex items-center gap-3 border-b border-border bg-muted/60 px-4 py-2.5">
+                        <span aria-hidden className="flex gap-1.5">
+                          <span className="h-2.5 w-2.5 rounded-full bg-border" />
+                          <span className="h-2.5 w-2.5 rounded-full bg-border" />
+                          <span className="h-2.5 w-2.5 rounded-full bg-border" />
+                        </span>
+                        <span className="truncate rounded-md bg-background px-3 py-1 font-mono text-xs text-muted-foreground">
+                          {hostOf(proof.projectUrl) ?? proof.clientName}
+                        </span>
+                      </div>
+                      <div className="relative aspect-[16/10] bg-muted">
+                        <FirebaseImage
+                          src={proof.featuredImage}
+                          alt={proof.title}
+                          fill
+                          priority
+                          sizes="(min-width: 1280px) 600px, (min-width: 1024px) 50vw, 100vw"
+                          className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+                        />
+                      </div>
                     </div>
-                    <div className="relative aspect-[16/10] bg-muted">
-                      <FirebaseImage
-                        src={proof.featuredImage}
-                        alt={proof.title}
-                        fill
-                        priority
-                        sizes="(min-width: 1280px) 600px, (min-width: 1024px) 50vw, 100vw"
-                        className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.02]"
-                      />
-                    </div>
-                  </div>
-                  <figcaption className="mt-4 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-                    <span className="text-sm">
-                      <span className={MONO}>{copy.proof}</span>
-                      <span className="mt-1 block font-semibold">
-                        {[proof.clientName, categoryLabel(proof.category, locale), proof.year].filter(Boolean).join(' · ')}
+                    <figcaption className="mt-4 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+                      <span className="text-sm">
+                        <span className={MONO}>{copy.proof}</span>
+                        <span className="mt-1 block font-semibold">
+                          {[proof.clientName, categoryLabel(proof.category, locale), proof.year].filter(Boolean).join(' · ')}
+                        </span>
                       </span>
-                    </span>
-                    <span className="inline-flex items-center gap-1 text-sm font-medium text-primary">
-                      {copy.caseStudy}
-                      <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                    </span>
-                  </figcaption>
-                </Link>
-              </figure>
-            ) : (
-              <div className="rounded-3xl bg-navy p-8 text-white md:p-10">
-                <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-white/50">{copy.get}</p>
-                <ol className="mt-6 divide-y divide-white/10">
-                  {content.features.map((f, i) => (
-                    <li key={f.title} className="flex items-baseline gap-5 py-3.5">
-                      <span className="w-6 shrink-0 font-mono text-xs text-sky-300">{String(i + 1).padStart(2, '0')}</span>
-                      <span className="font-display text-lg font-semibold tracking-[-0.01em] md:text-xl">{f.title}</span>
-                    </li>
-                  ))}
-                </ol>
-              </div>
-            )}
-          </div>
+                      <span className="inline-flex items-center gap-1 text-sm font-medium text-primary">
+                        {copy.caseStudy}
+                        <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                      </span>
+                    </figcaption>
+                  </Link>
+                </figure>
+              ) : (
+                <div className="rounded-3xl bg-navy p-8 text-white md:p-10">
+                  <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-white/50">{content.featuresTitle ?? copy.get}</p>
+                  <ol className="mt-6 divide-y divide-white/10">
+                    {content.features.map((f, i) => (
+                      <li key={f.title} className="flex items-baseline gap-5 py-3.5">
+                        <span className="w-6 shrink-0 font-mono text-xs text-sky-300">{String(i + 1).padStart(2, '0')}</span>
+                        <span className="font-display text-lg font-semibold tracking-[-0.01em] md:text-xl">{f.title}</span>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </header>
 
       <div className="space-y-24 pb-24 md:space-y-32 md:pb-32">
         {/* ── What we do ── */}
-        <section className="container mx-auto px-5 md:px-8">
-          <SectionHeader title={copy.what} />
-          <ol className="mt-12 grid gap-x-12 border-t border-border md:mt-16 md:grid-cols-2">
-            {content.features.map((f, i) => (
-              <li key={f.title} className="rv grid grid-cols-[2.5rem_1fr] gap-x-4 border-b border-border py-7" style={{ '--i': i % 2 } as CSSProperties}>
-                <span className="pt-1 font-mono text-xs text-primary">{String(i + 1).padStart(2, '0')}</span>
-                <div>
-                  <h3 className="font-display text-xl font-bold tracking-[-0.01em] md:text-2xl">{f.title}</h3>
-                  <p className="mt-2 leading-relaxed text-muted-foreground">{f.description}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </section>
+        {content.features.length > 0 && (
+          <section className="container mx-auto px-5 md:px-8">
+            <SectionHeader title={content.featuresTitle ?? copy.what} />
+            <ol className="mt-12 grid gap-x-12 border-t border-border md:mt-16 md:grid-cols-2">
+              {content.features.map((f, i) => (
+                <li key={f.title} className="rv grid grid-cols-[2.5rem_1fr] gap-x-4 border-b border-border py-7" style={{ '--i': i % 2 } as CSSProperties}>
+                  <span className="pt-1 font-mono text-xs text-primary">{String(i + 1).padStart(2, '0')}</span>
+                  <div>
+                    <h3 className="font-display text-xl font-bold tracking-[-0.01em] md:text-2xl">{f.title}</h3>
+                    <p className="mt-2 leading-relaxed text-muted-foreground">{f.description}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </section>
+        )}
 
         {content.sections.map((s, i) => (
-          <Section key={i} section={s} />
+          <Section key={i} section={s} locale={locale} />
         ))}
 
         {locale === 'it' && content.localKey && <ServiceLocal service={content.localKey} />}
@@ -300,7 +328,7 @@ export function ServicePage({ content, proof, locale }: { content: ServicePageCo
         </section>
       </div>
 
-      <HomeCtaSection locale={locale} title={content.closing?.title} lead={content.closing?.lead} />
+      {content.closingNode ?? <HomeCtaSection locale={locale} title={content.closing?.title} lead={content.closing?.lead} />}
     </div>
   );
 }
