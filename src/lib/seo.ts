@@ -4,7 +4,9 @@ import type { Locale } from '@/i18n/config';
 export const siteConfig = {
   name: 'Studio Faraj',
   url: 'https://studiofaraj.it',
-  ogImage: 'https://studiofaraj.it/assets/og-image.jpg',
+  // Share image; regenerate with scripts/generate-og-image.mjs (the English one has English copy).
+  ogImage: 'https://studiofaraj.it/assets/og-studio-faraj.jpg',
+  ogImageEn: 'https://studiofaraj.it/assets/og-studio-faraj-en.jpg',
   twitterHandle: '@studiofaraj',
   type: 'website',
 };
@@ -133,7 +135,7 @@ export function generateMetadata({
     ? (description.length > 155 ? description.substring(0, 152) + '...' : description)
     : config.description;
   
-  const ogImage = image || siteConfig.ogImage;
+  const ogImage = image || (locale === 'en' ? siteConfig.ogImageEn : siteConfig.ogImage);
   const allImages = images && images.length > 0
     ? [ogImage, ...images].filter(Boolean).slice(0, 10) // Limit to 10 images for OG
     : [ogImage];

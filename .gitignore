@@ -26,3 +26,6 @@ debug.log
 .DS_Store
 Thumbs.db
 *.local
+
+# Animated OG loops for social posts (scripts/generate-og-image.mjs --animated)
+og-animated/
