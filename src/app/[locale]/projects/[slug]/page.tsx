@@ -4,19 +4,10 @@ import { setRequestLocale } from 'next-intl/server';
 
 import { getProjectBySlugAction, getProjectsAction } from '@/lib/actions';
 import { StructuredDataServer } from '@/components/seo/structured-data-server';
-import { ProjectPostClient } from '@/components/site/project-post-client';
+import { ProjectCaseStudy, type NextProject } from '@/components/site/project-case-study';
 import { generateMetadata as generateSEOMetadata, siteConfig, generateStructuredDataBreadcrumbList } from '@/lib/seo';
 import type { Locale } from '@/i18n/config';
 import type { Project } from '@/lib/definitions';
-
-// ─── Date helpers ─────────────────────────────────────────────────────────────
-const IT_MONTHS = ['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'];
-const EN_MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-
-function formatDateServer(dateStr: string, locale: string) {
-  const d = new Date(dateStr);
-  return `${d.getUTCDate()} ${locale === 'it' ? IT_MONTHS[d.getUTCMonth()] : EN_MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()}`;
-}
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 type Props = {
@@ -82,13 +73,21 @@ export default async function ProjectPostPage({ params }: Props) {
 
   if (!project || !project.published) notFound();
 
-  // Related projects (other published, up to 3)
-  let related: Project[] = [];
+  // The next project in portfolio order (wrapping round), for the closing link.
+  let next: NextProject | null = null;
   try {
-    const all = await getProjectsAction();
-    related = (all as Project[])
-      .filter((p) => p.published && p.slug !== slug)
-      .slice(0, 3);
+    const published = ((await getProjectsAction()) as Project[]).filter((p) => p.published);
+    const at = published.findIndex((p) => p.slug === slug);
+    const candidate = published.length > 1 ? published[(at + 1) % published.length] : null;
+    if (candidate && candidate.slug !== slug) {
+      next = {
+        slug: candidate.slug,
+        title: candidate.title,
+        featuredImage: candidate.featuredImage,
+        projectUrl: candidate.projectUrl,
+        clientName: candidate.clientName,
+      };
+    }
   } catch {
     // non-critical
   }
@@ -137,13 +136,7 @@ export default async function ProjectPostPage({ params }: Props) {
   return (
     <>
       <StructuredDataServer data={[structuredData, breadcrumbData]} />
-      <ProjectPostClient
-        project={project}
-        related={related}
-        locale={currentLocale}
-        formattedDate={formatDateServer(project.createdAt, currentLocale)}
-        relatedDates={related.map(r => formatDateServer(r.createdAt, currentLocale))}
-      />
+      <ProjectCaseStudy project={project} next={next} locale={currentLocale} />
     </>
   );
 }

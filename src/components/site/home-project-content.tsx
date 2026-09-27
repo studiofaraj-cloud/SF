@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { FirebaseImage } from '@/components/ui/firebase-image';
 import { getLocalizedPath } from '@/lib/i18n-helpers';
+import { categoryLabel, hostOf } from '@/lib/project-display';
 import type { Locale } from '@/i18n/config';
 import type { Project } from '@/lib/definitions';
 import { WorkRail } from './work-rail';
@@ -12,36 +13,25 @@ type ProjectSummary = Omit<Project, 'content' | 'gallery'>;
 const COPY = {
   it: {
     title: 'Lavori recenti',
-    lead: 'Siti e piattaforme che abbiamo progettato e scritto per aziende in Italia e all’estero. Sono tutti online: puoi visitarli.',
+    lead: 'Siti e piattaforme che abbiamo progettato e scritto per aziende in Italia e all’estero. Leggi come li abbiamo costruiti, o visitali dal vivo.',
     all: 'Tutti i progetti',
     archive: 'Archivio',
     caseStudy: 'Leggi il caso studio',
     visit: (host: string) => `Visita ${host}`,
     stack: 'Stack',
-    categories: { corporate: 'Sito aziendale', 'landing-page': 'Landing page', 'e-commerce': 'E-commerce' },
     rail: { rail: 'Progetti recenti', prev: 'Progetto precedente', next: 'Progetto successivo', hint: 'Trascina o usa le frecce' },
   },
   en: {
     title: 'Recent work',
-    lead: 'Websites and platforms we designed and built for companies in Italy and abroad. They are all live: you can visit them.',
+    lead: 'Websites and platforms we designed and built for companies in Italy and abroad. Read how we built them, or visit them live.',
     all: 'All projects',
     archive: 'Archive',
     caseStudy: 'Read the case study',
     visit: (host: string) => `Visit ${host}`,
     stack: 'Stack',
-    categories: { corporate: 'Company website', 'landing-page': 'Landing page', 'e-commerce': 'E-commerce' },
     rail: { rail: 'Recent projects', prev: 'Previous project', next: 'Next project', hint: 'Drag or use the arrows' },
   },
 } as const;
-
-function hostOf(url?: string) {
-  if (!url) return null;
-  try {
-    return new URL(url).hostname.replace(/^www\./, '');
-  } catch {
-    return null;
-  }
-}
 
 /**
  * "Recent work" — server component. The newest projects on a horizontal
@@ -87,10 +77,7 @@ export function HomeProjectContent({
         <WorkRail count={projects.length} labels={copy.rail}>
           {projects.map((p, i) => {
             const host = hostOf(p.projectUrl);
-            const category =
-              p.category && p.category in copy.categories
-                ? copy.categories[p.category as keyof typeof copy.categories]
-                : null;
+            const category = categoryLabel(p.category, locale);
             const meta = [category, p.year].filter(Boolean).join(', ');
             const href = getLocalizedPath(`/projects/${p.slug}`, locale);
 

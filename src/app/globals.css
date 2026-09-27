@@ -1306,6 +1306,19 @@ select {
 
 
 /* ============================================
+   PROJECTS INDEX
+   ============================================
+   Mouse users get the floating preview (ProjectsPreview) and a row number;
+   touch screens, which can't hover, get a thumbnail in each row instead. */
+@media (hover: hover) and (pointer: fine) {
+  .pi-thumb { display: none; }
+  .pi-num { display: block; }
+}
+@media (hover: none), (pointer: coarse) {
+  .pi-preview { display: none; }
+}
+
+/* ============================================
    HOMEPAGE MOTION (scroll-driven, CSS only)
    ============================================
    No JavaScript: every reveal is tied to the element's own position in the
@@ -1422,6 +1435,14 @@ select {
       animation-range: entry 0% entry 360px;
     }
 
+    /* Case studies: a tall full-page screenshot scrolls through the site as
+       its frame moves up the viewport (a short one has nothing to move). */
+    .pd-shot {
+      animation: pd-shot linear both;
+      animation-timeline: view();
+      animation-range: cover 35% cover 95%;
+    }
+
     /* Leaving the hero: text and code window drift apart, for depth. */
     .rv-exit-a, .rv-exit-b {
       animation: rv-exit-a linear both;
@@ -1468,6 +1489,10 @@ select {
 @keyframes rv-sheet {
   from { translate: 0 110px; }
   to   { translate: 0 0; }
+}
+@keyframes pd-shot {
+  from { object-position: 50% 0%; }
+  to   { object-position: 50% 100%; }
 }
 @keyframes rv-exit-a {
   to { translate: 0 90px; opacity: 0.2; }

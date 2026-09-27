@@ -141,7 +141,10 @@ function renderNode(node: TiptapNode, index: number, insideParagraph: boolean = 
 
     case 'heading': {
       const level = node.attrs?.level || 1;
-      const Tag = `h${level}` as keyof React.JSX.IntrinsicElements;
+      // Pages that render this content already have their own <h1> (the post
+      // or project title), so a level-1 heading in the content is output as
+      // an <h2>, keeping its level-1 look: one h1 per page.
+      const Tag = `h${Math.max(level, 2)}` as keyof React.JSX.IntrinsicElements;
       const headingClasses: Record<number, string> = {
         1: 'text-3xl md:text-4xl font-bold mb-6 mt-12 text-foreground tracking-tight',
         2: 'text-2xl md:text-3xl font-bold mb-5 mt-10 text-foreground tracking-tight',
