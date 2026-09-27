@@ -15,7 +15,7 @@ const COPY: Record<Locale, { title: string; lead: string; layers: Layer[] }> = {
       },
       {
         name: 'Server',
-        tools: ['Node.js', '.NET', 'Java', 'Python', 'PHP', 'REST API', 'GraphQL'],
+        tools: ['Node.js', '.NET', 'Java', 'Scala', 'Python', 'PHP', 'REST API', 'GraphQL'],
         why: 'Logica, API e integrazioni scritte su misura, nel linguaggio più adatto al progetto e senza plugin di terze parti.',
       },
       {
@@ -23,7 +23,7 @@ const COPY: Record<Locale, { title: string; lead: string; layers: Layer[] }> = {
         tools: ['PostgreSQL', 'MongoDB', 'Firebase', 'NoSQL'],
         why: 'Il database giusto per il progetto: relazionale, NoSQL o in tempo reale.',
       },
-      { name: 'Pagamenti', tools: ['Stripe', 'PayPal'], why: 'Checkout, abbonamenti e pagamenti integrati direttamente nel sito.' },
+      { name: 'Pagamenti', tools: ['Stripe', 'PayPal', 'Klarna'], why: 'Checkout, abbonamenti e pagamenti a rate integrati direttamente nel sito.' },
       { name: 'Infrastruttura', tools: ['Vercel', 'Google Cloud', 'AWS', 'Docker'], why: 'Hosting veloce, certificati SSL e backup gestiti da noi.' },
     ],
   },
@@ -38,7 +38,7 @@ const COPY: Record<Locale, { title: string; lead: string; layers: Layer[] }> = {
       },
       {
         name: 'Server',
-        tools: ['Node.js', '.NET', 'Java', 'Python', 'PHP', 'REST API', 'GraphQL'],
+        tools: ['Node.js', '.NET', 'Java', 'Scala', 'Python', 'PHP', 'REST API', 'GraphQL'],
         why: 'Logic, APIs and integrations written to measure, in the language that suits the project, with no third-party plugins.',
       },
       {
@@ -46,7 +46,7 @@ const COPY: Record<Locale, { title: string; lead: string; layers: Layer[] }> = {
         tools: ['PostgreSQL', 'MongoDB', 'Firebase', 'NoSQL'],
         why: 'The right database for the project: relational, NoSQL or real-time.',
       },
-      { name: 'Payments', tools: ['Stripe', 'PayPal'], why: 'Checkout, subscriptions and payments built straight into the site.' },
+      { name: 'Payments', tools: ['Stripe', 'PayPal', 'Klarna'], why: 'Checkout, subscriptions and pay-in-instalments built straight into the site.' },
       { name: 'Infrastructure', tools: ['Vercel', 'Google Cloud', 'AWS', 'Docker'], why: 'Fast hosting, SSL certificates and backups, managed by us.' },
     ],
   },
