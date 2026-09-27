@@ -1500,3 +1500,25 @@ select {
 @keyframes rv-exit-b {
   to { translate: 0 36px; opacity: 0.55; }
 }
+
+/* Cookie banner: fades in (and rises, unless motion is reduced). Starting at
+   opacity 0 also keeps it from being counted as the page's largest paint. */
+.ck-in {
+  animation: ck-fade 0.3s ease-out both;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .ck-in {
+    animation: ck-in 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+}
+@keyframes ck-fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes ck-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}

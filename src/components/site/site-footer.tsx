@@ -11,6 +11,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useEffect, useRef } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { useTranslations, useLocale } from 'next-intl';
+import { useCookiePreferences } from '@/contexts/cookie-context';
 import { getLocalizedPath } from '@/lib/i18n-helpers';
 
 const STUDIO_MAPS_URL =
@@ -72,6 +73,7 @@ function FooterLink({ href, children, highlight }: { href: string; children: Rea
 export function SiteFooter() {
   const locale = useLocale();
   const t = useTranslations('footer');
+  const { openPreferences } = useCookiePreferences();
   const tNav = useTranslations('nav');
   const tServices = useTranslations('services');
 
@@ -263,6 +265,12 @@ export function SiteFooter() {
                 className="text-muted-foreground hover:text-primary transition-colors">
                 {t('cookiePolicy')}
               </Link>
+              <span className="w-px h-3 bg-border/60" />
+              {/* Consent must be changeable at any time: this reopens the choice. */}
+              <button type="button" onClick={openPreferences}
+                className="text-muted-foreground hover:text-primary transition-colors">
+                {locale === 'en' ? 'Cookie preferences' : 'Preferenze cookie'}
+              </button>
               <span className="w-px h-3 bg-border/60" />
               <Link href={getLocalizedPath('/terms', locale as any)}
                 className="text-muted-foreground hover:text-primary transition-colors">
