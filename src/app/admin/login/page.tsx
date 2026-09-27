@@ -173,7 +173,7 @@ function LoginPageInner() {
           {/* Logo + title */}
           <div className="mb-8 flex flex-col items-center text-center">
             <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/30 to-primary/10 border border-primary/30 shadow-lg shadow-primary/20">
-              <Image src="/assets/logo.png" alt="Studio Faraj" width={36} height={36} />
+              <Image src="/assets/logo.webp" alt="Studio Faraj" width={36} height={36} />
             </div>
             <GradientText
               colors={['#3b82f6', '#8b5cf6', '#3b82f6']}

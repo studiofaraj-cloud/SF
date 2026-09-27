@@ -80,7 +80,16 @@ const FALLBACK: Rect = { x: -1, y: 20, w: 40, h: 40 };
  * Escape and scroll lock; the motion is CSS (globals.css, .mm-*) and is
  * skipped with reduced motion.
  */
-export function MobileMenu({ rating, onSearchOpen }: { rating: HeaderRating; onSearchOpen: () => void }) {
+export function MobileMenu({
+  rating,
+  onSearchOpen,
+  triggerClassName,
+}: {
+  rating: HeaderRating;
+  onSearchOpen: () => void;
+  /** Extra classes for the menu button, e.g. white over a navy hero. */
+  triggerClassName?: string;
+}) {
   const locale = useLocale() as Locale;
   const copy = COPY[locale];
   const t = useTranslations('nav');
@@ -136,7 +145,10 @@ export function MobileMenu({ rating, onSearchOpen }: { rating: HeaderRating; onS
           ref={triggerRef}
           type="button"
           aria-label={copy.open}
-          className="group grid h-10 w-10 place-items-center rounded-full text-foreground transition-colors hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary lg:hidden"
+          className={cn(
+            'group grid h-10 w-10 place-items-center rounded-full text-foreground transition-colors hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary lg:hidden',
+            triggerClassName,
+          )}
         >
           <span aria-hidden className="flex w-5 flex-col gap-[5px]">
             <span className="h-0.5 w-5 rounded-full bg-current" />
@@ -175,9 +187,7 @@ export function MobileMenu({ rating, onSearchOpen }: { rating: HeaderRating; onS
               onClick={() => setOpen(false)}
               className="ml-7 flex items-center gap-2.5 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400"
             >
-              <span className="grid h-8 w-8 place-items-center rounded-full bg-white">
-                <Image src="/assets/logo.png" alt="" width={26} height={26} unoptimized />
-              </span>
+              <Image src="/assets/logo-white.webp" alt="" width={32} height={32} unoptimized className="h-8 w-8" />
               <span className="font-brand text-sm font-semibold">
                 Studio <span className="text-sky-300">Faraj</span>
               </span>

@@ -32,7 +32,7 @@ export function NotFoundContent({
         {/* Logo */}
         <div className="flex justify-center">
           <Image
-            src="/assets/logo.png"
+            src="/assets/logo.webp"
             alt="Studio Faraj"
             width={180}
             height={60}

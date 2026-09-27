@@ -30,7 +30,7 @@ export function InitialLoader() {
     <div className={`fixed inset-0 z-[9999] bg-background flex items-center justify-center ${isFadingOut ? 'animate-fade-out' : ''}`}>
       <div className="flex flex-col items-center gap-4">
         <Image 
-          src="/assets/logo.png" 
+          src="/assets/logo.webp" 
           alt="Studio Faraj" 
           width={80} 
           height={80}

@@ -83,7 +83,7 @@ export function SiteFooter() {
         {/* ── BRAND ROW ── full width on mobile */}
         <div className="mb-10 md:mb-0 md:hidden">
           <Link href="/" className="inline-flex items-center gap-3 mb-4">
-            <Image src="/assets/logo.png" alt="Studio Faraj Logo" width={36} height={36} unoptimized />
+            <Image src="/assets/logo.webp" alt="Studio Faraj Logo" width={36} height={36} unoptimized />
             <span className="font-brand font-semibold text-xl brand-wordmark">Studio Faraj</span>
           </Link>
           <p className="text-sm text-muted-foreground leading-relaxed mb-5">
@@ -133,7 +133,7 @@ export function SiteFooter() {
           {/* Company info — desktop only (hidden on mobile, shown above) */}
           <div className="hidden md:block lg:col-span-3 space-y-5">
             <Link href="/" className="inline-flex items-center gap-3 group">
-              <Image src="/assets/logo.png" alt="Studio Faraj Logo" width={40} height={40}
+              <Image src="/assets/logo.webp" alt="Studio Faraj Logo" width={40} height={40}
                 className="transition-transform group-hover:scale-110 duration-300" unoptimized />
               <span className="font-brand font-semibold text-2xl brand-wordmark">Studio Faraj</span>
             </Link>

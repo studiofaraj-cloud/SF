@@ -54,7 +54,7 @@ export function AdminSidebar() {
           aria-label="Studio Faraj Admin"
         >
           <div className="w-8 h-8 rounded-lg bg-primary/20 border border-primary/30 flex items-center justify-center shrink-0 group-hover:bg-primary/30 transition-colors">
-            <Image src="/assets/logo.png" alt="" width={18} height={18} aria-hidden="true" unoptimized />
+            <Image src="/assets/logo.webp" alt="" width={18} height={18} aria-hidden="true" unoptimized />
           </div>
           <div>
             <p className="text-sm font-bold text-white leading-none">Studio Faraj</p>

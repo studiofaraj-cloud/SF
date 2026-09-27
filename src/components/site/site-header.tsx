@@ -1,114 +1,184 @@
 'use client';
 
-import Link from 'next/link';
-import { Search } from 'lucide-react';
-import { useState, useEffect } from 'react';
-import { LanguageSwitcher } from './language-switcher';
-import { ThemeToggle } from './theme-toggle';
-import { Button } from '@/components/ui/button';
-import { SearchDialog } from './search-dialog';
-import { NavigationMenu } from './navigation-menu';
-import { MobileMenu, type HeaderRating } from './mobile-menu';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { Search } from 'lucide-react';
 import { useLocale } from 'next-intl';
-import { getLocalizedPath } from '@/lib/i18n-helpers';
+import { getLocalizedPath, removeLocaleFromPath } from '@/lib/i18n-helpers';
 import { cn } from '@/lib/utils';
+import type { Locale } from '@/i18n/config';
+import { HeaderServicesMenu } from './header-services-menu';
+import { LocaleSwitch } from './locale-switch';
+import { MobileMenu, type HeaderRating } from './mobile-menu';
+import { SearchDialog } from './search-dialog';
+import { ServiceQuoteButton } from './service-quote-button';
+import { ThemeToggle } from './theme-toggle';
 
-function DesktopNav({ onSearchOpen }: { onSearchOpen: () => void }) {
-    const locale = useLocale();
-    return (
-        <>
-         <div className="hidden flex-1 items-center justify-between lg:flex h-full">
-            <Link href="/" title="Studio Faraj — Home" className="mr-4 md:mr-6 flex items-center space-x-2 h-full">
-              <Image src="/assets/logo.png" alt="Studio Faraj Logo" width={32} height={32} className="md:w-8 md:h-8 lg:w-10 lg:h-10 flex-shrink-0" unoptimized />
-              <span className="font-brand font-semibold text-sm md:text-base lg:text-lg whitespace-nowrap brand-wordmark">Studio Faraj</span>
-            </Link>
-            <div className="flex items-center h-full">
-              <NavigationMenu />
-            </div>
-            <div className="flex items-center justify-end space-x-1 md:space-x-2 h-full">
-              <Button variant="ghost" size="icon" className="h-9 w-9 md:h-10 md:w-10 flex-shrink-0 text-foreground" onClick={() => onSearchOpen()}>
-                <Search className="h-4 w-4 md:h-5 md:w-5 text-foreground" />
-                <span className="sr-only">Search</span>
-              </Button>
-              <ThemeToggle />
-              <LanguageSwitcher />
-              <Link
-                href={`/${locale}/hub/login`}
-                title={locale === 'it' ? 'Accedi alla tua area clienti' : 'Sign in to your client area'}
-                className="ml-1 hidden xl:inline-flex items-center h-9 px-3 rounded-full text-[12.5px] font-semibold text-foreground hover:text-primary transition-colors whitespace-nowrap"
-              >
-                {locale === 'it' ? 'Area Clienti' : 'Client Area'}
-              </Link>
-              <Link
-                href={getLocalizedPath('/contatti', locale as any)}
-                title={locale === 'it' ? 'Richiedi un preventivo gratuito' : 'Get a free quote'}
-                className="ml-1 hidden xl:inline-flex items-center gap-1.5 h-9 px-4 rounded-full bg-primary text-primary-foreground text-[12.5px] font-bold tracking-wide hover:brightness-110 transition-all duration-200 shadow-md shadow-primary/20 hover:shadow-primary/40 active:scale-[0.98] whitespace-nowrap"
-              >
-                {locale === 'it' ? 'Preventivo' : 'Get a Quote'}
-              </Link>
-            </div>
-          </div>
-        </>
-    )
-}
+const COPY = {
+  it: {
+    home: 'Studio Faraj, home',
+    nav: 'Navigazione principale',
+    projects: 'Progetti',
+    about: 'Chi siamo',
+    blog: 'Blog',
+    contact: 'Contatti',
+    search: 'Cerca nel sito',
+    area: 'Area clienti',
+    areaTitle: 'Accedi alla tua area clienti',
+    quote: 'Richiedi un preventivo',
+    quoteShort: 'Preventivo',
+  },
+  en: {
+    home: 'Studio Faraj, home',
+    nav: 'Main navigation',
+    projects: 'Projects',
+    about: 'About',
+    blog: 'Blog',
+    contact: 'Contact',
+    search: 'Search the site',
+    area: 'Client area',
+    areaTitle: 'Sign in to your client area',
+    quote: 'Get a quote',
+    quoteShort: 'Quote',
+  },
+} as const;
 
+/** Pages whose first section is navy: at the top the header is see-through and white. */
+const DARK_TOP = new Set(['/']);
 
+/**
+ * The site header: a full-width bar, see-through at the top of the page
+ * (white over a navy hero) and solid once the page scrolls. Desktop has the
+ * services menu, four links, search, theme, IT / EN, the client area and the
+ * quote button, which opens the quote dialog; phones get the full-screen menu.
+ */
 export function SiteHeader({ rating = null }: { rating?: HeaderRating }) {
-  const [mounted, setMounted] = useState(false);
-  const [isSearchOpen, setSearchOpen] = useState(false);
+  const locale = useLocale() as Locale;
+  const pathname = usePathname();
+  const copy = COPY[locale];
+  const [searchOpen, setSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const sentinel = useRef<HTMLSpanElement>(null);
 
+  // A marker in the first 24px of the page: once it leaves the viewport, the bar turns solid.
   useEffect(() => {
-    setMounted(true);
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    const el = sentinel.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([entry]) => setScrolled(!entry.isIntersecting));
+    io.observe(el);
+    return () => io.disconnect();
   }, []);
 
-  const handleSearchOpen = () => setSearchOpen(true);
+  const onDark = !scrolled && DARK_TOP.has(removeLocaleFromPath(pathname));
+  const isActive = (href: string) => {
+    const localized = getLocalizedPath(href, locale);
+    return pathname === localized || pathname.startsWith(`${localized}/`);
+  };
+  const item = (active: boolean) =>
+    cn(
+      'inline-flex h-10 items-center gap-1 rounded-full px-3.5 text-[15px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary xl:px-4',
+      active ? 'font-semibold' : 'font-medium',
+      onDark
+        ? active
+          ? 'text-white'
+          : 'text-white/75 hover:bg-white/10 hover:text-white'
+        : active
+          ? 'text-foreground'
+          : 'text-muted-foreground hover:bg-muted hover:text-foreground',
+    );
+  const tool = cn('transition-colors', onDark ? 'text-white hover:bg-white/10 hover:text-white' : 'text-foreground hover:bg-muted');
+
+  const links = [
+    { href: '/projects', label: copy.projects },
+    { href: '/chi-siamo', label: copy.about },
+    { href: '/blog', label: copy.blog },
+    { href: '/contatti', label: copy.contact },
+  ];
 
   return (
     <>
-      <SearchDialog open={isSearchOpen} onOpenChange={setSearchOpen} />
+      <span ref={sentinel} aria-hidden className="pointer-events-none absolute left-0 top-0 h-6 w-px" />
+      <SearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
       <header
         className={cn(
-          'fixed top-0 z-50 left-0 right-0 transition-all duration-300',
-          scrolled
-            ? 'p-2 md:p-2.5 lg:px-6 xl:px-10 2xl:px-24'
-            : 'p-3 md:p-4 lg:px-6 xl:px-10 2xl:px-24'
+          'fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,color] duration-300',
+          scrolled ? 'bg-background/85 shadow-[0_1px_0_hsl(var(--border))] backdrop-blur-xl' : 'bg-transparent',
+          onDark ? 'text-white' : 'text-foreground',
         )}
       >
         <div
           className={cn(
-            'relative mx-auto flex w-full max-w-[1600px] items-center justify-between rounded-2xl border border-border/70 bg-background px-4 shadow-[0_2px_14px_rgba(10,22,40,0.07)] transition-all duration-300 md:px-5 lg:px-6 xl:px-8',
-            scrolled ? 'h-12 md:h-14' : 'h-14 md:h-16'
+            'mx-auto flex max-w-[1400px] items-center gap-4 px-5 transition-[height] duration-300 md:px-8 lg:gap-6 lg:px-10',
+            scrolled ? 'h-16' : 'h-[72px] md:h-[84px]',
           )}
         >
-          <div className="hidden lg:flex flex-1 relative z-10 h-full items-center">
-            <DesktopNav onSearchOpen={handleSearchOpen} />
-          </div>
-          <div className="flex items-center lg:hidden relative z-10 h-full">
-            <Link href="/" title="Studio Faraj — Home" className="flex items-center space-x-2 h-full">
-              <Image src="/assets/logo.png" alt="Studio Faraj Logo" width={32} height={32} className="md:w-8 md:h-8 flex-shrink-0" unoptimized />
-              <span className="font-brand font-semibold text-sm md:text-base whitespace-nowrap brand-wordmark">Studio Faraj</span>
+          <Link href={getLocalizedPath('/', locale)} aria-label={copy.home} className="flex shrink-0 items-center gap-2.5 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+            {/* White mark over the navy hero, the coloured one everywhere else: they cross-fade. */}
+            <span className="relative h-9 w-9 shrink-0 md:h-[38px] md:w-[38px]">
+              <Image
+                src="/assets/logo.webp"
+                alt=""
+                width={38}
+                height={38}
+                priority
+                unoptimized
+                className={cn('absolute inset-0 h-full w-full transition-opacity duration-300', onDark && 'opacity-0')}
+              />
+              <Image
+                src="/assets/logo-white.webp"
+                alt=""
+                width={38}
+                height={38}
+                priority
+                unoptimized
+                className={cn('absolute inset-0 h-full w-full transition-opacity duration-300', !onDark && 'opacity-0')}
+              />
+            </span>
+            <span className="whitespace-nowrap text-[17px] font-semibold tracking-[-0.01em] md:text-lg">Studio Faraj</span>
+          </Link>
+
+          <nav aria-label={copy.nav} className="hidden flex-1 items-center justify-center gap-0.5 lg:flex">
+            <HeaderServicesMenu locale={locale} className={item(isActive('/servizi'))} />
+            {links.map((l) => {
+              const active = isActive(l.href);
+              return (
+                <Link key={l.href} href={getLocalizedPath(l.href, locale)} aria-current={active ? 'page' : undefined} className={item(active)}>
+                  {l.label}
+                </Link>
+              );
+            })}
+          </nav>
+
+          <div className="ml-auto flex items-center gap-0.5 lg:ml-0">
+            <button
+              type="button"
+              onClick={() => setSearchOpen(true)}
+              aria-label={copy.search}
+              className={cn('hidden h-10 w-10 place-items-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary lg:grid', tool)}
+            >
+              <Search className="h-[18px] w-[18px]" />
+            </button>
+            <ThemeToggle className={cn('h-10 w-10 rounded-full md:h-10 md:w-10', tool)} />
+            <LocaleSwitch className={onDark ? 'text-white' : 'text-foreground'} />
+            <Link
+              href={`/${locale}/hub/login`}
+              title={copy.areaTitle}
+              className={cn('hidden h-10 items-center whitespace-nowrap rounded-full px-3 text-sm font-semibold xl:inline-flex', tool)}
+            >
+              {copy.area}
             </Link>
-          </div>
-          <div className="lg:hidden relative z-10 flex items-center h-full gap-2">
-            {mounted ? (
-              <>
-                <ThemeToggle />
-                <LanguageSwitcher />
-              </>
-            ) : (
-              <>
-                <div className="h-9 w-9 bg-muted/50 rounded animate-pulse" />
-                <div className="h-9 w-9 bg-muted/50 rounded animate-pulse" />
-              </>
-            )}
+            <ServiceQuoteButton
+              label={copy.quote}
+              variant="plain"
+              className="ml-1.5 hidden h-11 items-center whitespace-nowrap rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/25 transition-[filter] hover:brightness-110 lg:inline-flex"
+            >
+              <span className="xl:hidden">{copy.quoteShort}</span>
+              <span className="hidden xl:inline">{copy.quote}</span>
+            </ServiceQuoteButton>
             {/* Server-rendered: the menu button is there from the first paint. */}
-            <MobileMenu rating={rating} onSearchOpen={handleSearchOpen} />
+            <MobileMenu rating={rating} onSearchOpen={() => setSearchOpen(true)} triggerClassName={onDark ? 'text-white hover:bg-white/10' : undefined} />
           </div>
         </div>
       </header>

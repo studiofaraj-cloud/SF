@@ -195,7 +195,7 @@ function HubLoginInner() {
 
       <div className="w-full max-w-md rounded-2xl border border-primary/20 bg-card/80 p-8 shadow-xl backdrop-blur-xl">
         <div className="mb-6 flex flex-col items-center text-center">
-          <Image src="/assets/logo.png" alt="Studio Faraj" width={40} height={40} className="mb-3" />
+          <Image src="/assets/logo.webp" alt="Studio Faraj" width={40} height={40} className="mb-3" />
           <h1 className="text-xl font-bold">
             {mode === 'register' ? pick('titleRegister', lang) : pick('title', lang)}
           </h1>

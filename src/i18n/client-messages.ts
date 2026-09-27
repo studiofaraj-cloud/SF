@@ -20,6 +20,9 @@ export const GLOBAL_CLIENT_NAMESPACES = [
   // Navigation menu, footer and the quote/contact forms list the services by name.
   'services.*.label',
   'services.*.subtitle',
+  // The header's quote button opens the quote dialog on every page.
+  'quoteDialog',
+  'serverActions',
 ];
 
 type Messages = Record<string, unknown>;

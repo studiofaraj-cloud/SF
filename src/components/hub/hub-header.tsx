@@ -38,7 +38,7 @@ export function HubHeader() {
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur-xl">
       <div className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between gap-4 px-4">
         <Link href={`/${locale}/hub`} className="flex items-center gap-2">
-          <Image src="/assets/logo.png" alt="Studio Faraj" width={26} height={26} />
+          <Image src="/assets/logo.webp" alt="Studio Faraj" width={26} height={26} />
           <span className="text-sm font-semibold">
             Studio Faraj <span className="text-muted-foreground">· {en ? 'Client Hub' : 'Area Clienti'}</span>
           </span>

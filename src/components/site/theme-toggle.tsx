@@ -5,6 +5,7 @@ import { useTheme } from 'next-themes';
 import { Moon, Sun } from 'lucide-react';
 import { useLocale } from 'next-intl';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 /**
  * Light/dark theme toggle for the site header.
@@ -17,7 +18,7 @@ import { Button } from '@/components/ui/button';
  * Hydration: useTheme returns undefined on the server, so we render a neutral
  * placeholder until mounted to avoid a server/client mismatch on the icon.
  */
-export function ThemeToggle() {
+export function ThemeToggle({ className }: { className?: string }) {
   const { resolvedTheme, setTheme } = useTheme();
   const locale = useLocale();
   const [mounted, setMounted] = useState(false);
@@ -44,7 +45,7 @@ export function ThemeToggle() {
       variant="ghost"
       size="icon"
       onClick={() => setTheme(next)}
-      className="h-9 w-9 md:h-10 md:w-10 flex-shrink-0 text-foreground relative"
+      className={cn('h-9 w-9 md:h-10 md:w-10 flex-shrink-0 text-foreground relative', className)}
       aria-label={label}
       title={label}
       suppressHydrationWarning
