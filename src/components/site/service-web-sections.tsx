@@ -1,8 +1,7 @@
-import Link from 'next/link';
 import type { CSSProperties } from 'react';
 import { ArrowRight } from 'lucide-react';
-import { getLocalizedPath } from '@/lib/i18n-helpers';
 import type { Locale } from '@/i18n/config';
+import { BookCallButton } from './book-call-button';
 import { RevealWords } from './reveal-words';
 import { ServicePanel, type ServiceProof } from './service-panel';
 import { ServiceQuoteButton } from './service-quote-button';
@@ -202,13 +201,10 @@ export function WebTwoPaths({ m, locale }: { m: Msg; locale: Locale }) {
             <h3 className="mt-3 font-display text-2xl font-bold tracking-[-0.02em]">{c.pathB.title}</h3>
             <p className="mt-2 flex-1 leading-relaxed text-white/70">{c.pathB.description}</p>
             <div className="mt-7">
-              <Link
-                href={getLocalizedPath('/call-booking', locale)}
-                className="group inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl px-7 text-base font-semibold text-white ring-1 ring-inset ring-white/30 transition-colors hover:bg-white hover:text-navy"
-              >
+              <BookCallButton className="group inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl px-7 text-base font-semibold text-white ring-1 ring-inset ring-white/30 transition-colors hover:bg-white hover:text-navy">
                 {c.pathB.cta}
                 <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-              </Link>
+              </BookCallButton>
             </div>
           </div>
         </div>

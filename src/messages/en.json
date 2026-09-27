@@ -1174,6 +1174,63 @@
     }
   },
   "bookingDialog": {
+    "v2": {
+      "eyebrow": "The first consultation is free",
+      "title": "Book a call.",
+      "dialogTitle": "Book a call",
+      "lead": "Pick the day and time that suit you: we'll get back to you to confirm the appointment.",
+      "stepsTitle": "How it works",
+      "steps": {
+        "pick": {
+          "title": "Choose when",
+          "text": "A day and, if you like, one or more time slots."
+        },
+        "confirm": {
+          "title": "We confirm the time",
+          "text": "We write or call you within 24 hours."
+        },
+        "talk": {
+          "title": "We talk",
+          "text": "About your project, with no commitment."
+        }
+      },
+      "prefer": "Rather write?",
+      "whatsapp": "Message us on WhatsApp",
+      "whatsappGreeting": "Hi Studio Faraj! I'm writing from your website: I'd like to book a call.",
+      "hoursNote": "Mon–Fri 9am–6pm · Sat 10am–2pm",
+      "close": "Close",
+      "form": {
+        "day": "The day",
+        "time": "Time slot",
+        "timeNote": "optional",
+        "you": "Your details",
+        "anytime": "Any time",
+        "morning": "Morning",
+        "afternoon": "Afternoon",
+        "earlier": "Earlier days",
+        "later": "Later days",
+        "name": "Full name",
+        "phone": "Phone",
+        "email": "Email",
+        "message": "What would you like to talk about?",
+        "summary": "Your call",
+        "summaryAnytime": "any time",
+        "submit": "Book the call",
+        "sending": "Sending…",
+        "errors": {
+          "day": "Choose a day for the call.",
+          "name": "Please enter your full name.",
+          "phone": "Please enter a phone number.",
+          "email": "Please check the email address.",
+          "generic": "We couldn't send your request. Please try again, or write to info@studiofaraj.it."
+        },
+        "success": {
+          "title": "Request sent",
+          "text": "We'll get in touch to confirm your call on {when}.",
+          "another": "Book another call"
+        }
+      }
+    },
     "title": "Book a Call",
     "description": "Select a date and fill out the form. We will contact you to confirm the appointment.",
     "form": {

@@ -5,6 +5,7 @@ import { getLocalizedPath } from '@/lib/i18n-helpers';
 import { SERVICES, serviceGroupsFor, type ServiceSlug } from '@/lib/services-catalog';
 import type { ServiceLocalKey } from '@/lib/service-local-content';
 import type { Locale } from '@/i18n/config';
+import { BookCallButton } from './book-call-button';
 import HomeCtaSection from './home-cta-section';
 import { RevealWords } from './reveal-words';
 import { ServiceLocal } from './service-local';
@@ -191,7 +192,12 @@ export function ServicePage({ content, proof, locale }: { content: ServicePageCo
             </h1>
             <p className="mt-7 max-w-xl text-lg leading-relaxed text-muted-foreground md:text-xl">{content.lead}</p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-              {content.primary ? (
+              {content.primary?.href === '/call-booking' ? (
+                <BookCallButton className="group inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl bg-primary px-7 text-base font-semibold text-primary-foreground shadow-lg shadow-primary/25 transition-[filter] hover:brightness-110 sm:whitespace-nowrap">
+                  {content.primary.label}
+                  <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                </BookCallButton>
+              ) : content.primary ? (
                 <Link
                   href={getLocalizedPath(content.primary.href, locale)}
                   className="group inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl bg-primary px-7 text-base font-semibold text-primary-foreground shadow-lg shadow-primary/25 transition-[filter] hover:brightness-110 sm:whitespace-nowrap"

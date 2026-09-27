@@ -2,6 +2,7 @@ import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { ArrowDown, ArrowRight, ArrowUpRight, ExternalLink, Navigation } from 'lucide-react';
+import { BookCallButton } from '@/components/site/book-call-button';
 import { ContactForm } from '@/components/site/contact-form';
 import ContattiMap from '@/components/site/contatti-map';
 import { RevealWords } from '@/components/site/reveal-words';
@@ -21,6 +22,8 @@ type Channel = {
   href: string;
   external?: boolean;
   icon: 'out' | 'in' | 'down';
+  /** Opens the booking dialog (still a link to /call-booking without JavaScript). */
+  dialog?: boolean;
 };
 
 /**
@@ -73,6 +76,7 @@ export default async function ContattiPage({ params }: { params: Promise<{ local
       note: t('v2.bookCallNote'),
       href: getLocalizedPath('/call-booking', lang),
       icon: 'in',
+      dialog: true,
     },
     {
       label: t('v2.channels.studio'),
@@ -116,7 +120,9 @@ export default async function ContattiPage({ params }: { params: Promise<{ local
                   'group grid grid-cols-[1fr_auto] items-start gap-x-4 gap-y-2 py-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:grid-cols-[7rem_1fr_auto]';
                 return (
                   <li key={ch.label} className="border-b border-border">
-                    {ch.href.startsWith('/') ? (
+                    {ch.dialog ? (
+                      <BookCallButton className={cls}>{body}</BookCallButton>
+                    ) : ch.href.startsWith('/') ? (
                       <Link href={ch.href} className={cls}>{body}</Link>
                     ) : (
                       <a href={ch.href} className={cls} {...(ch.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>

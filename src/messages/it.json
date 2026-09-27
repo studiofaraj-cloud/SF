@@ -1204,6 +1204,63 @@
     }
   },
   "bookingDialog": {
+    "v2": {
+      "eyebrow": "La prima consulenza è gratuita",
+      "title": "Prenota una chiamata.",
+      "dialogTitle": "Prenota una chiamata",
+      "lead": "Scegli il giorno e la fascia oraria che preferisci: ti richiamiamo noi per confermare l'appuntamento.",
+      "stepsTitle": "Come funziona",
+      "steps": {
+        "pick": {
+          "title": "Scegli quando",
+          "text": "Un giorno e, se vuoi, una o più fasce orarie."
+        },
+        "confirm": {
+          "title": "Ti confermiamo l'orario",
+          "text": "Ti scriviamo o ti chiamiamo entro 24 ore."
+        },
+        "talk": {
+          "title": "Ne parliamo",
+          "text": "Del tuo progetto, senza impegno."
+        }
+      },
+      "prefer": "Preferisci scrivere?",
+      "whatsapp": "Scrivici su WhatsApp",
+      "whatsappGreeting": "Ciao Studio Faraj! Vi scrivo dal sito: vorrei fissare una chiamata.",
+      "hoursNote": "Lun–Ven 9–18 · Sab 10–14",
+      "close": "Chiudi",
+      "form": {
+        "day": "Il giorno",
+        "time": "La fascia oraria",
+        "timeNote": "facoltativa",
+        "you": "I tuoi dati",
+        "anytime": "Qualsiasi orario",
+        "morning": "Mattina",
+        "afternoon": "Pomeriggio",
+        "earlier": "Giorni precedenti",
+        "later": "Giorni successivi",
+        "name": "Nome e cognome",
+        "phone": "Telefono",
+        "email": "Email",
+        "message": "Di cosa vuoi parlare?",
+        "summary": "La tua call",
+        "summaryAnytime": "a qualsiasi orario",
+        "submit": "Prenota la chiamata",
+        "sending": "Invio in corso…",
+        "errors": {
+          "day": "Scegli il giorno della chiamata.",
+          "name": "Inserisci nome e cognome.",
+          "phone": "Inserisci un numero di telefono.",
+          "email": "Controlla l'indirizzo email.",
+          "generic": "Non siamo riusciti a inviare la richiesta. Riprova, oppure scrivici a info@studiofaraj.it."
+        },
+        "success": {
+          "title": "Richiesta inviata",
+          "text": "Ti contatteremo per confermare la chiamata di {when}.",
+          "another": "Prenota un'altra chiamata"
+        }
+      }
+    },
     "title": "Prenota una Chiamata",
     "description": "Seleziona una data e compila il form. Ti contatteremo per confermare l'appuntamento.",
     "form": {

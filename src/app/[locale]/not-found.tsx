@@ -1,4 +1,5 @@
 import { getTranslations, getLocale, setRequestLocale } from 'next-intl/server';
+import { ClientMessages } from '@/components/i18n/client-messages';
 import { NotFoundContent } from '@/components/site/not-found-content';
 
 export default async function NotFound() {
@@ -26,14 +27,17 @@ export default async function NotFound() {
     t = (key: string) => fallbacks[key] || key;
   }
 
+  // The page's "book a call" opens the booking dialog, which needs its copy in the browser.
   return (
-    <NotFoundContent
-      locale={locale}
-      title={t('title')}
-      description={t('description')}
-      subtitle={t('subtitle')}
-      homeLabel={t('home')}
-      bookCallLabel={t('bookCall')}
-    />
+    <ClientMessages locale={locale} namespaces={['bookingDialog', 'quoteDialog']}>
+      <NotFoundContent
+        locale={locale}
+        title={t('title')}
+        description={t('description')}
+        subtitle={t('subtitle')}
+        homeLabel={t('home')}
+        bookCallLabel={t('bookCall')}
+      />
+    </ClientMessages>
   );
 }

@@ -83,7 +83,7 @@ export default async function ContattiLayout({
         id="contatti-breadcrumb"
       />
       {/* The page is server-rendered; the form and the map embed need these in the browser. */}
-      <ClientMessages locale={currentLocale} namespaces={['quoteDialog', 'serverActions', 'contactPage']}>
+      <ClientMessages locale={currentLocale} namespaces={['quoteDialog', 'serverActions', 'contactPage', 'bookingDialog']}>
         {children}
       </ClientMessages>
     </>

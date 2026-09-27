@@ -91,7 +91,7 @@ export default async function SviluppoWebLayout({
     <>
       <StructuredDataServer data={[serviceData, breadcrumbData]} />
       {/* The page is server-rendered; only the quote form needs translations in the browser. */}
-      <ClientMessages locale={currentLocale} namespaces={['quoteDialog', 'serverActions']}>
+      <ClientMessages locale={currentLocale} namespaces={['quoteDialog', 'serverActions', 'bookingDialog']}>
         {children}
       </ClientMessages>
     </>
