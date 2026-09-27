@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState, useRef, useState, useTransition, type ReactNode } from 'react';
+import { useActionState, useEffect, useRef, useState, useTransition, type ReactNode } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight, Loader2 } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
@@ -63,7 +63,9 @@ function Form({ source, successAction, onAnother }: { source: string; successAct
   const tq = useTranslations('quoteDialog');
   const locale = useLocale() as Locale;
   const intl = locale === 'en' ? 'en-GB' : 'it-IT';
-  const [days] = useState(() => bookableDays(DAYS_PER_PAGE * PAGES));
+  // Worked out in the browser: the page is cached, and "tomorrow" must be the visitor's.
+  const [days, setDays] = useState<Date[]>([]);
+  useEffect(() => setDays(bookableDays(DAYS_PER_PAGE * PAGES)), []);
   const [page, setPage] = useState(0);
   const [day, setDay] = useState<string | null>(null);
   const [times, setTimes] = useState<string[]>([]);
@@ -156,6 +158,10 @@ function Form({ source, successAction, onAnother }: { source: string; successAct
       <div ref={dayGroup} tabIndex={-1} role="group" aria-labelledby="bf-day" className="outline-none">
         <SectionLabel index="01" id="bf-day">{t('day')}</SectionLabel>
         <div className="mt-4 grid grid-cols-3 gap-2 sm:grid-cols-6">
+          {days.length === 0 &&
+            Array.from({ length: DAYS_PER_PAGE }, (_, i) => (
+              <span key={i} aria-hidden className="h-[91.5px] animate-pulse rounded-2xl bg-muted/60 motion-reduce:animate-none" />
+            ))}
           {days.slice(page * DAYS_PER_PAGE, (page + 1) * DAYS_PER_PAGE).map((d) => {
             const on = iso(d) === day;
             return (
