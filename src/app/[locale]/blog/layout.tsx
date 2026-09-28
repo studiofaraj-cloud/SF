@@ -2,7 +2,6 @@
 import { Metadata } from 'next';
 import { generateMetadata as generateSEOMetadata, siteConfig } from '@/lib/seo';
 import { setRequestLocale } from 'next-intl/server';
-import { ClientMessages } from '@/components/i18n/client-messages';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
@@ -15,7 +14,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   
   const seoContent = currentLocale === 'it' ? {
     title: 'Blog - Articoli e Guide',
-    description: 'Leggi gli ultimi articoli su sviluppo web, design, SEO, e-commerce e tecnologie digitali. Guide pratiche e approfondimenti dal team di Studio Faraj.',
+    description: 'Leggi gli ultimi articoli su sviluppo web, design, SEO, e-commerce e tecnologie digitali. Guide pratiche su siti web, SEO e prestazioni da Studio Faraj.',
     keywords: ['blog sviluppo web', 'articoli web design', 'guide SEO', 'blog digitale', 'notizie web'],
   } : {
     title: 'Blog - Articles and Guides',
@@ -41,9 +40,5 @@ export default async function BlogLayout({
   const { locale } = await params;
   const currentLocale = (locale === 'it' || locale === 'en') ? locale : 'it';
   setRequestLocale(currentLocale);
-  return (
-    <ClientMessages locale={currentLocale} namespaces={['blog']}>
-      {children}
-    </ClientMessages>
-  );
+  return children;
 }

@@ -184,6 +184,34 @@
   100% { scale: 2.9; opacity: 0; }
 }
 
+/* ── Blog post: reading bar ─────────────────────────────────────────────────
+   A 3px bar over the header that fills as the page scrolls, driven by the
+   scroll position itself (no script). Browsers without scroll-driven
+   animations simply don't show it. */
+@layer components {
+  .read-progress {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 60;
+    height: 3px;
+    background: hsl(var(--primary));
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    pointer-events: none;
+    display: none;
+  }
+  @supports (animation-timeline: scroll()) {
+    .read-progress {
+      display: block;
+      animation: read-progress linear both;
+      animation-timeline: scroll(root);
+    }
+  }
+}
+@keyframes read-progress {
+  to { transform: scaleX(1); }
+}
+
 /* ── Homepage hero: code → product window ───────────────────────────────────
    Depth: HeroPointer sets --mx/--my (-0.5…0.5) on the hero and the window
    drifts by up to 7px. Entrance: the rendered form is drawn in left to right

@@ -1,26 +1,43 @@
 import React from 'react';
 import { FirebaseImage } from '@/components/ui/firebase-image';
 import { cn } from '@/lib/utils';
-
-type TiptapNode = {
-  type: string;
-  attrs?: Record<string, any>;
-  content?: TiptapNode[];
-  text?: string;
-  marks?: Array<{
-    type: string;
-    attrs?: Record<string, any>;
-  }>;
-};
-
-type TiptapDocument = {
-  type: 'doc';
-  content: TiptapNode[];
-};
+import { headingIds, leadingTitleHeading, type TiptapDocument, type TiptapNode } from '@/lib/tiptap-outline';
 
 type RichContentRendererProps = {
   content: string | TiptapDocument;
   className?: string;
+  /**
+   * 'article' is the blog's reading style: body text in the foreground
+   * colour, display-font headings without the accent bars, plain images and
+   * code. 'default' keeps the look the project case studies use.
+   */
+  variant?: 'default' | 'article';
+  /** Leave out an opening heading that repeats this title (the page shows it as the h1). */
+  title?: string;
+};
+
+type Ctx = {
+  article: boolean;
+  ids: Map<TiptapNode, string>;
+  skip: TiptapNode | null;
+  inList?: boolean;
+};
+
+const ARTICLE = {
+  p: 'mb-6 text-[1.0625rem] leading-[1.8] text-foreground/80',
+  pInList: 'mb-1.5 last:mb-0',
+  heading: {
+    2: 'mb-5 mt-14 scroll-mt-28 font-display text-[1.7rem] font-bold leading-[1.15] tracking-[-0.02em] text-foreground md:text-[2rem]',
+    3: 'mb-4 mt-10 scroll-mt-28 font-display text-xl font-bold leading-snug tracking-[-0.01em] text-foreground md:text-[1.4rem]',
+    4: 'mb-3 mt-8 scroll-mt-28 text-lg font-semibold text-foreground',
+    5: 'mb-3 mt-6 scroll-mt-28 text-base font-semibold text-foreground',
+    6: 'mb-2 mt-5 scroll-mt-28 text-base font-semibold text-foreground',
+  } as Record<number, string>,
+  ul: 'mb-6 ml-6 list-disc space-y-2 marker:text-primary',
+  ol: 'mb-6 ml-6 list-decimal space-y-2 marker:font-semibold marker:text-primary',
+  li: 'pl-1 text-[1.0625rem] leading-[1.75] text-foreground/80',
+  code: 'rounded-md bg-muted px-1.5 py-0.5 font-mono text-[0.9em] text-foreground',
+  link: 'font-medium text-primary underline decoration-primary/30 underline-offset-4 transition-colors hover:decoration-primary',
 };
 
 function isJSONContent(content: string | TiptapDocument): content is TiptapDocument {
@@ -48,7 +65,7 @@ function isBlankParagraph(node: TiptapNode): boolean {
   );
 }
 
-function renderText(node: TiptapNode): React.ReactNode {
+function renderText(node: TiptapNode, ctx: Ctx): React.ReactNode {
   if (!node.text) return null;
 
   let content: React.ReactNode = node.text;
@@ -70,7 +87,7 @@ function renderText(node: TiptapNode): React.ReactNode {
           break;
         case 'code':
           content = (
-            <code className="px-1.5 py-0.5 rounded-md bg-primary/10 text-primary font-mono text-[0.9em] neon-border">
+            <code className={ctx.article ? ARTICLE.code : 'px-1.5 py-0.5 rounded-md bg-primary/10 text-primary font-mono text-[0.9em] neon-border'}>
               {content}
             </code>
           );
@@ -81,7 +98,7 @@ function renderText(node: TiptapNode): React.ReactNode {
               href={mark.attrs?.href}
               target={mark.attrs?.target || '_blank'}
               rel={mark.attrs?.target === '_blank' ? 'noopener noreferrer' : undefined}
-              className="text-primary hover:text-primary/80 underline underline-offset-4 decoration-primary/30 hover:decoration-primary/60 transition-colors font-medium"
+              className={ctx.article ? ARTICLE.link : 'text-primary hover:text-primary/80 underline underline-offset-4 decoration-primary/30 hover:decoration-primary/60 transition-colors font-medium'}
             >
               {content}
             </a>
@@ -94,8 +111,9 @@ function renderText(node: TiptapNode): React.ReactNode {
   return content;
 }
 
-function renderNode(node: TiptapNode, index: number, insideParagraph: boolean = false): React.ReactNode {
+function renderNode(node: TiptapNode, index: number, insideParagraph: boolean, ctx: Ctx): React.ReactNode {
   const key = `node-${index}`;
+  const pClass = ctx.article ? cn(ARTICLE.p, ctx.inList && ARTICLE.pInList) : 'mb-5 leading-[1.85] text-muted-foreground';
 
   switch (node.type) {
     case 'paragraph': {
@@ -105,8 +123,8 @@ function renderNode(node: TiptapNode, index: number, insideParagraph: boolean = 
 
       if (insideParagraph) {
         return (
-          <div key={key} className="mb-5 leading-[1.85] text-muted-foreground">
-            {children.map((child, i) => renderNode(child, i, true))}
+          <div key={key} className={pClass}>
+            {children.map((child, i) => renderNode(child, i, true, ctx))}
           </div>
         );
       }
@@ -114,8 +132,8 @@ function renderNode(node: TiptapNode, index: number, insideParagraph: boolean = 
       const hasNestedParagraph = children.some(child => child.type === 'paragraph');
       if (hasNestedParagraph) {
         return (
-          <div key={key} className="mb-5 leading-[1.85] text-muted-foreground">
-            {children.map((child, i) => renderNode(child, i, true))}
+          <div key={key} className={pClass}>
+            {children.map((child, i) => renderNode(child, i, true, ctx))}
           </div>
         );
       }
@@ -126,21 +144,23 @@ function renderNode(node: TiptapNode, index: number, insideParagraph: boolean = 
 
       if (hasOnlyTextNodes) {
         return (
-          <p key={key} className="mb-5 leading-[1.85] text-muted-foreground">
-            {children.map((child, i) => renderNode(child, i, true))}
+          <p key={key} className={pClass}>
+            {children.map((child, i) => renderNode(child, i, true, ctx))}
           </p>
         );
       }
 
       return (
-        <div key={key} className="mb-5 leading-[1.85] text-muted-foreground">
-          {children.map((child, i) => renderNode(child, i, true))}
+        <div key={key} className={pClass}>
+          {children.map((child, i) => renderNode(child, i, true, ctx))}
         </div>
       );
     }
 
     case 'heading': {
+      if (node === ctx.skip) return null;
       const level = node.attrs?.level || 1;
+      const id = ctx.ids.get(node);
       // Pages that render this content already have their own <h1> (the post
       // or project title), so a level-1 heading in the content is output as
       // an <h2>, keeping its level-1 look: one h1 per page.
@@ -154,13 +174,21 @@ function renderNode(node: TiptapNode, index: number, insideParagraph: boolean = 
         6: 'text-base font-semibold mb-2 mt-4 text-foreground',
       };
 
+      if (ctx.article) {
+        return (
+          <Tag key={key} id={id} className={ARTICLE.heading[Math.max(level, 2)]}>
+            {node.content?.map((child, i) => renderNode(child, i, false, ctx))}
+          </Tag>
+        );
+      }
+
       // Add decorative accent under h2 and h3
       const showAccent = level === 2 || level === 3;
 
       return (
         <div key={key}>
-          <Tag className={headingClasses[level as keyof typeof headingClasses]}>
-            {node.content?.map((child, i) => renderNode(child, i, false))}
+          <Tag id={id} className={cn('scroll-mt-28', headingClasses[level as keyof typeof headingClasses])}>
+            {node.content?.map((child, i) => renderNode(child, i, false, ctx))}
           </Tag>
           {showAccent && (
             <div className="flex items-center gap-1 -mt-3 mb-5">
@@ -174,29 +202,29 @@ function renderNode(node: TiptapNode, index: number, insideParagraph: boolean = 
 
     case 'bulletList':
       return (
-        <ul key={key} className="list-disc mb-6 space-y-2 ml-6 marker:text-primary/60">
-          {node.content?.map((child, i) => renderNode(child, i, false))}
+        <ul key={key} className={ctx.article ? ARTICLE.ul : 'list-disc mb-6 space-y-2 ml-6 marker:text-primary/60'}>
+          {node.content?.map((child, i) => renderNode(child, i, false, ctx))}
         </ul>
       );
 
     case 'orderedList':
       return (
-        <ol key={key} className="list-decimal mb-6 space-y-2 ml-6 marker:text-primary/60 marker:font-semibold">
-          {node.content?.map((child, i) => renderNode(child, i, false))}
+        <ol key={key} className={ctx.article ? ARTICLE.ol : 'list-decimal mb-6 space-y-2 ml-6 marker:text-primary/60 marker:font-semibold'}>
+          {node.content?.map((child, i) => renderNode(child, i, false, ctx))}
         </ol>
       );
 
     case 'listItem':
       return (
-        <li key={key} className="leading-[1.85] text-muted-foreground pl-1">
-          {node.content?.map((child, i) => renderNode(child, i, false))}
+        <li key={key} className={ctx.article ? ARTICLE.li : 'leading-[1.85] text-muted-foreground pl-1'}>
+          {node.content?.map((child, i) => renderNode(child, i, false, ctx.article ? { ...ctx, inList: true } : ctx))}
         </li>
       );
 
     case 'codeBlock': {
       const language = node.attrs?.language;
       return (
-        <pre key={key} className="mb-6 p-6 rounded-xl overflow-x-auto holographic-card neon-border relative">
+        <pre key={key} className={ctx.article ? 'mb-6 overflow-x-auto rounded-2xl bg-navy p-6 text-white/90' : 'mb-6 p-6 rounded-xl overflow-x-auto holographic-card neon-border relative'}>
           <code className={cn('font-mono text-sm leading-relaxed', language && `language-${language}`)}>
             {node.content?.map((child) => child.text).join('')}
           </code>
@@ -206,12 +234,13 @@ function renderNode(node: TiptapNode, index: number, insideParagraph: boolean = 
 
     case 'blockquote':
       return (
-        <blockquote key={key} className="border-l-4 border-primary/40 pl-6 py-4 my-8 text-muted-foreground bg-primary/5 rounded-r-xl holographic-card">
-          {node.content?.map((child, i) => renderNode(child, i, false))}
+        <blockquote key={key} className={ctx.article ? 'my-10 border-l-2 border-primary pl-6 text-lg text-foreground [&_p]:text-foreground' : 'border-l-4 border-primary/40 pl-6 py-4 my-8 text-muted-foreground bg-primary/5 rounded-r-xl holographic-card'}>
+          {node.content?.map((child, i) => renderNode(child, i, false, ctx))}
         </blockquote>
       );
 
     case 'horizontalRule':
+      if (ctx.article) return <hr key={key} className="my-14 border-border" />;
       return (
         <div key={key} className="my-12 flex items-center justify-center gap-2">
           <div className="h-px flex-1 bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
@@ -259,13 +288,13 @@ function renderNode(node: TiptapNode, index: number, insideParagraph: boolean = 
             floatClasses[align] || alignClasses[align],
           )}
         >
-          <div className="relative w-full overflow-hidden rounded-xl holographic-card neon-border group">
+          <div className={ctx.article ? 'relative w-full overflow-clip rounded-2xl bg-muted ring-1 ring-border' : 'relative w-full overflow-hidden rounded-xl holographic-card neon-border group'}>
             <div className="relative aspect-video w-full">
               <FirebaseImage
                 src={src}
                 alt={alt}
                 fill
-                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                className={ctx.article ? 'object-cover' : 'object-cover transition-transform duration-700 group-hover:scale-105'}
                 title={title}
                 sizes={
                   size === 'full'
@@ -275,7 +304,7 @@ function renderNode(node: TiptapNode, index: number, insideParagraph: boolean = 
                       : '(max-width: 768px) 100vw, 400px'
                 }
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-background/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              {!ctx.article && <div className="absolute inset-0 bg-gradient-to-t from-background/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />}
             </div>
           </div>
           {title && (
@@ -293,7 +322,7 @@ function renderNode(node: TiptapNode, index: number, insideParagraph: boolean = 
       return (
         <div key={key} className="overflow-x-auto my-6">
           <table className="w-full border-collapse text-sm">
-            {node.content?.map((child, i) => renderNode(child, i, false))}
+            {node.content?.map((child, i) => renderNode(child, i, false, ctx))}
           </table>
         </div>
       );
@@ -301,48 +330,53 @@ function renderNode(node: TiptapNode, index: number, insideParagraph: boolean = 
     case 'tableRow':
       return (
         <tr key={key} className="border-b border-border/40">
-          {node.content?.map((child, i) => renderNode(child, i, false))}
+          {node.content?.map((child, i) => renderNode(child, i, false, ctx))}
         </tr>
       );
 
     case 'tableHeader':
       return (
         <th key={key} className="px-4 py-2 text-left font-semibold text-foreground bg-primary/5 border border-border/30">
-          {node.content?.map((child, i) => renderNode(child, i, true))}
+          {node.content?.map((child, i) => renderNode(child, i, true, ctx))}
         </th>
       );
 
     case 'tableCell':
       return (
         <td key={key} className="px-4 py-2 text-muted-foreground border border-border/30">
-          {node.content?.map((child, i) => renderNode(child, i, true))}
+          {node.content?.map((child, i) => renderNode(child, i, true, ctx))}
         </td>
       );
 
     case 'text':
       // Handle wrapper text nodes from old editor format (no text, but has content children)
       if (!node.text && node.content) {
-        return <span key={key}>{node.content.map((child, i) => renderNode(child, i, insideParagraph))}</span>;
+        return <span key={key}>{node.content.map((child, i) => renderNode(child, i, insideParagraph, ctx))}</span>;
       }
-      return <React.Fragment key={key}>{renderText(node)}</React.Fragment>;
+      return <React.Fragment key={key}>{renderText(node, ctx)}</React.Fragment>;
 
     default:
       if (node.content) {
-        return <div key={key}>{node.content.map((child, i) => renderNode(child, i, false))}</div>;
+        return <div key={key}>{node.content.map((child, i) => renderNode(child, i, false, ctx))}</div>;
       }
       return null;
   }
 }
 
-export function RichContentRenderer({ content, className }: RichContentRendererProps) {
+export function RichContentRenderer({ content, className, variant = 'default', title }: RichContentRendererProps) {
   if (!content) return null;
 
   if (isJSONContent(content)) {
     const doc = typeof content === 'string' ? JSON.parse(content) as TiptapDocument : content;
+    const ctx: Ctx = {
+      article: variant === 'article',
+      ids: headingIds(doc),
+      skip: title ? leadingTitleHeading(doc, title) : null,
+    };
 
     return (
       <div className={cn('max-w-none', className)}>
-        {(doc.content ?? []).map((node, index) => renderNode(node, index, false))}
+        {(doc.content ?? []).map((node, index) => renderNode(node, index, false, ctx))}
         <div className="clear-both" />
       </div>
     );

@@ -48,8 +48,14 @@ const COPY = {
   },
 } as const;
 
-/** Pages whose first section is navy: at the top the header is see-through and white. */
-const DARK_TOP = new Set(['/', '/chi-siamo']);
+/**
+ * Pages whose first section is navy: at the top the header is see-through and
+ * white. Blog posts match by prefix; a slug that doesn't exist renders the
+ * light 404 page instead, so on those paths the header also checks, once
+ * mounted, that the page marks a navy top with `data-dark-top`.
+ */
+const DARK_TOP = new Set(['/', '/chi-siamo', '/blog']);
+const DARK_PREFIXES = ['/blog/'];
 
 /**
  * The site header: a full-width bar, see-through at the top of the page
@@ -79,7 +85,13 @@ export function SiteHeader({ rating = null }: { rating?: HeaderRating }) {
     return () => io.disconnect();
   }, []);
 
-  const onDark = !scrolled && DARK_TOP.has(removeLocaleFromPath(pathname));
+  const path = removeLocaleFromPath(pathname);
+  const byPrefix = DARK_PREFIXES.some((p) => path.startsWith(p));
+  const [lightPath, setLightPath] = useState<string | null>(null);
+  useEffect(() => {
+    if (byPrefix && !document.querySelector('[data-dark-top]')) setLightPath(path);
+  }, [byPrefix, path]);
+  const onDark = !scrolled && (DARK_TOP.has(path) || byPrefix) && lightPath !== path;
   const isActive = (href: string) => {
     const localized = getLocalizedPath(href, locale);
     return pathname === localized || pathname.startsWith(`${localized}/`);

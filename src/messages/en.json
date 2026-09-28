@@ -1486,26 +1486,6 @@
       "ctaButton": "Let's talk"
     }
   },
-  "blog": {
-    "title": "Blog",
-    "subtitle": "Articles and news about web development, design and technology",
-    "readMore": "Read more",
-    "noPosts": "No articles available at the moment",
-    "hero": {
-      "badge": "Blog",
-      "title": "Our",
-      "titleHighlight": "Blog",
-      "description": "Insights, guides and news from the digital world. Stay updated with the",
-      "descriptionHighlight": "latest trends and best practices"
-    },
-    "list": {
-      "badge": "Articles",
-      "title": "Latest",
-      "titleHighlight": "Articles",
-      "noPosts": "No Articles Available",
-      "noPostsDesc": "Articles will be published soon."
-    }
-  },
   "footer": {
     "description": "Websites, e-commerce and platforms custom-built in Padova, for companies in Italy and abroad. The code stays yours.",
     "navigation": "Navigation",

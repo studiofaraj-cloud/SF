@@ -1516,26 +1516,6 @@
       "ctaButton": "Parliamone"
     }
   },
-  "blog": {
-    "title": "Blog",
-    "subtitle": "Articoli e notizie su sviluppo web, design e tecnologia",
-    "readMore": "Leggi di più",
-    "noPosts": "Nessun articolo disponibile al momento",
-    "hero": {
-      "badge": "Blog",
-      "title": "Il Nostro",
-      "titleHighlight": "Blog",
-      "description": "Approfondimenti, guide e notizie dal mondo del digitale. Rimani aggiornato con le",
-      "descriptionHighlight": "ultime tendenze e best practices"
-    },
-    "list": {
-      "badge": "Articoli",
-      "title": "Ultimi",
-      "titleHighlight": "Articoli",
-      "noPosts": "Nessun Articolo Disponibile",
-      "noPostsDesc": "Gli articoli verranno pubblicati a breve."
-    }
-  },
   "footer": {
     "description": "Siti, e-commerce e piattaforme scritti su misura a Padova, per aziende in Italia e all’estero. Il codice resta tuo.",
     "navigation": "Navigazione",
