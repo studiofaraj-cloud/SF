@@ -96,8 +96,8 @@ export async function GET() {
       changefreq: 'weekly',
       computedLastmod: blogIndexLastmod,
     },
-    { url: '/legal', priority: '0.3', changefreq: 'yearly', lastmod: '2026-06-02' },
-    { url: '/terms', priority: '0.3', changefreq: 'yearly', lastmod: '2026-06-02' },
+    // /legal is noindex, so it stays out; /terms is below with the Italian-only
+    // pages because /en/terms declares the Italian page as its canonical.
   ];
 
   const servicePages: StaticPage[] = [
@@ -127,6 +127,7 @@ export async function GET() {
     { url: '/siti-web/geometri', priority: '0.8', changefreq: 'monthly' },
     { url: '/dall-idea-al-progetto', priority: '0.8', changefreq: 'monthly' },
     { url: '/servizi/software-gestionale', priority: '0.8', changefreq: 'monthly' },
+    { url: '/terms', priority: '0.3', changefreq: 'yearly', lastmod: '2026-06-02' },
   ];
 
   const all = [...staticPages, ...servicePages];

@@ -3,19 +3,22 @@ import type { Metadata } from 'next';
 import { ArrowRight, ClipboardList, MessagesSquare, FolderOpen, Receipt, UserPlus, FileText, Rocket } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { StructuredDataServer } from '@/components/seo/structured-data-server';
-import { generateStructuredDataPageBreadcrumb } from '@/lib/seo';
+import { generateMetadata as generateSEOMetadata, generateStructuredDataPageBreadcrumb, siteConfig } from '@/lib/seo';
 
 type Props = { params: Promise<{ locale: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const en = locale === 'en';
-  return {
-    title: en ? 'Start your project — Studio Faraj' : 'Inizia il tuo progetto — Studio Faraj',
+  return generateSEOMetadata({
+    title: en ? 'Start your project' : 'Inizia il tuo progetto',
     description: en
       ? 'Create your client account to request services, track progress, chat with our team, and pay online.'
       : 'Crea il tuo account cliente per richiedere servizi, seguire l’avanzamento, chattare con il team e pagare online.',
-  };
+    url: `${siteConfig.url}/${en ? 'en' : 'it'}/inizia`,
+    locale: en ? 'en' : 'it',
+    alternateUrls: { it: `${siteConfig.url}/it/inizia`, en: `${siteConfig.url}/en/inizia` },
+  });
 }
 
 export default async function StartPage({ params }: Props) {
