@@ -30,7 +30,7 @@ export const revalidate = 0;
  * Bump this constant when you make a significant content change to a
  * static page that doesn't have a backing data source.
  */
-const STATIC_PAGES_FLOOR_LASTMOD = '2026-06-02T00:00:00.000Z';
+const STATIC_PAGES_FLOOR_LASTMOD = '2026-09-28T00:00:00.000Z';
 
 export async function GET() {
   // Fetch all three dynamic sources in parallel; same data the sub-sitemaps

@@ -33,7 +33,8 @@ export const revalidate = 0;
 
 // ── Hardcoded lastmod for pages without dynamic content ──────────────────────
 // Update these when the page copy is meaningfully changed.
-const STATIC_PAGE_LASTMOD = '2026-06-02';
+// 2026-09-28: the redesigned pages (home, chi siamo, contatti, servizi, blog) went live.
+const STATIC_PAGE_LASTMOD = '2026-09-28';
 
 interface StaticPage {
   url: string;
@@ -41,6 +42,8 @@ interface StaticPage {
   changefreq: 'daily' | 'weekly' | 'monthly' | 'yearly';
   /** Overrides STATIC_PAGE_LASTMOD when the page surfaces dynamic content. */
   computedLastmod?: string;
+  /** Overrides STATIC_PAGE_LASTMOD for a page whose copy changed at another date. */
+  lastmod?: string;
 }
 
 export async function GET() {
@@ -93,8 +96,8 @@ export async function GET() {
       changefreq: 'weekly',
       computedLastmod: blogIndexLastmod,
     },
-    { url: '/legal', priority: '0.3', changefreq: 'yearly' },
-    { url: '/terms', priority: '0.3', changefreq: 'yearly' },
+    { url: '/legal', priority: '0.3', changefreq: 'yearly', lastmod: '2026-06-02' },
+    { url: '/terms', priority: '0.3', changefreq: 'yearly', lastmod: '2026-06-02' },
   ];
 
   const servicePages: StaticPage[] = [
@@ -130,7 +133,7 @@ export async function GET() {
 
   const blocks: string[] = [];
   for (const page of all) {
-    const lastmod = page.computedLastmod ?? STATIC_PAGE_LASTMOD;
+    const lastmod = page.computedLastmod ?? page.lastmod ?? STATIC_PAGE_LASTMOD;
     for (const locale of locales) {
       blocks.push(
         renderLocalizedUrl(
@@ -150,7 +153,7 @@ export async function GET() {
     blocks.push(
       renderDefaultLocaleUrl({
         path: page.url,
-        lastmod: page.computedLastmod ?? STATIC_PAGE_LASTMOD,
+        lastmod: page.computedLastmod ?? page.lastmod ?? STATIC_PAGE_LASTMOD,
         changefreq: page.changefreq,
         priority: page.priority,
       }),
