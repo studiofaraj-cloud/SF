@@ -8,7 +8,6 @@ import {
 } from '@/lib/seo';
 import { StructuredDataServer } from '@/components/seo/structured-data-server';
 import { setRequestLocale } from 'next-intl/server';
-import { ClientMessages } from '@/components/i18n/client-messages';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
@@ -17,7 +16,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const seoContent = {
     it: {
       title: 'Chi Siamo — Sviluppo Web a Padova dal 2020',
-      description: 'Studio Faraj sviluppa siti web e applicazioni su misura a Padova dal 2020. Scopri il team, la nostra storia e come lavoriamo con le aziende del Veneto.',
+      description: 'Studio Faraj scrive siti web, e-commerce e gestionali su misura a Padova dal 2020. Conosci il fondatore, cosa facciamo, dove abbiamo lavorato e come lavoriamo.',
       keywords: [
         'web agency Nord Est Italia',
         'agenzia web Italia per aziende europee',
@@ -32,7 +31,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     },
     en: {
       title: 'About Us — Padova Web Studio since 2020',
-      description: 'Studio Faraj has built custom websites and web apps in Padova, Italy since 2020. Meet the team, read our story and see how we work with Veneto businesses.',
+      description: 'Studio Faraj has written custom websites, e-commerce and business software in Padova, Italy since 2020. Meet the founder and see what we do, where we have worked and how we work.',
       keywords: [
         'web agency Nord Est Italia',
         'agenzia web Italia per aziende europee',
@@ -77,8 +76,7 @@ export default async function ChiSiamoLayout({
   // Enable static rendering by setting the request locale
   setRequestLocale(currentLocale);
 
-  // Emitted from the layout because chi-siamo/page.tsx is a client component.
-  // Person nodes are the E-E-A-T anchor for the studio: named, credited humans
+  // The Person node is the E-E-A-T anchor for the studio: a named, credited human
   // rather than an anonymous brand. Kept to facts that are already on the page.
   const pageUrl = `${siteConfig.url}/${currentLocale}/chi-siamo`;
   const jsonLd = [
@@ -92,19 +90,12 @@ export default async function ChiSiamoLayout({
       image: '/assets/hussein-faraj-fondatore-studio-faraj.webp',
       url: pageUrl,
     }),
-    generateStructuredDataPerson({
-      name: 'Maria Elisa Midulla',
-      jobTitle: 'Co-Founder & Frontend Developer',
-      url: pageUrl,
-    }),
   ];
 
   return (
     <>
       <StructuredDataServer data={jsonLd} id="chi-siamo-schema" />
-      <ClientMessages locale={currentLocale} namespaces={['about']}>
-        {children}
-      </ClientMessages>
+      {children}
     </>
   );
 }

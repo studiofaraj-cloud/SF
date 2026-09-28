@@ -783,8 +783,10 @@ export async function upsertReview(review: Omit<ReviewDocument, 'id' | 'createdA
     )
   );
   if (!existing.empty) {
-    const docRef = existing.docs[0].ref;
-    await updateDoc(docRef, { ...review });
+    // Refresh the text and photo but keep the admin's show/hide choice:
+    // a review hidden in the dashboard stays hidden after a Google sync.
+    const { visible: _visible, ...fields } = review;
+    await updateDoc(existing.docs[0].ref, fields);
     return existing.docs[0].id;
   }
   const newDoc = await addDoc(ref, {

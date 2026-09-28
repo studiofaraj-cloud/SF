@@ -49,7 +49,7 @@ const COPY = {
 } as const;
 
 /** Pages whose first section is navy: at the top the header is see-through and white. */
-const DARK_TOP = new Set(['/']);
+const DARK_TOP = new Set(['/', '/chi-siamo']);
 
 /**
  * The site header: a full-width bar, see-through at the top of the page

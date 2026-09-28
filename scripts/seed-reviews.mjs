@@ -99,7 +99,9 @@ async function upsertReview(review) {
   );
 
   if (!existing.empty) {
-    await updateDoc(existing.docs[0].ref, review);
+    // Keep the admin's show/hide choice on reviews that already exist.
+    const { visible: _visible, ...fields } = review;
+    await updateDoc(existing.docs[0].ref, fields);
     return 'updated';
   }
 

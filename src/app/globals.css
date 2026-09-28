@@ -160,6 +160,30 @@
   }
 }
 
+/* ── Chi siamo hero: rings around the logo ──────────────────────────────────
+   Still, the rings sit at growing sizes (--s) and fading strengths (--o):
+   that is the frame reduced motion and crawlers get. With motion, each ring
+   grows out of the logo's edge and fades, one every 1.6 s (--i staggers
+   them). Scale and opacity only. */
+@layer components {
+  .ab-ring {
+    position: absolute;
+    inset: -10%;
+    border-radius: 9999px;
+    border: 2px solid rgb(125 211 252);
+    scale: var(--s, 1);
+    opacity: var(--o, 0.3);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .ab-ring { animation: ab-ripple 8s linear calc(var(--i, 0) * -1.6s) infinite; }
+}
+@keyframes ab-ripple {
+  0%   { scale: 0.92; opacity: 0; }
+  8%   { opacity: 0.45; }
+  100% { scale: 2.9; opacity: 0; }
+}
+
 /* ── Homepage hero: code → product window ───────────────────────────────────
    Depth: HeroPointer sets --mx/--my (-0.5…0.5) on the hero and the window
    drifts by up to 7px. Entrance: the rendered form is drawn in left to right

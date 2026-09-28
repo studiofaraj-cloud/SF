@@ -1,638 +1,276 @@
-'use client';
-
-import { useRef, useEffect, useState } from 'react';
 import Image from 'next/image';
-import { Button } from '@/components/ui/button';
-import {
-  Handshake, ShieldCheck, PenTool, CheckCircle,
-  Briefcase, MapPin, Calendar, Code, Zap,
-  Users, Target, ArrowRight, Sparkles,
-  Linkedin, Mail, Star, Camera,
-} from 'lucide-react';
 import Link from 'next/link';
-import { Badge } from '@/components/ui/badge';
-import ScrollFadeIn from '@/components/site/scroll-fade-in';
-import GradientText from '@/components/GradientText';
-import { useTranslations, useLocale } from 'next-intl';
+import type { CSSProperties } from 'react';
+import { setRequestLocale } from 'next-intl/server';
+import { ArrowRight, ArrowUpRight } from 'lucide-react';
+import { BrandMark } from '@/components/site/brand-mark';
+import HomeCtaSection from '@/components/site/home-cta-section';
+import { RevealWords } from '@/components/site/reveal-words';
+import { SectionEdge } from '@/components/site/section-edge';
+import { getProjectsAction } from '@/lib/actions';
+import type { Project } from '@/lib/definitions';
 import { getLocalizedPath } from '@/lib/i18n-helpers';
-import { Rocket } from 'lucide-react';
+import { SERVICES, serviceGroupsFor } from '@/lib/services-catalog';
+import type { Locale } from '@/i18n/config';
 
-// ─── Animated Counter ────────────────────────────────────────────────────────
-function AnimatedCounter({
-  target,
-  suffix = '',
-  isVisible,
-}: {
-  target: number;
-  suffix?: string;
-  isVisible: boolean;
-}) {
-  const [count, setCount] = useState(0);
+const MONO = 'font-mono text-[11px] uppercase tracking-[0.16em]';
+const PHOTO = '/assets/hussein-faraj-fondatore-studio-faraj.webp';
+const LINKEDIN = 'https://www.linkedin.com/in/hussein-faraj-9572b72b5/';
+const EMAIL = 'husseinfaraj101@gmail.com';
 
-  useEffect(() => {
-    if (!isVisible) return;
-    const steps = 60;
-    const increment = target / steps;
-    let current = 0;
-    const timer = setInterval(() => {
-      current += increment;
-      if (current >= target) {
-        setCount(target);
-        clearInterval(timer);
-      } else {
-        setCount(Math.floor(current));
-      }
-    }, 2000 / steps);
-    return () => clearInterval(timer);
-  }, [isVisible, target]);
+const COPY = {
+  it: {
+    eyebrow: 'Chi siamo · Padova, dal 2020',
+    title: ['Siamo', 'Studio Faraj.'],
+    lead: 'Studio Faraj nasce a Padova nel 2020 per aiutare le aziende a crescere nel digitale. Siti, e-commerce e piattaforme scritti su misura: il codice resta tuo.',
+    founder: {
+      label: 'Il fondatore',
+      quote: 'Il codice è poesia che risolve problemi reali.',
+      role: 'Fondatore · Sviluppatore full-stack',
+      bio: 'Con Studio Faraj progetta e scrive siti aziendali, e-commerce e gestionali su misura per aziende in Italia e all’estero. Segue ogni progetto dal primo incontro alla messa online, e poi hosting, SEO tecnica e manutenzione.',
+      alt: 'Hussein Faraj, fondatore di Studio Faraj',
+      write: 'Scrivi a Hussein',
+    },
+    services: {
+      title: 'Cosa facciamo',
+      lead: 'Costruiamo il prodotto, lo facciamo trovare e lo teniamo veloce e aggiornato. Ogni servizio ha la sua pagina.',
+      all: 'Tutti i servizi',
+    },
+    places: {
+      label: 'Dove abbiamo lavorato',
+      title: 'Da Padova, per aziende in Italia e all’estero.',
+    },
+    principles: {
+      title: 'Come lavoriamo',
+      items: [
+        { title: 'Scritto su misura', text: 'Niente template né page builder: ogni sito è scritto riga per riga per chi lo usa.' },
+        { title: 'Il codice è tuo', text: 'Codice sorgente, dominio e contenuti restano di tua proprietà: puoi cambiare fornitore quando vuoi.' },
+        { title: 'Veloce e trovabile', text: 'SEO tecnica e prestazioni fanno parte del progetto dal primo giorno, non si aggiungono alla fine.' },
+        { title: 'Dall’idea alla manutenzione', text: 'Design, sviluppo, hosting e manutenzione con le stesse persone: parli con chi scrive il codice.' },
+      ],
+    },
+  },
+  en: {
+    eyebrow: 'About us · Padova, since 2020',
+    title: ['We are', 'Studio Faraj.'],
+    lead: 'Studio Faraj was founded in Padova in 2020 to help businesses grow online. Websites, e-commerce and platforms written to measure: the code stays yours.',
+    founder: {
+      label: 'The founder',
+      quote: 'Code is poetry that solves real problems.',
+      role: 'Founder · Full-stack developer',
+      bio: 'At Studio Faraj he designs and writes company websites, e-commerce stores and custom business software for companies in Italy and abroad. He follows every project from the first meeting to launch, and then hosting, technical SEO and maintenance.',
+      alt: 'Hussein Faraj, founder of Studio Faraj',
+      write: 'Write to Hussein',
+    },
+    services: {
+      title: 'What we do',
+      lead: 'We build the product, get it found, and keep it fast and up to date. Every service has its own page.',
+      all: 'All services',
+    },
+    places: {
+      label: 'Where we have worked',
+      title: 'From Padova, for businesses in Italy and abroad.',
+    },
+    principles: {
+      title: 'How we work',
+      items: [
+        { title: 'Written to measure', text: 'No templates or page builders: every site is written line by line for the people who use it.' },
+        { title: 'The code is yours', text: 'Source code, domain and content stay yours: you can change supplier whenever you want.' },
+        { title: 'Fast and findable', text: 'Technical SEO and performance are part of the project from day one, not added at the end.' },
+        { title: 'From idea to maintenance', text: 'Design, development, hosting and maintenance with the same people: you talk to whoever writes the code.' },
+      ],
+    },
+  },
+} as const;
 
-  return <span className="tabular-nums">{count}{suffix}</span>;
-}
+type Country = 'it' | 'ch' | 'de' | 'lb';
+const COUNTRIES: Record<Country, Record<Locale, string>> = {
+  it: { it: 'Italia', en: 'Italy' },
+  ch: { it: 'Svizzera', en: 'Switzerland' },
+  de: { it: 'Germania', en: 'Germany' },
+  lb: { it: 'Libano', en: 'Lebanon' },
+};
 
-// ─── Founder image ─────────────────────────────────────────────────────────
-// To use a real photo: place it at /public/images/founder.jpg
-// then change FOUNDER_PHOTO to '/images/founder.jpg'
-const FOUNDER_PHOTO = '/assets/hussein-faraj-fondatore-studio-faraj.webp';
+/**
+ * Where the published projects are, taken from their case studies. Projects
+ * have no location field, so a new project appears here only once it gets a
+ * line; one that is unpublished drops out by itself.
+ */
+const PLACES: Record<string, { country: Country; place?: string | Record<Locale, string> }> = {
+  'sito-web-per-serramentista-in-romagna-a-infissi-gambettola': { country: 'it', place: 'Gambettola' },
+  'sito-web-e-gestionale-per-concessionaria-auto-usate-minicar-di-ali-ibrahim': { country: 'it', place: { it: 'Milano', en: 'Milan' } },
+  'novametris-sito-web-per-marchio-di-rilievi-topografici-e-laser-scanner-3d': { country: 'it', place: 'Lecco' },
+  'sito-web-per-unimpresa-di-pulizie-adc-service': { country: 'it', place: 'Olbia' },
+  'sito-web-per-impresa-di-ristrutturazioni-in-ticino-gs-costruzioni-ristrutturazioni': { country: 'ch', place: 'Monte Carasso' },
+  'sito-web-di-colosimo-peinture-a-ginevra': { country: 'ch', place: { it: 'Ginevra', en: 'Geneva' } },
+  'menu-digitale-ristorante-bella-napoli-da-luigi-a-wrzburg': { country: 'de', place: 'Würzburg' },
+  'corso-italiamo': { country: 'lb' },
+};
 
-function FounderImage() {
-  if (FOUNDER_PHOTO) {
-    return (
-      <Image
-        src={FOUNDER_PHOTO}
-        alt="Hussein Faraj — Fondatore di Studio Faraj"
-        fill
-        className="object-cover object-top"
-        sizes="(max-width: 768px) 100vw, 50vw"
-        priority
-      />
-    );
+type PlaceRow = { country: string; projects: { slug: string; name: string; place?: string }[] };
+
+async function getPlaces(lang: Locale): Promise<PlaceRow[]> {
+  let projects: Project[];
+  try {
+    projects = ((await getProjectsAction()) as Project[]).filter((p) => p.published);
+  } catch {
+    // The portfolio is unavailable: the page leaves the section out.
+    return [];
   }
-  return (
-    <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-primary/10 via-primary/5 to-background">
-      {/* Decorative rings */}
-      <div className="absolute inset-0 overflow-clip pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full border border-primary/10" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 rounded-full border border-primary/15" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full border border-primary/20" />
-      </div>
-      {/* Initials circle */}
-      <div className="relative z-10 w-24 h-24 rounded-full bg-primary/20 border-2 border-primary/30 flex items-center justify-center mb-4">
-        <span className="text-3xl font-bold text-primary">HF</span>
-      </div>
-      <Camera className="relative z-10 w-5 h-5 text-muted-foreground/40 mb-2" />
-      <p className="relative z-10 text-xs text-muted-foreground/50 text-center px-8 leading-relaxed">
-        Aggiungi la foto del fondatore:<br />
-        <code className="text-[10px] text-primary/50">/public/images/founder.jpg</code>
-      </p>
-    </div>
-  );
+  const bySlug = new Map(projects.map((p) => [p.slug, p]));
+  return (Object.keys(COUNTRIES) as Country[])
+    .map((c) => ({
+      country: COUNTRIES[c][lang],
+      projects: Object.entries(PLACES)
+        .filter(([slug, where]) => where.country === c && bySlug.has(slug))
+        .map(([slug, where]) => {
+          const p = bySlug.get(slug)!;
+          const place = typeof where.place === 'string' ? where.place : where.place?.[lang];
+          return { slug, name: p.clientName || p.title, place };
+        }),
+    }))
+    .filter((row) => row.projects.length > 0);
 }
 
-// ─── Co-founder photo placeholder ─────────────────────────────────────────
-const COFOUNDER_PHOTO = ''; // e.g. '/images/cofounder.jpg'
-
-function CoFounderImage() {
-  if (COFOUNDER_PHOTO) {
-    return (
-      <Image
-        src={COFOUNDER_PHOTO}
-        alt="Maria Elisa Midulla — Co-Founder di Studio Faraj"
-        fill
-        className="object-cover object-top"
-        sizes="(max-width: 768px) 100vw, 33vw"
-      />
-    );
-  }
-  return (
-    <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-violet-500/10 via-violet-500/5 to-background">
-      <div className="w-16 h-16 rounded-full bg-violet-500/20 border-2 border-violet-500/30 flex items-center justify-center">
-        <span className="text-xl font-bold text-violet-500">ME</span>
-      </div>
-    </div>
-  );
-}
-
-// ─── Timeline item ────────────────────────────────────────────────────────────
-function TimelineItem({
-  year,
-  title,
-  description,
-  isLast = false,
-}: {
-  year: string;
-  title: string;
-  description: string;
-  isLast?: boolean;
-}) {
-  return (
-    <div className="relative flex gap-6 md:gap-8">
-      {/* Dot + vertical line */}
-      <div className="flex flex-col items-center">
-        <div className="w-3 h-3 rounded-full bg-primary border-2 border-background ring-2 ring-primary/30 shrink-0 mt-1" />
-        {!isLast && <div className="w-px flex-1 bg-border/60 mt-2" />}
-      </div>
-      {/* Content */}
-      <div className={isLast ? 'pb-0' : 'pb-8'}>
-        <span className="inline-block font-mono text-xs font-semibold text-primary bg-primary/10 px-2.5 py-0.5 rounded-full mb-2">
-          {year}
-        </span>
-        <h4 className="font-semibold text-foreground mb-1">{title}</h4>
-        <p className="text-sm text-muted-foreground leading-relaxed">{description}</p>
-      </div>
-    </div>
-  );
-}
-
-// ─── Page ─────────────────────────────────────────────────────────────────────
-export default function ChiSiamoPage() {
-  const locale = useLocale();
-  const t = useTranslations('about');
-  const [statsVisible, setStatsVisible] = useState(false);
-  const statsRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const obs = new IntersectionObserver(
-      (entries) => { if (entries[0].isIntersecting) setStatsVisible(true); },
-      { threshold: 0.2 },
-    );
-    if (statsRef.current) obs.observe(statsRef.current);
-    return () => obs.disconnect();
-  }, []);
-
-  const stats = [
-    { value: 50, suffix: '+', label: t('identity.stats.projects') },
-    { value: 40, suffix: '+', label: t('identity.stats.clients') },
-    { value: 5,  suffix: '+', label: t('identity.stats.years') },
-    { value: 12, suffix: '+', label: t('identity.stats.technologies') },
-  ];
-
-  const philosophy = [
-    {
-      icon: <PenTool className="w-5 h-5" />,
-      title: t('philosophy.creativity.title'),
-      description: t('philosophy.creativity.description'),
-    },
-    {
-      icon: <Handshake className="w-5 h-5" />,
-      title: t('philosophy.collaboration.title'),
-      description: t('philosophy.collaboration.description'),
-    },
-    {
-      icon: <ShieldCheck className="w-5 h-5" />,
-      title: t('philosophy.transparency.title'),
-      description: t('philosophy.transparency.description'),
-    },
-  ];
-
-  const timeline = [
-    { year: '2020', title: t('timeline.2020.title'), description: t('timeline.2020.description') },
-    { year: '2021', title: t('timeline.2021.title'), description: t('timeline.2021.description') },
-    { year: '2022', title: t('timeline.2022.title'), description: t('timeline.2022.description') },
-    { year: '2023', title: t('timeline.2023.title'), description: t('timeline.2023.description') },
-    { year: '2024', title: t('timeline.2024.title'), description: t('timeline.2024.description') },
-    { year: '2025+', title: t('timeline.2025.title'), description: t('timeline.2025.description') },
-  ];
-
-  const localeParam = locale as 'it' | 'en';
+/**
+ * /chi-siamo — server component. A navy hero with the logo's ripples (as in
+ * the OG image), the founder, what the studio does (linked to each service),
+ * where its published projects are, and how it works. No client code.
+ */
+export default async function ChiSiamoPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  const lang: Locale = locale === 'en' ? 'en' : 'it';
+  setRequestLocale(lang);
+  const copy = COPY[lang];
+  const places = await getPlaces(lang);
 
   return (
-    <div className="bg-background text-foreground overflow-x-clip">
-
-      {/* ══════════════════════════════════════════
-          1. HERO
-          ══════════════════════════════════════════ */}
-      <section className="relative min-h-[min(85svh,56rem)] flex items-center justify-center overflow-clip">
-        {/* Soft gradient blobs */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute -top-32 -left-32 w-[500px] h-[500px] bg-primary/8 rounded-full blur-[120px]" />
-          <div className="absolute -bottom-32 -right-32 w-[400px] h-[400px] bg-primary/6 rounded-full blur-[100px]" />
+    <div className="bg-background text-foreground">
+      <section className="relative overflow-clip bg-navy pb-40 pt-32 text-white md:pb-48 md:pt-40">
+        {/* The mark with rings rippling out of it. From lg it sits beside the
+            title; on smaller screens only the rings show, from the corner. */}
+        <div aria-hidden className="pointer-events-none absolute left-[100%] top-[30%] h-[190px] w-[190px] -translate-x-1/2 -translate-y-1/2 sm:left-[88%] lg:left-[75%] lg:top-[46%] lg:h-[250px] lg:w-[250px]">
+          <div className="absolute -inset-[90%] rounded-full bg-blue-500/35 blur-[90px]" />
+          {[0.42, 0.32, 0.22, 0.14, 0.08].map((o, i) => (
+            <span key={i} className="ab-ring" style={{ '--i': i, '--s': 1 + i * 0.43, '--o': o } as CSSProperties} />
+          ))}
+          <BrandMark id="about-hero-mark" className="relative hidden h-full w-full text-white lg:block" />
         </div>
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background pointer-events-none" />
 
-        <div className="relative z-10 container px-4 sm:px-6 text-center">
-          <ScrollFadeIn animation="fade-up">
-            <Badge variant="outline" className="mb-6 px-4 py-1.5 text-xs border-primary/30 text-primary">
-              <Sparkles className="w-3 h-3 mr-2" />
-              {t('hero.badge')}
-            </Badge>
-
-            {/* Both lines live inside the <h1> so the full title is the page heading. */}
-            <h1 className="mb-6 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight">
-              <GradientText
-                as="span"
-                colors={['#3b82f6', '#8b5cf6', '#3b82f6']}
-                animationSpeed={4}
-                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight"
-              >
-                {t('hero.title')}
-              </GradientText>{' '}
-              <span className="block text-foreground mt-2">
-                {t('hero.titleHighlight')}
-              </span>
-            </h1>
-
-            <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed">
-              {t('hero.subtitle')}{' '}
-              <span className="text-primary font-medium">{t('hero.subtitleLocation')}</span>
-              {t('hero.subtitleText')}
-            </p>
-
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-              <Button size="lg" className="px-8 w-full sm:w-auto group" asChild>
-                <Link href={getLocalizedPath('/contatti', localeParam)}>
-                  {t('hero.ctaStart')}
-                  <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
-                </Link>
-              </Button>
-              <Button size="lg" variant="outline" className="border-border w-full sm:w-auto" asChild>
-                <Link href={getLocalizedPath('/projects', localeParam)}>
-                  {t('hero.ctaExplore')}
-                </Link>
-              </Button>
-            </div>
-          </ScrollFadeIn>
+        <div className="container relative mx-auto px-5 md:px-8">
+          <p className={`${MONO} text-white/55`}>{copy.eyebrow}</p>
+          <h1 className="mt-7 font-display text-[3.25rem] font-extrabold leading-[0.93] tracking-[-0.035em] sm:text-7xl lg:text-[5rem]">
+            {copy.title[0]} <span className="block">{copy.title[1]}</span>
+          </h1>
+          <p className="mt-7 max-w-[34rem] text-lg leading-relaxed text-white/70 sm:text-xl sm:leading-relaxed">{copy.lead}</p>
         </div>
+        <SectionEdge shape="arc" edge="bottom" />
       </section>
 
-      {/* ══════════════════════════════════════════
-          2. FOUNDER SPOTLIGHT
-          ══════════════════════════════════════════ */}
-      <section className="py-20 md:py-28 lg:py-32">
-        <div className="container px-4 sm:px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center max-w-6xl mx-auto">
-
-            {/* Photo */}
-            <ScrollFadeIn animation="fade-right">
-              <div className="relative mx-auto lg:mx-0 max-w-md lg:max-w-none">
-                {/* Offset shadow border */}
-                <div className="absolute -inset-0 rounded-3xl bg-gradient-to-br from-primary/20 to-primary/5 translate-x-3 translate-y-3" />
-                <div className="relative aspect-[4/5] rounded-3xl overflow-clip border border-border/60 bg-secondary/50 shadow-2xl shadow-primary/10">
-                  <FounderImage />
-                </div>
-                {/* Floating experience badge */}
-                <div className="absolute -bottom-5 -right-5 bg-card border border-border/60 rounded-2xl px-4 py-3 shadow-xl flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-primary/15 flex items-center justify-center">
-                    <Star className="w-4 h-4 text-primary fill-primary" />
-                  </div>
-                  <div className="leading-tight">
-                    <p className="text-xs font-semibold text-foreground">5+ anni</p>
-                    <p className="text-[10px] text-muted-foreground">di esperienza</p>
-                  </div>
-                </div>
-              </div>
-            </ScrollFadeIn>
-
-            {/* Bio */}
-            <ScrollFadeIn animation="fade-left">
-              <div>
-                <Badge variant="outline" className="mb-4 border-primary/30 text-primary text-xs">
-                  <MapPin className="w-3 h-3 mr-1.5" />
-                  Fondatore · Padova, Italia
-                </Badge>
-
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-1 tracking-tight">
-                  {t('team.hussein.name')}
-                </h2>
-                <p className="text-primary font-medium mb-6">{t('team.hussein.role')}</p>
-
-                <blockquote className="pl-5 mb-6 border-l-2 border-primary/40">
-                  <p className="font-quote italic text-lg text-foreground/80 leading-relaxed">
-                    &ldquo;{t('team.hussein.quote')}&rdquo;
-                  </p>
-                </blockquote>
-
-                <p className="text-muted-foreground leading-relaxed mb-8">
-                  {t('team.hussein.bio')}
-                </p>
-
-                {/* Skill pills */}
-                <div className="flex flex-wrap gap-2 mb-8">
-                  {['React / Next.js', 'Node.js', 'AI Integration', 'System Architecture', 'UI/UX Design'].map((skill) => (
-                    <span
-                      key={skill}
-                      className="text-xs font-medium px-3 py-1.5 rounded-full bg-secondary border border-border/60 text-foreground/80"
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-
-                {/* Social */}
-                <div className="flex gap-3">
-                  {[
-                    { href: 'https://www.linkedin.com/in/hussein-faraj-9572b72b5/', icon: <Linkedin className="w-4 h-4" />, label: 'LinkedIn' },
-                    { href: 'mailto:husseinfaraj101@gmail.com', icon: <Mail className="w-4 h-4" />, label: 'Email' },
-                  ].map(({ href, icon, label }) => (
-                    <a
-                      key={label}
-                      href={href}
-                      target={href.startsWith('mailto') ? undefined : '_blank'}
-                      rel={href.startsWith('mailto') ? undefined : 'noopener noreferrer'}
-                      aria-label={label}
-                      className="w-10 h-10 rounded-xl border border-border/60 bg-secondary hover:bg-primary hover:border-primary hover:text-primary-foreground flex items-center justify-center text-muted-foreground transition-all duration-200"
-                    >
-                      {icon}
-                    </a>
-                  ))}
-                </div>
-              </div>
-            </ScrollFadeIn>
+      <section className="container relative mx-auto -mt-28 px-5 md:-mt-32 md:px-8">
+        <article className="grid gap-6 rounded-[28px] bg-card p-3 shadow-[0_40px_90px_-40px_rgba(10,22,40,0.35)] ring-1 ring-border md:grid-cols-[minmax(0,17rem)_1fr] md:items-center md:gap-10 md:p-4 lg:grid-cols-[20rem_1fr] lg:gap-14">
+          <div className="relative aspect-[4/3] overflow-clip rounded-[20px] bg-muted md:aspect-[4/5]">
+            <Image src={PHOTO} alt={copy.founder.alt} fill priority sizes="(min-width: 1024px) 320px, (min-width: 768px) 272px, 100vw" className="object-cover object-top" />
           </div>
+          <div className="px-3 pb-6 md:py-6 md:pl-0 md:pr-8 lg:pr-12">
+            <p className={`${MONO} text-primary`}>{copy.founder.label}</p>
+            <blockquote className="mt-4 font-quote text-2xl italic leading-snug md:text-[1.75rem]">“{copy.founder.quote}”</blockquote>
+            <h2 className="mt-6 font-display text-2xl font-bold tracking-[-0.01em]">Hussein Faraj</h2>
+            <p className="mt-1 text-sm text-muted-foreground">{copy.founder.role}</p>
+            <p className="mt-4 max-w-xl leading-relaxed text-muted-foreground">{copy.founder.bio}</p>
+            <div className="mt-6 flex flex-wrap gap-x-6 gap-y-3 text-sm font-medium">
+              <a href={LINKEDIN} target="_blank" rel="noopener noreferrer" className="group inline-flex items-center gap-1.5 underline decoration-border decoration-2 underline-offset-[6px] transition-colors hover:decoration-primary">
+                LinkedIn
+                <ArrowUpRight aria-hidden className="h-4 w-4 text-muted-foreground transition-colors group-hover:text-primary" />
+              </a>
+              <a href={`mailto:${EMAIL}`} className="group inline-flex items-center gap-1.5 underline decoration-border decoration-2 underline-offset-[6px] transition-colors hover:decoration-primary">
+                {copy.founder.write}
+                <ArrowUpRight aria-hidden className="h-4 w-4 text-muted-foreground transition-colors group-hover:text-primary" />
+              </a>
+            </div>
+          </div>
+        </article>
+      </section>
 
-          {/* ── Co-founder card ─────────────────────────────────────────────── */}
-          <ScrollFadeIn animation="fade-up" delay={100}>
-            <div className="mt-16 max-w-6xl mx-auto">
-              <div className="flex flex-col sm:flex-row items-start gap-6 p-6 md:p-8 rounded-3xl border border-border/60 bg-card hover:border-primary/20 transition-colors duration-300">
-                {/* Photo */}
-                <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-clip border border-border/60 shrink-0 bg-secondary/50">
-                  <CoFounderImage />
-                </div>
-                {/* Info */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex flex-wrap items-center gap-3 mb-1">
-                    <h3 className="text-xl font-bold text-foreground">{t('team.maria.name')}</h3>
-                    <Badge variant="outline" className="text-[10px] border-violet-500/30 text-violet-500">
-                      Co-Founder
-                    </Badge>
-                  </div>
-                  <p className="text-sm text-primary font-medium mb-3">{t('team.maria.role')}</p>
-                  <blockquote className="text-sm text-muted-foreground italic mb-3 border-l-2 border-violet-500/30 pl-3">
-                    {t('team.maria.quote')}
-                  </blockquote>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{t('team.maria.bio')}</p>
-                  {/* Skills */}
-                  <div className="flex flex-wrap gap-1.5 mt-4">
-                    {['Frontend / CSS', 'UI/UX Design', 'Digital Marketing', 'Brand Strategy'].map((s) => (
-                      <span key={s} className="text-[11px] font-medium px-2.5 py-1 rounded-full bg-secondary border border-border/60 text-foreground/70">
-                        {s}
+      <div className="space-y-24 py-24 md:space-y-32 md:py-32">
+        <section className="container mx-auto px-5 md:px-8">
+          <header className="grid gap-5 md:grid-cols-12 md:items-end">
+            <h2 className="rv-title font-display text-[2.2rem] font-bold leading-[1.02] tracking-[-0.03em] md:col-span-7 md:text-[3rem]">
+              <RevealWords text={copy.services.title} />
+            </h2>
+            <p className="rv text-lg leading-relaxed text-muted-foreground md:col-span-5">{copy.services.lead}</p>
+          </header>
+          <div className="mt-12 grid gap-10 md:mt-16 md:grid-cols-3 md:gap-8">
+            {serviceGroupsFor(lang).map((g, gi) => (
+              <div key={g.id} className="rv border-t border-foreground pt-5" style={{ '--i': gi } as CSSProperties}>
+                <p className={`${MONO} text-muted-foreground`}>{g.title[lang]}</p>
+                <p className="mt-2 text-sm text-muted-foreground">{g.about[lang]}</p>
+                <ul className="mt-5 border-t border-border">
+                  {g.services.map((slug) => (
+                    <li key={slug} className="border-b border-border">
+                      <Link href={getLocalizedPath(`/servizi/${slug}`, lang)} className="group flex items-center justify-between gap-4 py-3.5 font-medium transition-colors hover:text-primary">
+                        {SERVICES[slug].name[lang]}
+                        <ArrowRight aria-hidden className="h-4 w-4 shrink-0 text-muted-foreground transition-[color,transform] duration-300 group-hover:translate-x-0.5 group-hover:text-primary" />
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+          <Link
+            href={getLocalizedPath('/servizi', lang)}
+            className="mt-10 inline-block font-medium underline decoration-border decoration-2 underline-offset-[6px] transition-colors hover:decoration-primary"
+          >
+            {copy.services.all}
+          </Link>
+        </section>
+
+        {places.length > 0 && (
+          <section className="container mx-auto grid gap-10 px-5 md:px-8 lg:grid-cols-12 lg:gap-16">
+            <div className="lg:col-span-5">
+              <p className={`${MONO} text-muted-foreground`}>{copy.places.label}</p>
+              <h2 className="rv-title mt-5 font-display text-[2.2rem] font-bold leading-[1.02] tracking-[-0.03em] md:text-[3rem]">
+                <RevealWords text={copy.places.title} />
+              </h2>
+            </div>
+            <ul className="border-t border-border lg:col-span-7">
+              {places.map((row, ri) => (
+                <li key={row.country} className="rv grid gap-2 border-b border-border py-5 sm:grid-cols-[11rem_1fr] sm:gap-6" style={{ '--i': ri } as CSSProperties}>
+                  <span className="font-display text-xl font-bold tracking-[-0.01em] md:text-[1.4rem]">{row.country}</span>
+                  <span className="text-muted-foreground sm:pt-1">
+                    {row.projects.map((p, pi) => (
+                      <span key={p.slug}>
+                        {pi > 0 && <span aria-hidden> · </span>}
+                        <Link href={getLocalizedPath(`/projects/${p.slug}`, lang)} className="text-foreground underline decoration-border underline-offset-4 transition-colors hover:decoration-primary">
+                          {p.name}
+                        </Link>
+                        {p.place && `, ${p.place}`}
                       </span>
                     ))}
-                  </div>
-                </div>
-                {/* Social */}
-                <div className="flex sm:flex-col gap-2 shrink-0">
-                  <a
-                    href="https://www.linkedin.com/in/studio-faraj-47923b389/"
-                    target="_blank" rel="noopener noreferrer"
-                    aria-label="LinkedIn"
-                    className="w-9 h-9 rounded-xl border border-border/60 bg-secondary hover:bg-violet-500 hover:border-violet-500 hover:text-white flex items-center justify-center text-muted-foreground transition-all duration-200"
-                  >
-                    <Linkedin className="w-4 h-4" />
-                  </a>
-                  <a
-                    href="mailto:mariaelisa@studiofaraj.com"
-                    aria-label="Email"
-                    className="w-9 h-9 rounded-xl border border-border/60 bg-secondary hover:bg-violet-500 hover:border-violet-500 hover:text-white flex items-center justify-center text-muted-foreground transition-all duration-200"
-                  >
-                    <Mail className="w-4 h-4" />
-                  </a>
-                </div>
-              </div>
-            </div>
-          </ScrollFadeIn>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════
-          3. STATS
-          ══════════════════════════════════════════ */}
-      <section ref={statsRef} className="py-16 md:py-20 border-y border-border/40 bg-secondary/30">
-        <div className="container px-4 sm:px-6">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 max-w-4xl mx-auto">
-            {stats.map((stat, i) => (
-              <ScrollFadeIn key={i} animation="scale" delay={i * 80}>
-                <div className="text-center">
-                  <div className="text-4xl sm:text-5xl lg:text-6xl font-bold text-primary mb-2">
-                    <AnimatedCounter target={stat.value} suffix={stat.suffix} isVisible={statsVisible} />
-                  </div>
-                  <p className="text-sm text-muted-foreground font-medium">{stat.label}</p>
-                </div>
-              </ScrollFadeIn>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════
-          4. PHILOSOPHY — 3 pillars
-          ══════════════════════════════════════════ */}
-      <section className="py-20 md:py-28">
-        <div className="container px-4 sm:px-6">
-          <ScrollFadeIn animation="fade-up">
-            <div className="text-center max-w-2xl mx-auto mb-14">
-              <p className="text-xs font-semibold tracking-widest text-primary uppercase mb-4">
-                {t('philosophy.badge')}
-              </p>
-              <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
-                {t('philosophy.title')}{' '}
-                <span className="text-primary">{t('philosophy.titleHighlight')}</span>
-              </h2>
-              <p className="text-muted-foreground">{t('philosophy.subtitle')}</p>
-            </div>
-          </ScrollFadeIn>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {philosophy.map((item, i) => (
-              <ScrollFadeIn key={item.title} animation="fade-up" delay={i * 120}>
-                <div className="group relative flex flex-col gap-4 p-7 rounded-2xl border border-border/60 bg-card hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 h-full">
-                  {/* Ghost number */}
-                  <span aria-hidden className="absolute top-5 right-6 font-mono text-5xl font-black text-foreground/[0.04] select-none pointer-events-none">
-                    {String(i + 1).padStart(2, '0')}
                   </span>
-                  {/* Icon */}
-                  <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 shrink-0">
-                    {item.icon}
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-bold text-foreground mb-2">{item.title}</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
-                  </div>
-                </div>
-              </ScrollFadeIn>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        <section className="container mx-auto px-5 md:px-8">
+          <h2 className="rv-title font-display text-[2.2rem] font-bold leading-[1.02] tracking-[-0.03em] md:text-[3rem]">
+            <RevealWords text={copy.principles.title} />
+          </h2>
+          <ul className="mt-12 grid gap-8 sm:grid-cols-2 md:mt-16 lg:grid-cols-4 lg:gap-6">
+            {copy.principles.items.map((p, pi) => (
+              <li key={p.title} className="rv border-t border-border pt-5" style={{ '--i': pi } as CSSProperties}>
+                <h3 className="font-display text-lg font-bold tracking-[-0.01em]">{p.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{p.text}</p>
+              </li>
             ))}
-          </div>
-        </div>
-      </section>
+          </ul>
+        </section>
+      </div>
 
-      {/* ══════════════════════════════════════════
-          5. TIMELINE — sticky left header + rail
-          ══════════════════════════════════════════ */}
-      <section className="py-20 md:py-28 bg-secondary/30">
-        <div className="container px-4 sm:px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start max-w-5xl mx-auto">
-
-            {/* Left: header (sticky on desktop) */}
-            <ScrollFadeIn animation="fade-right">
-              <div className="lg:sticky lg:top-32">
-                <p className="text-xs font-semibold tracking-widest text-primary uppercase mb-4">
-                  {t('timeline.badge')}
-                </p>
-                <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
-                  {t('timeline.title')}{' '}
-                  <span className="text-primary">{t('timeline.titleHighlight')}</span>
-                </h2>
-                <p className="text-muted-foreground leading-relaxed mb-8">
-                  {t('timeline.subtitle')}
-                </p>
-                {/* Founding card */}
-                <div className="inline-flex items-center gap-3 px-5 py-4 rounded-2xl border border-border/60 bg-card">
-                  <div className="text-3xl font-bold text-primary">{t('identity.foundingYear')}</div>
-                  <div className="border-l border-border/60 pl-3">
-                    <p className="text-xs text-muted-foreground">{t('identity.foundingLabel')}</p>
-                    <p className="text-xs text-foreground/80 flex items-center gap-1 mt-0.5">
-                      <MapPin className="w-3 h-3 text-primary" />
-                      {t('identity.foundingLocation')}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </ScrollFadeIn>
-
-            {/* Right: timeline items */}
-            <ScrollFadeIn animation="fade-left">
-              <div className="pt-1">
-                {timeline.map((item, i) => (
-                  <TimelineItem
-                    key={item.year}
-                    year={item.year}
-                    title={item.title}
-                    description={item.description}
-                    isLast={i === timeline.length - 1}
-                  />
-                ))}
-              </div>
-            </ScrollFadeIn>
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════
-          6. MISSION + IDENTITY card
-          ══════════════════════════════════════════ */}
-      <section className="py-20 md:py-28">
-        <div className="container px-4 sm:px-6">
-          <div className="max-w-5xl mx-auto">
-            <ScrollFadeIn animation="fade-up">
-              <div className="rounded-3xl border border-border/60 bg-card overflow-clip">
-                {/* Top accent bar */}
-                <div className="h-1 w-full bg-gradient-to-r from-blue-500 via-primary to-violet-500" />
-                <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-border/60">
-
-                  {/* Mission */}
-                  <div className="p-8 md:p-10 lg:p-12">
-                    <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-5">
-                      <Target className="w-5 h-5" />
-                    </div>
-                    <Badge variant="outline" className="mb-4 text-xs border-primary/30 text-primary">
-                      {t('identity.mission.badge')}
-                    </Badge>
-                    <h3 className="text-2xl font-bold text-foreground mb-3">{t('identity.mission.title')}</h3>
-                    <p className="text-muted-foreground leading-relaxed text-sm">
-                      {t('identity.mission.description')}{' '}
-                      <span className="text-primary font-medium">{t('identity.mission.descriptionHighlight')}</span>{' '}
-                      {t('identity.mission.descriptionEnd')}
-                    </p>
-                  </div>
-
-                  {/* Identity */}
-                  <div className="p-8 md:p-10 lg:p-12 flex flex-col justify-between gap-6">
-                    <div>
-                      <p className="text-xs font-semibold tracking-widest text-primary uppercase mb-4">
-                        {t('identity.badge')}
-                      </p>
-                      <h3 className="text-2xl font-bold text-foreground mb-3">
-                        {t('identity.title')}{' '}
-                        <span className="text-primary">{t('identity.titleHighlight')}</span>
-                      </h3>
-                      <p className="text-muted-foreground leading-relaxed text-sm">{t('identity.subtitle')}</p>
-                    </div>
-                    {/* Trust chips */}
-                    <div className="flex flex-wrap gap-2">
-                      {[
-                        { icon: <CheckCircle className="w-3 h-3 text-green-500" />, label: 'Garanzia Soddisfazione' },
-                        { icon: <ShieldCheck className="w-3 h-3 text-blue-500" />, label: 'GDPR Compliant' },
-                        { icon: <Zap className="w-3 h-3 text-yellow-500" />, label: 'Tecnologie Moderne' },
-                      ].map(({ icon, label }) => (
-                        <span
-                          key={label}
-                          className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full bg-secondary border border-border/60 text-foreground/70"
-                        >
-                          {icon}
-                          {label}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </ScrollFadeIn>
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════
-          7. CTA
-          ══════════════════════════════════════════ */}
-      <section className="py-20 md:py-28 relative overflow-clip">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-primary/6 rounded-full blur-[100px]" />
-        </div>
-        <div className="container px-4 sm:px-6 relative z-10">
-          <ScrollFadeIn animation="scale">
-            <div className="max-w-3xl mx-auto text-center">
-              <Badge variant="outline" className="mb-6 border-primary/30 text-primary text-xs">
-                <Rocket className="w-3 h-3 mr-2" />
-                Pronto a Decollare?
-              </Badge>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4 tracking-tight">
-                Iniziamo il Tuo{' '}
-                <span className="text-primary">Viaggio Digitale</span>
-              </h2>
-              <p className="text-muted-foreground max-w-xl mx-auto mb-8 leading-relaxed">
-                Raccontaci la tua visione. Siamo pronti ad ascoltare, progettare e costruire
-                insieme il futuro digitale del tuo business.
-              </p>
-
-              {/* Availability indicator */}
-              <div className="flex items-center justify-center gap-2 mb-8 text-sm text-muted-foreground">
-                <span className="relative flex h-2.5 w-2.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500" />
-                </span>
-                Disponibili per nuovi progetti
-              </div>
-
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                <Button size="lg" className="px-8 w-full sm:w-auto group" asChild>
-                  <Link href={getLocalizedPath('/contatti', localeParam)}>
-                    Richiedi Consulenza Gratuita
-                    <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
-                  </Link>
-                </Button>
-                <Button size="lg" variant="outline" className="border-border w-full sm:w-auto" asChild>
-                  <Link href={getLocalizedPath('/projects', localeParam)}>
-                    Vedi Portfolio
-                  </Link>
-                </Button>
-              </div>
-
-              <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4 text-sm text-muted-foreground">
-                <a
-                  href="mailto:info@studiofaraj.it"
-                  className="flex items-center justify-center gap-2 hover:text-primary transition-colors"
-                >
-                  <Mail className="w-4 h-4" />
-                  info@studiofaraj.it
-                </a>
-                <span className="flex items-center justify-center gap-2">
-                  <MapPin className="w-4 h-4" />
-                  Padova, Italia
-                </span>
-              </div>
-            </div>
-          </ScrollFadeIn>
-        </div>
-      </section>
+      <HomeCtaSection locale={lang} />
     </div>
   );
 }
