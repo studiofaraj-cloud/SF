@@ -7,8 +7,6 @@ import { BrandMark } from '@/components/site/brand-mark';
 import HomeCtaSection from '@/components/site/home-cta-section';
 import { RevealWords } from '@/components/site/reveal-words';
 import { SectionEdge } from '@/components/site/section-edge';
-import { getProjectsAction } from '@/lib/actions';
-import type { Project } from '@/lib/definitions';
 import { getLocalizedPath } from '@/lib/i18n-helpers';
 import { SERVICES, serviceGroupsFor } from '@/lib/services-catalog';
 import type { Locale } from '@/i18n/config';
@@ -39,6 +37,7 @@ const COPY = {
     places: {
       label: 'Dove abbiamo lavorato',
       title: 'Da Padova, per aziende in Italia e all’estero.',
+      lead: 'Abbiamo realizzato progetti per clienti in questi paesi.',
     },
     principles: {
       title: 'Come lavoriamo',
@@ -70,6 +69,7 @@ const COPY = {
     places: {
       label: 'Where we have worked',
       title: 'From Padova, for businesses in Italy and abroad.',
+      lead: 'We have built projects for clients in these countries.',
     },
     principles: {
       title: 'How we work',
@@ -83,66 +83,29 @@ const COPY = {
   },
 } as const;
 
-type Country = 'it' | 'ch' | 'de' | 'lb';
-const COUNTRIES: Record<Country, Record<Locale, string>> = {
-  it: { it: 'Italia', en: 'Italy' },
-  ch: { it: 'Svizzera', en: 'Switzerland' },
-  de: { it: 'Germania', en: 'Germany' },
-  lb: { it: 'Libano', en: 'Lebanon' },
-};
-
-/**
- * Where the published projects are, taken from their case studies. Projects
- * have no location field, so a new project appears here only once it gets a
- * line; one that is unpublished drops out by itself.
- */
-const PLACES: Record<string, { country: Country; place?: string | Record<Locale, string> }> = {
-  'sito-web-per-serramentista-in-romagna-a-infissi-gambettola': { country: 'it', place: 'Gambettola' },
-  'sito-web-e-gestionale-per-concessionaria-auto-usate-minicar-di-ali-ibrahim': { country: 'it', place: { it: 'Milano', en: 'Milan' } },
-  'novametris-sito-web-per-marchio-di-rilievi-topografici-e-laser-scanner-3d': { country: 'it', place: 'Lecco' },
-  'sito-web-per-unimpresa-di-pulizie-adc-service': { country: 'it', place: 'Olbia' },
-  'sito-web-per-impresa-di-ristrutturazioni-in-ticino-gs-costruzioni-ristrutturazioni': { country: 'ch', place: 'Monte Carasso' },
-  'sito-web-di-colosimo-peinture-a-ginevra': { country: 'ch', place: { it: 'Ginevra', en: 'Geneva' } },
-  'menu-digitale-ristorante-bella-napoli-da-luigi-a-wrzburg': { country: 'de', place: 'Würzburg' },
-  'corso-italiamo': { country: 'lb' },
-};
-
-type PlaceRow = { country: string; projects: { slug: string; name: string; place?: string }[] };
-
-async function getPlaces(lang: Locale): Promise<PlaceRow[]> {
-  let projects: Project[];
-  try {
-    projects = ((await getProjectsAction()) as Project[]).filter((p) => p.published);
-  } catch {
-    // The portfolio is unavailable: the page leaves the section out.
-    return [];
-  }
-  const bySlug = new Map(projects.map((p) => [p.slug, p]));
-  return (Object.keys(COUNTRIES) as Country[])
-    .map((c) => ({
-      country: COUNTRIES[c][lang],
-      projects: Object.entries(PLACES)
-        .filter(([slug, where]) => where.country === c && bySlug.has(slug))
-        .map(([slug, where]) => {
-          const p = bySlug.get(slug)!;
-          const place = typeof where.place === 'string' ? where.place : where.place?.[lang];
-          return { slug, name: p.clientName || p.title, place };
-        }),
-    }))
-    .filter((row) => row.projects.length > 0);
-}
+/** Countries the studio has built projects for, Italy first. */
+const COUNTRIES: { code: string; name: Record<Locale, string> }[] = [
+  { code: 'IT', name: { it: 'Italia', en: 'Italy' } },
+  { code: 'CH', name: { it: 'Svizzera', en: 'Switzerland' } },
+  { code: 'FR', name: { it: 'Francia', en: 'France' } },
+  { code: 'BE', name: { it: 'Belgio', en: 'Belgium' } },
+  { code: 'DE', name: { it: 'Germania', en: 'Germany' } },
+  { code: 'GB', name: { it: 'Regno Unito', en: 'United Kingdom' } },
+  { code: 'US', name: { it: 'Stati Uniti', en: 'United States' } },
+  { code: 'AE', name: { it: 'Emirati Arabi Uniti', en: 'United Arab Emirates' } },
+  { code: 'LB', name: { it: 'Libano', en: 'Lebanon' } },
+];
 
 /**
  * /chi-siamo — server component. A navy hero with the logo's ripples (as in
  * the OG image), the founder, what the studio does (linked to each service),
- * where its published projects are, and how it works. No client code.
+ * the countries it has built projects for, and how it works. No client code.
  */
 export default async function ChiSiamoPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const lang: Locale = locale === 'en' ? 'en' : 'it';
   setRequestLocale(lang);
   const copy = COPY[lang];
-  const places = await getPlaces(lang);
 
   return (
     <div className="bg-background text-foreground">
@@ -226,34 +189,23 @@ export default async function ChiSiamoPage({ params }: { params: Promise<{ local
           </Link>
         </section>
 
-        {places.length > 0 && (
-          <section className="container mx-auto grid gap-10 px-5 md:px-8 lg:grid-cols-12 lg:gap-16">
-            <div className="lg:col-span-5">
-              <p className={`${MONO} text-muted-foreground`}>{copy.places.label}</p>
-              <h2 className="rv-title mt-5 font-display text-[2.2rem] font-bold leading-[1.02] tracking-[-0.03em] md:text-[3rem]">
-                <RevealWords text={copy.places.title} />
-              </h2>
-            </div>
-            <ul className="border-t border-border lg:col-span-7">
-              {places.map((row, ri) => (
-                <li key={row.country} className="rv grid gap-2 border-b border-border py-5 sm:grid-cols-[11rem_1fr] sm:gap-6" style={{ '--i': ri } as CSSProperties}>
-                  <span className="font-display text-xl font-bold tracking-[-0.01em] md:text-[1.4rem]">{row.country}</span>
-                  <span className="text-muted-foreground sm:pt-1">
-                    {row.projects.map((p, pi) => (
-                      <span key={p.slug}>
-                        {pi > 0 && <span aria-hidden> · </span>}
-                        <Link href={getLocalizedPath(`/projects/${p.slug}`, lang)} className="text-foreground underline decoration-border underline-offset-4 transition-colors hover:decoration-primary">
-                          {p.name}
-                        </Link>
-                        {p.place && `, ${p.place}`}
-                      </span>
-                    ))}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
+        <section className="container mx-auto grid gap-10 px-5 md:px-8 lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-5">
+            <p className={`${MONO} text-muted-foreground`}>{copy.places.label}</p>
+            <h2 className="rv-title mt-5 font-display text-[2.2rem] font-bold leading-[1.02] tracking-[-0.03em] md:text-[3rem]">
+              <RevealWords text={copy.places.title} />
+            </h2>
+            <p className="rv mt-6 text-lg leading-relaxed text-muted-foreground">{copy.places.lead}</p>
+          </div>
+          <ul className="grid border-t border-border sm:grid-cols-2 sm:gap-x-8 lg:col-span-7">
+            {COUNTRIES.map((c, ci) => (
+              <li key={c.code} className="rv flex items-baseline justify-between gap-4 border-b border-border py-4" style={{ '--i': ci % 4 } as CSSProperties}>
+                <span className="font-display text-xl font-bold tracking-[-0.01em] md:text-[1.4rem]">{c.name[lang]}</span>
+                <span aria-hidden className={`${MONO} text-muted-foreground`}>{c.code}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
 
         <section className="container mx-auto px-5 md:px-8">
           <h2 className="rv-title font-display text-[2.2rem] font-bold leading-[1.02] tracking-[-0.03em] md:text-[3rem]">
