@@ -93,6 +93,7 @@ const COUNTRIES: { code: string; name: Record<Locale, string> }[] = [
   { code: 'GB', name: { it: 'Regno Unito', en: 'United Kingdom' } },
   { code: 'US', name: { it: 'Stati Uniti', en: 'United States' } },
   { code: 'AE', name: { it: 'Emirati Arabi Uniti', en: 'United Arab Emirates' } },
+  { code: 'KW', name: { it: 'Kuwait', en: 'Kuwait' } },
   { code: 'LB', name: { it: 'Libano', en: 'Lebanon' } },
 ];
 
