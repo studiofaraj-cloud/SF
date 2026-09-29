@@ -4,9 +4,20 @@ import { ReactNode } from 'react';
 import { usePathname } from 'next/navigation';
 import { SiteHeader } from '@/components/site/site-header';
 import type { HeaderRating } from '@/components/site/mobile-menu';
-import { SiteFooter } from '@/components/site/site-footer';
 
-export function AppBody({ children, rating = null }: { children: ReactNode; rating?: HeaderRating }) {
+/**
+ * The public site's chrome around a page. The footer is a server component,
+ * so the locale layout renders it and passes it in.
+ */
+export function AppBody({
+  children,
+  footer,
+  rating = null,
+}: {
+  children: ReactNode;
+  footer?: ReactNode;
+  rating?: HeaderRating;
+}) {
   const pathname = usePathname();
   const isAdminRoute = pathname.startsWith('/admin');
   // The client hub is an authenticated app area — it uses its own chrome,
@@ -20,7 +31,7 @@ export function AppBody({ children, rating = null }: { children: ReactNode; rati
       <div className="transition-opacity duration-300 ease-in-out">
         {children}
       </div>
-      {!hideSiteChrome && <SiteFooter />}
+      {!hideSiteChrome && footer}
     </>
   );
 }

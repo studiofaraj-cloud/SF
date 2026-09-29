@@ -1,285 +1,237 @@
-'use client';
-
 import Link from 'next/link';
-import { Facebook, Instagram, Linkedin, Mail, Phone, MapPin, Shield, Zap } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import Image from 'next/image';
-import { useActionState } from 'react';
-import { createSubscriber } from '@/lib/actions';
-import { useEffect, useRef } from 'react';
-import { Badge } from '@/components/ui/badge';
-import { useTranslations, useLocale } from 'next-intl';
-import { useCookiePreferences } from '@/contexts/cookie-context';
+import type { ReactNode } from 'react';
+import { BookCallButton } from '@/components/site/book-call-button';
+import { BrandMark } from '@/components/site/brand-mark';
+import { CookiePreferencesLink, FooterNewsletter } from '@/components/site/footer-islands';
+import { ServiceQuoteButton } from '@/components/site/service-quote-button';
+import { WhatsAppIcon } from '@/components/site/whatsapp-icon';
+import { CONTACT, OPEN_IN_MAPS_URL, whatsappUrl } from '@/lib/contact-info';
 import { getLocalizedPath } from '@/lib/i18n-helpers';
+import { SERVICES, serviceGroupsFor } from '@/lib/services-catalog';
+import type { Locale } from '@/i18n/config';
 
-const STUDIO_MAPS_URL =
-  'https://www.google.com/maps/search/?api=1&query=Studio%20Faraj%2C%20Via%20Ludovico%20Ariosto%2042%2C%2035128%20Padova&query_place_id=ChIJV_YxeITzBAERefznEKaDrkc';
+const MONO = 'font-mono text-[11px] font-normal uppercase tracking-[0.16em] text-white/50';
+const LINK = 'text-left text-[15px] text-white/75 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded-sm';
 
-function NewsletterForm() {
-  const formRef = useRef<HTMLFormElement>(null);
-  const t = useTranslations('footer');
-  const locale = useLocale();
-  const [state, formAction] = useActionState(createSubscriber, { message: null, success: false });
+const SOCIAL = [
+  { label: 'Instagram', href: 'https://instagram.com/studiofaraj.it' },
+  { label: 'Facebook', href: 'https://www.facebook.com/share/18JVysxoGo/?mibextid=wwXIfr' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/studio-faraj-47923b389/' },
+];
 
-  useEffect(() => {
-    if (state?.success) formRef.current?.reset();
-  }, [state]);
+const COPY = {
+  it: {
+    home: 'Studio Faraj, torna alla home',
+    description: 'Siti, e-commerce e piattaforme scritti su misura a Padova, per aziende in Italia e all’estero. Il codice resta tuo.',
+    newsletter: {
+      title: 'Newsletter',
+      lead: 'Le nuove guide del blog, via email. Ti disiscrivi quando vuoi.',
+      label: 'La tua email',
+      placeholder: 'La tua email',
+      subscribe: 'Iscriviti',
+      done: 'Iscrizione completata: grazie!',
+      failed: 'Iscrizione non riuscita. Controlla l’indirizzo e riprova.',
+    },
+    services: 'Servizi',
+    studio: 'Studio',
+    clients: 'Clienti',
+    contacts: 'Contatti',
+    studioLinks: [
+      ['/projects', 'Progetti'],
+      ['/chi-siamo', 'Chi siamo'],
+      ['/blog', 'Blog'],
+      ['/pagine-aziendali', 'Pagine aziendali'],
+      ['/faq', 'FAQ'],
+      ['/contatti', 'Contatti'],
+    ],
+    quote: 'Richiedi un preventivo',
+    call: 'Prenota una chiamata',
+    hub: 'Area clienti',
+    whatsapp: 'WhatsApp',
+    whatsappGreeting: 'Ciao Studio Faraj! Vi scrivo dal sito: vorrei informazioni per un progetto.',
+    social: 'Social',
+    legal: 'Documenti legali',
+    privacy: 'Privacy',
+    cookie: 'Cookie policy',
+    cookiePrefs: 'Preferenze cookie',
+    terms: 'Termini e condizioni',
+  },
+  en: {
+    home: 'Studio Faraj, back to the homepage',
+    description: 'Websites, e-commerce and platforms written to measure in Padova, for businesses in Italy and abroad. The code stays yours.',
+    newsletter: {
+      title: 'Newsletter',
+      lead: 'New guides from the blog, by email. Unsubscribe whenever you like.',
+      label: 'Your email',
+      placeholder: 'Your email',
+      subscribe: 'Subscribe',
+      done: 'You’re subscribed: thank you!',
+      failed: 'The subscription didn’t go through. Check the address and try again.',
+    },
+    services: 'Services',
+    studio: 'Studio',
+    clients: 'Clients',
+    contacts: 'Contacts',
+    studioLinks: [
+      ['/projects', 'Projects'],
+      ['/chi-siamo', 'About'],
+      ['/blog', 'Blog'],
+      ['/pagine-aziendali', 'Business pages'],
+      ['/faq', 'FAQ'],
+      ['/contatti', 'Contact'],
+    ],
+    quote: 'Request a quote',
+    call: 'Book a call',
+    hub: 'Client area',
+    whatsapp: 'WhatsApp',
+    whatsappGreeting: "Hi Studio Faraj! I'm writing from your website: I'd like some information about a project.",
+    social: 'Social',
+    legal: 'Legal documents',
+    privacy: 'Privacy',
+    cookie: 'Cookie policy',
+    cookiePrefs: 'Cookie preferences',
+    terms: 'Terms and conditions',
+  },
+} as const;
 
-  // The result shows under the field (no toast system on the public site).
+function Column({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <>
-    <form ref={formRef} action={formAction} className="flex gap-2 w-full">
-      <input type="hidden" name="locale" value={locale} />
-      <Input
-        type="email"
-        name="email"
-        placeholder={t('newsletter.placeholder')}
-        className="flex-1 bg-background/60 border-border/50 focus:border-primary h-11"
-        required
-      />
-      <Button type="submit" size="icon" className="h-11 w-11 shrink-0" aria-label={t('newsletter.subscribe')}>
-        <Mail className="w-4 h-4" />
-      </Button>
-    </form>
-    <p role="status" aria-live="polite" className={`mt-2 min-h-[1.25rem] text-xs ${state?.success ? 'text-emerald-700 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}`}>
-      {state?.message ? t(state.success ? 'newsletter.done' : 'newsletter.failed') : null}
-    </p>
-    </>
+    <div>
+      <h2 className={MONO}>{title}</h2>
+      <ul className="mt-5 space-y-3">{children}</ul>
+    </div>
   );
 }
 
-function FooterLink({ href, children, highlight, prefetch }: { href: string; children: React.ReactNode; highlight?: boolean; prefetch?: boolean }) {
-  return (
-    <Link
-      href={href}
-      prefetch={prefetch}
-      className={`flex items-center gap-2 text-sm py-1 transition-colors group ${
-        highlight
-          ? 'font-medium text-primary hover:text-primary/80'
-          : 'text-muted-foreground hover:text-foreground'
-      }`}
-    >
-      <span className={`w-1 h-1 rounded-full shrink-0 transition-colors ${
-        highlight ? 'bg-primary' : 'bg-muted-foreground/40 group-hover:bg-primary'
-      }`} />
-      {children}
-    </Link>
-  );
-}
-
-export function SiteFooter() {
-  const locale = useLocale();
-  const t = useTranslations('footer');
-  const { openPreferences } = useCookiePreferences();
-  const tNav = useTranslations('nav');
-  const tServices = useTranslations('services');
+/**
+ * Site footer — server component, navy, so on most pages it continues the
+ * closing call to action above it. Brand and newsletter, then services,
+ * studio, client links and contacts, social links, the legal bar, and a
+ * large faint wordmark at the foot. Only the newsletter form, the cookie
+ * preferences button and the quote / booking buttons run in the browser.
+ */
+export function SiteFooter({ locale }: { locale: Locale }) {
+  const copy = COPY[locale];
+  const href = (path: string) => getLocalizedPath(path, locale);
+  const services = serviceGroupsFor(locale).flatMap((g) => g.services);
 
   return (
-    <footer className="relative border-t border-border bg-secondary/40">
-
-      <div className="container relative z-10 px-4 sm:px-6 lg:px-8 pt-12 pb-8 md:pt-16 md:pb-10">
-
-        {/* ── BRAND ROW ── full width on mobile */}
-        <div className="mb-10 md:mb-0 md:hidden">
-          <Link href="/" className="inline-flex items-center gap-3 mb-4">
-            <Image src="/assets/logo.webp" alt="Studio Faraj Logo" width={36} height={36} unoptimized />
-            <span className="font-brand font-semibold text-xl brand-wordmark">Studio Faraj</span>
-          </Link>
-          <p className="text-sm text-muted-foreground leading-relaxed mb-5">
-            {t('description')}
-          </p>
-
-          {/* Contact — compact row on mobile */}
-          <div className="space-y-2.5 mb-5">
-            <a href="mailto:info@studiofaraj.it" className="flex items-center gap-2.5 text-sm text-muted-foreground hover:text-primary transition-colors">
-              <span className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                <Mail className="w-3.5 h-3.5 text-primary" />
-              </span>
-              info@studiofaraj.it
-            </a>
-            <a href="tel:+393202223322" className="flex items-center gap-2.5 text-sm text-muted-foreground hover:text-primary transition-colors">
-              <span className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                <Phone className="w-3.5 h-3.5 text-primary" />
-              </span>
-              +39 320 222 3322
-            </a>
-            <a href={STUDIO_MAPS_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2.5 text-sm text-muted-foreground hover:text-primary transition-colors">
-              <span className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                <MapPin className="w-3.5 h-3.5 text-primary" />
-              </span>
-              Via Ludovico Ariosto 42, 35128 Padova
-            </a>
-          </div>
-
-          {/* Social */}
-          <div className="flex items-center gap-3">
-            {[
-              { href: 'https://www.facebook.com/share/18JVysxoGo/?mibextid=wwXIfr', icon: <Facebook className="h-4 w-4" />, label: 'Facebook' },
-              { href: 'https://instagram.com/studiofaraj.it', icon: <Instagram className="h-4 w-4" />, label: 'Instagram' },
-              { href: 'https://www.linkedin.com/in/studio-faraj-47923b389/', icon: <Linkedin className="h-4 w-4" />, label: 'LinkedIn' },
-            ].map(s => (
-              <Link key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label}
-                className="w-10 h-10 rounded-xl bg-secondary border border-border/50 flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/50 hover:bg-primary/5 transition-all">
-                {s.icon}
-              </Link>
-            ))}
-          </div>
-        </div>
-
-        {/* ── MAIN GRID ── */}
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-12 gap-y-8 gap-x-4 md:gap-8 mb-10 md:mb-12">
-
-          {/* Company info — desktop only (hidden on mobile, shown above) */}
-          <div className="hidden md:block lg:col-span-3 space-y-5">
-            <Link href="/" className="inline-flex items-center gap-3 group">
-              <Image src="/assets/logo.webp" alt="Studio Faraj Logo" width={40} height={40}
-                className="transition-transform group-hover:scale-110 duration-300" unoptimized />
-              <span className="font-brand font-semibold text-2xl brand-wordmark">Studio Faraj</span>
+    <footer className="relative overflow-clip bg-navy text-white dark:border-t dark:border-white/10">
+      <div className="container relative mx-auto px-5 pt-16 md:px-8 md:pt-20">
+        <div className="grid gap-12 lg:grid-cols-12 lg:gap-10">
+          <div className="lg:col-span-4">
+            <Link href={href('/')} aria-label={copy.home} className="inline-flex items-center gap-3 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60">
+              <BrandMark id="footer-mark" className="h-9 w-9 text-white" />
+              <span className="text-xl font-semibold tracking-[-0.01em]">Studio Faraj</span>
             </Link>
-            <p className="text-sm text-muted-foreground leading-relaxed max-w-xs">
-              {t('description')}
-            </p>
-            <div className="space-y-3">
-              <a href="mailto:info@studiofaraj.it" className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors">
-                <span className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                  <Mail className="w-4 h-4 text-primary" />
-                </span>
-                info@studiofaraj.it
-              </a>
-              <a href="tel:+393202223322" className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors">
-                <span className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                  <Phone className="w-4 h-4 text-primary" />
-                </span>
-                +39 320 222 3322
-              </a>
-              <a href={STUDIO_MAPS_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors">
-                <span className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                  <MapPin className="w-4 h-4 text-primary" />
-                </span>
-                Via Ludovico Ariosto 42, 35128 Padova
-              </a>
-            </div>
-            <div className="flex items-center gap-3 pt-1">
-              {[
-                { href: 'https://www.facebook.com/share/18JVysxoGo/?mibextid=wwXIfr', icon: <Facebook className="h-5 w-5" />, label: 'Facebook' },
-                { href: 'https://instagram.com/studiofaraj.it', icon: <Instagram className="h-5 w-5" />, label: 'Instagram' },
-                { href: 'https://www.linkedin.com/in/studio-faraj-47923b389/', icon: <Linkedin className="h-5 w-5" />, label: 'LinkedIn' },
-              ].map(s => (
-                <Link key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label}
-                  className="w-10 h-10 rounded-lg bg-secondary border border-border/50 flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary hover:bg-primary/5 transition-all duration-300">
-                  {s.icon}
-                </Link>
+            <p className="mt-5 max-w-sm text-[15px] leading-relaxed text-white/65">{copy.description}</p>
+
+            <h2 className={`${MONO} mt-10`}>{copy.newsletter.title}</h2>
+            <p className="mt-2 max-w-sm text-sm leading-relaxed text-white/60">{copy.newsletter.lead}</p>
+            <FooterNewsletter locale={locale} copy={copy.newsletter} />
+          </div>
+
+          <div className="grid grid-cols-2 gap-x-6 gap-y-12 sm:grid-cols-4 lg:col-span-8 lg:gap-x-8">
+            <Column title={copy.services}>
+              {services.map((slug) => (
+                <li key={slug}>
+                  <Link href={href(`/servizi/${slug}`)} className={LINK}>
+                    {SERVICES[slug].name[locale]}
+                  </Link>
+                </li>
               ))}
-            </div>
-          </div>
-
-          {/* Navigation */}
-          <div className="col-span-1 lg:col-span-2">
-            <p className="font-semibold text-foreground text-sm mb-4 pb-2 border-b border-border/40">
-              {t('navigation')}
-            </p>
-            <ul className="space-y-1">
-              <li><FooterLink href={getLocalizedPath('/chi-siamo', locale as any)}>{tNav('about')}</FooterLink></li>
-              <li><FooterLink href={getLocalizedPath('/pagine-aziendali', locale as any)}>{tNav('companyPages')}</FooterLink></li>
-              <li><FooterLink href={getLocalizedPath('/projects', locale as any)}>{tNav('projects')}</FooterLink></li>
-              <li><FooterLink href={getLocalizedPath('/blog', locale as any)}>{tNav('blog')}</FooterLink></li>
-              <li><FooterLink href={getLocalizedPath('/contatti', locale as any)}>{tNav('contact')}</FooterLink></li>
-            </ul>
-          </div>
-
-          {/* Services */}
-          <div className="col-span-1 lg:col-span-2">
-            <p className="font-semibold text-foreground text-sm mb-4 pb-2 border-b border-border/40">
-              {t('services')}
-            </p>
-            <ul className="space-y-1">
-              <li><FooterLink href={getLocalizedPath('/servizi/sviluppo-web', locale as any)}>{tServices('webDevelopment.label')}</FooterLink></li>
-              <li><FooterLink href={getLocalizedPath('/servizi/e-commerce', locale as any)}>{tServices('ecommerce.label')}</FooterLink></li>
-              <li><FooterLink href={getLocalizedPath('/servizi/design-ui-ux', locale as any)}>{tServices('designUIUX.label')}</FooterLink></li>
-              <li><FooterLink href={getLocalizedPath('/servizi/seo-marketing', locale as any)}>{tServices('seoMarketing.label')}</FooterLink></li>
-              <li><FooterLink href={getLocalizedPath('/servizi/ai-automazione', locale as any)}>{tServices('aiAutomation.label')}</FooterLink></li>
-              <li><FooterLink href={getLocalizedPath('/servizi/manutenzione', locale as any)}>{tServices('maintenance.label')}</FooterLink></li>
-            </ul>
-          </div>
-
-          {/* Support */}
-          <div className="col-span-2 sm:col-span-1 lg:col-span-2">
-            <p className="font-semibold text-foreground text-sm mb-4 pb-2 border-b border-border/40">
-              {t('support')}
-            </p>
-            <ul className="space-y-1">
-              <li><FooterLink href={`/${locale}/inizia`} highlight>{locale === 'it' ? 'Inizia il progetto' : 'Start your project'}</FooterLink></li>
-              <li><FooterLink href={`/${locale}/hub/login`} prefetch={false}>{locale === 'it' ? 'Area Clienti' : 'Client Area'}</FooterLink></li>
-              <li><FooterLink href={getLocalizedPath('/servizi/hosting-cloud', locale as any)}>{tServices('hostingCloud.label')}</FooterLink></li>
-              <li><FooterLink href={getLocalizedPath('/servizi/consulenza', locale as any)}>{tServices('consulting.label')}</FooterLink></li>
-              <li><FooterLink href={getLocalizedPath('/faq', locale as any)}>FAQ</FooterLink></li>
-              <li><FooterLink href={getLocalizedPath('/privacy', locale as any)}>{t('privacy')}</FooterLink></li>
-            </ul>
-          </div>
-
-          {/* Newsletter */}
-          <div className="col-span-2 lg:col-span-3">
-            <div className="bg-background border border-border rounded-2xl p-4 md:p-6">
-              <div className="flex items-center gap-2 mb-2">
-                <Zap className="w-4 h-4 text-primary" />
-                <p className="font-semibold text-foreground text-sm">{t('newsletter.title')}</p>
-              </div>
-              <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
-                {t('newsletter.description')}
-              </p>
-              <NewsletterForm />
-            </div>
-            <div className="mt-4 flex flex-wrap gap-2">
-              <Badge variant="outline" className="border-primary/30 text-primary bg-primary/5 text-xs">
-                <Shield className="w-3 h-3 mr-1.5" />
-                {t('badges.gdpr')}
-              </Badge>
-            </div>
+            </Column>
+            <Column title={copy.studio}>
+              {copy.studioLinks.map(([path, label]) => (
+                <li key={path}>
+                  <Link href={href(path)} className={LINK}>
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </Column>
+            <Column title={copy.clients}>
+              <li>
+                <ServiceQuoteButton label={copy.quote} variant="plain" className={LINK} />
+              </li>
+              <li>
+                <BookCallButton className={LINK}>{copy.call}</BookCallButton>
+              </li>
+              <li>
+                {/* prefetch={false}: prefetching the client area pulls in the Firebase SDK. */}
+                <Link href={href('/hub/login')} prefetch={false} className={LINK}>
+                  {copy.hub}
+                </Link>
+              </li>
+            </Column>
+            <Column title={copy.contacts}>
+              <li>
+                <a href={`mailto:${CONTACT.email}`} className={LINK}>
+                  {CONTACT.email}
+                </a>
+              </li>
+              <li>
+                <a href={`tel:${CONTACT.phone}`} className={LINK}>
+                  {CONTACT.phoneDisplay}
+                </a>
+              </li>
+              <li>
+                <a href={whatsappUrl(copy.whatsappGreeting)} target="_blank" rel="noopener noreferrer" className={`${LINK} inline-flex items-center gap-2`}>
+                  <WhatsAppIcon className="h-4 w-4 text-[#25D366]" />
+                  {copy.whatsapp}
+                </a>
+              </li>
+              <li>
+                <a href={OPEN_IN_MAPS_URL} target="_blank" rel="noopener noreferrer" className={LINK}>
+                  Via Ludovico Ariosto{'\u00a0'}42
+                  <br />
+                  35128 Padova
+                </a>
+              </li>
+            </Column>
           </div>
         </div>
 
-        {/* ── BOTTOM BAR ── */}
-        <div className="border-t border-border/40 pt-6">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <ul aria-label={copy.social} className="mt-12 flex flex-wrap gap-2.5">
+          {SOCIAL.map((s) => (
+            <li key={s.label}>
+              <a
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-9 items-center rounded-full px-4 text-[13px] text-white/80 ring-1 ring-inset ring-white/20 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+              >
+                {s.label}
+              </a>
+            </li>
+          ))}
+        </ul>
 
-            {/* Copyright */}
-            <p className="text-xs text-muted-foreground text-center sm:text-left">
-              &copy; 2026{' '}
-              <span className="font-semibold text-foreground">Studio Faraj</span>.{' '}
-              {t('copyright')}
-              <span className="mx-2 text-border/80">·</span>
-              P.IVA 05783550287
-            </p>
-
-            {/* Legal links */}
-            <div className="flex items-center justify-center sm:justify-end gap-4 text-xs">
-              <Link href={getLocalizedPath('/privacy', locale as any)}
-                className="text-muted-foreground hover:text-primary transition-colors">
-                {t('privacy')}
-              </Link>
-              <span className="w-px h-3 bg-border/60" />
-              <Link href={getLocalizedPath('/cookie', locale as any)}
-                className="text-muted-foreground hover:text-primary transition-colors">
-                {t('cookiePolicy')}
-              </Link>
-              <span className="w-px h-3 bg-border/60" />
-              {/* Consent must be changeable at any time: this reopens the choice. */}
-              <button type="button" onClick={openPreferences}
-                className="text-muted-foreground hover:text-primary transition-colors">
-                {locale === 'en' ? 'Cookie preferences' : 'Preferenze cookie'}
-              </button>
-              <span className="w-px h-3 bg-border/60" />
-              <Link href={getLocalizedPath('/terms', locale as any)}
-                className="text-muted-foreground hover:text-primary transition-colors">
-                {t('terms')}
-              </Link>
-            </div>
-
-          </div>
+        <div className="mt-12 flex flex-col gap-4 border-t border-white/[0.12] py-6 text-[13px] text-white/55 md:flex-row md:items-center md:justify-between">
+          <p>© {new Date().getFullYear()} Studio Faraj · P.IVA 05783550287</p>
+          <ul aria-label={copy.legal} className="flex flex-wrap gap-x-6 gap-y-2">
+            <li>
+              <Link href={href('/privacy')} className="transition-colors hover:text-white">{copy.privacy}</Link>
+            </li>
+            <li>
+              <Link href={href('/cookie')} className="transition-colors hover:text-white">{copy.cookie}</Link>
+            </li>
+            <li>
+              <CookiePreferencesLink label={copy.cookiePrefs} className="transition-colors hover:text-white" />
+            </li>
+            <li>
+              <Link href={href('/terms')} className="transition-colors hover:text-white">{copy.terms}</Link>
+            </li>
+          </ul>
         </div>
-
       </div>
+
+      <p
+        aria-hidden
+        className="pointer-events-none -mb-[2.4vw] select-none whitespace-nowrap px-4 font-display text-[15.5vw] font-extrabold leading-[0.8] tracking-[-0.05em] text-white/[0.06] md:px-6"
+      >
+        Studio Faraj
+      </p>
     </footer>
   );
 }

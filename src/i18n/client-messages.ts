@@ -15,9 +15,8 @@
  */
 export const GLOBAL_CLIENT_NAMESPACES = [
   'nav',
-  'footer',
   'dialogs',
-  // Navigation menu, footer and the quote/contact forms list the services by name.
+  // The navigation menu and the quote/contact forms list the services by name.
   'services.*.label',
   'services.*.subtitle',
   // The header's quote button opens the quote dialog on every page.

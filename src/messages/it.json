@@ -1516,32 +1516,6 @@
       "ctaButton": "Parliamone"
     }
   },
-  "footer": {
-    "description": "Siti, e-commerce e piattaforme scritti su misura a Padova, per aziende in Italia e all’estero. Il codice resta tuo.",
-    "navigation": "Navigazione",
-    "services": "Servizi",
-    "support": "Supporto",
-    "newsletter": {
-      "title": "Newsletter",
-      "description": "Ricevi aggiornamenti esclusivi, guide pratiche e novità dal mondo del digitale direttamente nella tua inbox.",
-      "placeholder": "La tua email",
-      "subscribe": "Iscriviti",
-      "success": "Successo!",
-      "done": "Iscrizione completata: grazie!",
-      "failed": "Iscrizione non riuscita. Controlla l'indirizzo e riprova.",
-      "error": "Errore"
-    },
-    "badges": {
-      "gdpr": "GDPR Compliant",
-      "certified": "Certificato"
-    },
-    "copyright": "Tutti i diritti riservati.",
-    "privacy": "Privacy",
-    "cookiePolicy": "Cookie Policy",
-    "terms": "Termini e Condizioni",
-    "cookieSettings": "Gestisci preferenze cookie",
-    "cookie": "Cookie"
-  },
   "contactPage": {
     "v2": {
       "available": "Disponibili per nuovi progetti",

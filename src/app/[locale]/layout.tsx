@@ -8,6 +8,7 @@ import { ThemeProvider } from "next-themes";
 import { CookieConsent } from '@/components/site/cookie-consent';
 import { CookieProvider } from '@/contexts/cookie-context';
 import { AppBody } from '@/components/site/app-body';
+import { SiteFooter } from '@/components/site/site-footer';
 import { getAggregateRating } from '@/lib/google-reviews';
 import { GoogleAnalytics } from '@/components/analytics/google-analytics';
 import { StructuredDataServer } from '@/components/seo/structured-data-server';
@@ -114,7 +115,7 @@ export default async function LocaleLayout({ children, params }: Props) {
             locale={locale}
             messages={pickMessages(messages, GLOBAL_CLIENT_NAMESPACES)}
           >
-            <AppBody rating={googleRating ? { value: googleRating.ratingValue } : null}>
+            <AppBody rating={googleRating ? { value: googleRating.ratingValue } : null} footer={<SiteFooter locale={locale === 'en' ? 'en' : 'it'} />}>
               {children}
             </AppBody>
             <CookieConsent />

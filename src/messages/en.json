@@ -1486,32 +1486,6 @@
       "ctaButton": "Let's talk"
     }
   },
-  "footer": {
-    "description": "Websites, e-commerce and platforms custom-built in Padova, for companies in Italy and abroad. The code stays yours.",
-    "navigation": "Navigation",
-    "services": "Services",
-    "support": "Support",
-    "newsletter": {
-      "title": "Newsletter",
-      "description": "Receive exclusive updates, practical guides and news from the digital world directly in your inbox.",
-      "placeholder": "Your email",
-      "subscribe": "Subscribe",
-      "success": "Success!",
-      "done": "You're subscribed: thank you!",
-      "failed": "We couldn't subscribe you. Check the address and try again.",
-      "error": "Error"
-    },
-    "badges": {
-      "gdpr": "GDPR Compliant",
-      "certified": "Certified"
-    },
-    "copyright": "All rights reserved.",
-    "privacy": "Privacy",
-    "cookiePolicy": "Cookie Policy",
-    "terms": "Terms & Conditions",
-    "cookieSettings": "Manage cookie preferences",
-    "cookie": "Cookie"
-  },
   "contactPage": {
     "v2": {
       "available": "Available for new projects",
