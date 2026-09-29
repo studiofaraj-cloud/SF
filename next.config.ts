@@ -124,6 +124,14 @@ const nextConfig: NextConfig = {
   // Powered-by header removed for security
   poweredByHeader: false,
   // Security + cache headers
+  // The privacy and cookie policies used to share /legal: old links (and any
+  // stored in external services' settings) land on the privacy policy.
+  async redirects() {
+    return [
+      { source: '/:locale(it|en)/legal', destination: '/:locale/privacy', permanent: true },
+      { source: '/legal', destination: '/it/privacy', permanent: true },
+    ];
+  },
   async headers() {
     const securityHeaders = [
       {

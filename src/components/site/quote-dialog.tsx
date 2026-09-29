@@ -274,7 +274,7 @@ function QuoteForm({
             {t.rich('form.privacy', {
               link: (chunks) => (
                 <Link
-                  href={getLocalizedPath('/legal', locale)}
+                  href={getLocalizedPath('/privacy', locale)}
                   target="_blank"
                   className="font-medium text-foreground underline decoration-border underline-offset-4 transition-colors hover:decoration-primary"
                 >

@@ -581,7 +581,7 @@ export default function HubCompanyProfileEditPage() {
                     {en ? 'Terms of Service' : 'Termini di Servizio'}
                   </Link>
                   {en ? ' and ' : ' e la '}
-                  <Link href={`/${locale}/legal`} target="_blank" className="text-primary underline">
+                  <Link href={`/${locale}/privacy`} target="_blank" className="text-primary underline">
                     {en ? 'Privacy Policy' : 'Privacy Policy'}
                   </Link>
                   . *

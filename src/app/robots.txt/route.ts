@@ -27,7 +27,9 @@ Allow: /servizi/
 Allow: /chi-siamo
 Allow: /contatti
 Allow: /faq
-Allow: /legal
+Allow: /privacy
+Allow: /cookie
+Allow: /terms
 
 # Google-specific directives
 User-agent: Googlebot

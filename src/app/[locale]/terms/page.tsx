@@ -1,744 +1,383 @@
-import { Metadata } from 'next';
-import { generateMetadata as generateSEOMetadata, siteConfig } from '@/lib/seo';
+import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import {
-  FileText,
-  Scale,
-  Shield,
-  Mail,
-  Globe,
-  CheckCircle2,
-  AlertCircle,
-  Info,
-  Banknote,
-  Lock,
-  Handshake,
-  Pencil,
-  XCircle,
-} from 'lucide-react';
+import { setRequestLocale } from 'next-intl/server';
+import { LegalDoc, type LegalSection } from '@/components/site/legal-doc';
+import { CONTACT } from '@/lib/contact-info';
+import { getLocalizedPath } from '@/lib/i18n-helpers';
+import { generateMetadata as generateSEOMetadata, siteConfig } from '@/lib/seo';
+import type { Locale } from '@/i18n/config';
 
-export const metadata: Metadata = generateSEOMetadata({
-  title: 'Termini e Condizioni',
-  description:
-    'Termini e condizioni generali di utilizzo dei servizi di Studio Faraj. Leggi le condizioni che regolano il rapporto tra Studio Faraj e i propri clienti.',
-  keywords: [
-    'termini e condizioni',
-    'terms and conditions',
-    'condizioni generali',
-    'contratto servizi web',
-    'Studio Faraj',
-    'Padova',
-  ],
-  url: `${siteConfig.url}/it/terms`,
-  noindex: false,
-});
+/** Date of the last change to this text: update it with every edit. */
+const UPDATED = '2026-09-29';
 
-export default function TermsPage() {
-  const currentDate = new Date().toLocaleDateString('it-IT', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
+type Props = { params: Promise<{ locale: string }> };
+
+const META = {
+  it: {
+    title: 'Termini e condizioni',
+    description: 'I termini che regolano l’uso di studiofaraj.it e i servizi di Studio Faraj: preventivi e pagamenti, proprietà dei lavori, pagine aziendali, responsabilità e foro competente.',
+  },
+  en: {
+    title: 'Terms and conditions',
+    description: 'The terms for using studiofaraj.it and Studio Faraj’s services: quotes and payments, ownership of the work, business pages, liability and jurisdiction.',
+  },
+} as const;
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const lang: Locale = locale === 'en' ? 'en' : 'it';
+  return generateSEOMetadata({
+    ...META[lang],
+    url: `${siteConfig.url}/${lang}/terms`,
+    locale: lang,
+    alternateUrls: { it: `${siteConfig.url}/it/terms`, en: `${siteConfig.url}/en/terms` },
   });
+}
 
-  return (
-    <div className="bg-background text-foreground min-h-screen">
+const mail = <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>;
 
-      {/* Hero */}
-      <section className="relative py-16 md:py-24 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-secondary/5" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,hsl(var(--primary)/0.1),transparent_50%)]" />
+function content(lang: Locale): { lead: string; sections: LegalSection[] } {
+  const privacy = getLocalizedPath('/privacy', lang);
+  const cookie = getLocalizedPath('/cookie', lang);
 
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="flex items-center justify-center gap-3 mb-6">
-              <Scale className="w-8 h-8 md:w-10 md:h-10 text-primary" />
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
-                Termini e Condizioni
-              </h1>
-            </div>
-
-            <p className="text-lg md:text-xl text-muted-foreground mb-6 max-w-3xl mx-auto">
-              I presenti Termini e Condizioni regolano l'utilizzo dei servizi offerti da Studio Faraj
-              e il rapporto contrattuale tra Studio Faraj e i propri clienti. Leggere attentamente
-              prima di utilizzare i nostri servizi.
+  if (lang === 'en') {
+    return {
+      lead: 'The terms for using studiofaraj.it and the services of Studio Faraj, and for the relationship between Studio Faraj and its clients. Please read them before using our services.',
+      sections: [
+        {
+          id: 'who',
+          title: 'Who we are and what these terms cover',
+          body: (
+            <>
+              <p>
+                <strong>Studio Faraj</strong>, VAT no. 05783550287, Via Ludovico Ariosto 42, 35128 Padova (PD), Italy · {mail}
+              </p>
+              <p>These terms govern the use of studiofaraj.it and access to the services of Studio Faraj. By using the site or the services you accept them; if you don’t, please don’t use them.</p>
+            </>
+          ),
+        },
+        {
+          id: 'services',
+          title: 'Services',
+          body: (
+            <>
+              <p>Studio Faraj provides professional digital services, including:</p>
+              <ul>
+                <li>design and development of custom websites and web applications;</li>
+                <li>online stores and custom business software;</li>
+                <li>user-interface design;</li>
+                <li>search-engine optimisation and digital marketing;</li>
+                <li>artificial-intelligence and automation integrations;</li>
+                <li>maintenance, updates and performance monitoring;</li>
+                <li>cloud infrastructure and hosting;</li>
+                <li>consulting for the digital side of a business.</li>
+              </ul>
+              <p>The details of each project, including scope, timing, costs and deliverables, are set out in a written quote and/or a separate contract agreed with the client before work starts.</p>
+            </>
+          ),
+        },
+        {
+          id: 'use',
+          title: 'Using the site',
+          body: (
+            <>
+              <p>You agree to use the site and the services only for lawful purposes and in line with these terms. In particular, you will:</p>
+              <ul>
+                <li>give true, accurate and up-to-date information when you contact us or sign up;</li>
+                <li>not use the site to send unlawful, offensive or defamatory content, or content that infringes the rights of others;</li>
+                <li>not try to gain unauthorised access to the systems, networks or data of Studio Faraj;</li>
+                <li>not use automated tools (bots, scrapers and the like) without prior written permission;</li>
+                <li>comply with all applicable laws when using the site and the services.</li>
+              </ul>
+              <p>It is also forbidden to reproduce, distribute or modify the site’s content without written permission, to send unsolicited messages (spam), to infringe the intellectual property of Studio Faraj or of others, to get around the site’s security measures and to collect other users’ personal data without their consent.</p>
+            </>
+          ),
+        },
+        {
+          id: 'ip',
+          title: 'Intellectual property',
+          body: (
+            <>
+              <h3>The site’s content</h3>
+              <p>All the content of studiofaraj.it, including text, graphics, logos, icons, images and software, belongs to Studio Faraj or its content suppliers and is protected by Italian and international copyright and intellectual-property law. Any reproduction, distribution, modification or use without prior written permission from Studio Faraj is forbidden.</p>
+              <h3>Work made for the client</h3>
+              <p>Unless otherwise agreed in writing in the project contract, once the agreed fee has been paid in full:</p>
+              <ul>
+                <li>the rights to use the finished product (website, graphics and so on) pass to the client on the terms set in the project contract;</li>
+                <li>Studio Faraj may show the project in its portfolio and as a commercial reference, unless the client explicitly asks for confidentiality;</li>
+                <li>open-source software, libraries and third-party plugins used in the project remain under their own licences.</li>
+              </ul>
+            </>
+          ),
+        },
+        {
+          id: 'payments',
+          title: 'Quotes and payments',
+          body: (
+            <>
+              <ul>
+                <li>The first consultation is free and without obligation.</li>
+                <li>Quotes are valid for 30 days from the date they are issued.</li>
+                <li>The accepted quote is the basis of the project contract.</li>
+                <li>Typically, a 30–50% deposit is due at the start and the balance on delivery.</li>
+                <li>Payments by bank transfer or other agreed methods.</li>
+                <li>Invoices are due 15 days from their date.</li>
+              </ul>
+              <p>If a payment is not made on time, Studio Faraj may suspend the work and/or the active services until it is settled, and apply late-payment interest under Legislative Decree 231/2002.</p>
+            </>
+          ),
+        },
+        {
+          id: 'business-pages',
+          title: 'Business pages',
+          body: (
+            <>
+              <p>From the client area, companies can create and publish a public page at studiofaraj.it/&lt;slug&gt; presenting their business, services, contacts and company details. Publishing requires an active subscription.</p>
+              <ul>
+                <li>Price: €4.99 a month or €49.99 a year (VAT included, invoiced separately where applicable).</li>
+                <li>The first activation includes a free 30-day trial; payment starts when the trial ends.</li>
+                <li>Automatic charge on each renewal, to the registered payment method.</li>
+                <li>You can cancel at any time from the client area or the Stripe customer portal.</li>
+                <li>The page is public only while the subscription is active or in its trial.</li>
+                <li>When the subscription ends or is cancelled, the page is removed from the sitemap and shown as unavailable.</li>
+                <li>The slug stays reserved for its original holder in case of reactivation. Reserved or offensive slugs can be refused or withdrawn.</li>
+              </ul>
+              <h3>Effects of cancelling</h3>
+              <ul>
+                <li>During the free trial: the public page is suspended immediately and nothing is charged.</li>
+                <li>On the monthly plan: the page stays public until the end of the current billing period, then it is suspended. There are no refunds for the period already billed.</li>
+                <li>On the annual plan: the page stays public until the end of the year already paid, then it is suspended. No partial refunds.</li>
+              </ul>
+              <p>If a payment fails, there is a 5-day grace period in which Stripe retries the charge. After 5 days without a successful payment the subscription is cancelled automatically and the page becomes unavailable; it can be reactivated by starting a new subscription.</p>
+              <p>Payments are handled by Stripe Payments Europe Ltd; Studio Faraj doesn’t store card details. The client is solely responsible for the truthfulness and lawfulness of what it publishes, and Studio Faraj may suspend pages that break the law, the rights of others or these terms.</p>
+              <p>The service is for businesses only (B2B): activating a business page requires a VAT number. It is not offered to consumers under art. 3 of the Italian Consumer Code (Legislative Decree 206/2005), so the 14-day right of withdrawal (art. 52) does not apply. The page is hosted on the studiofaraj.it domain and stays part of it: no ownership of the domain or of the infrastructure passes to the client.</p>
+            </>
+          ),
+        },
+        {
+          id: 'liability',
+          title: 'Limitation of liability',
+          body: (
+            <>
+              <p>Studio Faraj works with the utmost care and professionalism. However:</p>
+              <ul>
+                <li>the site is provided “as is”: Studio Faraj doesn’t guarantee that it is free of errors or interruptions, and is not liable for damage caused by temporary unavailability;</li>
+                <li>Studio Faraj is not responsible for the content of third-party sites the site links to;</li>
+                <li>in no case is Studio Faraj liable for indirect, incidental, special or consequential damage arising from the use of, or inability to use, the services;</li>
+                <li>Studio Faraj is not liable for delays or failures caused by events beyond its reasonable control (for example natural disasters, internet outages, emergency regulations).</li>
+              </ul>
+            </>
+          ),
+        },
+        {
+          id: 'privacy',
+          title: 'Personal data',
+          body: (
+            <p>
+              Studio Faraj processes personal data under Regulation (EU) 2016/679 (GDPR) and Italian law. The details are in the <Link href={privacy}>privacy policy</Link> and the <Link href={cookie}>cookie policy</Link>, which are part of these terms.
             </p>
+          ),
+        },
+        {
+          id: 'confidentiality',
+          title: 'Confidentiality',
+          body: <p>Both parties agree to keep confidential the information obtained during the relationship and not to disclose it to third parties without prior written permission, except where the law requires it.</p>,
+        },
+        {
+          id: 'changes',
+          title: 'Changes to these terms',
+          body: <p>Studio Faraj may change these terms at any time. Changes take effect from the date they are published on the site, which is shown at the top of this page. Continuing to use the site or the services after that means accepting the new terms.</p>,
+        },
+        {
+          id: 'law',
+          title: 'Governing law and jurisdiction',
+          body: (
+            <>
+              <p>These terms are governed by Italian law; for anything not covered, the Italian Civil Code and the applicable sector rules apply. For any dispute about these terms or the services, unless otherwise agreed in writing, the Court of Padova has exclusive jurisdiction.</p>
+              <p>For consumers (individuals acting for purposes outside their trade or profession), the Italian Consumer Code (Legislative Decree 206/2005) and the mandatory consumer-protection rules apply.</p>
+            </>
+          ),
+        },
+        {
+          id: 'contact',
+          title: 'Contact',
+          body: <p>For any question about these terms write to {mail}, or to Studio Faraj, Via Ludovico Ariosto 42, 35128 Padova (PD), Italy.</p>,
+        },
+      ],
+    };
+  }
 
-            <div className="flex flex-wrap items-center justify-center gap-3">
-              <Badge variant="outline" className="px-4 py-2 text-sm border-primary/30 bg-primary/5">
-                <CheckCircle2 className="w-4 h-4 mr-2 text-primary" />
-                Diritto Italiano
-              </Badge>
-              <Badge variant="outline" className="px-4 py-2 text-sm border-primary/30 bg-primary/5">
-                <Shield className="w-4 h-4 mr-2 text-primary" />
-                Trasparenza
-              </Badge>
-              <Badge variant="outline" className="px-4 py-2 text-sm border-primary/30 bg-primary/5">
-                <Handshake className="w-4 h-4 mr-2 text-primary" />
-                Rapporto Professionale
-              </Badge>
-            </div>
-          </div>
-        </div>
-      </section>
+  return {
+    lead: 'I termini che regolano l’uso di studiofaraj.it e dei servizi di Studio Faraj, e il rapporto tra Studio Faraj e i suoi clienti. Leggili prima di usare i nostri servizi.',
+    sections: [
+      {
+        id: 'chi-siamo',
+        title: 'Chi siamo e cosa regolano questi termini',
+        body: (
+          <>
+            <p>
+              <strong>Studio Faraj</strong>, P.IVA 05783550287, Via Ludovico Ariosto 42, 35128 Padova (PD) · {mail}
+            </p>
+            <p>Questi termini disciplinano l’uso del sito studiofaraj.it e l’accesso ai servizi di Studio Faraj. Usando il sito o i servizi li accetti; se non li accetti, ti chiediamo di non usarli.</p>
+          </>
+        ),
+      },
+      {
+        id: 'servizi',
+        title: 'Servizi',
+        body: (
+          <>
+            <p>Studio Faraj fornisce servizi professionali nel digitale, tra cui:</p>
+            <ul>
+              <li>progettazione e sviluppo di siti web e applicazioni web su misura;</li>
+              <li>negozi online e software gestionali su misura;</li>
+              <li>progettazione di interfacce utente;</li>
+              <li>ottimizzazione per i motori di ricerca e marketing digitale;</li>
+              <li>integrazione di intelligenza artificiale e automazione dei processi;</li>
+              <li>manutenzione, aggiornamenti e monitoraggio delle prestazioni;</li>
+              <li>infrastrutture cloud e hosting;</li>
+              <li>consulenza per il digitale dell’attività.</li>
+            </ul>
+            <p>I dettagli di ogni progetto, compresi attività, tempi, costi e consegne, sono definiti in un preventivo scritto e/o in un contratto separato concordato con il cliente prima dell’avvio dei lavori.</p>
+          </>
+        ),
+      },
+      {
+        id: 'uso',
+        title: 'Uso del sito',
+        body: (
+          <>
+            <p>Ti impegni a usare il sito e i servizi solo per finalità lecite e nel rispetto di questi termini. In particolare:</p>
+            <ul>
+              <li>fornirai informazioni veritiere, accurate e aggiornate quando ci contatti o ti registri;</li>
+              <li>non userai il sito per trasmettere contenuti illeciti, offensivi, diffamatori o lesivi dei diritti di terzi;</li>
+              <li>non tenterai di accedere senza autorizzazione a sistemi, reti o dati di Studio Faraj;</li>
+              <li>non userai strumenti automatizzati (bot, scraper e simili) senza previa autorizzazione scritta;</li>
+              <li>rispetterai tutte le leggi applicabili nell’uso del sito e dei servizi.</li>
+            </ul>
+            <p>È inoltre vietato riprodurre, distribuire o modificare i contenuti del sito senza autorizzazione scritta, inviare comunicazioni non sollecitate (spam), violare i diritti di proprietà intellettuale di Studio Faraj o di terzi, aggirare le misure di sicurezza del sito e raccogliere dati personali di altri utenti senza il loro consenso.</p>
+          </>
+        ),
+      },
+      {
+        id: 'proprieta',
+        title: 'Proprietà intellettuale',
+        body: (
+          <>
+            <h3>Contenuti del sito</h3>
+            <p>Tutti i contenuti di studiofaraj.it, inclusi testi, grafica, loghi, icone, immagini e software, sono di proprietà di Studio Faraj o dei suoi fornitori di contenuti e sono protetti dalle leggi italiane e internazionali sul diritto d’autore e sulla proprietà intellettuale. È vietata qualsiasi riproduzione, distribuzione, modifica o utilizzo senza previa autorizzazione scritta di Studio Faraj.</p>
+            <h3>Lavori realizzati per il cliente</h3>
+            <p>Salvo diversi accordi scritti nel contratto di progetto, una volta saldato integralmente il corrispettivo pattuito:</p>
+            <ul>
+              <li>i diritti di utilizzo del prodotto finito (sito web, grafica e simili) passano al cliente nei termini definiti nel contratto di progetto;</li>
+              <li>Studio Faraj può citare il progetto nel proprio portfolio e come referenza commerciale, salvo esplicita richiesta di riservatezza del cliente;</li>
+              <li>il software open source, le librerie e i plugin di terze parti usati nel progetto restano soggetti alle rispettive licenze.</li>
+            </ul>
+          </>
+        ),
+      },
+      {
+        id: 'pagamenti',
+        title: 'Preventivi e pagamenti',
+        body: (
+          <>
+            <ul>
+              <li>La prima consulenza è gratuita e senza impegno.</li>
+              <li>I preventivi sono validi 30 giorni dalla data di emissione.</li>
+              <li>Il preventivo accettato è la base del contratto di progetto.</li>
+              <li>Di norma: acconto del 30–50% all’avvio, saldo alla consegna.</li>
+              <li>Pagamenti tramite bonifico bancario o altri metodi concordati.</li>
+              <li>Le fatture scadono a 15 giorni dalla data di emissione.</li>
+            </ul>
+            <p>In caso di mancato pagamento nei termini, Studio Faraj può sospendere i lavori e/o i servizi attivi fino alla regolarizzazione e applicare gli interessi di mora previsti dal D.Lgs. 231/2002.</p>
+          </>
+        ),
+      },
+      {
+        id: 'pagine-aziendali',
+        title: 'Pagine aziendali',
+        body: (
+          <>
+            <p>Dall’area clienti le aziende possono creare e pubblicare una pagina pubblica all’indirizzo studiofaraj.it/&lt;slug&gt;, con la presentazione dell’attività, i servizi, i contatti e i dati aziendali. La pubblicazione richiede un abbonamento attivo.</p>
+            <ul>
+              <li>Costo: 4,99 € al mese oppure 49,99 € all’anno (IVA inclusa, fatturata a parte se applicabile).</li>
+              <li>La prima attivazione include 30 giorni di prova gratuita; il pagamento parte alla fine della prova.</li>
+              <li>Addebito automatico a ogni rinnovo sul metodo di pagamento registrato.</li>
+              <li>Disdetta in qualsiasi momento dall’area clienti o dal portale clienti di Stripe.</li>
+              <li>La pagina è pubblica solo finché l’abbonamento è attivo o in prova.</li>
+              <li>Alla scadenza o in caso di disdetta la pagina viene tolta dalla sitemap e mostrata come non disponibile.</li>
+              <li>Lo slug resta riservato al titolare originario in caso di riattivazione. Slug riservati o offensivi possono essere rifiutati o revocati.</li>
+            </ul>
+            <h3>Effetti della disdetta</h3>
+            <ul>
+              <li>Durante la prova gratuita: la pagina pubblica viene sospesa subito e non viene addebitato nulla.</li>
+              <li>Sul piano mensile: la pagina resta pubblica fino alla fine del periodo di fatturazione in corso, poi viene sospesa. Nessun rimborso per il periodo già fatturato.</li>
+              <li>Sul piano annuale: la pagina resta pubblica fino alla fine dell’anno già pagato, poi viene sospesa. Nessun rimborso parziale.</li>
+            </ul>
+            <p>Se un pagamento non va a buon fine, c’è un periodo di tolleranza di 5 giorni in cui Stripe ritenta l’addebito. Passati 5 giorni senza un pagamento riuscito, l’abbonamento viene cancellato automaticamente e la pagina non è più disponibile; si può riattivare avviando un nuovo abbonamento.</p>
+            <p>I pagamenti sono gestiti da Stripe Payments Europe Ltd; Studio Faraj non conserva i dati della carta. Il cliente è l’unico responsabile della veridicità e della liceità dei contenuti che pubblica, e Studio Faraj può sospendere le pagine che violano la legge, i diritti di terzi o questi termini.</p>
+            <p>Il servizio è riservato alle aziende (B2B): per attivare una pagina aziendale serve una Partita IVA. Non è offerto ai consumatori ai sensi dell’art. 3 del D.Lgs. 206/2005, quindi non si applica il diritto di recesso di 14 giorni (art. 52). La pagina è ospitata sul dominio studiofaraj.it e ne resta parte: al cliente non passa alcun diritto sul dominio o sull’infrastruttura.</p>
+          </>
+        ),
+      },
+      {
+        id: 'responsabilita',
+        title: 'Limitazione di responsabilità',
+        body: (
+          <>
+            <p>Studio Faraj lavora con la massima cura e professionalità. Tuttavia:</p>
+            <ul>
+              <li>il sito è fornito “così com’è”: Studio Faraj non garantisce che sia privo di errori o interruzioni e non risponde dei danni dovuti a indisponibilità temporanea;</li>
+              <li>Studio Faraj non è responsabile dei contenuti dei siti di terzi a cui il sito rimanda;</li>
+              <li>in nessun caso Studio Faraj risponde di danni indiretti, incidentali, speciali o consequenziali derivanti dall’uso o dall’impossibilità di usare i servizi;</li>
+              <li>Studio Faraj non risponde di ritardi o inadempimenti dovuti a eventi fuori dal suo ragionevole controllo (ad esempio calamità naturali, interruzioni di internet, normative emergenziali).</li>
+            </ul>
+          </>
+        ),
+      },
+      {
+        id: 'dati-personali',
+        title: 'Dati personali',
+        body: (
+          <p>
+            Studio Faraj tratta i dati personali secondo il Regolamento (UE) 2016/679 (GDPR) e la normativa italiana. I dettagli sono nell’<Link href={privacy}>informativa privacy</Link> e nella <Link href={cookie}>cookie policy</Link>, che fanno parte di questi termini.
+          </p>
+        ),
+      },
+      {
+        id: 'riservatezza',
+        title: 'Riservatezza',
+        body: <p>Le parti si impegnano a mantenere riservate le informazioni ottenute nel corso del rapporto e a non divulgarle a terzi senza previa autorizzazione scritta, salvo obblighi di legge.</p>,
+      },
+      {
+        id: 'modifiche',
+        title: 'Modifiche a questi termini',
+        body: <p>Studio Faraj può modificare questi termini in qualsiasi momento. Le modifiche valgono dalla data di pubblicazione sul sito, indicata in cima a questa pagina. Continuare a usare il sito o i servizi dopo la pubblicazione significa accettare i nuovi termini.</p>,
+      },
+      {
+        id: 'legge',
+        title: 'Legge applicabile e foro competente',
+        body: (
+          <>
+            <p>Questi termini sono regolati dalla legge italiana; per quanto non previsto si applicano il Codice civile e le norme di settore. Per qualsiasi controversia relativa a questi termini o ai servizi, salvo diverso accordo scritto, è competente in via esclusiva il Tribunale di Padova.</p>
+            <p>Per i consumatori (persone fisiche che agiscono per scopi estranei all’attività professionale) si applicano il Codice del consumo (D.Lgs. 206/2005) e le norme inderogabili a loro tutela.</p>
+          </>
+        ),
+      },
+      {
+        id: 'contatti',
+        title: 'Contatti',
+        body: <p>Per qualsiasi domanda su questi termini scrivi a {mail}, oppure a Studio Faraj, Via Ludovico Ariosto 42, 35128 Padova (PD).</p>,
+      },
+    ],
+  };
+}
 
-      {/* Content */}
-      <div className="container mx-auto px-4 py-8 pb-16">
-        <div className="max-w-4xl mx-auto space-y-8">
-
-          {/* 1. Informazioni Generali */}
-          <Card className="holographic-card neon-border bg-card/80 backdrop-blur-sm border-primary/20">
-            <CardHeader>
-              <CardTitle className="text-3xl font-bold flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center border border-primary/30">
-                  <FileText className="w-6 h-6 text-primary" />
-                </div>
-                1. Informazioni Generali
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <p className="text-muted-foreground">
-                I presenti Termini e Condizioni (di seguito "Termini") disciplinano l'uso del sito
-                web <strong className="text-foreground">studiofaraj.it</strong> e l'accesso ai
-                servizi forniti da:
-              </p>
-              <Card className="bg-primary/5 border-primary/20">
-                <CardContent className="pt-6 space-y-3">
-                  <p className="text-lg font-semibold text-foreground">Studio Faraj</p>
-                  <p className="flex items-center gap-2 text-sm">
-                    <Globe className="w-4 h-4 text-muted-foreground shrink-0" />
-                    Padova, Italia
-                  </p>
-                  <p className="flex items-center gap-2 text-sm">
-                    <Mail className="w-4 h-4 text-muted-foreground shrink-0" />
-                    <a href="mailto:info@studiofaraj.it" className="text-primary hover:underline font-medium">
-                      info@studiofaraj.it
-                    </a>
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    <strong className="text-foreground">P.IVA:</strong> 05783550287
-                  </p>
-                </CardContent>
-              </Card>
-              <Card className="bg-muted/30 border-border/50">
-                <CardContent className="pt-6">
-                  <div className="flex items-start gap-3">
-                    <Info className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                    <p className="text-sm text-muted-foreground">
-                      Accedendo al sito o utilizzando i nostri servizi, l'utente dichiara di aver
-                      letto, compreso e accettato integralmente i presenti Termini e Condizioni.
-                      Se non si accettano questi Termini, si prega di non utilizzare il sito o i
-                      servizi offerti.
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            </CardContent>
-          </Card>
-
-          {/* 2. Descrizione dei Servizi */}
-          <Card className="holographic-card neon-border bg-card/80 backdrop-blur-sm border-primary/20">
-            <CardHeader>
-              <CardTitle className="text-3xl font-bold flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center border border-primary/30">
-                  <Handshake className="w-6 h-6 text-primary" />
-                </div>
-                2. Descrizione dei Servizi
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <p className="text-muted-foreground">
-                Studio Faraj fornisce servizi professionali nel settore digitale e tecnologico, tra cui:
-              </p>
-              <div className="grid sm:grid-cols-2 gap-3">
-                {[
-                  { title: 'Sviluppo Web', desc: 'Progettazione e sviluppo di siti web e applicazioni web personalizzate.' },
-                  { title: 'E-commerce', desc: 'Realizzazione di piattaforme di vendita online integrate e ottimizzate.' },
-                  { title: 'Design UI/UX', desc: 'Progettazione di interfacce utente moderne, accessibili e ad alta conversione.' },
-                  { title: 'SEO & Web Marketing', desc: 'Ottimizzazione per i motori di ricerca e strategie di marketing digitale.' },
-                  { title: 'AI & Automazione', desc: 'Integrazione di soluzioni di intelligenza artificiale e automazione dei processi.' },
-                  { title: 'Manutenzione e Supporto', desc: 'Assistenza tecnica continua, aggiornamenti e monitoraggio delle performance.' },
-                  { title: 'Hosting & Cloud', desc: 'Configurazione e gestione di infrastrutture cloud e servizi di hosting.' },
-                  { title: 'Consulenza Strategica', desc: 'Analisi e consulenza per la trasformazione digitale dell\'attività.' },
-                ].map((s) => (
-                  <div key={s.title} className="flex items-start gap-3 p-3 rounded-lg bg-muted/20 border border-border/50">
-                    <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                    <div>
-                      <strong className="text-sm text-foreground">{s.title}</strong>
-                      <p className="text-xs text-muted-foreground mt-0.5">{s.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <Card className="bg-primary/5 border-primary/20">
-                <CardContent className="pt-6">
-                  <div className="flex items-start gap-3">
-                    <Info className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                    <p className="text-sm text-muted-foreground">
-                      I dettagli specifici di ogni progetto, compresi scope, tempistiche, costi e
-                      deliverable, sono definiti in un preventivo scritto e/o contratto separato
-                      concordato con il cliente prima dell'avvio dei lavori.
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            </CardContent>
-          </Card>
-
-          {/* 3. Accettazione e Utilizzo */}
-          <Card className="holographic-card neon-border bg-card/80 backdrop-blur-sm border-primary/20">
-            <CardHeader>
-              <CardTitle className="text-3xl font-bold flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center border border-primary/30">
-                  <CheckCircle2 className="w-6 h-6 text-primary" />
-                </div>
-                3. Utilizzo del Sito e Obblighi dell'Utente
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div>
-                <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-primary" />
-                  3.1 Uso Consentito
-                </h3>
-                <p className="text-muted-foreground mb-4">L'utente si impegna a utilizzare il sito e i servizi esclusivamente per finalità lecite e nel rispetto dei presenti Termini. In particolare, l'utente:</p>
-                <div className="space-y-2">
-                  {[
-                    'Fornirà informazioni veritiere, accurate e aggiornate in fase di contatto o registrazione.',
-                    'Non utilizzerà il sito per trasmettere contenuti illeciti, offensivi, diffamatori o lesivi di diritti di terzi.',
-                    'Non tenterà di accedere in modo non autorizzato a sistemi, reti o dati di Studio Faraj.',
-                    'Non utilizzerà strumenti automatizzati (bot, scraper, ecc.) senza previa autorizzazione scritta.',
-                    'Rispetterà tutte le leggi e normative applicabili nell\'utilizzo del sito e dei servizi.',
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-start gap-3 p-3 rounded-lg bg-muted/20 border border-border/50">
-                      <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                      <span className="text-sm text-muted-foreground">{item}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
-                  <XCircle className="w-5 h-5 text-primary" />
-                  3.2 Uso Vietato
-                </h3>
-                <p className="text-muted-foreground mb-4">È espressamente vietato:</p>
-                <div className="space-y-2">
-                  {[
-                    'Riprodurre, distribuire o modificare i contenuti del sito senza autorizzazione scritta.',
-                    'Usare il sito per inviare comunicazioni non sollecitate (spam).',
-                    'Violare i diritti di proprietà intellettuale di Studio Faraj o di terzi.',
-                    'Aggirare eventuali misure di sicurezza implementate sul sito.',
-                    'Raccogliere dati personali di altri utenti senza consenso.',
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-start gap-3 p-3 rounded-lg bg-red-500/5 border border-red-500/20">
-                      <XCircle className="w-4 h-4 text-red-500 shrink-0 mt-0.5" />
-                      <span className="text-sm text-muted-foreground">{item}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* 4. Proprietà Intellettuale */}
-          <Card className="holographic-card neon-border bg-card/80 backdrop-blur-sm border-primary/20">
-            <CardHeader>
-              <CardTitle className="text-3xl font-bold flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center border border-primary/30">
-                  <Lock className="w-6 h-6 text-primary" />
-                </div>
-                4. Proprietà Intellettuale
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div>
-                <h3 className="text-xl font-semibold mb-3">4.1 Contenuti del Sito</h3>
-                <p className="text-muted-foreground mb-4">
-                  Tutti i contenuti presenti sul sito studiofaraj.it — inclusi testi, grafica, loghi,
-                  icone, immagini, clip audio, download digitali e software — sono di proprietà di
-                  Studio Faraj o dei suoi fornitori di contenuti e sono protetti dalle leggi italiane
-                  e internazionali sul diritto d'autore e sulla proprietà intellettuale.
-                </p>
-                <Card className="bg-primary/5 border-primary/20">
-                  <CardContent className="pt-6">
-                    <div className="flex items-start gap-3">
-                      <Info className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                      <p className="text-sm text-muted-foreground">
-                        È vietata qualsiasi riproduzione, distribuzione, modifica o utilizzo dei
-                        contenuti del sito senza previa autorizzazione scritta di Studio Faraj.
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-
-              <div>
-                <h3 className="text-xl font-semibold mb-3">4.2 Lavori Realizzati per il Cliente</h3>
-                <p className="text-muted-foreground mb-4">
-                  Salvo diversi accordi scritti nel contratto specifico, una volta saldato
-                  integralmente il corrispettivo pattuito:
-                </p>
-                <div className="space-y-3">
-                  <div className="flex items-start gap-3 p-3 rounded-lg bg-muted/20 border border-border/50">
-                    <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                    <div>
-                      <strong className="text-sm text-foreground">Trasferimento dei diritti</strong>
-                      <p className="text-xs text-muted-foreground mt-1">
-                        I diritti di utilizzo del prodotto finito (sito web, grafica, ecc.) vengono
-                        trasferiti al cliente nei termini definiti nel contratto di progetto.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3 p-3 rounded-lg bg-muted/20 border border-border/50">
-                    <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                    <div>
-                      <strong className="text-sm text-foreground">Diritti di Studio Faraj</strong>
-                      <p className="text-xs text-muted-foreground mt-1">
-                        Studio Faraj si riserva il diritto di citare il progetto nel proprio
-                        portfolio e come riferimento commerciale, salvo esplicita richiesta di
-                        riservatezza da parte del cliente.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3 p-3 rounded-lg bg-muted/20 border border-border/50">
-                    <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                    <div>
-                      <strong className="text-sm text-foreground">Componenti di terze parti</strong>
-                      <p className="text-xs text-muted-foreground mt-1">
-                        Il software open source, le librerie o i plugin di terze parti utilizzati
-                        nel progetto rimangono soggetti alle rispettive licenze originali.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* 5. Pagamenti e Preventivi */}
-          <Card className="holographic-card neon-border bg-card/80 backdrop-blur-sm border-primary/20">
-            <CardHeader>
-              <CardTitle className="text-3xl font-bold flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center border border-primary/30">
-                  <Banknote className="w-6 h-6 text-primary" />
-                </div>
-                5. Preventivi e Pagamenti
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="grid sm:grid-cols-2 gap-4">
-                <Card className="bg-muted/30 border-border/50">
-                  <CardHeader className="pb-3">
-                    <CardTitle className="text-base flex items-center gap-2">
-                      <FileText className="w-4 h-4 text-primary" />
-                      Preventivi
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <ul className="space-y-2 text-sm text-muted-foreground">
-                      <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span> La prima consulenza è gratuita e senza impegno.</li>
-                      <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span> I preventivi sono validi per 30 giorni dalla data di emissione.</li>
-                      <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span> Il preventivo accettato costituisce la base del contratto di progetto.</li>
-                    </ul>
-                  </CardContent>
-                </Card>
-                <Card className="bg-muted/30 border-border/50">
-                  <CardHeader className="pb-3">
-                    <CardTitle className="text-base flex items-center gap-2">
-                      <Banknote className="w-4 h-4 text-primary" />
-                      Modalità di Pagamento
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <ul className="space-y-2 text-sm text-muted-foreground">
-                      <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span> Tipicamente: acconto del 30–50% all'avvio, saldo alla consegna.</li>
-                      <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span> Pagamenti tramite bonifico bancario o altri metodi concordati.</li>
-                      <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span> Le fatture hanno scadenza a 15 giorni dalla data di emissione.</li>
-                    </ul>
-                  </CardContent>
-                </Card>
-              </div>
-              <Card className="bg-primary/5 border-primary/20">
-                <CardContent className="pt-6">
-                  <div className="flex items-start gap-3">
-                    <AlertCircle className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                    <p className="text-sm text-muted-foreground">
-                      In caso di mancato pagamento entro i termini stabiliti, Studio Faraj si
-                      riserva il diritto di sospendere i lavori e/o i servizi attivi fino alla
-                      regolarizzazione del pagamento, nonché di applicare interessi di mora ai
-                      sensi del D.Lgs. 231/2002.
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            </CardContent>
-          </Card>
-
-          {/* 5-bis. Pagine Profilo Azienda */}
-          <Card className="holographic-card neon-border bg-card/80 backdrop-blur-sm border-primary/20">
-            <CardHeader>
-              <CardTitle className="text-3xl font-bold flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center border border-primary/30">
-                  <Globe className="w-6 h-6 text-primary" />
-                </div>
-                5-bis. Pagine Profilo Azienda (Hub Clienti)
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <p className="text-muted-foreground">
-                Tramite l&apos;area Hub Clienti, le aziende possono creare e pubblicare una pagina
-                pubblica all&apos;indirizzo <code className="px-1.5 py-0.5 rounded bg-muted text-xs">studiofaraj.it/&lt;slug&gt;</code>{' '}
-                contenente la presentazione della propria attività, servizi, contatti e dati aziendali.
-                La pubblicazione è subordinata all&apos;attivazione di un abbonamento mensile.
-              </p>
-              <div className="grid sm:grid-cols-2 gap-4">
-                <Card className="bg-muted/30 border-border/50">
-                  <CardHeader className="pb-3">
-                    <CardTitle className="text-base flex items-center gap-2">
-                      <Banknote className="w-4 h-4 text-primary" />
-                      Abbonamento
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <ul className="space-y-2 text-sm text-muted-foreground">
-                      <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span> Costo: 4,99 €/mese (IVA inclusa, fatturata a parte se applicabile).</li>
-                      <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span> Primo mese gratuito (trial). Il pagamento parte alla scadenza del periodo di prova.</li>
-                      <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span> Addebito automatico mensile sulla carta registrata.</li>
-                      <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span> Disdetta in qualsiasi momento dall&apos;area billing (Stripe Customer Portal).</li>
-                    </ul>
-                  </CardContent>
-                </Card>
-                <Card className="bg-muted/30 border-border/50">
-                  <CardHeader className="pb-3">
-                    <CardTitle className="text-base flex items-center gap-2">
-                      <Lock className="w-4 h-4 text-primary" />
-                      Pubblicazione e slug
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <ul className="space-y-2 text-sm text-muted-foreground">
-                      <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span> La pagina è pubblicata solo finché l&apos;abbonamento è attivo o in periodo di prova.</li>
-                      <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span> Allo scadere o in caso di disdetta la pagina viene rimossa dalla sitemap e mostrata come non disponibile.</li>
-                      <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span> Lo slug rimane riservato al titolare originario in caso di riattivazione.</li>
-                      <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span> Slug riservati o offensivi possono essere rifiutati o revocati.</li>
-                    </ul>
-                  </CardContent>
-                </Card>
-              </div>
-              <Card className="bg-primary/5 border-primary/20">
-                <CardContent className="pt-6">
-                  <div className="flex items-start gap-3">
-                    <Info className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                    <div className="space-y-2">
-                      <p className="text-sm text-muted-foreground">
-                        Il pagamento è gestito da <strong className="text-foreground">Stripe Payments Europe Ltd.</strong>,
-                        che opera in qualità di responsabile del trattamento per i dati di pagamento.
-                        Studio Faraj non conserva i dati della carta di credito.
-                      </p>
-                      <p className="text-sm text-muted-foreground">
-                        Il cliente è l&apos;unico responsabile per la veridicità e la liceità dei contenuti
-                        pubblicati sulla propria pagina. Studio Faraj si riserva il diritto di sospendere
-                        pagine che violino la legge, i diritti di terzi o i presenti Termini.
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-              <Card className="bg-red-500/5 border-red-500/30">
-                <CardContent className="pt-6">
-                  <div className="flex items-start gap-3">
-                    <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
-                    <div className="space-y-2">
-                      <p className="text-sm text-foreground">
-                        <strong>Servizio destinato esclusivamente ad aziende (B2B).</strong>{' '}
-                        L&apos;attivazione di una Pagina Aziendale richiede la sottoscrizione
-                        in qualit&agrave; di titolare di Partita IVA. Il servizio non &egrave;
-                        offerto a consumatori privati ai sensi dell&apos;art. 3 D.Lgs. 206/2005,
-                        e di conseguenza <strong>non si applica il diritto di recesso di 14 giorni</strong>{' '}
-                        ex art. 52 D.Lgs. 206/2005.
-                      </p>
-                      <p className="text-sm text-muted-foreground">
-                        Il cliente professionale (B2B) pu&ograve; cancellare l&apos;abbonamento in qualsiasi
-                        momento dalla propria area Hub o tramite il Customer Portal Stripe. Effetti
-                        della cancellazione:
-                      </p>
-                      <ul className="ml-5 list-disc space-y-1 text-sm text-muted-foreground">
-                        <li>
-                          <strong className="text-foreground">Durante il periodo di prova gratuito di 30 giorni</strong>:
-                          la cancellazione comporta la <strong>sospensione immediata</strong> della pagina
-                          pubblica. Nessun addebito viene effettuato.
-                        </li>
-                        <li>
-                          <strong className="text-foreground">Dopo il primo addebito (piano mensile)</strong>: la pagina rimane
-                          pubblica fino alla fine del periodo di fatturazione corrente, quindi viene sospesa
-                          automaticamente. Non sono previsti rimborsi per il periodo gi&agrave; fatturato.
-                        </li>
-                        <li>
-                          <strong className="text-foreground">Sul piano annuale</strong>: la pagina rimane
-                          pubblica fino alla fine dell&apos;anno gi&agrave; pagato, quindi viene sospesa.
-                          Nessun rimborso parziale.
-                        </li>
-                      </ul>
-                      <p className="text-sm text-muted-foreground">
-                        In tutti i casi lo slug rimane riservato al titolare originario in caso di
-                        riattivazione futura.
-                      </p>
-                      <p className="text-sm text-muted-foreground">
-                        <strong>Sospensione automatica per mancato pagamento:</strong> in caso di
-                        pagamento non riuscito, viene applicato un periodo di tolleranza di 5 giorni
-                        durante il quale Stripe tenta nuovi addebiti. Trascorsi i 5 giorni senza pagamento
-                        andato a buon fine, l&apos;abbonamento viene automaticamente cancellato e la pagina
-                        pubblica diventa non disponibile. Lo slug rimane riservato e la pagina pu&ograve;
-                        essere riattivata avviando un nuovo abbonamento.
-                      </p>
-                      <p className="text-sm text-muted-foreground">
-                        <strong>Hosting:</strong> la pagina pubblicata &egrave; ospitata sul dominio
-                        studiofaraj.it e ne resta parte integrante. Nessun diritto di propriet&agrave;
-                        sul dominio o sull&apos;infrastruttura viene trasferito al cliente.
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </CardContent>
-          </Card>
-
-          {/* 6. Limitazione di Responsabilità */}
-          <Card className="holographic-card neon-border bg-card/80 backdrop-blur-sm border-primary/20">
-            <CardHeader>
-              <CardTitle className="text-3xl font-bold flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center border border-primary/30">
-                  <AlertCircle className="w-6 h-6 text-primary" />
-                </div>
-                6. Limitazione di Responsabilità
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <p className="text-muted-foreground">
-                Studio Faraj si impegna a fornire servizi di alta qualità con la massima cura e
-                professionalità. Tuttavia:
-              </p>
-              <div className="space-y-3">
-                {[
-                  {
-                    title: 'Disponibilità del sito',
-                    desc: 'Il sito è fornito "così com\'è". Studio Faraj non garantisce che il sito sia privo di errori o interruzioni, e non si assume responsabilità per eventuali danni derivanti da indisponibilità temporanea del servizio.',
-                  },
-                  {
-                    title: 'Contenuti di terze parti',
-                    desc: 'Studio Faraj non è responsabile per i contenuti di siti web di terze parti ai quali il sito potrebbe rimandare tramite link.',
-                  },
-                  {
-                    title: 'Danni indiretti',
-                    desc: 'In nessun caso Studio Faraj sarà responsabile per danni indiretti, incidentali, speciali o consequenziali derivanti dall\'uso o dall\'impossibilità di utilizzare i servizi.',
-                  },
-                  {
-                    title: 'Forza maggiore',
-                    desc: 'Studio Faraj non è responsabile per ritardi o inadempimenti causati da eventi al di fuori del ragionevole controllo (es. calamità naturali, interruzioni di servizi internet, normative emergenziali).',
-                  },
-                ].map((item, i) => (
-                  <Card key={i} className="bg-muted/30 border-border/50">
-                    <CardContent className="pt-5">
-                      <div className="flex items-start gap-3">
-                        <Info className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                        <div>
-                          <strong className="text-sm text-foreground block mb-1">{item.title}</strong>
-                          <p className="text-sm text-muted-foreground">{item.desc}</p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* 7. Riservatezza */}
-          <Card className="holographic-card neon-border bg-card/80 backdrop-blur-sm border-primary/20">
-            <CardHeader>
-              <CardTitle className="text-3xl font-bold flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center border border-primary/30">
-                  <Shield className="w-6 h-6 text-primary" />
-                </div>
-                7. Riservatezza e Protezione dei Dati
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <p className="text-muted-foreground">
-                Studio Faraj tratta i dati personali degli utenti e dei clienti nel rispetto del
-                Regolamento (UE) 2016/679 (GDPR) e della normativa italiana vigente.
-              </p>
-              <Card className="bg-primary/5 border-primary/20">
-                <CardContent className="pt-6">
-                  <div className="flex items-start gap-3">
-                    <Info className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                    <p className="text-sm text-muted-foreground">
-                      Per informazioni complete sul trattamento dei dati personali, si invita a
-                      consultare la nostra{' '}
-                      <Link href="/it/legal" className="text-primary hover:underline font-medium">
-                        Privacy Policy e Cookie Policy
-                      </Link>
-                      , che costituisce parte integrante dei presenti Termini.
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-              <p className="text-muted-foreground text-sm">
-                Entrambe le parti si impegnano a mantenere riservate le informazioni confidenziali
-                ottenute nell'ambito del rapporto contrattuale e a non divulgarle a terzi senza
-                previa autorizzazione scritta, salvo obblighi di legge.
-              </p>
-            </CardContent>
-          </Card>
-
-          {/* 8. Modifiche ai Termini */}
-          <Card className="holographic-card neon-border bg-card/80 backdrop-blur-sm border-primary/20">
-            <CardHeader>
-              <CardTitle className="text-3xl font-bold flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center border border-primary/30">
-                  <Pencil className="w-6 h-6 text-primary" />
-                </div>
-                8. Modifiche ai Termini
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <p className="text-muted-foreground">
-                Studio Faraj si riserva il diritto di modificare i presenti Termini in qualsiasi
-                momento. Le modifiche entrano in vigore dalla data di pubblicazione sul sito.
-              </p>
-              <Card className="bg-primary/5 border-primary/20">
-                <CardContent className="pt-6">
-                  <div className="flex items-start gap-3">
-                    <AlertCircle className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                    <p className="text-sm text-muted-foreground">
-                      L'uso continuato del sito o dei servizi successivamente alla pubblicazione
-                      delle modifiche costituisce accettazione dei nuovi Termini. Si consiglia di
-                      consultare periodicamente questa pagina.
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            </CardContent>
-          </Card>
-
-          {/* 9. Legge Applicabile e Foro Competente */}
-          <Card className="holographic-card neon-border bg-card/80 backdrop-blur-sm border-primary/20">
-            <CardHeader>
-              <CardTitle className="text-3xl font-bold flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center border border-primary/30">
-                  <Scale className="w-6 h-6 text-primary" />
-                </div>
-                9. Legge Applicabile e Foro Competente
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid sm:grid-cols-2 gap-4">
-                <Card className="bg-muted/30 border-border/50">
-                  <CardContent className="pt-6">
-                    <div className="flex items-start gap-3">
-                      <Globe className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                      <div>
-                        <strong className="text-sm text-foreground block mb-1">Legge Applicabile</strong>
-                        <p className="text-sm text-muted-foreground">
-                          I presenti Termini sono regolati dalla legge italiana. Per quanto non
-                          espressamente previsto, si applicano le norme del Codice Civile italiano
-                          e le normative di settore vigenti.
-                        </p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-                <Card className="bg-muted/30 border-border/50">
-                  <CardContent className="pt-6">
-                    <div className="flex items-start gap-3">
-                      <Scale className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                      <div>
-                        <strong className="text-sm text-foreground block mb-1">Foro Competente</strong>
-                        <p className="text-sm text-muted-foreground">
-                          Per qualsiasi controversia relativa ai presenti Termini o ai servizi
-                          forniti, salvo diverso accordo scritto, è competente in via esclusiva il
-                          Tribunale di Padova.
-                        </p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-              <Card className="bg-primary/5 border-primary/20">
-                <CardContent className="pt-6">
-                  <div className="flex items-start gap-3">
-                    <Info className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                    <p className="text-sm text-muted-foreground">
-                      Per i consumatori (persone fisiche che agiscono per scopi estranei all'attività
-                      professionale), si applicano le disposizioni del Codice del Consumo (D.Lgs.
-                      206/2005) e le norme cogenti a tutela del consumatore. La risoluzione
-                      alternativa delle controversie (ODR) è disponibile tramite la piattaforma
-                      europea:{' '}
-                      <a
-                        href="https://ec.europa.eu/consumers/odr"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-primary hover:underline font-medium"
-                      >
-                        ec.europa.eu/consumers/odr
-                      </a>.
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            </CardContent>
-          </Card>
-
-          {/* 10. Contatti */}
-          <Card className="bg-card/80 backdrop-blur-sm border-primary/20">
-            <CardContent className="pt-6 space-y-6">
-              <div>
-                <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                  <Mail className="w-6 h-6 text-primary" />
-                  10. Contatti
-                </h2>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Per qualsiasi domanda relativa ai presenti Termini e Condizioni, è possibile
-                  contattarci:
-                </p>
-                <Card className="bg-primary/5 border-primary/20">
-                  <CardContent className="pt-6 space-y-3">
-                    <p className="flex items-center gap-2 text-sm">
-                      <Mail className="w-4 h-4 text-muted-foreground shrink-0" />
-                      <strong>Email:</strong>{' '}
-                      <a href="mailto:info@studiofaraj.it" className="text-primary hover:underline font-medium">
-                        info@studiofaraj.it
-                      </a>
-                    </p>
-                    <p className="flex items-center gap-2 text-sm">
-                      <Globe className="w-4 h-4 text-muted-foreground shrink-0" />
-                      <strong>Indirizzo:</strong> Studio Faraj, Padova, Italia
-                    </p>
-                  </CardContent>
-                </Card>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Footer metadata */}
-          <Card className="bg-muted/30 border-border/50">
-            <CardContent className="pt-6">
-              <div className="space-y-2 text-sm text-muted-foreground">
-                <p><strong>Ultimo aggiornamento:</strong> {currentDate}</p>
-                <p>
-                  Questi Termini e Condizioni sono redatti in conformità alla normativa italiana
-                  vigente, inclusi il Codice Civile, il Codice del Consumo (D.Lgs. 206/2005)
-                  e il Regolamento (UE) 2016/679 (GDPR).
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-
-        </div>
-      </div>
-    </div>
-  );
+/** /terms — terms and conditions, in Italian and English. Server component. */
+export default async function TermsPage({ params }: Props) {
+  const { locale } = await params;
+  const lang: Locale = locale === 'en' ? 'en' : 'it';
+  setRequestLocale(lang);
+  const c = content(lang);
+  return <LegalDoc locale={lang} doc="terms" title={META[lang].title} lead={c.lead} updated={UPDATED} sections={c.sections} />;
 }

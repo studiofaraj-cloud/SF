@@ -214,7 +214,7 @@ export function SiteFooter() {
               <li><FooterLink href={getLocalizedPath('/servizi/hosting-cloud', locale as any)}>{tServices('hostingCloud.label')}</FooterLink></li>
               <li><FooterLink href={getLocalizedPath('/servizi/consulenza', locale as any)}>{tServices('consulting.label')}</FooterLink></li>
               <li><FooterLink href={getLocalizedPath('/faq', locale as any)}>FAQ</FooterLink></li>
-              <li><FooterLink href={getLocalizedPath('/legal', locale as any)}>{t('privacy')}</FooterLink></li>
+              <li><FooterLink href={getLocalizedPath('/privacy', locale as any)}>{t('privacy')}</FooterLink></li>
             </ul>
           </div>
 
@@ -254,12 +254,12 @@ export function SiteFooter() {
 
             {/* Legal links */}
             <div className="flex items-center justify-center sm:justify-end gap-4 text-xs">
-              <Link href={getLocalizedPath('/legal', locale as any)}
+              <Link href={getLocalizedPath('/privacy', locale as any)}
                 className="text-muted-foreground hover:text-primary transition-colors">
                 {t('privacy')}
               </Link>
               <span className="w-px h-3 bg-border/60" />
-              <Link href={getLocalizedPath('/legal', locale as any)}
+              <Link href={getLocalizedPath('/cookie', locale as any)}
                 className="text-muted-foreground hover:text-primary transition-colors">
                 {t('cookiePolicy')}
               </Link>

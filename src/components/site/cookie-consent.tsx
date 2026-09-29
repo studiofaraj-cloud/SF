@@ -188,7 +188,7 @@ export function CookieConsent() {
               {copy.customise}
             </button>
             <Link
-              href={getLocalizedPath('/legal', locale)}
+              href={getLocalizedPath('/cookie', locale)}
               className="text-muted-foreground underline decoration-border underline-offset-4 transition-colors hover:text-foreground"
             >
               {copy.policy}

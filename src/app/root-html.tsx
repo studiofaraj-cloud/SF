@@ -29,12 +29,9 @@ export function RootHtml({ lang, children }: { lang: string; children: ReactNode
   return (
     <html lang={lang} className={fontVariables} suppressHydrationWarning>
       <head>
-        {/* DNS prefetch and preconnect for external resources */}
-        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-        <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+        {/* The fonts are self-hosted (next/font, src/app/fonts.ts): no connection
+            to Google Fonts, which would hand every visitor's IP to Google. */}
         <link rel="dns-prefetch" href="https://firebasestorage.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         {/* Favicons */}
         <link rel="icon" href="/assets/favicon.ico" sizes="any" />
         <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png" />
