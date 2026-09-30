@@ -40,12 +40,17 @@ export function LocaleSwitch({ className }: { className?: string }) {
           {loc === current ? (
             <span aria-current="true" className="font-bold">{loc.toUpperCase()}</span>
           ) : (
+            // On touch screens globals.css makes every link at least 48×48px.
+            // The label is centred in that box (not stuck to its top-left,
+            // above the other label), and the negative margins give back the
+            // extra width, so the tap area stays large without spacing the
+            // switch apart.
             <a
               href={targets[loc]}
               hrefLang={loc}
               lang={loc}
               aria-label={loc === 'it' ? 'Italiano' : 'English'}
-              className="rounded px-0.5 opacity-55 transition-opacity hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              className="inline-flex items-center justify-center rounded px-0.5 opacity-55 transition-opacity hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary [@media(pointer:coarse)]:-mx-3.5"
             >
               {loc.toUpperCase()}
             </a>
