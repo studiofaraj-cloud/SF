@@ -36,10 +36,13 @@ export default function HomeCtaSection({
   locale,
   title,
   lead,
+  start,
 }: {
   locale: 'it' | 'en';
   title?: readonly [string, string];
   lead?: string;
+  /** The main button, when it shouldn't lead to /inizia (e.g. on /inizia itself). */
+  start?: { label: string; href: string };
 }) {
   const copy = { ...COPY[locale], ...(title ? { title } : {}), ...(lead ? { lead } : {}) };
   const contacts = [
@@ -65,7 +68,9 @@ export default function HomeCtaSection({
           <p className="rv mt-7 max-w-xl text-lg leading-relaxed text-white/70" style={{ '--i': 1 } as React.CSSProperties}>{copy.lead}</p>
           <div className="rv mt-10 flex flex-col gap-3 sm:flex-row" style={{ '--i': 2 } as React.CSSProperties}>
             <Button asChild size="lg" className="min-h-[52px] px-7 text-base font-semibold">
-              <Link href={getLocalizedPath('/inizia', locale)}>{copy.start}</Link>
+              <Link href={start?.href ?? getLocalizedPath('/inizia', locale)} prefetch={start ? false : undefined}>
+                {start?.label ?? copy.start}
+              </Link>
             </Button>
             <Button
               asChild

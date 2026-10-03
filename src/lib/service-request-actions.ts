@@ -46,12 +46,35 @@ function serialize(data: any): any {
   return data;
 }
 
-const CreateRequestSchema = z.object({
-  type: z.string().min(1, 'Please choose a service type.'),
-  title: z.string().min(3, 'Please add a short title.'),
-  brief: z.string().min(10, 'Please describe what you need (at least 10 characters).'),
-  budget: z.string().optional(),
-});
+const REQUEST_ERRORS = {
+  it: {
+    type: 'Scegli un servizio.',
+    title: 'Dai un titolo al progetto (almeno 3 caratteri).',
+    brief: 'Raccontaci il progetto in qualche riga (almeno 10 caratteri).',
+    fix: 'Controlla i campi evidenziati.',
+    signIn: 'Accedi di nuovo per inviare la richiesta.',
+    generic: 'Qualcosa è andato storto. Riprova.',
+  },
+  en: {
+    type: 'Please choose a service.',
+    title: 'Please give the project a title (at least 3 characters).',
+    brief: 'Please describe the project in a few lines (at least 10 characters).',
+    fix: 'Please check the highlighted fields.',
+    signIn: 'Please sign in again to send the request.',
+    generic: 'Something went wrong. Please try again.',
+  },
+} as const;
+
+function createRequestSchema(locale: 'it' | 'en') {
+  const e = REQUEST_ERRORS[locale];
+  return z.object({
+    type: z.string().trim().min(1, e.type),
+    title: z.string().trim().min(3, e.title).max(140),
+    brief: z.string().trim().min(10, e.brief).max(10000),
+    budget: z.string().trim().max(120).optional(),
+    timeline: z.string().trim().max(120).optional(),
+  });
+}
 
 export interface CreateRequestResult {
   success: boolean;
@@ -67,19 +90,23 @@ export async function createServiceRequestAction(input: {
   title: string;
   brief: string;
   budget?: string;
+  timeline?: string;
+  locale?: string;
 }): Promise<CreateRequestResult> {
+  const locale = input.locale === 'en' ? 'en' : 'it';
+  const e = REQUEST_ERRORS[locale];
   let user;
   try {
     user = await requireUser();
   } catch {
-    return { success: false, message: 'You must be signed in to submit a request.' };
+    return { success: false, message: e.signIn };
   }
 
-  const parsed = CreateRequestSchema.safeParse(input);
+  const parsed = createRequestSchema(locale).safeParse(input);
   if (!parsed.success) {
     return {
       success: false,
-      message: 'Please fix the highlighted fields.',
+      message: e.fix,
       errors: parsed.error.flatten().fieldErrors,
     };
   }
@@ -93,17 +120,19 @@ export async function createServiceRequestAction(input: {
       title: parsed.data.title,
       brief: parsed.data.brief,
       budget: parsed.data.budget || undefined,
+      timeline: parsed.data.timeline || undefined,
     });
 
-    // Notify admins + thank the client (fire-and-forget).
+    // Notify admins + thank the client in their language (fire-and-forget).
     sendTransactionalEmails({
       scenario: 'service-request',
-      locale: 'it',
+      locale,
       client: { name: user.name, email: user.email },
       adminFields: [
         { label: 'Servizio', value: serviceLabel(parsed.data.type) },
         { label: 'Titolo', value: parsed.data.title },
         { label: 'Budget', value: parsed.data.budget || 'Non specificato' },
+        { label: 'Tempi', value: parsed.data.timeline || 'Non specificati' },
         { label: 'Descrizione', value: parsed.data.brief },
       ],
     }).catch(() => {});
@@ -112,7 +141,7 @@ export async function createServiceRequestAction(input: {
     return { success: true, id };
   } catch (error) {
     console.error('[service-request-actions] create failed:', error);
-    return { success: false, message: 'Something went wrong. Please try again.' };
+    return { success: false, message: e.generic };
   }
 }
 

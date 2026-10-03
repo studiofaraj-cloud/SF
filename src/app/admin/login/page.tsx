@@ -18,6 +18,7 @@ import { AlertCircle, Loader2, Lock, Mail, Shield, User as UserIcon } from 'luci
 import Image from 'next/image';
 import { useAuth, useUser } from '@/firebase/provider';
 import { establishSession } from '@/lib/auth-actions';
+import { sameSitePath } from '@/lib/safe-redirect';
 import GradientText from '@/components/GradientText';
 
 function mapAuthError(err: any): string {
@@ -83,10 +84,11 @@ function LoginPageInner() {
     if (!result.ok) {
       throw new Error(result.error || 'Failed to establish a session.');
     }
+    const next = sameSitePath(nextParam, window.location.origin, '');
     if (result.role === 'admin') {
-      router.replace(nextParam && nextParam.startsWith('/admin') ? nextParam : '/admin');
+      router.replace(next.startsWith('/admin') ? next : '/admin');
     } else {
-      router.replace(nextParam && nextParam.startsWith('/') && !nextParam.startsWith('/admin') ? nextParam : '/hub');
+      router.replace(next && !next.startsWith('/admin') ? next : '/hub');
     }
   };
 

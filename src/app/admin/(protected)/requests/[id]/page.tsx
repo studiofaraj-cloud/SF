@@ -122,6 +122,12 @@ export default function AdminRequestDetailPage() {
                 <p className="mt-1">{request.budget}</p>
               </div>
             )}
+            {request.timeline && (
+              <div>
+                <p className="text-xs font-medium text-muted-foreground">Tempi</p>
+                <p className="mt-1">{request.timeline}</p>
+              </div>
+            )}
           </CardContent>
         </Card>
 

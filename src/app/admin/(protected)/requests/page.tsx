@@ -180,6 +180,7 @@ export default function AdminRequestsPage() {
                     </a>
                   )}
                   {r.budget && <p>Budget: {r.budget}</p>}
+                  {r.timeline && <p>Tempi: {r.timeline}</p>}
                 </div>
 
                 <div className="text-xs text-muted-foreground pt-2 border-t border-border/50">

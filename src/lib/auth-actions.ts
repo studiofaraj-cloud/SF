@@ -41,7 +41,7 @@ export interface EstablishSessionResult {
  *  - otherwise keep an existing profile's role (preserves manual promotions)
  *  - brand-new accounts default to 'client'
  */
-export async function establishSession(idToken: string): Promise<EstablishSessionResult> {
+export async function establishSession(idToken: string, locale?: string): Promise<EstablishSessionResult> {
   try {
     const fbUser = await verifyFirebaseIdToken(idToken);
     const existing = await getUserProfile(fbUser.uid);
@@ -56,6 +56,9 @@ export async function establishSession(idToken: string): Promise<EstablishSessio
       displayName: fbUser.name ?? existing?.displayName,
       photoURL: fbUser.picture ?? existing?.photoURL,
       role,
+      // Later emails (quotes, payments, messages) follow the profile language;
+      // a new account takes the language it was created in.
+      ...(!existing?.locale && locale ? { locale: normalizeLocale(locale) } : {}),
       lastLoginAt: Timestamp.now(),
     });
 
@@ -68,12 +71,12 @@ export async function establishSession(idToken: string): Promise<EstablishSessio
 
     // First-time signup → welcome email fan-out (client + admin alert).
     // Fire-and-forget: never block the session creation on email delivery.
-    // No `existing.locale` yet for a brand-new user — default to Italian.
+    // In the language of the page the account was created from.
     if (!existing && role !== 'admin') {
       const clientName = fbUser.name || fbUser.email;
       sendTransactionalEmails({
         scenario: 'welcome',
-        locale: normalizeLocale('it'),
+        locale: normalizeLocale(locale),
         client: { name: clientName, email: fbUser.email },
         adminFields: [
           { label: 'Email', value: fbUser.email },

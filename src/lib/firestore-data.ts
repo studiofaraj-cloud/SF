@@ -1428,6 +1428,7 @@ export interface ServiceRequest {
   title: string;
   brief: string;
   budget?: string;
+  timeline?: string; // when the client would like it, e.g. 'Entro 1–2 mesi'
   status: ServiceRequestStatus;
   assignedTo?: string;
   adminNotes?: string;

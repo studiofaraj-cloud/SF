@@ -54,7 +54,7 @@ const COPY = {
  * light 404 page instead, so on those paths the header also checks, once
  * mounted, that the page marks a navy top with `data-dark-top`.
  */
-const DARK_TOP = new Set(['/', '/chi-siamo', '/blog']);
+const DARK_TOP = new Set(['/', '/chi-siamo', '/blog', '/inizia']);
 const DARK_PREFIXES = ['/blog/'];
 
 /**

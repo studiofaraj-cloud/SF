@@ -131,6 +131,12 @@ export default function RequestDetailPage() {
               <p className="mt-1">{request.budget}</p>
             </div>
           )}
+          {request.timeline && (
+            <div>
+              <p className="text-xs font-medium text-muted-foreground">{en ? 'Timing' : 'Tempi'}</p>
+              <p className="mt-1">{request.timeline}</p>
+            </div>
+          )}
           <div>
             <p className="text-xs font-medium text-muted-foreground">{en ? 'Submitted' : 'Inviata il'}</p>
             <p className="mt-1">
