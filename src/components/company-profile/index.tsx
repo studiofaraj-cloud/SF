@@ -24,6 +24,14 @@ import type {
   CompanyProfileTaxId,
 } from '@/lib/firestore-data';
 
+/**
+ * Company pages are a paid service, so every link from one to another site
+ * is marked as sponsored: Google asks for it on paid placements, and links
+ * that pass ranking in exchange for payment could get studiofaraj.it itself
+ * penalised. (The landing page tells customers this.)
+ */
+const SPONSORED = 'sponsored noopener noreferrer';
+
 export function ProfileHero({
   companyName,
   tagline,
@@ -231,7 +239,8 @@ export function ContactBlock({ contact }: { contact?: CompanyProfileContact }) {
     contact.country;
   if (!hasAny) return null;
 
-  const items: Array<{ icon: React.ReactNode; label: string; href?: string }> = [];
+  // `external` marks links that leave studiofaraj.it (the website): see SPONSORED.
+  const items: Array<{ icon: React.ReactNode; label: string; href?: string; external?: boolean }> = [];
   if (contact.email)
     items.push({
       icon: <Mail className="h-5 w-5 text-primary" />,
@@ -249,6 +258,7 @@ export function ContactBlock({ contact }: { contact?: CompanyProfileContact }) {
       icon: <Globe className="h-5 w-5 text-primary" />,
       label: contact.website.replace(/^https?:\/\//, ''),
       href: contact.website.startsWith('http') ? contact.website : `https://${contact.website}`,
+      external: true,
     });
   const addr = [contact.addressLine, contact.city, contact.country].filter(Boolean).join(', ');
   if (addr)
@@ -267,6 +277,7 @@ export function ContactBlock({ contact }: { contact?: CompanyProfileContact }) {
               <Link
                 key={i}
                 href={item.href}
+                {...(item.external ? { target: '_blank', rel: SPONSORED } : {})}
                 className="flex items-center gap-3 rounded-lg border border-border/30 bg-background/50 p-4 transition-colors hover:border-primary/30 hover:bg-primary/5"
               >
                 {item.icon}
@@ -338,7 +349,7 @@ export function SocialRow({ social }: { social?: CompanyProfileSocial }) {
             key={e.label}
             href={e.url}
             target="_blank"
-            rel="noopener noreferrer me"
+            rel={`${SPONSORED} me`}
             aria-label={e.label}
             className="flex h-11 w-11 items-center justify-center rounded-full border border-border bg-card/50 text-foreground transition-colors hover:border-primary/40 hover:bg-primary/10 hover:text-primary"
           >

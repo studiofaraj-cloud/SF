@@ -26,24 +26,15 @@ export async function generateMetadata({
         ? [
             'pagina aziendale online',
             'presenza online azienda',
-            'sito vetrina azienda',
-            'profilo azienda Google',
-            'SEO Padova',
-            'backlink dofollow Italia',
-            'pagina aziendale Veneto',
-            'visibilità Google azienda',
-            'azienda online senza sito',
+            'pagina web per azienda senza sito',
             'pagina pubblica aziendale',
+            'vetrina online azienda',
           ]
         : [
-            'business page online',
+            'company page online',
             'online presence for business',
-            'company profile Google',
-            'business website alternative',
-            'SEO backlinks Italy',
-            'business page Italy',
-            'company online visibility',
-            'business without website',
+            'business page without a website',
+            'public company page',
           ],
   });
 }

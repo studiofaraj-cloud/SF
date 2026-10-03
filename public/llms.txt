@@ -1,63 +1,61 @@
 # Studio Faraj
 
-> Full-stack web development studio based in Padova, Veneto, Italy. We build websites, e-commerce platforms, and web applications entirely with custom code — no templates, no WordPress, no Shopify, no third-party website builders.
+> Web development studio in Padova (Veneto, Italy), founded in 2020. Studio Faraj designs and writes custom websites, e-commerce stores and business software (management systems, CRMs) for companies in Italy and abroad, then hosts, optimises and maintains them. No templates or page builders: every project is written to measure, and the client owns the source code, domain and content.
 
-## About
+## Key facts
 
-Studio Faraj is a team of skilled full-stack developers specializing in building high-performance, custom-coded digital solutions. Founded in Padova (PD), Veneto, we serve businesses across Italy and internationally.
+- Founder: Hussein Faraj, full-stack developer. He follows every project from the first meeting to launch, then hosting, technical SEO and maintenance: clients talk to the person who writes the code.
+- Based in: Via Ludovico Ariosto 42, 35128 Padova (PD), Italy.
+- Works with clients in: Italy, Switzerland, France, Belgium, Germany, the United Kingdom, the United States, the United Arab Emirates, Kuwait and Lebanon.
+- Languages: Italian and English. The site is in Italian with English versions; blog posts are in Italian.
+- Contact: info@studiofaraj.it, phone and WhatsApp +39 320 222 3322. Hours: Monday to Friday 9:00–18:00, Saturday 10:00–14:00 (Italian time).
+- Usually replies within 24 working hours. The first consultation is free.
 
-What makes us different: every project we deliver is written from scratch using modern technologies. We don't use page builders, pre-made templates, or third-party e-commerce platforms. Our clients own 100% of their code — clean, maintainable, and built to scale.
+## How to start a project
+
+- [Start your project](https://studiofaraj.it/it/inizia): the ways to start, the stages a request goes through, what to prepare and FAQ (English: https://studiofaraj.it/en/inizia).
+- Quote without an account: the "Richiedi un preventivo" form on any page, or [Contatti](https://studiofaraj.it/it/contatti).
+- [Book a call](https://studiofaraj.it/it/call-booking) or write on WhatsApp.
+- Client area (free account): send a request, receive the quote, pay it online through Stripe, chat with the studio, share files up to 25 MB, and follow the request through its stages (new, quote sent, accepted, in progress, delivered). Each change of status is also sent by email.
 
 ## Services
 
-- **Custom Web Development**: Fully coded websites and web applications built with React, Next.js, TypeScript, and Node.js. Server-side rendering, SEO-optimized, responsive on every device.
-- **Custom E-Commerce**: Online stores developed entirely from scratch — custom shopping carts, payment gateway integrations (Stripe, PayPal), inventory management, and analytics dashboards. No Shopify, no WooCommerce, no templates.
-- **UI/UX Design**: Research-driven interface design with responsive layouts, accessibility standards, and conversion-focused user experiences.
-- **SEO & Web Marketing**: Technical SEO audits, on-page optimization, ongoing SEO subscription plans, Google Ads management, and content strategy. We offer monthly SEO maintenance packages.
-- **AI & Automation**: Custom chatbots, predictive analytics, workflow automation, and AI-powered features integrated into web applications.
-- **Managed Hosting & Cloud Infrastructure**: High-performance hosting on Vercel, Google Cloud, and AWS. Domain management, SSL certificates, CDN setup, server monitoring, and 24/7 uptime support.
-- **Maintenance & Support**: Flexible maintenance plans including security updates, performance monitoring, content updates, backups, and technical support.
-- **Strategic IT Consulting**: Technology audits, digital transformation roadmaps, architecture planning, and technology stack advisory.
+- [Custom websites](https://studiofaraj.it/it/servizi/sviluppo-web): company websites and web applications.
+- [E-commerce](https://studiofaraj.it/it/servizi/e-commerce): complete online stores, from catalogue to payments, without third-party store platforms.
+- [Business software](https://studiofaraj.it/it/servizi/software-gestionale): management systems and CRMs built around the client's process (jobs, clients, work progress).
+- [UI/UX design](https://studiofaraj.it/it/servizi/design-ui-ux): interfaces designed for every device before any code is written.
+- [SEO and web marketing](https://studiofaraj.it/it/servizi/seo-marketing): search visibility and measurable campaigns.
+- [AI and automation](https://studiofaraj.it/it/servizi/ai-automazione): chatbots, analysis and automations inside the tools a business already uses.
+- [Hosting and cloud](https://studiofaraj.it/it/servizi/hosting-cloud): managed hosting, SSL certificates and backups.
+- [Maintenance](https://studiofaraj.it/it/servizi/manutenzione): plans that keep a site updated, secure and fast.
+- [Consulting](https://studiofaraj.it/it/servizi/consulenza): support for strategic and technical decisions.
+- [All services](https://studiofaraj.it/it/servizi)
 
-## Tech Stack
+## Websites by sector (Italian)
 
-- **Frontend**: React, Next.js, TypeScript, JavaScript, Tailwind CSS, HTML5, CSS3
-- **Backend**: Node.js, Python, Firebase, REST APIs, GraphQL
-- **Infrastructure**: Vercel, Google Cloud, AWS, Docker, CI/CD pipelines
-- **Databases**: Firestore, PostgreSQL, MongoDB
-- **CMS**: Headless CMS (Sanity, Strapi), custom admin dashboards
-- **Tools**: Git, GitHub, Figma, Google Analytics, Search Console
+- [Construction companies](https://studiofaraj.it/it/siti-web/imprese-edili)
+- [Renovation companies](https://studiofaraj.it/it/siti-web/imprese-di-ristrutturazione)
+- [Building trades](https://studiofaraj.it/it/siti-web/edilizia)
+- [Surveyors (geometri)](https://studiofaraj.it/it/siti-web/geometri)
 
-## Key Differentiators
+## Technologies
 
-1. **100% Custom Code**: Every website and application is written from scratch. No WordPress, no Shopify, no page builders, no templates.
-2. **Full-Stack Expertise**: Our team handles frontend, backend, databases, hosting, and DevOps — one team, end-to-end.
-3. **SEO Built-In**: Every project includes technical SEO optimization as standard, with optional ongoing SEO subscription plans.
-4. **Performance-First**: We build for Core Web Vitals excellence — fast load times, smooth interactivity, and visual stability.
-5. **Ownership**: Clients receive full ownership of their codebase. No vendor lock-in, no recurring platform fees.
-6. **Rapid Delivery**: Most projects delivered within 15 business days, with 24/7 support.
+- Interface: React, Next.js, Astro, Vue, Angular, TypeScript, JavaScript, Tailwind CSS, HTML, CSS
+- Server: Node.js, .NET, Java, Scala, Python, PHP, REST APIs, GraphQL
+- Data: PostgreSQL, MongoDB, Firebase
+- Payments: Stripe, PayPal, Klarna
+- Infrastructure: Vercel, Google Cloud, AWS, Docker
 
-## Contact
+## Guides and work
 
-- Website: https://studiofaraj.it
-- Email: info@studiofaraj.it
-- Phone: +39 320 222 3322
-- Location: Via Ludovico Ariosto 42, 35128 Padova (PD), Veneto, Italy
-- Languages: Italian, English
-
-## Links
-
-- [Services](https://studiofaraj.it/it/servizi)
-- [Web Development](https://studiofaraj.it/it/servizi/sviluppo-web)
-- [E-Commerce](https://studiofaraj.it/it/servizi/e-commerce)
-- [UI/UX Design](https://studiofaraj.it/it/servizi/design-ui-ux)
-- [SEO & Marketing](https://studiofaraj.it/it/servizi/seo-marketing)
-- [AI & Automation](https://studiofaraj.it/it/servizi/ai-automazione)
-- [Hosting & Cloud](https://studiofaraj.it/it/servizi/hosting-cloud)
-- [Maintenance](https://studiofaraj.it/it/servizi/manutenzione)
-- [Consulting](https://studiofaraj.it/it/servizi/consulenza)
-- [Projects](https://studiofaraj.it/it/projects)
-- [Blog](https://studiofaraj.it/it/blog)
-- [About Us](https://studiofaraj.it/it/chi-siamo)
-- [Contact](https://studiofaraj.it/it/contatti)
+- [How much does a website cost?](https://studiofaraj.it/it/quanto-costa-un-sito-web) (Italian)
+- [From idea to product](https://studiofaraj.it/it/dall-idea-al-progetto) (Italian)
+- [Projects](https://studiofaraj.it/it/projects): case studies of published work.
+- [Blog](https://studiofaraj.it/it/blog): articles on websites, SEO, performance and AI search (Italian).
+- [About](https://studiofaraj.it/it/chi-siamo)
 - [FAQ](https://studiofaraj.it/it/faq)
+
+## Optional
+
+- [Company pages](https://studiofaraj.it/it/pagine-aziendali): a public page for a business at studiofaraj.it/name, €4.99 a month or €49.99 a year, for businesses with a VAT number. Outbound links on these pages are marked rel="sponsored".
+- [Privacy](https://studiofaraj.it/it/privacy), [Cookies](https://studiofaraj.it/it/cookie), [Terms](https://studiofaraj.it/it/terms)

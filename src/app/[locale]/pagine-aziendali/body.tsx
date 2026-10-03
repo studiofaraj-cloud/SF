@@ -20,6 +20,8 @@ import {
   Code2,
   Gauge,
   ShieldCheck,
+  CreditCard,
+  Gift,
 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -137,10 +139,10 @@ export function PaginaAziendaliBody({ lang }: { lang: Lang }) {
                 <Zap className="h-4 w-4 text-primary" /> {pick('heroFeat1', lang)}
               </span>
               <span className="flex items-center gap-1.5">
-                <Search className="h-4 w-4 text-primary" /> {pick('heroFeat2', lang)}
+                <CreditCard aria-hidden className="h-4 w-4 text-primary" /> {pick('heroFeat2', lang)}
               </span>
               <span className="flex items-center gap-1.5">
-                <ShieldCheck className="h-4 w-4 text-primary" /> {pick('heroFeat3', lang)}
+                <Gift aria-hidden className="h-4 w-4 text-primary" /> {pick('heroFeat3', lang)}
               </span>
             </div>
           </div>

@@ -2,13 +2,43 @@ import { siteConfig } from '@/lib/seo';
 
 export const dynamic = 'force-static';
 
+/*
+ * One set of rules for every crawler. Search engines and the AI assistants'
+ * crawlers are named so it is explicit that they are welcome: ChatGPT,
+ * Perplexity, Claude, Gemini and Apple answer from what their crawlers read,
+ * and Bing's index also feeds ChatGPT search and Copilot. A crawler that
+ * finds its own name uses only that group, so they all share this one group
+ * (RFC 9309 allows several user-agent lines per group) and can't drift apart.
+ *
+ * The client hub stays crawlable on purpose: its pages say noindex, and a
+ * crawler has to fetch a page to read that.
+ */
+const AGENTS = [
+  '*',
+  // Search engines
+  'Googlebot',
+  'Bingbot',
+  'Applebot',
+  'DuckDuckBot',
+  // AI search and assistants
+  'OAI-SearchBot',
+  'ChatGPT-User',
+  'GPTBot',
+  'PerplexityBot',
+  'Perplexity-User',
+  'ClaudeBot',
+  'Claude-SearchBot',
+  'Claude-User',
+  'Google-Extended',
+  'Applebot-Extended',
+  'CCBot',
+];
+
 export function GET() {
-  const siteUrl = siteConfig.url;
-
   const robotsTxt = `# Studio Faraj - robots.txt
-# https://studiofaraj.it
+# ${siteConfig.url}
 
-User-agent: *
+${AGENTS.map((a) => `User-agent: ${a}`).join('\n')}
 Allow: /
 Disallow: /admin/
 Disallow: /api/
@@ -18,69 +48,12 @@ Disallow: /*?utm_*
 Disallow: /*?ref=*
 Disallow: /*?fbclid=*
 
-# Allow important paths explicitly
-Allow: /it/
-Allow: /en/
-Allow: /blog/
-Allow: /projects/
-Allow: /servizi/
-Allow: /chi-siamo
-Allow: /contatti
-Allow: /faq
-Allow: /privacy
-Allow: /cookie
-Allow: /terms
-
-# Google-specific directives
-User-agent: Googlebot
-Allow: /
-Disallow: /admin/
-Disallow: /api/
-
-User-agent: Googlebot-Image
-Allow: /assets/
-Allow: /_next/image
-
-# Bing-specific directives
-User-agent: Bingbot
-Allow: /
-Disallow: /admin/
-Disallow: /api/
-Crawl-delay: 1
-
-# Allow AI crawlers to read public content (so they can recommend us)
-User-agent: GPTBot
-Allow: /
-Disallow: /admin/
-Disallow: /api/
-
-User-agent: ChatGPT-User
-Allow: /
-Disallow: /admin/
-Disallow: /api/
-
-User-agent: anthropic-ai
-Allow: /
-Disallow: /admin/
-Disallow: /api/
-
-User-agent: Google-Extended
-Allow: /
-Disallow: /admin/
-Disallow: /api/
-
-User-agent: CCBot
-Allow: /
-Disallow: /admin/
-Disallow: /api/
-
-# Sitemaps
-Sitemap: ${siteUrl}/sitemap.xml
+Sitemap: ${siteConfig.url}/sitemap.xml
 `;
 
   return new Response(robotsTxt, {
     headers: {
-      'Content-Type': 'text/plain',
+      'Content-Type': 'text/plain; charset=utf-8',
     },
   });
 }

@@ -8,13 +8,14 @@ export type Lang = 'it' | 'en';
 
 export const t = {
   // SEO
+  // The SEO helper appends "| Studio Faraj" to the title.
   metaTitle: {
-    it: 'Pagine Aziendali Online — Presenza Google in 5 Minuti | Studio Faraj',
-    en: 'Online Business Pages — Google Presence in 5 Minutes | Studio Faraj',
+    it: 'Pagina aziendale online per la tua attività',
+    en: 'An online company page for your business',
   },
   metaDescription: {
-    it: 'Crea la pagina pubblica della tua azienda su studiofaraj.it/tuonome. Ottimizzata per Google, indicizzata automaticamente, condivisibile. Ideale per chi non ha un sito o vuole più backlink SEO.',
-    en: 'Create your business public page at studiofaraj.it/yourname. SEO-optimized, auto-indexed by Google, instantly shareable. Perfect for those without a website or seeking more backlinks.',
+    it: 'La pagina della tua azienda su studiofaraj.it/tuonome: servizi, contatti e social in una pagina curata. 4,99 € al mese, primo mese gratuito.',
+    en: 'Your company’s page at studiofaraj.it/yourname: services, contacts and social profiles on one polished page. €4.99 a month, first month free.',
   },
   // Hero
   badge: { it: 'Nuova area aziende', en: 'New business area' },
@@ -23,35 +24,35 @@ export const t = {
     en: 'Show your business online — even without a website',
   },
   heroSub: {
-    it: 'Una pagina pubblica curata al tuo indirizzo personale studiofaraj.it/tuoslug. Ottimizzata per Google, pronta in 5 minuti. Trovati dai clienti quando cercano i tuoi servizi nella tua zona.',
-    en: 'A polished public page at your own URL studiofaraj.it/yourslug. SEO-optimized, ready in 5 minutes. Get found by customers searching for your services in your area.',
+    it: 'Una pagina pubblica curata al tuo indirizzo studiofaraj.it/tuonome, con servizi, contatti e profili social. La compili in pochi minuti dall’area clienti e la aggiorni quando vuoi.',
+    en: 'A polished public page at your own address, studiofaraj.it/yourname, with your services, contacts and social profiles. Fill it in within minutes from the client area and update it whenever you like.',
   },
   ctaPrimary: { it: 'Inizia ora', en: 'Get started' },
   ctaSecondary: { it: 'Vedi un esempio', en: 'See an example' },
-  heroFeat1: { it: 'Online in 5 minuti', en: 'Live in 5 minutes' },
-  heroFeat2: { it: 'Indicizzata da Google', en: 'Indexed by Google' },
-  heroFeat3: { it: 'GDPR-compliant', en: 'GDPR-compliant' },
+  heroFeat1: { it: 'Si compila in pochi minuti', en: 'Filled in within minutes' },
+  heroFeat2: { it: '4,99 € al mese', en: '€4.99 a month' },
+  heroFeat3: { it: 'Primo mese gratuito', en: 'First month free' },
 
   // For who section
   whoTitle: { it: 'Per chi è', en: "Who it's for" },
   whoSub: {
-    it: 'Pensata per imprenditori, professionisti e PMI italiane che vogliono essere trovati online.',
-    en: 'Built for entrepreneurs, freelancers and Italian SMEs who want to be found online.',
+    it: 'Per imprese, professionisti e PMI con Partita IVA che vogliono una presenza online curata.',
+    en: 'For businesses, freelancers and SMEs with a VAT number who want a polished presence online.',
   },
   who1Title: { it: 'Non hai un sito web', en: "You don't have a website" },
   who1Desc: {
-    it: "Hai un'azienda solida ma non ti sei mai fatto un sito. Una pagina pulita e professionale, pronta subito, indicizzata da Google entro 24 ore. Niente WordPress, niente hosting da gestire.",
-    en: "You run a solid business but never built a website. A clean professional page, ready now, indexed by Google within 24 hours. No WordPress, no hosting to manage.",
+    it: "Hai un'azienda solida ma non ti sei mai fatto un sito. Una pagina pulita e professionale, pronta in pochi minuti, da condividere con i clienti. Niente WordPress, niente hosting da gestire.",
+    en: "You run a solid business but never built a website. A clean, professional page, ready in minutes, to share with your customers. No WordPress, no hosting to manage.",
   },
-  who2Title: { it: 'Hai un sito ma vuoi più SEO', en: 'You have a site but want more SEO' },
+  who2Title: { it: 'Hai già un sito', en: 'You already have a website' },
   who2Desc: {
-    it: 'Aggiungi un backlink di qualità da studiofaraj.it (dominio con autorità verificata). Più links rilevanti = più ranking. Linka direttamente al tuo sito web dal profilo.',
-    en: 'Add a quality backlink from studiofaraj.it (an established authoritative domain). More relevant links = better ranking. Direct link to your own website from your profile.',
+    it: 'Un punto in più dove i clienti ti trovano: dalla pagina arrivano al tuo sito, ai social e ai tuoi contatti con un tocco.',
+    en: 'One more place where customers find you: from the page they reach your website, social profiles and contacts in one tap.',
   },
   who3Title: { it: 'Vuoi presenza locale', en: 'You want local presence' },
   who3Desc: {
-    it: 'Quando qualcuno cerca i tuoi servizi nella tua città su Google, vuoi essere tra i primi risultati. La pagina è ottimizzata con Schema.org Organization, OpenGraph, e indirizzo geografico.',
-    en: "When someone searches your services in your city on Google, you want to appear in the top results. Each page ships with Schema.org Organization markup, OpenGraph, and geo address.",
+    it: 'La pagina dice chiaramente cosa fai e dove sei, con i dati strutturati (Schema.org) che aiutano i motori di ricerca a capire la tua attività e un’anteprima curata quando la condividi.',
+    en: 'The page says clearly what you do and where you are, with structured data (Schema.org) that helps search engines understand your business, and a tidy preview when you share it.',
   },
 
   // What shows
@@ -117,56 +118,58 @@ export const t = {
   techBadge: { it: 'Sotto il cofano', en: 'Under the hood' },
   techTitle: { it: 'Tecnologia che fa ranking', en: 'Technology that ranks' },
   techSub: {
-    it: 'Costruita con Next.js 16, ottimizzata per Core Web Vitals e Search Engine. Niente plugin lenti, niente template gonfi.',
-    en: 'Built with Next.js 16, optimized for Core Web Vitals and search engines. No bloated plugins, no heavy themes.',
+    it: 'Costruita con Next.js, pensata per la velocità e per i motori di ricerca. Niente plugin lenti, niente template gonfi.',
+    en: 'Built with Next.js, designed for speed and for search engines. No bloated plugins, no heavy themes.',
   },
-  tech1Title: { it: 'Next.js 16 + Turbopack', en: 'Next.js 16 + Turbopack' },
+  tech1Title: { it: 'Rendering lato server', en: 'Server-side rendering' },
   tech1Desc: {
-    it: "Rendering server-side, edge cache, immagini ottimizzate automaticamente. La pagina carica in meno di 1 secondo da qualsiasi parte d'Italia.",
-    en: 'Server-side rendering, edge cache, auto-optimized images. The page loads in under 1 second across Europe.',
+    it: 'La pagina arriva già pronta al browser, con cache e immagini ottimizzate automaticamente: si apre veloce anche da telefono.',
+    en: 'The page reaches the browser ready to show, with caching and automatically optimised images: it opens fast on phones too.',
   },
-  tech2Title: { it: 'Core Web Vitals ottimi', en: 'Excellent Core Web Vitals' },
+  tech2Title: { it: 'Attenzione ai Core Web Vitals', en: 'Built for Core Web Vitals' },
   tech2Desc: {
-    it: 'LCP < 2.5s, CLS < 0.1, INP < 200ms. Google premia le pagine veloci con migliore ranking. Le pagine aziendali superano i benchmark Google.',
-    en: "LCP < 2.5s, CLS < 0.1, INP < 200ms. Google rewards fast pages with better ranking. Our company pages exceed Google's benchmarks.",
+    it: 'Poco codice, niente plugin, immagini leggere: la pagina è costruita tenendo d’occhio le metriche di velocità e stabilità che Google misura.',
+    en: 'Little code, no plugins, light images: the page is built with an eye on the speed and stability metrics Google measures.',
   },
-  tech3Title: { it: 'Indicizzazione automatica', en: 'Automatic indexing' },
+  tech3Title: { it: 'Nella sitemap del sito', en: 'In the site’s sitemap' },
   tech3Desc: {
-    it: 'Aggiunta automatica al sitemap.xml di studiofaraj.it. Google scopre la tua pagina entro 24-48 ore dalla pubblicazione, senza dover fare nulla.',
-    en: "Auto-added to studiofaraj.it's sitemap.xml. Google discovers your page within 24-48 hours of publication, no setup required.",
+    it: 'Quando pubblichi, la pagina entra nella sitemap di studiofaraj.it e viene segnalata ai motori di ricerca. Quando mostrarla nei risultati lo decidono loro.',
+    en: 'When you publish, the page joins the studiofaraj.it sitemap and is announced to search engines. When to show it in results is up to them.',
   },
-  tech4Title: { it: 'Schema.org strutturato', en: 'Schema.org structured data' },
+  tech4Title: { it: 'Dati strutturati', en: 'Structured data' },
   tech4Desc: {
-    it: 'Ogni pagina include JSON-LD Organization schema: Google capisce esattamente cosa offri, dove sei, come contattarti. Risultati rich snippet.',
-    en: 'Every page ships with JSON-LD Organization schema: Google knows exactly what you offer, where you are, how to reach you. Rich snippet results.',
+    it: 'Ogni pagina include i dati Schema.org dell’azienda: cosa offri, dove sei e come contattarti, in un formato che i motori di ricerca leggono.',
+    en: 'Every page includes your company’s Schema.org data: what you offer, where you are and how to reach you, in a format search engines read.',
   },
 
   // FAQ
   faqTitle: { it: 'Domande frequenti', en: 'Frequently asked questions' },
   faqs: {
     it: [
-      { q: 'Cosa serve per iniziare?', a: 'Solo i tuoi dati aziendali base: ragione sociale, Partita IVA, qualche servizio che offri. Bastano 5-10 minuti per compilare tutto. Logo e immagine hero sono opzionali ma consigliati.' },
-      { q: 'Quando appare la mia pagina su Google?', a: 'Subito dopo la pubblicazione la pagina è online e accessibile via URL. Google la indicizza entro 24-48 ore in media (perché la sitemap di studiofaraj.it è già nota a Google e viene aggiornata in tempo reale).' },
-      { q: 'Posso modificare la mia pagina quando voglio?', a: 'Sì, sempre, illimitate volte. Aggiorni qualsiasi campo dall\'area riservata e la modifica è online entro secondi.' },
-      { q: 'Funziona se ho già un sito web?', a: 'Sì, anzi è un vantaggio: aggiungi un backlink dofollow dal nostro dominio al tuo sito, migliorando il tuo SEO. Più domini di autorità che linkano al tuo, meglio è.' },
-      { q: 'Il mio dominio sarà studiofaraj.it/qualcosa?', a: 'Esatto, scegli tu lo slug — per esempio studiofaraj.it/acme-srl. Lo slug deve essere unico, breve, e leggibile.' },
-      { q: 'Vedo statistiche di visualizzazione?', a: 'Per ora no — è in arrivo. Nel frattempo puoi usare Google Search Console verificando il dominio studiofaraj.it tramite noi.' },
+      { q: 'Quanto costa?', a: '4,99 € al mese oppure 49,99 € all’anno. La prima attivazione include 30 giorni di prova gratuita: il pagamento parte alla fine della prova. Puoi disdire in qualsiasi momento dall’area clienti.' },
+      { q: 'Cosa serve per iniziare?', a: 'Un account gratuito nell’area clienti e i dati base dell’azienda: ragione sociale, Partita IVA, qualche servizio che offri e i contatti. Il servizio è riservato alle aziende con Partita IVA. Logo e immagine di copertina sono facoltativi ma consigliati.' },
+      { q: 'Quando appare la mia pagina su Google?', a: 'Appena pubblicata la pagina è online, raggiungibile dal suo indirizzo, ed entra nella sitemap di studiofaraj.it. Se e quando mostrarla nei risultati lo decide Google: non possiamo garantire tempi né posizioni.' },
+      { q: 'Posso modificare la mia pagina quando voglio?', a: 'Sì, tutte le volte che vuoi, dall’area clienti. Le modifiche sono online appena salvi.' },
+      { q: 'Funziona se ho già un sito web?', a: 'Sì: dalla pagina i clienti arrivano al tuo sito, ai social e ai contatti. Essendo un servizio a pagamento, i link verso l’esterno sono segnalati ai motori di ricerca come link sponsorizzati (rel="sponsored"), come chiedono le regole di Google.' },
+      { q: 'Il mio indirizzo sarà studiofaraj.it/qualcosa?', a: 'Esatto, scegli tu lo slug — per esempio studiofaraj.it/acme-srl. Deve essere unico, breve e leggibile.' },
+      { q: 'Vedo statistiche di visualizzazione?', a: 'Per ora no.' },
     ],
     en: [
-      { q: 'What do I need to get started?', a: 'Just basic business info: company name, VAT number, a few services. 5-10 minutes to fill in everything. Logo and hero image are optional but recommended.' },
-      { q: 'When does my page appear on Google?', a: "Right after publication the page is live and accessible by URL. Google indexes it within 24-48 hours on average (because studiofaraj.it's sitemap is well-known to Google and updates in real time)." },
-      { q: 'Can I edit my page anytime?', a: 'Yes, anytime, unlimited edits. Update any field from your private area and the change is live in seconds.' },
-      { q: 'Does it work if I already have a website?', a: "Yes — actually it's a plus: add a dofollow backlink from our domain to your site, boosting your SEO. The more authoritative domains link to you, the better." },
-      { q: 'Will my URL be studiofaraj.it/something?', a: 'Exactly — you choose the slug, e.g. studiofaraj.it/acme-ltd. The slug must be unique, short, and readable.' },
-      { q: 'Do I see view stats?', a: 'Not yet — coming soon. Meanwhile you can use Google Search Console by verifying studiofaraj.it through us.' },
+      { q: 'How much does it cost?', a: '€4.99 a month or €49.99 a year. The first activation includes a 30-day free trial: payment starts when the trial ends. You can cancel at any time from the client area.' },
+      { q: 'What do I need to get started?', a: 'A free client-area account and your basic business details: company name, VAT number, a few services you offer and your contacts. The service is for businesses with a VAT number. A logo and cover image are optional but recommended.' },
+      { q: 'When does my page appear on Google?', a: 'As soon as it is published the page is online at its address and joins the studiofaraj.it sitemap. Whether and when it shows in results is up to Google: we cannot guarantee timing or rankings.' },
+      { q: 'Can I edit my page anytime?', a: 'Yes, as often as you like, from the client area. Changes go live as soon as you save.' },
+      { q: 'Does it work if I already have a website?', a: 'Yes: from the page customers reach your website, social profiles and contacts. As this is a paid service, outbound links are marked to search engines as sponsored (rel="sponsored"), as Google’s rules require.' },
+      { q: 'Will my address be studiofaraj.it/something?', a: 'Exactly — you choose the slug, e.g. studiofaraj.it/acme-ltd. It must be unique, short and readable.' },
+      { q: 'Do I see view stats?', a: 'Not yet.' },
     ],
   },
 
   // Final CTA
-  finalTitle: { it: 'Pronto a essere trovato su Google?', en: 'Ready to be found on Google?' },
+  finalTitle: { it: 'Pronto a mostrare la tua azienda online?', en: 'Ready to show your business online?' },
   finalSub: {
-    it: 'Crea la tua pagina aziendale ora. La compilazione dura 5 minuti.',
-    en: 'Create your business page now. Filling it takes 5 minutes.',
+    it: 'Crea la tua pagina aziendale: si compila in pochi minuti e la prima attivazione include 30 giorni gratuiti.',
+    en: 'Create your company page: it takes minutes to fill in, and the first activation includes 30 free days.',
   },
 };
 

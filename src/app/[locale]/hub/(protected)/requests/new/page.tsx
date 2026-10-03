@@ -103,12 +103,13 @@ function NewRequestForm() {
 
   const insertGuide = () => {
     setBrief((b) => (b.trim() ? `${b.trimEnd()}\n\n${t.guideText}` : t.guideText));
-    requestAnimationFrame(() => {
+    setTimeout(() => {
       const el = briefRef.current;
       if (!el) return;
       el.focus();
-      // Cursor after the first prompt, ready to type.
-      const at = el.value.indexOf(': ') + 2;
+      // Cursor after the template's first prompt, ready to type (the
+      // template is always the end of the text).
+      const at = el.value.length - t.guideText.length + t.guideText.indexOf(': ') + 2;
       el.setSelectionRange(at, at);
     });
   };
@@ -174,7 +175,7 @@ function NewRequestForm() {
 
         <div role="radiogroup" aria-labelledby="service-label" aria-describedby={errors.type ? 'type-error' : undefined}>
           <SectionLabel index="01" id="service-label">{t.service}</SectionLabel>
-          <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
+          <div className="mt-4 grid grid-cols-2 gap-2">
             {services.map((s) => {
               const on = type === s.value;
               return (
@@ -182,7 +183,7 @@ function NewRequestForm() {
                   key={s.value}
                   className={cn(
                     CHIP,
-                    'cursor-pointer justify-between py-2.5',
+                    'cursor-pointer justify-between gap-2 py-2.5 pr-3 leading-tight',
                     on ? 'border-primary bg-primary/5 text-foreground' : 'border-input hover:border-foreground/30',
                   )}
                 >
