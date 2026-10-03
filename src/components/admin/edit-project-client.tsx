@@ -205,7 +205,7 @@ export default function EditProjectClient({ slug }: { slug: string }) {
               <CardTitle>Dettagli Progetto</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <SlugInput title={title} initialSlug={project.slug} onSlugChange={setSlug} />
+              <SlugInput title={title} initialSlug={project.slug} onSlugChange={setSlug} basePath="/projects/" />
               
               <div className="space-y-2">
                 <Label htmlFor="title">Titolo</Label>

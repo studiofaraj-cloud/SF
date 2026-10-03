@@ -1,22 +1,9 @@
-import { generateHTML } from '@tiptap/html';
-import StarterKit from '@tiptap/starter-kit';
-import Link from '@tiptap/extension-link';
-import Image from '@tiptap/extension-image';
-import Underline from '@tiptap/extension-underline';
-import { Table, TableRow, TableHeader, TableCell } from '@tiptap/extension-table';
-
-// Extensions used to (de)serialise stored content. Must stay in sync with the
-// nodes the editor (rich-text-editor.tsx) can produce so JSON round-trips.
-const CONTENT_EXTENSIONS = [
-  StarterKit,
-  Underline,
-  Link,
-  Image,
-  Table,
-  TableRow,
-  TableHeader,
-  TableCell,
-];
+/**
+ * Small helpers for stored rich text (Tiptap JSON): plain text, word count,
+ * reading time. Dependency-free on purpose: the public blog pages use them
+ * for reading time, and must not load the editor to do it. Cleaning a
+ * document lives in blog-content.ts.
+ */
 
 // Normalize JSON saved by older editor versions to valid TipTap/ProseMirror JSON.
 // Handles two legacy quirks from the previous custom contentEditable editor:
@@ -51,23 +38,6 @@ export function normalizeTiptapJson(node: any): any {
   }
 
   return node;
-}
-
-export function tiptapJsonToHtml(json: string | object): string {
-  try {
-    let content = typeof json === 'string' ? JSON.parse(json) : json;
-    // Deep clone to avoid mutating the original
-    content = JSON.parse(JSON.stringify(content));
-    // Normalize old format to proper TipTap JSON
-    content = normalizeTiptapJson(content);
-
-    const html = generateHTML(content, CONTENT_EXTENSIONS);
-
-    return html;
-  } catch (error) {
-    console.error('Error converting Tiptap JSON to HTML:', error);
-    return '';
-  }
 }
 
 export function tiptapJsonToPlainText(json: string | object): string {

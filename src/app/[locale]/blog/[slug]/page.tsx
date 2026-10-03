@@ -21,7 +21,8 @@ import type { Blog } from '@/lib/definitions';
 import { setRequestLocale } from 'next-intl/server';
 import { formatPostDate, readingMinutes, toListItem } from '@/lib/blog-list';
 import { getLocalizedPath } from '@/lib/i18n-helpers';
-import { articleOutline, parseTiptap } from '@/lib/tiptap-outline';
+import { cleanBlogDoc, type JSONNode } from '@/lib/blog-content';
+import { articleOutline, parseTiptap, type TiptapDocument } from '@/lib/tiptap-outline';
 
 const MONO = 'font-mono text-[11px] uppercase tracking-[0.16em]';
 
@@ -139,7 +140,9 @@ export default async function BlogPostPage({ params }: Props) {
 
   const minutes = readingMinutes(blog.content);
   const date = formatPostDate(blog.createdAt, lang);
-  const doc = parseTiptap(blog.content);
+  // Same clean-up as the renderer, so the contents links match the headings shown.
+  const parsed = parseTiptap(blog.content);
+  const doc = parsed ? (cleanBlogDoc(parsed as JSONNode).doc as TiptapDocument) : null;
   const outline = doc ? articleOutline(doc, blog.title) : [];
   const postUrl = `${siteConfig.url}/${lang}/blog/${slug}`;
 

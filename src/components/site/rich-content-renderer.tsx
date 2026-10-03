@@ -1,6 +1,7 @@
 import React from 'react';
 import { FirebaseImage } from '@/components/ui/firebase-image';
 import { cn } from '@/lib/utils';
+import { cleanBlogDoc, type JSONNode } from '@/lib/blog-content';
 import { headingIds, leadingTitleHeading, type TiptapDocument, type TiptapNode } from '@/lib/tiptap-outline';
 
 type RichContentRendererProps = {
@@ -38,6 +39,32 @@ const ARTICLE = {
   li: 'pl-1 text-[1.0625rem] leading-[1.75] text-foreground/80',
   code: 'rounded-md bg-muted px-1.5 py-0.5 font-mono text-[0.9em] text-foreground',
   link: 'font-medium text-primary underline decoration-primary/30 underline-offset-4 transition-colors hover:decoration-primary',
+};
+
+/** Links to the site open in the same tab; others in a new one. */
+function linkProps(href: string): { href: string; target?: string; rel?: string } {
+  const internal = /^(\/|#|mailto:|tel:)/i.test(href) || /^https?:\/\/(www\.)?studiofaraj\.it(\/|$|[?#])/i.test(href);
+  return internal ? { href } : { href, target: '_blank', rel: 'noopener noreferrer' };
+}
+
+/**
+ * Hosts the Next image optimiser accepts (images.remotePatterns in
+ * next.config.ts). An image from anywhere else is shown as it is: optimising
+ * it would throw and take the page down.
+ */
+function optimizable(src: string): boolean {
+  if (src.startsWith('/')) return true;
+  const host = src.match(/^https?:\/\/([^/?#]+)/i)?.[1]?.toLowerCase() ?? '';
+  return (
+    ['firebasestorage.googleapis.com', 'storage.googleapis.com', 'placehold.co', 'images.unsplash.com', 'picsum.photos'].includes(host) ||
+    host.endsWith('.firebasestorage.app')
+  );
+}
+
+const CALLOUT: Record<'info' | 'tip' | 'warning', { box: string; label: string; name: string }> = {
+  info: { box: 'border-primary/25 bg-primary/[0.06]', label: 'text-primary', name: 'Nota' },
+  tip: { box: 'border-emerald-500/30 bg-emerald-500/[0.07]', label: 'text-emerald-700 dark:text-emerald-300', name: 'Consiglio' },
+  warning: { box: 'border-amber-500/35 bg-amber-500/[0.08]', label: 'text-amber-700 dark:text-amber-300', name: 'Attenzione' },
 };
 
 function isJSONContent(content: string | TiptapDocument): content is TiptapDocument {
@@ -95,9 +122,7 @@ function renderText(node: TiptapNode, ctx: Ctx): React.ReactNode {
         case 'link':
           content = (
             <a
-              href={mark.attrs?.href}
-              target={mark.attrs?.target || '_blank'}
-              rel={mark.attrs?.target === '_blank' ? 'noopener noreferrer' : undefined}
+              {...linkProps(String(mark.attrs?.href ?? ''))}
               className={ctx.article ? ARTICLE.link : 'text-primary hover:text-primary/80 underline underline-offset-4 decoration-primary/30 hover:decoration-primary/60 transition-colors font-medium'}
             >
               {content}
@@ -288,63 +313,91 @@ function renderNode(node: TiptapNode, index: number, insideParagraph: boolean, c
             floatClasses[align] || alignClasses[align],
           )}
         >
-          <div className={ctx.article ? 'relative w-full overflow-clip rounded-2xl bg-muted ring-1 ring-border' : 'relative w-full overflow-hidden rounded-xl holographic-card neon-border group'}>
-            <div className="relative aspect-video w-full">
-              <FirebaseImage
-                src={src}
-                alt={alt}
-                fill
-                className={ctx.article ? 'object-cover' : 'object-cover transition-transform duration-700 group-hover:scale-105'}
-                title={title}
-                sizes={
-                  size === 'full'
-                    ? '(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 800px'
-                    : size === 'medium'
-                      ? '(max-width: 768px) 100vw, 600px'
-                      : '(max-width: 768px) 100vw, 400px'
-                }
-              />
-              {!ctx.article && <div className="absolute inset-0 bg-gradient-to-t from-background/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />}
+          {ctx.article ? (
+            // Articles show the whole image at its own proportions (screenshots, charts).
+            <FirebaseImage
+              src={src}
+              alt={alt}
+              width={0}
+              height={0}
+              unoptimized={!optimizable(src)}
+              sizes={size === 'full' ? '(max-width: 768px) 100vw, 720px' : size === 'medium' ? '(max-width: 768px) 100vw, 540px' : '(max-width: 768px) 100vw, 360px'}
+              className="h-auto w-full rounded-2xl bg-muted ring-1 ring-border"
+            />
+          ) : (
+            <div className="relative w-full overflow-hidden rounded-xl holographic-card neon-border group">
+              <div className="relative aspect-video w-full">
+                <FirebaseImage
+                  src={src}
+                  alt={alt}
+                  fill
+                  unoptimized={!optimizable(src)}
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  title={title}
+                  sizes={
+                    size === 'full'
+                      ? '(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 800px'
+                      : size === 'medium'
+                        ? '(max-width: 768px) 100vw, 600px'
+                        : '(max-width: 768px) 100vw, 400px'
+                  }
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-background/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              </div>
             </div>
-          </div>
-          {title && (
-            <figcaption className="text-sm text-center text-muted-foreground/60 mt-3 italic flex items-center justify-center gap-2">
-              <span className="h-px w-4 bg-primary/30" />
-              {title}
-              <span className="h-px w-4 bg-primary/30" />
-            </figcaption>
           )}
+          {title &&
+            (ctx.article ? (
+              <figcaption className="mt-3 text-center text-sm text-muted-foreground">{title}</figcaption>
+            ) : (
+              <figcaption className="text-sm text-center text-muted-foreground/60 mt-3 italic flex items-center justify-center gap-2">
+                <span className="h-px w-4 bg-primary/30" />
+                {title}
+                <span className="h-px w-4 bg-primary/30" />
+              </figcaption>
+            ))}
         </figure>
+      );
+    }
+
+    case 'callout': {
+      const tone = node.attrs?.tone === 'tip' || node.attrs?.tone === 'warning' ? node.attrs.tone : 'info';
+      const style = CALLOUT[tone as keyof typeof CALLOUT];
+      return (
+        <aside key={key} className={cn('my-8 rounded-2xl border px-5 py-4 md:px-6 md:py-5 [&>*:last-child]:mb-0', style.box)}>
+          <p className={cn('mb-2 font-mono text-[11px] font-semibold uppercase tracking-[0.14em]', style.label)}>{style.name}</p>
+          {node.content?.map((child, i) => renderNode(child, i, false, ctx))}
+        </aside>
       );
     }
 
     case 'table':
       return (
-        <div key={key} className="overflow-x-auto my-6">
-          <table className="w-full border-collapse text-sm">
-            {node.content?.map((child, i) => renderNode(child, i, false, ctx))}
+        <div key={key} className={ctx.article ? 'my-8 overflow-x-auto rounded-2xl ring-1 ring-border' : 'overflow-x-auto my-6'}>
+          <table className={ctx.article ? 'w-full border-collapse text-left text-[15px] leading-snug' : 'w-full border-collapse text-sm'}>
+            <tbody>{node.content?.map((child, i) => renderNode(child, i, false, ctx))}</tbody>
           </table>
         </div>
       );
 
     case 'tableRow':
       return (
-        <tr key={key} className="border-b border-border/40">
+        <tr key={key} className={ctx.article ? 'border-t border-border first:border-t-0' : 'border-b border-border/40'}>
           {node.content?.map((child, i) => renderNode(child, i, false, ctx))}
         </tr>
       );
 
     case 'tableHeader':
       return (
-        <th key={key} className="px-4 py-2 text-left font-semibold text-foreground bg-primary/5 border border-border/30">
-          {node.content?.map((child, i) => renderNode(child, i, true, ctx))}
+        <th key={key} className={ctx.article ? 'bg-muted/60 px-4 py-3 align-top font-semibold text-foreground' : 'px-4 py-2 text-left font-semibold text-foreground bg-primary/5 border border-border/30'}>
+          {node.content?.map((child, i) => renderNode(child, i, true, ctx.article ? { ...ctx, inList: true } : ctx))}
         </th>
       );
 
     case 'tableCell':
       return (
-        <td key={key} className="px-4 py-2 text-muted-foreground border border-border/30">
-          {node.content?.map((child, i) => renderNode(child, i, true, ctx))}
+        <td key={key} className={ctx.article ? 'px-4 py-3 align-top text-foreground/80' : 'px-4 py-2 text-muted-foreground border border-border/30'}>
+          {node.content?.map((child, i) => renderNode(child, i, true, ctx.article ? { ...ctx, inList: true } : ctx))}
         </td>
       );
 
@@ -367,7 +420,11 @@ export function RichContentRenderer({ content, className, variant = 'default', t
   if (!content) return null;
 
   if (isJSONContent(content)) {
-    const doc = typeof content === 'string' ? JSON.parse(content) as TiptapDocument : content;
+    const raw = typeof content === 'string' ? JSON.parse(content) as TiptapDocument : content;
+    // Articles are cleaned with the same rules as the editor and the save
+    // action, so older posts display like new ones (headings h2–h4, real
+    // lists, no stray fragments).
+    const doc = variant === 'article' ? (cleanBlogDoc(raw as JSONNode).doc as TiptapDocument) : raw;
     const ctx: Ctx = {
       article: variant === 'article',
       ids: headingIds(doc),

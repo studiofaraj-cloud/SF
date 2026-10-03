@@ -2,7 +2,7 @@
 'use server';
 
 import { z } from 'zod';
-import { revalidatePath, revalidateTag, unstable_cache } from 'next/cache';
+import { revalidatePath, revalidateTag, unstable_cache, updateTag } from 'next/cache';
 import {
     createBlogData,
     updateBlogData,
@@ -41,6 +41,8 @@ import { after } from 'next/server';
 import { uploadFile, type ImageMetadata } from './storage';
 import { logError, getFirebaseErrorMessage } from './error-logger';
 import { notifyContentPublished } from './indexnow';
+import { cleanBlogContent } from './blog-content';
+import { tiptapJsonToPlainText } from './tiptap-utils';
 
 // Logout is now handled client-side in AdminHeader component using Firebase signOut
 // This function is kept for backwards compatibility but is no longer used
@@ -283,102 +285,28 @@ export async function getDashboardStatsAction() {
 }
 
 
+const SLUG_FORMAT = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
 const BlogSchema = z.object({
-    title: z.string().min(1, 'Title is required'),
-    slug: z.string().min(1, 'Slug is required'),
-    excerpt: z.string().min(1, 'Excerpt is required'),
-    content: z.string().min(1, 'Content is required'),
-    featuredImage: z.string().url('Must be a valid URL').optional().or(z.literal('')),
-    gallery: z.array(z.string().url('Must be a valid URL')).optional().default([]),
+    title: z.string().trim().min(1, 'Scrivi il titolo dell’articolo.'),
+    slug: z.string().trim().min(1, 'Manca l’indirizzo dell’articolo.').regex(SLUG_FORMAT, 'Usa solo lettere minuscole, numeri e trattini.'),
+    excerpt: z.string().trim().min(1, 'Scrivi un breve riassunto: compare nell’elenco del blog e su Google.'),
+    content: z.string().min(1, 'Scrivi il contenuto dell’articolo.'),
+    featuredImage: z.string().url('L’indirizzo dell’immagine non è valido.').optional().or(z.literal('')),
+    gallery: z.array(z.string().url('Indirizzo immagine non valido.')).optional().default([]),
     published: z.preprocess((val) => val === 'on' || val === true, z.boolean()),
-    author: z.string().optional().default('Studio Faraj Team'),
+    author: z.string().trim().optional().default('Studio Faraj'),
 });
 
-export async function createBlog(prevState: { message: string; errors?: any }, formData: FormData) {
-    
-    const validatedFields = BlogSchema.safeParse({
-      title: formData.get('title'),
-      slug: formData.get('slug'),
-      excerpt: formData.get('excerpt'),
-      content: formData.get('content'),
-      featuredImage: formData.get('featuredImage-url'),
-      gallery: formData.getAll('gallery[]'),
-      published: formData.get('published'),
-      author: formData.get('author') || 'Studio Faraj Team',
-    });
+type BlogFormResult = { message: string; errors?: Record<string, string[] | undefined> };
 
-    if (!validatedFields.success) {
-        return {
-            errors: validatedFields.error.flatten().fieldErrors,
-            message: 'Validazione fallita. Controlla i campi.',
-        };
-    }
-
-    const featuredImage = validatedFields.data.featuredImage;
-    if (featuredImage && !isValidImageUrl(featuredImage)) {
-        return {
-            errors: { featuredImage: ['URL immagine in evidenza non valido'] },
-            message: 'URL immagine in evidenza non valido.',
-        };
-    }
-
-    const validGalleryUrls = validateImageUrls(validatedFields.data.gallery || []);
-    if (validatedFields.data.gallery && validatedFields.data.gallery.length > 0 && validGalleryUrls.length === 0) {
-        return {
-            errors: { gallery: ['Nessun URL galleria valido fornito'] },
-            message: 'Gli URL della galleria non sono validi.',
-        };
-    }
-
-    try {
-        const blogData = {
-            ...validatedFields.data,
-            featuredImage: featuredImageValue(featuredImage, 'create'),
-            gallery: validGalleryUrls,
-        };
-
-        await createBlogData(blogData as any);
-    } catch (error) {
-        logError(error, {
-            action: 'createBlog',
-            additionalData: {
-                slug: validatedFields.data.slug,
-                title: validatedFields.data.title,
-            },
-        });
-        
-        const userMessage = getFirebaseErrorMessage(error);
-        return { message: userMessage, errors: {} };
-    }
-
-    // Invalidate data cache + page cache + sitemap
-    revalidateTag('blogs');
-    revalidatePath('/admin/blogs');
-    revalidatePath('/sitemap.xml');
-    revalidatePath('/sitemap-blog.xml');
-    for (const locale of ['it', 'en']) {
-        revalidatePath(`/${locale}`);
-        revalidatePath(`/${locale}/blog`);
-        if (validatedFields.data.slug) {
-            revalidateTag(`blog-${validatedFields.data.slug}`);
-            revalidatePath(`/${locale}/blog/${validatedFields.data.slug}`);
-        }
-    }
-
-    // Ping IndexNow (Bing/Yandex/etc.) after the response is sent so the
-    // publish action returns fast even if IndexNow is slow. Only fires when
-    // the post is actually live — drafts shouldn't be announced to crawlers.
-    if (validatedFields.data.published && validatedFields.data.slug) {
-        const slug = validatedFields.data.slug;
-        after(() => notifyContentPublished('blog', slug));
-    }
-
-    redirect('/admin/blogs');
-}
-
-export async function updateBlog(id: string, prevState: { message: string; errors?: any }, formData: FormData) {
-    
-    const validatedFields = BlogSchema.safeParse({
+/**
+ * Validate the blog form and clean the article body with the same rules the
+ * editor and the public page use (src/lib/blog-content.ts), so what is
+ * stored is already tidy. `id` is the post being edited (none when creating).
+ */
+async function readBlogForm(formData: FormData, id?: string) {
+    const validated = BlogSchema.safeParse({
         title: formData.get('title'),
         slug: formData.get('slug'),
         excerpt: formData.get('excerpt'),
@@ -386,73 +314,94 @@ export async function updateBlog(id: string, prevState: { message: string; error
         featuredImage: formData.get('featuredImage-url'),
         gallery: formData.getAll('gallery[]'),
         published: formData.get('published'),
-        author: formData.get('author') || 'Studio Faraj Team',
+        author: formData.get('author') || 'Studio Faraj',
     });
+    if (!validated.success) {
+        return { error: { errors: validated.error.flatten().fieldErrors, message: 'Controlla i campi segnati in rosso.' } satisfies BlogFormResult };
+    }
+    const data = validated.data;
 
-    if (!validatedFields.success) {
-        return {
-            errors: validatedFields.error.flatten().fieldErrors,
-            message: 'Validazione fallita. Controlla i campi.',
-        };
+    const cleaned = cleanBlogContent(data.content);
+    if (!cleaned) {
+        return { error: { errors: { content: ['Il contenuto non è leggibile: ricarica la pagina e riprova.'] }, message: 'Il contenuto non è leggibile.' } };
+    }
+    if (!tiptapJsonToPlainText(cleaned.json).trim()) {
+        return { error: { errors: { content: ['Scrivi il contenuto dell’articolo.'] }, message: 'Il contenuto è vuoto.' } };
     }
 
-    const featuredImage = validatedFields.data.featuredImage;
-    if (featuredImage && !isValidImageUrl(featuredImage)) {
-        return {
-            errors: { featuredImage: ['URL immagine in evidenza non valido'] },
-            message: 'URL immagine in evidenza non valido.',
-        };
+    // Two posts can't share an address: the second would never be reachable.
+    const existing = await getBlogBySlug(data.slug);
+    if (existing && existing.id !== id) {
+        return { error: { errors: { slug: [`Esiste già un articolo con questo indirizzo: “${existing.title}”.`] }, message: 'Indirizzo già usato da un altro articolo.' } };
     }
 
-    const validGalleryUrls = validateImageUrls(validatedFields.data.gallery || []);
-    if (validatedFields.data.gallery && validatedFields.data.gallery.length > 0 && validGalleryUrls.length === 0) {
-        return {
-            errors: { gallery: ['Nessun URL galleria valido fornito'] },
-            message: 'Gli URL della galleria non sono validi.',
-        };
+    if (data.featuredImage && !isValidImageUrl(data.featuredImage)) {
+        return { error: { errors: { featuredImage: ['Indirizzo dell’immagine in evidenza non valido.'] }, message: 'Indirizzo dell’immagine in evidenza non valido.' } };
+    }
+    const gallery = validateImageUrls(data.gallery || []);
+    if (data.gallery && data.gallery.length > 0 && gallery.length === 0) {
+        return { error: { errors: { gallery: ['Nessun indirizzo valido nella galleria.'] }, message: 'Gli indirizzi della galleria non sono validi.' } };
     }
 
-    try {
-        const blogData = {
-            ...validatedFields.data,
-            featuredImage: featuredImageValue(featuredImage, 'update'),
-            gallery: validGalleryUrls,
-        };
+    return { data: { ...data, content: cleaned.json, gallery } };
+}
 
-        await updateBlogData(id, blogData as any);
-    } catch (error) {
-        logError(error, {
-            action: 'updateBlog',
-            additionalData: {
-                blogId: id,
-                slug: validatedFields.data.slug,
-                title: validatedFields.data.title,
-            },
-        });
-        
-        const userMessage = getFirebaseErrorMessage(error);
-        return { message: userMessage, errors: {} };
-    }
-
-    // Invalidate data cache + page cache + sitemap
-    revalidateTag('blogs');
-    revalidateTag(`blog-${validatedFields.data.slug}`);
+/** Clear the cached list, the post's pages (old and new address) and the sitemaps. */
+/**
+ * Clear the cached list, the post's pages (old and new address) and the
+ * sitemaps. updateTag: called from the save actions, so the next read sees
+ * the saved post straight away.
+ */
+function revalidateBlog(slug: string, previousSlug?: string) {
+    updateTag('blogs');
     revalidatePath('/admin/blogs');
-    revalidatePath(`/admin/blogs/edit/${validatedFields.data.slug}`);
     revalidatePath('/sitemap.xml');
     revalidatePath('/sitemap-blog.xml');
+    for (const s of new Set([slug, previousSlug].filter(Boolean) as string[])) {
+        updateTag(`blog-${s}`);
+        revalidatePath(`/admin/blogs/edit/${s}`);
+        for (const locale of ['it', 'en']) revalidatePath(`/${locale}/blog/${s}`);
+    }
     for (const locale of ['it', 'en']) {
         revalidatePath(`/${locale}`);
         revalidatePath(`/${locale}/blog`);
-        revalidatePath(`/${locale}/blog/${validatedFields.data.slug}`);
+    }
+}
+
+export async function createBlog(prevState: BlogFormResult, formData: FormData): Promise<BlogFormResult> {
+    const form = await readBlogForm(formData);
+    if ('error' in form) return form.error!;
+    const data = form.data;
+
+    try {
+        await createBlogData({ ...data, featuredImage: featuredImageValue(data.featuredImage, 'create') } as any);
+    } catch (error) {
+        logError(error, { action: 'createBlog', additionalData: { slug: data.slug, title: data.title } });
+        return { message: getFirebaseErrorMessage(error), errors: {} };
     }
 
-    // See createBlog for rationale.
-    if (validatedFields.data.published && validatedFields.data.slug) {
-        const slug = validatedFields.data.slug;
-        after(() => notifyContentPublished('blog', slug));
+    revalidateBlog(data.slug);
+    // Ping IndexNow (Bing/Yandex/etc.) after the response is sent, and only
+    // for posts that are live: drafts shouldn't be announced to crawlers.
+    if (data.published) after(() => notifyContentPublished('blog', data.slug));
+    redirect('/admin/blogs');
+}
+
+export async function updateBlog(id: string, prevState: BlogFormResult, formData: FormData): Promise<BlogFormResult> {
+    const form = await readBlogForm(formData, id);
+    if ('error' in form) return form.error!;
+    const data = form.data;
+    const previousSlug = String(formData.get('previousSlug') ?? '') || undefined;
+
+    try {
+        await updateBlogData(id, { ...data, featuredImage: featuredImageValue(data.featuredImage, 'update') } as any);
+    } catch (error) {
+        logError(error, { action: 'updateBlog', additionalData: { blogId: id, slug: data.slug, title: data.title } });
+        return { message: getFirebaseErrorMessage(error), errors: {} };
     }
 
+    revalidateBlog(data.slug, previousSlug);
+    if (data.published) after(() => notifyContentPublished('blog', data.slug));
     redirect('/admin/blogs');
 }
 
@@ -464,17 +413,11 @@ export async function deleteBlog(id: string) {
         // Image cleanup from Firebase Storage is handled separately if needed
 
         await deleteBlogData(id);
-        revalidateTag('blogs');
-        revalidatePath('/admin/blogs');
-        revalidatePath('/sitemap.xml');
-        revalidatePath('/sitemap-blog.xml');
-        for (const locale of ['it', 'en']) {
-            revalidatePath(`/${locale}`);
-            revalidatePath(`/${locale}/blog`);
-        }
-        return { message: 'Blog post deleted.' };
+        // Its own page too, so the deleted post stops being served from cache.
+        revalidateBlog(blog?.slug ?? '');
+        return { message: 'Articolo eliminato.', success: true };
     } catch (error) {
-        return { message: 'Failed to delete blog post.' };
+        return { message: 'Eliminazione non riuscita.', success: false };
     }
 }
 

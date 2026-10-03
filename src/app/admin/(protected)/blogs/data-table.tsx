@@ -28,9 +28,11 @@ import { useToast } from '@/hooks/use-toast';
 function DeleteAction({ id, title }: { id: string; title: string }) {
   const { toast } = useToast();
   const deleteBlogWithId = async () => {
+    // Deleting can't be undone: ask first.
+    if (!window.confirm(`Eliminare definitivamente l’articolo “${title}”? Non si può annullare.`)) return;
     const result = await deleteBlog(id);
     if (result?.message) {
-      toast({ title: 'Successo', description: result.message });
+      toast({ title: result.success ? 'Fatto' : 'Errore', description: result.message, variant: result.success ? 'default' : 'destructive' });
     }
   };
 

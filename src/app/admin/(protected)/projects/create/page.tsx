@@ -145,7 +145,7 @@ export default function CreateProjectPage() {
               <CardTitle>Dettagli Progetto</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <SlugInput title={title} onSlugChange={setSlug} />
+              <SlugInput title={title} onSlugChange={setSlug} basePath="/projects/" />
 
               <div className="space-y-2">
                 <Label htmlFor="title">Titolo</Label>
