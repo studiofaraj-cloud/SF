@@ -45,8 +45,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const baseUrl = `${siteConfig.url}/${currentLocale}/projects/${slug}`;
 
   return generateSEOMetadata({
-    title: project.title,
-    description: project.description,
+    title: project.seoTitle || project.title,
+    description: project.seoDescription || project.description,
     image: project.featuredImage || siteConfig.ogImage,
     url: baseUrl,
     locale: currentLocale,
@@ -122,7 +122,7 @@ export default async function ProjectPostPage({ params }: Props) {
     publisher: {
       '@type': 'Organization',
       name: siteConfig.name,
-      logo: { '@type': 'ImageObject', url: `${siteConfig.url}/assets/logo.png` },
+      logo: { '@type': 'ImageObject', url: `${siteConfig.url}/assets/logo-512.png` },
     },
     ...(caseStudyText ? { abstract: caseStudyText } : {}),
     ...(project.technologies ? { keywords: project.technologies.join(', ') } : {}),

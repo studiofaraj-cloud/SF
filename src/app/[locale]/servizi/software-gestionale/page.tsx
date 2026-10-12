@@ -88,6 +88,11 @@ const VS = [
 
 const FAQS = [
   {
+    question: 'Siete una software house?',
+    answer:
+      'Sì: sviluppiamo software su misura per aziende, dall\'analisi del processo alla messa in uso e alla manutenzione, con codice e dati di vostra proprietà. Non rivendiamo licenze di gestionali standard: se uno standard fa al caso vostro, ve lo diciamo. Lo studio è a Padova e lavora con aziende della provincia, del Veneto e del resto d\'Italia.',
+  },
+  {
     question: 'Conviene un gestionale su misura o uno standard?',
     answer:
       'Se il vostro processo è simile a quello di tutti gli altri nel settore, uno standard è quasi sempre la scelta giusta: costa meno ed è pronto subito. Il su misura conviene quando il modo in cui lavorate è parte del vostro vantaggio, oppure quando state già pagando ogni mese in ore di lavoro manuale ciò che il software non copre. Ve lo diciamo in analisi, anche quando la risposta è «tenete quello che avete».',
@@ -185,10 +190,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (locale !== 'it') return {};
 
   return buildSEOMetadata({
-    title: 'Software Gestionale su Misura a Padova',
+    title: 'Software House a Padova: Gestionali su Misura',
     description:
-      'Software gestionale su misura a Padova: commesse, cantieri, rapportini, SAL e magazzino. Nessun canone per utente, codice di proprietà del cliente.',
+      'Software house a Padova: sviluppo di software e gestionali su misura per aziende, da commesse e cantieri al magazzino. Nessun canone per utente, codice vostro.',
     keywords: [
+      'software house Padova',
+      'sviluppo software Padova',
+      'software per aziende Padova',
       'software gestionale su misura',
       'software gestionale Padova',
       'gestionale su misura Veneto',
@@ -227,9 +235,9 @@ export default async function GestionalePage({ params }: Props) {
 
   const content: ServicePageContent = {
     slug: 'software-gestionale',
-    title: 'Software gestionale su misura a Padova, costruito sul vostro processo.',
+    title: 'Software e gestionali su misura per aziende di Padova, costruiti sul vostro processo.',
     lead:
-      'Quando nessun gestionale in commercio segue davvero il modo in cui lavorate, la differenza la pagate ogni settimana in ore di lavoro manuale. Costruiamo lo strumento attorno al processo, non il contrario.',
+      'Sviluppo software su misura a Padova: quando nessun gestionale in commercio segue davvero il modo in cui lavorate, la differenza la pagate ogni settimana in ore di lavoro manuale. Costruiamo lo strumento attorno al processo, non il contrario.',
     notes: ['Il codice è vostro', 'Nessun canone per utente', 'Risposta in 24h'],
     quoteLabel: 'Parliamo del vostro processo',
     quoteMessage: 'Vorrei valutare un software gestionale su misura per la nostra azienda.',

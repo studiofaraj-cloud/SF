@@ -32,6 +32,9 @@ export type Blog = {
   gallery?: string[];
   published: boolean;
   author?: string;
+  /** What Google shows, when it should differ from the title / summary. */
+  seoTitle?: string;
+  seoDescription?: string;
   createdAt: string;
   updatedAt: string;
 };
@@ -59,6 +62,9 @@ export type Project = {
   results?: string;
   year?: string;
   published: boolean;
+  /** What Google shows, when it should differ from the title / summary. */
+  seoTitle?: string;
+  seoDescription?: string;
   createdAt: string;
   updatedAt: string;
 };

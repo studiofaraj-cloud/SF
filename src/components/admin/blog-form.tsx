@@ -12,6 +12,7 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { DynamicSEOTool } from '@/components/admin/dynamic-seo-tool';
+import { SeoFields } from '@/components/admin/seo-fields';
 import { ImageUpload, MultiImageUpload } from '@/components/admin/image-upload';
 import { PageHeader } from '@/components/admin/page-header';
 import { RichTextEditor, jsonContentToPlainText } from '@/components/admin/rich-text-editor';
@@ -267,6 +268,13 @@ export function BlogForm({
               </div>
             </CardContent>
           </Card>
+          <SeoFields
+            path={`/it/blog/${blog?.slug ?? 'nuovo-articolo'}`}
+            fallbackTitle={title}
+            fallbackDescription={excerpt}
+            defaultTitle={blog?.seoTitle}
+            defaultDescription={blog?.seoDescription}
+          />
           <DynamicSEOTool contentTitle={title} contentBody={jsonContentToPlainText(content)} contentType="blog" />
         </div>
 

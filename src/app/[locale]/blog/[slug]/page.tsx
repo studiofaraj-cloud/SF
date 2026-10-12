@@ -92,8 +92,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 
   return generateSEOMetadata({
-    title: blog.title,
-    description: blog.excerpt,
+    title: blog.seoTitle || blog.title,
+    description: blog.seoDescription || blog.excerpt,
     image: blog.featuredImage || siteConfig.ogImage,
     url: baseUrl,
     locale: currentLocale,

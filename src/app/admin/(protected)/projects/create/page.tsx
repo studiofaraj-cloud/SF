@@ -18,6 +18,7 @@ import { SlugInput } from '@/components/admin/slug-input';
 import { ImageUpload, MultiImageUpload } from '@/components/admin/image-upload';
 import { RichTextEditor } from '@/components/admin/rich-text-editor';
 import { DynamicSEOTool } from '@/components/admin/dynamic-seo-tool';
+import { SeoFields } from '@/components/admin/seo-fields';
 import { createProject } from '@/lib/actions';
 import { useToast } from '@/hooks/use-toast';
 import { jsonContentToPlainText } from '@/components/admin/rich-text-editor';
@@ -183,6 +184,7 @@ export default function CreateProjectPage() {
               </div>
             </CardContent>
           </Card>
+          <SeoFields path={`/it/projects/${slug || 'nuovo-progetto'}`} fallbackTitle={title} fallbackDescription="" />
           <DynamicSEOTool contentTitle={title} contentBody={jsonContentToPlainText(content)} contentType="project" />
         </div>
         <div className="grid auto-rows-max items-start gap-4 lg:gap-8">

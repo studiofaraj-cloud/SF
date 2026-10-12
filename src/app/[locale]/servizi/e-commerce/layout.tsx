@@ -15,8 +15,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   };
   
   const seoContent = currentLocale === 'it' ? {
-    title: 'Realizzazione E-commerce a Padova',
-    description: 'Realizziamo e-commerce su misura a Padova: pagamenti, ordini e catalogo integrati in un negozio online veloce. Per aziende di tutto il Veneto.',
+    title: 'Sviluppo e Realizzazione E-commerce a Padova',
+    description: 'Sviluppo e realizzazione di e-commerce su misura a Padova: catalogo, pagamenti e ordini in un negozio online veloce, senza piattaforme a noleggio.',
     keywords: [
         'sviluppo e-commerce su misura Padova',
         'creazione sito web Vicenza','e-commerce', 'negozio online', 'vendita online', 'piattaforma e-commerce', 'shop online', 'e-commerce Veneto'],

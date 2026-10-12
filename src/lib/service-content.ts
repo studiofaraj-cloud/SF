@@ -5,6 +5,7 @@ import type { ServiceLocalKey } from '@/lib/service-local-content';
 import type { Locale } from '@/i18n/config';
 import type { Project } from '@/lib/definitions';
 import type { ServicePageContent, ServiceProof, ServiceSection } from '@/components/site/service-page';
+import { SERVICE_PROJECTS } from '@/lib/project-links';
 
 /**
  * Builds a service page's content from its existing `services.<key>`
@@ -147,5 +148,24 @@ export async function getServiceProof(slug: ServiceSlug): Promise<ServiceProof |
   } catch {
     // The portfolio is unavailable: the page names no example.
     return null;
+  }
+}
+
+/**
+ * The case studies listed at the bottom of a service page (src/lib/project-links.ts),
+ * published ones only, without the example already shown in the hero.
+ */
+export async function getRelatedProjects(slug: ServiceSlug, exclude?: string): Promise<ServiceProof[]> {
+  const wanted = (SERVICE_PROJECTS[slug] ?? []).filter((s) => s !== exclude);
+  if (wanted.length === 0) return [];
+  try {
+    const projects = ((await getProjectsAction()) as Project[]).filter((p) => p.published);
+    return wanted
+      .map((s) => projects.find((p) => p.slug === s))
+      .filter((p): p is Project => !!p)
+      .map((p) => ({ slug: p.slug, title: p.title, clientName: p.clientName, year: p.year, category: p.category }));
+  } catch {
+    // The portfolio is unavailable: the section is left out.
+    return [];
   }
 }

@@ -140,9 +140,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (locale !== 'it') return {};
 
   return buildSEOMetadata({
-    title: 'Siti web per imprese di ristrutturazione',
+    title: 'Sito web per imprese di ristrutturazione',
     description:
-      'Siti web per imprese di ristrutturazioni: galleria prima-dopo, schede cantiere, richiesta di sopralluogo e ottimizzazione mobile. Casi reali in Italia e in Svizzera.',
+      'Siti per imprese di ristrutturazione: galleria prima e dopo, schede cantiere e richiesta di sopralluogo dal telefono. Esempi reali in Italia e Svizzera.',
     keywords: [
       'sito web impresa ristrutturazioni',
       'sito web per ristrutturazioni',

@@ -36,7 +36,7 @@ const COPY = {
   it: {
     metaTitle: 'Servizi — Sviluppo Web, E-commerce e SEO',
     metaDescription:
-      'Otto servizi digitali da Padova: sviluppo web su misura, e-commerce, design UI/UX, SEO, AI e automazione, hosting, manutenzione e consulenza IT.',
+      'Servizi digitali da Padova: siti web su misura, e-commerce, software gestionale, design UI/UX, SEO, AI e automazione, hosting, manutenzione e consulenza IT.',
     badge: 'I Nostri Servizi',
     h1a: 'Servizi digitali',
     h1b: 'dallo studio a Padova.',

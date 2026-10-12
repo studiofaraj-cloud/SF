@@ -10,8 +10,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
   const seoContent = {
     it: {
-      title: 'Web Design e UI/UX a Padova',
-      description: 'Web design e UI/UX a Padova: interfacce chiare e siti progettati per convertire, su desktop e mobile. Per aziende e professionisti del Veneto.',
+      title: 'Web Designer a Padova: Design di Siti e UI/UX',
+      description: 'Web designer a Padova: design di siti web e interfacce UI/UX chiare, progettate per portare contatti su desktop e mobile. Per aziende e professionisti del Veneto.',
       keywords: [
         'design UI/UX',
         'user experience',

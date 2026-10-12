@@ -10,11 +10,11 @@ export const t = {
   // SEO
   // The SEO helper appends "| Studio Faraj" to the title.
   metaTitle: {
-    it: 'Pagina aziendale online per la tua attività',
+    it: 'Pagina aziendale online da 4,99 € al mese',
     en: 'An online company page for your business',
   },
   metaDescription: {
-    it: 'La pagina della tua azienda su studiofaraj.it/tuonome: servizi, contatti e social in una pagina curata. 4,99 € al mese, primo mese gratuito.',
+    it: 'La pagina della tua azienda su studiofaraj.it/tuonome: servizi, contatti e social, pronta in pochi minuti. 4,99 € al mese, il primo mese è gratuito.',
     en: 'Your company’s page at studiofaraj.it/yourname: services, contacts and social profiles on one polished page. €4.99 a month, first month free.',
   },
   // Hero

@@ -10,8 +10,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
   const seoContent = {
     it: {
-      title: 'Consulenza Informatica e Digitale a Padova',
-      description: 'Consulenza informatica e digitale a Padova: analisi, strategia e pianificazione di progetti web e software per aziende e professionisti del Veneto.',
+      title: 'Consulente Informatico e Consulenza IT a Padova',
+      description: 'Consulenza informatica e IT a Padova: analisi, strategia e scelte tecnologiche per i progetti web, software e cloud di aziende e professionisti del Veneto.',
       keywords: [
         'consulenza strategica digitale PMI Veneto',
         'consulenza digitale',

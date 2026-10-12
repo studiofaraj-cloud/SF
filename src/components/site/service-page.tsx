@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import type { CSSProperties, ReactNode } from 'react';
 import { ArrowRight, ArrowUpRight, Check } from 'lucide-react';
-import { getLocalizedPath } from '@/lib/i18n-helpers';
+import { getLocalizedPath, projectPath } from '@/lib/i18n-helpers';
+import { getRelatedProjects } from '@/lib/service-content';
 import { SERVICES, serviceGroupsFor, type ServiceSlug } from '@/lib/services-catalog';
 import type { ServiceLocalKey } from '@/lib/service-local-content';
 import type { Locale } from '@/i18n/config';
@@ -52,6 +53,7 @@ const COPY = {
     get: 'Cosa ottieni',
     what: 'Cosa facciamo',
     others: 'Altri servizi',
+    related: 'Progetti correlati',
   },
   en: {
     services: 'Services',
@@ -59,6 +61,7 @@ const COPY = {
     get: 'What you get',
     what: 'What we do',
     others: 'Other services',
+    related: 'Related projects',
   },
 } as const;
 
@@ -160,7 +163,8 @@ function Section({ section, locale }: { section: ServiceSection; locale: Locale 
  * the Italian local-SEO block with its FAQ, links to the other services and
  * the closing call to action. The only client code is the quote button.
  */
-export function ServicePage({ content, proof, locale }: { content: ServicePageContent; proof: ServiceProof | null; locale: Locale }) {
+export async function ServicePage({ content, proof, locale }: { content: ServicePageContent; proof: ServiceProof | null; locale: Locale }) {
+  const related = await getRelatedProjects(content.slug, proof?.slug);
   const copy = COPY[locale];
   const service = SERVICES[content.slug];
   // Beside the H1: what the client gets, with the real project as an example.
@@ -259,6 +263,28 @@ export function ServicePage({ content, proof, locale }: { content: ServicePageCo
         ))}
 
         {locale === 'it' && content.localKey && <ServiceLocal service={content.localKey} />}
+
+        {/* ── Related case studies (links into the portfolio) ── */}
+        {related.length > 0 && (
+          <section className="container mx-auto px-5 md:px-8">
+            <p className={MONO}>{copy.related}</p>
+            <ul className="mt-6 grid border-t border-border md:grid-cols-2 lg:grid-cols-3">
+              {related.map((p) => (
+                <li key={p.slug} className="border-b border-border md:pr-8">
+                  <Link href={projectPath(p.slug)} className="group flex items-start justify-between gap-4 py-5 transition-colors hover:text-primary">
+                    <span className="min-w-0">
+                      <span className="block font-display text-lg font-semibold leading-snug tracking-[-0.01em]">{p.title}</span>
+                      {(p.clientName || p.year) && (
+                        <span className="mt-1 block text-sm text-muted-foreground">{[p.clientName, p.year].filter(Boolean).join(' · ')}</span>
+                      )}
+                    </span>
+                    <ArrowUpRight className="mt-1 h-5 w-5 shrink-0 text-muted-foreground transition-transform duration-300 group-hover:rotate-45 group-hover:text-primary" />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
 
         {/* ── Other services ── */}
         <section className="container mx-auto px-5 md:px-8">

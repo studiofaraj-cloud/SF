@@ -19,6 +19,7 @@ import { SlugInput } from '@/components/admin/slug-input';
 import { ImageUpload, MultiImageUpload } from '@/components/admin/image-upload';
 import { RichTextEditor, jsonContentToPlainText } from '@/components/admin/rich-text-editor';
 import { DynamicSEOTool } from '@/components/admin/dynamic-seo-tool';
+import { SeoFields } from '@/components/admin/seo-fields';
 import type { Project } from '@/lib/definitions';
 import { updateProject, getAdminProjectBySlugAction } from '@/lib/actions';
 import { useToast } from '@/hooks/use-toast';
@@ -242,6 +243,13 @@ export default function EditProjectClient({ slug }: { slug: string }) {
               </div>
             </CardContent>
           </Card>
+          <SeoFields
+            path={`/it/projects/${project.slug}`}
+            fallbackTitle={title}
+            fallbackDescription={project.description}
+            defaultTitle={project.seoTitle}
+            defaultDescription={project.seoDescription}
+          />
           <DynamicSEOTool contentTitle={title} contentBody={jsonContentToPlainText(content)} contentType="project" />
         </div>
         <div className="grid auto-rows-max items-start gap-4 lg:gap-8">

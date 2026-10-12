@@ -296,6 +296,8 @@ const BlogSchema = z.object({
     gallery: z.array(z.string().url('Indirizzo immagine non valido.')).optional().default([]),
     published: z.preprocess((val) => val === 'on' || val === true, z.boolean()),
     author: z.string().trim().optional().default('Studio Faraj'),
+    seoTitle: z.string().trim().max(70, 'Il titolo SEO può avere al massimo 70 caratteri.').optional().default(''),
+    seoDescription: z.string().trim().max(200, 'La descrizione SEO può avere al massimo 200 caratteri.').optional().default(''),
 });
 
 type BlogFormResult = { message: string; errors?: Record<string, string[] | undefined> };
@@ -315,6 +317,8 @@ async function readBlogForm(formData: FormData, id?: string) {
         gallery: formData.getAll('gallery[]'),
         published: formData.get('published'),
         author: formData.get('author') || 'Studio Faraj',
+        seoTitle: formData.get('seoTitle') ?? '',
+        seoDescription: formData.get('seoDescription') ?? '',
     });
     if (!validated.success) {
         return { error: { errors: validated.error.flatten().fieldErrors, message: 'Controlla i campi segnati in rosso.' } satisfies BlogFormResult };
@@ -444,6 +448,8 @@ const ProjectSchema = z.object({
     results: z.string().optional(),
     year: z.string().optional(),
     published: z.preprocess((val) => val === 'on' || val === true, z.boolean()),
+    seoTitle: z.string().trim().max(70, 'SEO title: 70 characters at most').optional().default(''),
+    seoDescription: z.string().trim().max(200, 'SEO description: 200 characters at most').optional().default(''),
 });
 
 export async function createProject(prevState: { message: string; errors?: any }, formData: FormData) {
@@ -475,6 +481,8 @@ export async function createProject(prevState: { message: string; errors?: any }
         results: formData.get('results') || '',
         year: formData.get('year') || '',
         published: formData.get('published'),
+        seoTitle: formData.get('seoTitle') ?? '',
+        seoDescription: formData.get('seoDescription') ?? '',
     });
 
     if (!validatedFields.success) {
@@ -573,6 +581,8 @@ export async function updateProject(id: string, prevState: { message: string; er
         results: formData.get('results') || '',
         year: formData.get('year') || '',
         published: formData.get('published'),
+        seoTitle: formData.get('seoTitle') ?? '',
+        seoDescription: formData.get('seoDescription') ?? '',
     });
     
     if (!validatedFields.success) {

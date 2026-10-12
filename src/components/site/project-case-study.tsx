@@ -1,9 +1,11 @@
 import Link from 'next/link';
-import type { CSSProperties } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import { ArrowRight, ArrowUpRight, Check } from 'lucide-react';
 import { FirebaseImage } from '@/components/ui/firebase-image';
 import { getLocalizedPath, projectPath } from '@/lib/i18n-helpers';
 import { categoryLabel, hostOf } from '@/lib/project-display';
+import { PROJECT_LINKS, SECTOR_PAGES } from '@/lib/project-links';
+import { SERVICES } from '@/lib/services-catalog';
 import type { Locale } from '@/i18n/config';
 import type { Project } from '@/lib/definitions';
 import { RichContentRenderer } from './rich-content-renderer';
@@ -20,6 +22,8 @@ const COPY = {
     year: 'Anno',
     type: 'Tipo',
     stack: 'Tecnologie',
+    services: 'Servizi',
+    sector: 'Settore',
     visit: (host: string) => `Visita ${host}`,
     similar: 'Un progetto simile',
     results: 'Risultati',
@@ -39,6 +43,8 @@ const COPY = {
     year: 'Year',
     type: 'Type',
     stack: 'Technology',
+    services: 'Services',
+    sector: 'Sector',
     visit: (host: string) => `Visit ${host}`,
     similar: 'A similar project',
     results: 'Results',
@@ -90,11 +96,31 @@ export function ProjectCaseStudy({ project, next, locale }: { project: Project; 
   const host = hostOf(project.projectUrl);
   const type = categoryLabel(project.category, locale);
   const client = project.clientName || project.title;
-  const facts = [
+  const links = PROJECT_LINKS[project.slug];
+  const linkList = (items: { href: string; label: string }[]) =>
+    items.length === 0 ? null : (
+      <span className="flex flex-col gap-1">
+        {items.map((l) => (
+          <Link key={l.href} href={l.href} className="underline decoration-border decoration-2 underline-offset-4 transition-colors hover:text-primary hover:decoration-primary">
+            {l.label}
+          </Link>
+        ))}
+      </span>
+    );
+  const facts: { label: string; value: ReactNode }[] = [
     { label: copy.client, value: project.clientName },
     { label: copy.year, value: project.year },
     { label: copy.type, value: type },
     { label: copy.stack, value: project.technologies?.join(', ') },
+    {
+      label: copy.services,
+      value: linkList((links?.services ?? []).map((s) => ({ href: getLocalizedPath(`/servizi/${s}`, locale), label: SERVICES[s].name[locale] }))),
+    },
+    // Sector pages are Italian only.
+    {
+      label: copy.sector,
+      value: linkList((links?.sectors ?? []).map((s) => ({ href: `/it/siti-web/${s}`, label: SECTOR_PAGES[s] }))),
+    },
   ].filter((f) => f.value);
   const chapters = [
     { title: copy.challenge, text: paragraphs(project.challenge) },
@@ -159,7 +185,7 @@ export function ProjectCaseStudy({ project, next, locale }: { project: Project; 
         </div>
 
         {facts.length > 0 && (
-          <dl className="mt-12 grid grid-cols-2 gap-x-6 gap-y-5 border-y border-border py-6 md:grid-cols-4">
+          <dl className="mt-12 grid grid-cols-2 gap-x-6 gap-y-5 border-y border-border py-6 md:grid-cols-3">
             {facts.map((f) => (
               <div key={f.label} className="min-w-0">
                 <dt className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground">{f.label}</dt>

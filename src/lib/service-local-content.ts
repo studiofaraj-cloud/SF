@@ -97,6 +97,15 @@ export const SERVICE_LOCAL_CONTENT: Record<ServiceLocalKey, ServiceLocalContent>
     heading: 'SEO a Padova:',
     headingHighlight: 'farsi trovare dai clienti che cercano quello che fai',
     paragraphs: [
+      {
+        before:
+          'Lavoriamo spesso con artigiani e imprese del territorio — idraulici, elettricisti, serramentisti, imprese edili — per cui una ricerca locale vale più di qualsiasi campagna. Abbiamo raccolto ',
+        link: {
+          href: '/blog/idraulici-elettricisti-serramentisti-5-errori-che-ti-fanno-perdere-clienti-online',
+          label: 'i 5 errori che fanno perdere clienti online',
+        },
+        after: ' a chi lavora in questi settori, e come correggerli.',
+      },
       'Quando qualcuno a Padova cerca un servizio su Google, sceglie quasi sempre tra i primi risultati e le attività nella mappa. La SEO serve a portarti lì per le ricerche che contano davvero per il tuo lavoro, non per parole chiave generiche che portano visite ma nessun cliente.',
       'Partiamo da un audit del sito: velocità, struttura delle pagine, contenuti, errori tecnici e come Google lo vede oggi. Poi individuiamo le ricerche che fanno i tuoi clienti — "idraulico Padova", "commercialista Abano Terme", "impresa edile Vicenza" — e ottimizziamo le pagine esistenti o ne creiamo di nuove per rispondere a ognuna.',
       'Per le attività con una sede sul territorio curiamo anche la SEO locale: la scheda Google Business Profile, la coerenza di nome, indirizzo e telefono sulle directory, le recensioni e le pagine dedicate alle zone servite. Ogni mese ricevi un report con posizionamenti, traffico e contatti generati.',

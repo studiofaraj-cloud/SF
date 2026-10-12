@@ -135,6 +135,9 @@ const nextConfig: NextConfig = {
       // A case study whose slug changed: Google still had the old URL (404).
       { source: '/:locale(it|en)/projects/concessionaria-minicar-di-ali-ibrahim', destination: MINICAR, permanent: true },
       { source: '/projects/concessionaria-minicar-di-ali-ibrahim', destination: MINICAR, permanent: true },
+      // A post that competed with the service page for "sviluppo siti web
+      // Padova": its useful content moved there (the post is unpublished).
+      { source: '/:locale(it|en)/blog/sviluppo-sito-web-padova-studio-faraj', destination: '/it/servizi/sviluppo-web', permanent: true },
       // Posts and case studies exist in Italian only. The /en URLs used to
       // serve the Italian text as an English page; they now lead to the one
       // real page. Drop these rules for a slug once it has a translation.

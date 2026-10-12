@@ -168,7 +168,8 @@ export function generateMetadata({
   const stripTrailing = (u: string) => u.replace(/\/+$/, '');
   const canonicalUrl = stripTrailing(url || `${siteConfig.url}/${locale}`);
 
-  // Resolve hreflang URLs (BCP-47 codes — Google prefers regional like `it-IT`)
+  // hreflang URLs. Language only (`it`, `en`), as in the sitemaps: the Italian
+  // pages serve Italy and Ticino alike, the English ones aren't for one country.
   let itHref: string;
   let enHref: string;
   if (alternateUrls) {
@@ -194,8 +195,8 @@ export function generateMetadata({
     : {
         canonical: canonicalUrl,
         languages: {
-          'it-IT': itHref,
-          'en-US': enHref,
+          it: itHref,
+          en: enHref,
           'x-default': itHref,
         },
       };
@@ -264,7 +265,7 @@ export function generateStructuredDataWebSite(locale: Locale = 'it') {
     '@type': 'WebSite',
     name: siteConfig.name,
     url: baseUrl,
-    inLanguage: locale === 'it' ? 'it-IT' : 'en-US',
+    inLanguage: locale === 'it' ? 'it' : 'en',
     potentialAction: {
       '@type': 'SearchAction',
       target: {
@@ -306,7 +307,7 @@ export function generateStructuredDataLocalBusiness(
     '@id': `${siteConfig.url}#localbusiness`,
     name: siteConfig.name,
     image: [
-      `${siteConfig.url}/assets/logo.png`,
+      `${siteConfig.url}/assets/logo-512.png`,
       siteConfig.ogImage,
     ],
     url: baseUrl,
@@ -352,7 +353,8 @@ export function generateStructuredDataLocalBusiness(
     },
     priceRange: '$$',
     currenciesAccepted: 'EUR',
-    paymentAccepted: locale === 'it' ? 'Bonifico Bancario, PayPal' : 'Bank Transfer, PayPal',
+    // As the terms state: bank transfer, and card for quotes paid online (Stripe).
+    paymentAccepted: locale === 'it' ? 'Bonifico bancario, Carta di credito' : 'Bank transfer, Credit card',
     areaServed: [
       { '@type': 'City', name: 'Padova' },
       { '@type': 'AdministrativeArea', name: 'Veneto' },
@@ -371,6 +373,8 @@ export function generateStructuredDataLocalBusiness(
       'Firebase', 'Vercel', 'Docker',
       'REST API', 'Headless CMS',
     ],
+    // The Google Business Profile listing (MAPS_CID in src/lib/contact-info.ts).
+    hasMap: 'https://www.google.com/maps?cid=5165210571911986297',
     sameAs: [
       'https://www.instagram.com/studiofaraj.it',
       'https://www.linkedin.com/in/studio-faraj-47923b389/',
@@ -420,7 +424,7 @@ export function generateStructuredDataService(name: string, description: string,
     ],
     description: description,
     url: url,
-    inLanguage: locale === 'it' ? 'it-IT' : 'en-US',
+    inLanguage: locale === 'it' ? 'it' : 'en',
   };
 }
 
@@ -459,7 +463,7 @@ export function generateStructuredDataBlogPosting(
       name: siteConfig.name,
       logo: {
         '@type': 'ImageObject',
-        url: `${siteConfig.url}/assets/logo.png`,
+        url: `${siteConfig.url}/assets/logo-512.png`,
         width: 512,
         height: 512,
       },
@@ -497,7 +501,7 @@ export function generateStructuredDataArticle(
       name: siteConfig.name,
       logo: {
         '@type': 'ImageObject',
-        url: `${siteConfig.url}/assets/logo.png`,
+        url: `${siteConfig.url}/assets/logo-512.png`,
         width: 512,
         height: 512,
       },
@@ -647,7 +651,7 @@ export function generateStructuredDataCreativeWork(
       name: siteConfig.name,
       logo: {
         '@type': 'ImageObject',
-        url: `${siteConfig.url}/assets/logo.png`,
+        url: `${siteConfig.url}/assets/logo-512.png`,
         width: 512,
         height: 512,
       },
