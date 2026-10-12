@@ -86,6 +86,18 @@ export default async function middleware(request: NextRequest) {
   // ── Public site: intl + cacheable response (unchanged behavior) ─────────────
   const response = intlMiddleware(request);
 
+  // A path without a locale (`/`, `/call-booking`, …) always goes to the same
+  // Italian URL — detection and the locale cookie are off — so the redirect is
+  // permanent. next-intl answers 307 (temporary), which tells search engines
+  // to keep the old URL; 308 hands its signals to the /it one.
+  const location = response?.headers.get('location');
+  if (response?.status === 307 && location) {
+    return NextResponse.redirect(location, {
+      status: 308,
+      headers: { 'cache-control': 'public, max-age=3600, s-maxage=86400' },
+    });
+  }
+
   // Firebase App Hosting's adapter sets `cache-control: no-store` whenever
   // middleware runs, which suppresses edge Brotli compression and disables
   // CDN caching of the prerendered locale HTML. Force a public, cacheable

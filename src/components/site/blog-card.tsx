@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { getLocalizedPath } from '@/lib/i18n-helpers';
+import { postPath } from '@/lib/i18n-helpers';
 import { formatPostDate, type BlogListItem } from '@/lib/blog-list';
 import type { Locale } from '@/i18n/config';
 import { BrandMark } from './brand-mark';
@@ -41,7 +41,7 @@ export function BlogCard({
       </p>
       <Heading className="mt-3 font-display text-xl font-bold leading-snug tracking-[-0.015em] transition-colors group-hover:text-primary">
         <Link
-          href={getLocalizedPath(`/blog/${post.slug}`, locale)}
+          href={postPath(post.slug)}
           className="after:absolute after:inset-0 after:rounded-2xl after:content-[''] focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-ring"
         >
           {post.title}

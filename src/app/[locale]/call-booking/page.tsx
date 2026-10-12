@@ -16,14 +16,14 @@ const STEPS = ['pick', 'confirm', 'talk'] as const;
 
 const SEO = {
   it: {
-    title: 'Prenota una Chiamata con Studio Faraj',
+    title: 'Prenota una chiamata gratuita',
     description:
-      'Scegli giorno e fascia oraria: ti richiamiamo per confermare. La prima consulenza è gratuita. Studio Faraj, agenzia web a Padova.',
+      'Scegli giorno e fascia oraria, dal lunedì al sabato: ti richiamiamo per confermare. La prima consulenza è gratuita. Studio Faraj, agenzia web a Padova.',
   },
   en: {
-    title: 'Book a Call with Studio Faraj',
+    title: 'Book a free call',
     description:
-      'Pick a day and a time slot: we get back to you to confirm. The first consultation is free. Studio Faraj, web agency in Padova, Italy.',
+      'Pick a day and a time slot, Monday to Saturday: we get back to you to confirm. The first consultation is free. Studio Faraj, web agency in Padova, Italy.',
   },
 } as const;
 

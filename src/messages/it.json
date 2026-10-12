@@ -145,7 +145,7 @@
           "badge": "Sviluppo Web · Padova",
           "titleLine1": "Sviluppo siti web a Padova,",
           "titleLine2": "scritti riga per riga.",
-          "subtitle": "Niente template, niente no-code. Un team Gen-Z che progetta, sviluppa e consegna piattaforme web 100% codice — performanti, sicure, e tue al 100%.",
+          "subtitle": "Niente template, niente no-code. Progettiamo, sviluppiamo e consegniamo siti e piattaforme web scritti in codice, per aziende di Padova e del Veneto: veloci, sicuri e tuoi al 100%.",
           "ctaQuote": "Richiedi un preventivo",
           "ctaProjects": "Vedi i progetti",
           "trust": {
@@ -329,8 +329,8 @@
           "items": [
             { "q": "Posso modificare il sito da solo dopo la consegna?", "a": "Sì. Ogni progetto include una dashboard admin su misura e una sessione di formazione. Aggiungi, modifichi e pubblichi contenuti in autonomia." },
             { "q": "Il codice è mio?", "a": "Sì, al 100%. Ti consegniamo il repository completo, la documentazione e gli accessi a hosting e database. Nessun lock-in." },
-            { "q": "Quanto costa un sito vetrina? E un gestionale?", "a": "Un sito vetrina parte da fasce contenute, un gestionale con dashboard admin dipende da numero di utenti, integrazioni e flussi. Ogni preventivo è dettagliato e senza sorprese." },
-            { "q": "Lavorate fuori da Padova?", "a": "Sì. Siamo basati a Padova ma lavoriamo con clienti in tutta Italia, da remoto o in presenza per progetti strutturati." },
+            { "q": "Quanto costa un sito vetrina? E un gestionale?", "a": "Un sito vetrina parte da fasce contenute, un gestionale con dashboard admin dipende da numero di utenti, integrazioni e flussi. Ogni preventivo è dettagliato, gratuito e senza sorprese. Nella guida «Quanto costa un sito web» trovi cosa determina il prezzo." },
+            { "q": "Lavorate fuori da Padova?", "a": "Sì. Lo studio è a Padova e segue aziende in città, in provincia e nel resto del Veneto, ma anche nel resto d’Italia e all’estero, dalla Svizzera al Regno Unito. Si lavora da remoto, con incontri in presenza quando servono." },
             { "q": "Potete riscrivere un sito esistente?", "a": "Sì, e spesso è la scelta più sensata. Analizziamo il sito attuale, conserviamo SEO e contenuti, e migriamo su uno stack moderno senza perdita di traffico." },
             { "q": "Integrate con il mio gestionale (CRM, fatturazione, ERP)?", "a": "Sì. Costruiamo integrazioni custom con la maggior parte dei gestionali italiani (Fatturapro, Aruba, Zoho, HubSpot, Salesforce, ecc.)." },
             { "q": "Fate manutenzione dopo il lancio?", "a": "Sì. Offriamo piani di manutenzione mensili che coprono aggiornamenti, monitoraggio, backup, sicurezza e piccole evolutive." },

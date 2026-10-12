@@ -1,6 +1,7 @@
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import { ServicePage, type ServicePageContent, type ServiceProof } from '@/components/site/service-page';
 import { WebComparison, WebFaq, WebScenarios, WebSectors, WebTwoPaths } from '@/components/site/service-web-sections';
+import { ServiceLocal } from '@/components/site/service-local';
 import { getProjectsAction } from '@/lib/actions';
 import { SERVICES } from '@/lib/services-catalog';
 import type { Locale } from '@/i18n/config';
@@ -79,6 +80,8 @@ export default async function SviluppoWebPage({ params }: { params: Promise<{ lo
         lead: m.stack.subtitle,
         items: (m.stack.groups as { name: string; items: string[] }[]).map((g) => ({ name: g.name, description: g.items.join(', ') })),
       },
+      // How we work in Padova, timing and cost (Italian page), right before the FAQ.
+      ...(lang === 'it' ? [{ kind: 'node' as const, node: <ServiceLocal service="webDevelopment" /> }] : []),
       { kind: 'node', node: <WebFaq m={m} /> },
     ],
     closingNode: <WebTwoPaths m={m} locale={lang} />,

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
-import { getLocalizedPath } from '@/lib/i18n-helpers';
+import { projectPath } from '@/lib/i18n-helpers';
 import { categoryLabel } from '@/lib/project-display';
 import type { Locale } from '@/i18n/config';
 import type { Project } from '@/lib/definitions';
@@ -46,7 +46,7 @@ export function ServicePanel({
       </div>
       {example && (
         <Link
-          href={getLocalizedPath(`/projects/${example.slug}`, locale)}
+          href={projectPath(example.slug)}
           className="group flex items-center justify-between gap-4 border-t border-white/10 bg-white/[0.06] px-8 py-5 transition-colors hover:bg-white/[0.1] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-sky-300 md:px-10"
         >
           <span className="min-w-0">

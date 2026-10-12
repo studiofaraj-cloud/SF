@@ -2,7 +2,7 @@ import Link from 'next/link';
 import type { CSSProperties } from 'react';
 import { ArrowRight, ArrowUpRight, Check } from 'lucide-react';
 import { FirebaseImage } from '@/components/ui/firebase-image';
-import { getLocalizedPath } from '@/lib/i18n-helpers';
+import { getLocalizedPath, projectPath } from '@/lib/i18n-helpers';
 import { categoryLabel, hostOf } from '@/lib/project-display';
 import type { Locale } from '@/i18n/config';
 import type { Project } from '@/lib/definitions';
@@ -268,7 +268,7 @@ export function ProjectCaseStudy({ project, next, locale }: { project: Project; 
       {next && (
         <section className="container mx-auto mt-24 px-5 md:mt-32 md:px-8">
           <Link
-            href={getLocalizedPath(`/projects/${next.slug}`, locale)}
+            href={projectPath(next.slug)}
             className="group grid gap-8 border-t-2 border-foreground pt-8 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary md:grid-cols-12 md:items-center md:gap-12"
           >
             <div className="md:col-span-6">

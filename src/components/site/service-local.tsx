@@ -27,11 +27,24 @@ export function ServiceLocal({ service }: { service: ServiceLocalKey }) {
 
         <div className="mt-10 grid gap-12 lg:grid-cols-12">
           <div className="space-y-5 text-lg leading-relaxed text-muted-foreground lg:col-span-7">
-            {c.paragraphs.map((p) => (
-              <p key={p.slice(0, 32)} className="rv">
-                {p}
-              </p>
-            ))}
+            {c.paragraphs.map((p) =>
+              typeof p === 'string' ? (
+                <p key={p.slice(0, 32)} className="rv">
+                  {p}
+                </p>
+              ) : (
+                <p key={p.before.slice(0, 32)} className="rv">
+                  {p.before}
+                  <Link
+                    href={getLocalizedPath(p.link.href, 'it')}
+                    className="font-medium text-foreground underline decoration-border decoration-2 underline-offset-[6px] transition-colors hover:decoration-primary"
+                  >
+                    {p.link.label}
+                  </Link>
+                  {p.after}
+                </p>
+              ),
+            )}
           </div>
           <aside className="rv lg:col-span-4 lg:col-start-9">
             <div className="rounded-2xl bg-muted/60 p-6 ring-1 ring-border">
@@ -54,23 +67,35 @@ export function ServiceLocal({ service }: { service: ServiceLocalKey }) {
         </ol>
       </section>
 
-      <FaqSection title="Domande frequenti" faqs={c.faqs} id={`faq-${service}`}>
-        {c.related.length > 0 && (
-          <ul className="mt-10 flex flex-wrap gap-2">
-            {c.related.map((r) => (
-              <li key={r.href}>
-                <Link
-                  href={getLocalizedPath(r.href, 'it')}
-                  className="inline-flex min-h-[44px] items-center gap-1.5 rounded-full px-4 text-sm font-medium ring-1 ring-inset ring-border transition-colors hover:bg-foreground hover:text-background hover:ring-foreground"
-                >
-                  {r.label}
-                  <ArrowUpRight aria-hidden className="h-4 w-4" />
-                </Link>
-              </li>
-            ))}
-          </ul>
-        )}
-      </FaqSection>
+      {c.faqs.length > 0 ? (
+        <FaqSection title="Domande frequenti" faqs={c.faqs} id={`faq-${service}`}>
+          <RelatedLinks related={c.related} />
+        </FaqSection>
+      ) : (
+        // A page with its own FAQ elsewhere: the links close this section.
+        <div className="container mx-auto -mt-12 px-5 md:-mt-16 md:px-8">
+          <RelatedLinks related={c.related} />
+        </div>
+      )}
     </>
+  );
+}
+
+function RelatedLinks({ related }: { related: { href: string; label: string }[] }) {
+  if (related.length === 0) return null;
+  return (
+    <ul className="mt-10 flex flex-wrap gap-2">
+      {related.map((r) => (
+        <li key={r.href}>
+          <Link
+            href={getLocalizedPath(r.href, 'it')}
+            className="inline-flex min-h-[44px] items-center gap-1.5 rounded-full px-4 text-sm font-medium ring-1 ring-inset ring-border transition-colors hover:bg-foreground hover:text-background hover:ring-foreground"
+          >
+            {r.label}
+            <ArrowUpRight aria-hidden className="h-4 w-4" />
+          </Link>
+        </li>
+      ))}
+    </ul>
   );
 }

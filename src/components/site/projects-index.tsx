@@ -2,7 +2,7 @@ import Link from 'next/link';
 import type { CSSProperties } from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { FirebaseImage } from '@/components/ui/firebase-image';
-import { getLocalizedPath } from '@/lib/i18n-helpers';
+import { projectPath } from '@/lib/i18n-helpers';
 import { CATEGORY_ORDER, categoryLabel, hostOf } from '@/lib/project-display';
 import type { Locale } from '@/i18n/config';
 import type { Project } from '@/lib/definitions';
@@ -84,7 +84,7 @@ export function ProjectsIndex({ projects, locale }: { projects: ProjectListItem[
                   style={{ '--i': Math.min(i, 3) } as CSSProperties}
                 >
                   <Link
-                    href={getLocalizedPath(`/projects/${p.slug}`, locale)}
+                    href={projectPath(p.slug)}
                     data-preview={i}
                     className="group grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-4 py-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary md:gap-x-8 md:py-7"
                   >

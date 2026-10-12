@@ -23,11 +23,11 @@ type Props = { params: Promise<{ locale: string }> };
 const META = {
   it: {
     title: 'Cookie policy',
-    description: 'Quali cookie e strumenti simili usa studiofaraj.it, a cosa servono, quanto durano e come scegliere quali attivare.',
+    description: 'Quali cookie e strumenti simili usa studiofaraj.it, a cosa servono, quanto durano e come scegliere quali attivare o cambiare idea in qualsiasi momento.',
   },
   en: {
     title: 'Cookie policy',
-    description: 'Which cookies and similar tools studiofaraj.it uses, what they are for, how long they last and how to choose which to allow.',
+    description: 'Which cookies and similar tools studiofaraj.it uses, what they are for, how long they last, and how to choose which to allow or change your mind at any time.',
   },
 } as const;
 

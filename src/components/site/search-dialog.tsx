@@ -11,6 +11,7 @@ import type { Blog, Project } from '@/lib/definitions';
 import { useLocale, useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import { postPath, projectPath } from '@/lib/i18n-helpers';
 
 type SearchResult = (
   | ({ type: 'blog' } & Blog)
@@ -91,7 +92,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
       e.preventDefault();
       const item = results[activeIndex];
       if (item) {
-        const path = `/${locale}/${item.type === 'blog' ? 'blog' : 'projects'}/${item.slug}`;
+        const path = item.type === 'blog' ? postPath(item.slug) : projectPath(item.slug);
         router.push(path);
         onOpenChange(false);
       }
@@ -195,7 +196,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
             {results.length > 0 ? (
               <div className="py-2">
                 {results.map((item, index) => {
-                  const path = `/${locale}/${item.type === 'blog' ? 'blog' : 'projects'}/${item.slug}`;
+                  const path = item.type === 'blog' ? postPath(item.slug) : projectPath(item.slug);
                   const excerpt = getExcerpt(item);
 
                   return (

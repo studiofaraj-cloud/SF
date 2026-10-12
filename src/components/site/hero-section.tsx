@@ -34,7 +34,8 @@ const COPY = {
   it: {
     h1a: 'Agenzia web',
     h1b: 'a Padova.',
-    lead: 'Siti, e-commerce e piattaforme scritti riga per riga. Niente template, niente WordPress: il codice resta tuo.',
+    // The lead opens with the page that answers "sviluppo siti web Padova".
+    lead: ['Sviluppo di siti web a Padova', ', e-commerce e piattaforme scritti riga per riga. Niente template, niente WordPress: il codice resta tuo.'],
     ctaStart: 'Inizia il tuo progetto',
     ctaWork: 'Guarda i lavori',
     available: 'Disponibili per nuovi progetti',
@@ -48,7 +49,7 @@ const COPY = {
   en: {
     h1a: 'Web agency',
     h1b: 'in Padova, Italy.',
-    lead: 'Websites, e-commerce and platforms written line by line. No templates, no WordPress: the code stays yours.',
+    lead: ['Web development in Padova', ', e-commerce and platforms written line by line. No templates, no WordPress: the code stays yours.'],
     ctaStart: 'Start your project',
     ctaWork: 'See the work',
     available: 'Available for new projects',
@@ -198,7 +199,13 @@ export async function HeroSection({ locale }: { locale: Locale }) {
           </h1>
 
           <p className="mt-8 max-w-[33rem] text-lg leading-relaxed text-white/70 sm:text-xl sm:leading-relaxed">
-            {copy.lead}
+            <Link
+              href={getLocalizedPath('/servizi/sviluppo-web', locale)}
+              className="text-white underline decoration-white/35 decoration-2 underline-offset-[5px] transition-colors hover:decoration-white"
+            >
+              {copy.lead[0]}
+            </Link>
+            {copy.lead[1]}
           </p>
 
           <div className="mt-10 flex flex-col gap-3 sm:flex-row">

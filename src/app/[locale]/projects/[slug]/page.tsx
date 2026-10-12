@@ -18,7 +18,8 @@ type Props = {
 export async function generateStaticParams() {
   try {
     const projects = await getProjectsAction();
-    const locales = ['it', 'en'];
+    // Italian only: /en/projects/:slug redirects here (next.config.ts).
+    const locales = ['it'];
     return locales.flatMap((locale) =>
       projects
         .filter((p: Project) => p.published)

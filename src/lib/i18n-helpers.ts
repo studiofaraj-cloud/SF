@@ -58,3 +58,17 @@ export function removeLocaleFromPath(pathname: string): string {
   
   return pathname;
 }
+
+/**
+ * Blog posts and case studies are published in Italian only, so every page,
+ * in either language, links to the Italian URL. /en/blog/:slug and
+ * /en/projects/:slug redirect there permanently (next.config.ts) until a post
+ * or project has a real translation.
+ */
+export function postPath(slug: string): string {
+  return `/it/blog/${slug}`;
+}
+
+export function projectPath(slug: string): string {
+  return `/it/projects/${slug}`;
+}

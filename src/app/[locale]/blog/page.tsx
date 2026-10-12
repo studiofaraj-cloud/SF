@@ -8,7 +8,7 @@ import { BrandMark } from '@/components/site/brand-mark';
 import HomeCtaSection from '@/components/site/home-cta-section';
 import { SectionEdge } from '@/components/site/section-edge';
 import { formatPostDate, getPublishedPosts, type BlogListItem } from '@/lib/blog-list';
-import { getLocalizedPath } from '@/lib/i18n-helpers';
+import { postPath } from '@/lib/i18n-helpers';
 import { generateStructuredDataPageBreadcrumb } from '@/lib/seo';
 import type { Locale } from '@/i18n/config';
 
@@ -84,7 +84,7 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
                 <p className={`${MONO} text-primary`}>{copy.latest}</p>
                 <h2 className="mt-4 font-display text-[1.7rem] font-bold leading-[1.1] tracking-[-0.02em] transition-colors group-hover:text-primary md:text-[2.1rem]">
                   <Link
-                    href={getLocalizedPath(`/blog/${latest.slug}`, lang)}
+                    href={postPath(latest.slug)}
                     className="after:absolute after:inset-0 after:rounded-[28px] after:content-[''] focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-ring"
                   >
                     {latest.title}

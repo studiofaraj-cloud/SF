@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { getLocalizedPath } from '@/lib/i18n-helpers';
+import { getLocalizedPath, postPath } from '@/lib/i18n-helpers';
 import type { Locale } from '@/i18n/config';
 import { RevealWords } from './reveal-words';
 
@@ -64,7 +64,7 @@ export function HomeBlogContent({ posts, locale }: { posts: HomeBlogPost[]; loca
               </p>
               <h3 className="font-display text-xl font-bold leading-snug tracking-[-0.015em] text-foreground transition-colors group-hover:text-primary md:col-span-5 md:text-2xl">
                 <Link
-                  href={getLocalizedPath(`/blog/${post.slug}`, locale)}
+                  href={postPath(post.slug)}
                   className="after:absolute after:inset-0 after:content-[''] focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-ring"
                 >
                   {post.title}

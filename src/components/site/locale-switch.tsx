@@ -13,9 +13,17 @@ const IT_ONLY: [prefix: string, fallback: string][] = [
   ['/quanto-costa-un-sito-web', '/'],
 ];
 
+// Posts and case studies are Italian only: English leads to the list.
+const IT_ONLY_CHILDREN: [prefix: string, fallback: string][] = [
+  ['/blog/', '/blog'],
+  ['/projects/', '/projects'],
+];
+
 function englishPath(path: string) {
   const hit = IT_ONLY.find(([prefix]) => path === prefix || path.startsWith(`${prefix}/`));
-  return hit ? hit[1] : path;
+  if (hit) return hit[1];
+  const child = IT_ONLY_CHILDREN.find(([prefix]) => path.startsWith(prefix));
+  return child ? child[1] : path;
 }
 
 /**

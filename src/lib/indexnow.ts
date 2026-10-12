@@ -135,11 +135,14 @@ export function companyProfileUrl(slug: string): string {
   return `${siteConfig.url}/c/${slug}`;
 }
 
-/** Convenience: notify all locale variants for blog/project content. */
+/**
+ * Convenience: notify a published post or project. They exist in Italian
+ * only (the /en URLs redirect), so only the Italian URL is sent.
+ */
 export function notifyContentPublished(
   type: 'blog' | 'project',
   slug: string,
 ): Promise<NotifyResult> {
   const builder = type === 'blog' ? blogUrl : projectUrl;
-  return notifyIndexNow([builder(slug, 'it'), builder(slug, 'en')]);
+  return notifyIndexNow([builder(slug, 'it')]);
 }

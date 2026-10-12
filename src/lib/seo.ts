@@ -19,9 +19,9 @@ export const seoConfig: Record<Locale, {
   defaultKeywords: string[];
 }> = {
   it: {
-    description: 'Sviluppo web su misura a Padova. Realizziamo siti, e-commerce e applicazioni con codice personalizzato — clienti in Veneto, Italia ed Europa.',
+    description: 'Agenzia web a Padova: siti, e-commerce e gestionali scritti su misura, poi SEO, hosting e manutenzione. Clienti in Veneto, in Italia e all’estero.',
     locale: 'it_IT',
-    defaultTitle: 'Studio Faraj — Agenzia Web a Padova | Sviluppo Siti Web',
+    defaultTitle: 'Agenzia Web a Padova | Studio Faraj',
     defaultKeywords: [
       // City + provincia
       'agenzia web Padova',
@@ -50,9 +50,9 @@ export const seoConfig: Record<Locale, {
     ],
   },
   en: {
-    description: 'Custom web development from Padova, Italy. We build websites, e-commerce and apps with bespoke code — serving clients across Italy and Europe.',
+    description: 'Web agency in Padova, Italy: websites, e-commerce and business software written to measure, then SEO, hosting and maintenance. Clients in Italy and abroad.',
     locale: 'en_US',
-    defaultTitle: 'Studio Faraj — Web Agency in Padova, Italy',
+    defaultTitle: 'Web Agency in Padova, Italy | Studio Faraj',
     defaultKeywords: [
       // City + region
       'web agency Padova',
@@ -107,6 +107,36 @@ export interface SEOProps {
   nofollow?: boolean;
 }
 
+const TITLE_MAX = 60;
+const DESCRIPTION_MAX = 160;
+
+/**
+ * "Title | Studio Faraj" — unless the title already names the studio, or the
+ * suffix would push it past what a results page shows (~60 characters): a
+ * long post title then stands alone rather than ending in a cut-off brand.
+ */
+export function brandedTitle(title: string): string {
+  const clean = title.replace(/\s+/g, ' ').trim();
+  if (clean.toLowerCase().includes(siteConfig.name.toLowerCase())) return clean;
+  const branded = `${clean} | ${siteConfig.name}`;
+  return branded.length <= TITLE_MAX ? branded : clean;
+}
+
+/**
+ * Descriptions over 160 characters are shortened at the end of a sentence
+ * when one ends late enough, otherwise at a word, with an ellipsis — never
+ * mid-word.
+ */
+export function fitDescription(text: string): string {
+  const clean = text.replace(/\s+/g, ' ').trim();
+  if (clean.length <= DESCRIPTION_MAX) return clean;
+  const head = clean.slice(0, DESCRIPTION_MAX);
+  const sentence = Math.max(head.lastIndexOf('. '), head.lastIndexOf('? '), head.lastIndexOf('! '));
+  if (sentence >= 140) return head.slice(0, sentence + 1);
+  const word = clean.slice(0, DESCRIPTION_MAX - 1).lastIndexOf(' ');
+  return `${clean.slice(0, word).replace(/[\s,;:–—-]+$/, '')}…`;
+}
+
 export function generateMetadata({
   title,
   description,
@@ -126,14 +156,8 @@ export function generateMetadata({
 }: SEOProps): Metadata {
   const config = seoConfig[locale];
   
-  const fullTitle = title 
-    ? `${title} | ${siteConfig.name}`
-    : config.defaultTitle;
-  
-  // Optimize description length (target ~155 chars; safety margin under 1000px)
-  const fullDescription = description
-    ? (description.length > 155 ? description.substring(0, 152) + '...' : description)
-    : config.description;
+  const fullTitle = title ? brandedTitle(title) : config.defaultTitle;
+  const fullDescription = description ? fitDescription(description) : config.description;
   
   const ogImage = image || (locale === 'en' ? siteConfig.ogImageEn : siteConfig.ogImage);
   const allImages = images && images.length > 0

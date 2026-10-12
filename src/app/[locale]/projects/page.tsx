@@ -10,6 +10,7 @@ import {
 } from '@/lib/seo';
 import type { Locale } from '@/i18n/config';
 import type { Project } from '@/lib/definitions';
+import { projectPath } from '@/lib/i18n-helpers';
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -34,7 +35,7 @@ export default async function ProjectsPage({ params }: Props) {
     listUrl,
     published.map((p) => ({
       name: p.title,
-      url: `${siteConfig.url}/${currentLocale}/projects/${p.slug}`,
+      url: `${siteConfig.url}${projectPath(p.slug)}`,
       image: p.featuredImage || undefined,
     }))
   );

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { FirebaseImage } from '@/components/ui/firebase-image';
-import { getLocalizedPath } from '@/lib/i18n-helpers';
+import { getLocalizedPath, projectPath } from '@/lib/i18n-helpers';
 import { categoryLabel, hostOf } from '@/lib/project-display';
 import type { Locale } from '@/i18n/config';
 import type { Project } from '@/lib/definitions';
@@ -79,7 +79,7 @@ export function HomeProjectContent({
             const host = hostOf(p.projectUrl);
             const category = categoryLabel(p.category, locale);
             const meta = [category, p.year].filter(Boolean).join(', ');
-            const href = getLocalizedPath(`/projects/${p.slug}`, locale);
+            const href = projectPath(p.slug);
 
             return (
               <li key={p.id || p.slug} data-slide className="work-slide flex w-[var(--slide)] shrink-0 snap-start">

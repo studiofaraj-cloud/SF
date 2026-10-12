@@ -11,6 +11,7 @@
  */
 
 export type ServiceLocalKey =
+  | 'webDevelopment'
   | 'ecommerce'
   | 'seoMarketing'
   | 'designUIUX'
@@ -23,7 +24,8 @@ export interface ServiceLocalContent {
   /** H2, rendered as `heading` + `headingHighlight` (the second part in the service colour). */
   heading: string;
   headingHighlight: string;
-  paragraphs: string[];
+  /** A paragraph is text, or text with one inline link (`before` [link] `after`). */
+  paragraphs: (string | { before: string; link: { href: string; label: string }; after?: string })[];
   points: { title: string; body: string }[];
   faqs: { question: string; answer: string }[];
   related: { href: string; label: string }[];
@@ -37,6 +39,33 @@ export const SERVICE_AREA = {
 };
 
 export const SERVICE_LOCAL_CONTENT: Record<ServiceLocalKey, ServiceLocalContent> = {
+  // The page's own FAQ (services.webDevelopment.v2.faq) stays where it is.
+  webDevelopment: {
+    heading: 'Realizzazione siti web a Padova:',
+    headingHighlight: 'come lavoriamo, tempi e costi',
+    paragraphs: [
+      'Realizziamo siti web per aziende e professionisti di Padova e del Veneto partendo da quello che il sito deve ottenere: richieste di preventivo, telefonate, vendite o un processo interno più semplice. Ogni sito è scritto in codice, senza template né page builder, e il codice resta tuo.',
+      'I tempi dipendono da quello che serve: un sito vetrina richiede qualche settimana, un sito con area amministrativa o un gestionale qualche mese. Le date le fissiamo insieme dopo la prima analisi, prima di iniziare.',
+      {
+        before: 'Il prezzo dipende da pagine, contenuti, funzioni e integrazioni: per questo ogni preventivo è dettagliato e gratuito. Nella guida ',
+        link: { href: '/quanto-costa-un-sito-web', label: 'quanto costa un sito web' },
+        after: ' trovi cosa sposta il prezzo e quali costi tornano ogni anno.',
+      },
+    ],
+    points: [
+      { title: 'Parli con chi scrive il codice', body: 'Dal primo incontro alla manutenzione hai un solo referente, che conosce il tuo sito riga per riga.' },
+      { title: 'Veloce e trovabile', body: 'SEO tecnica e prestazioni fanno parte del progetto dal primo giorno, non si aggiungono alla fine.' },
+      { title: 'Lo aggiorni tu', body: 'Un’area amministrativa per cambiare testi, foto e lavori senza chiamare lo sviluppatore.' },
+    ],
+    faqs: [],
+    related: [
+      { href: '/quanto-costa-un-sito-web', label: 'Quanto costa un sito web' },
+      { href: '/siti-web/imprese-edili', label: 'Siti per imprese edili' },
+      { href: '/siti-web/imprese-di-ristrutturazione', label: 'Siti per imprese di ristrutturazione' },
+      { href: '/servizi/e-commerce', label: 'E-commerce su misura' },
+      { href: '/servizi/software-gestionale', label: 'Software gestionale' },
+    ],
+  },
   ecommerce: {
     heading: 'Realizzazione e-commerce a Padova:',
     headingHighlight: 'un negozio online costruito sul tuo modo di vendere',

@@ -126,10 +126,20 @@ const nextConfig: NextConfig = {
   // Security + cache headers
   // The privacy and cookie policies used to share /legal: old links (and any
   // stored in external services' settings) land on the privacy policy.
+  // All permanent (308): search engines move the old URL's signals over.
   async redirects() {
+    const MINICAR = '/it/projects/sito-web-e-gestionale-per-concessionaria-auto-usate-minicar-di-ali-ibrahim';
     return [
       { source: '/:locale(it|en)/legal', destination: '/:locale/privacy', permanent: true },
       { source: '/legal', destination: '/it/privacy', permanent: true },
+      // A case study whose slug changed: Google still had the old URL (404).
+      { source: '/:locale(it|en)/projects/concessionaria-minicar-di-ali-ibrahim', destination: MINICAR, permanent: true },
+      { source: '/projects/concessionaria-minicar-di-ali-ibrahim', destination: MINICAR, permanent: true },
+      // Posts and case studies exist in Italian only. The /en URLs used to
+      // serve the Italian text as an English page; they now lead to the one
+      // real page. Drop these rules for a slug once it has a translation.
+      { source: '/en/blog/:slug', destination: '/it/blog/:slug', permanent: true },
+      { source: '/en/projects/:slug', destination: '/it/projects/:slug', permanent: true },
     ];
   },
   async headers() {

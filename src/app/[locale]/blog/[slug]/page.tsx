@@ -60,7 +60,8 @@ type Props = {
 export async function generateStaticParams() {
   try {
     const blogs = await getBlogsAction();
-    const locales = ['it', 'en'];
+    // Italian only: /en/blog/:slug redirects here (next.config.ts).
+    const locales = ['it'];
     return locales.flatMap((locale) =>
       blogs
         .filter((b: Blog) => b.published)
