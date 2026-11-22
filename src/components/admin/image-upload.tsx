@@ -20,15 +20,21 @@ type ImageUploadProps = {
   onUploadComplete?: (url: string) => void;
   onDelete?: () => void;
   onUploadingChange?: (isUploading: boolean) => void;
+  /**
+   * Storage folder. 'images' (site images) is admin-only in storage.rules;
+   * clients upload to their own `companies/{uid}`.
+   */
+  storagePath?: string;
 };
 
-export function ImageUpload({ 
+export function ImageUpload({
   label, 
   name, 
   initialValue = '',
   onUploadComplete,
   onDelete,
-  onUploadingChange
+  onUploadingChange,
+  storagePath = 'images',
 }: ImageUploadProps) {
   const [preview, setPreview] = useState(initialValue);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -71,7 +77,7 @@ export function ImageUpload({
       const timestamp = Date.now();
       const sanitizedFileName = fileToUpload.name.replace(/[^a-zA-Z0-9.-]/g, '_');
       const fileName = `${timestamp}-${sanitizedFileName}`;
-      const storageRef = ref(storage, `images/${fileName}`);
+      const storageRef = ref(storage, `${storagePath}/${fileName}`);
 
       const uploadTask = uploadBytesResumable(storageRef, fileToUpload);
 

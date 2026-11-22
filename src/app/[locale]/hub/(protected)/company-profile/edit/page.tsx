@@ -20,6 +20,7 @@ import {
 import { Loader2, ArrowLeft, Plus, Trash2, ShieldCheck, AlertCircle, ExternalLink } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { ImageUpload } from '@/components/admin/image-upload';
+import { useUser } from '@/firebase/provider';
 import {
   getMyCompanyProfileAction,
   updateCompanyProfileAction,
@@ -79,6 +80,9 @@ export default function HubCompanyProfileEditPage() {
   const locale = (params?.locale as string) || 'it';
   const en = locale === 'en';
   const { toast } = useToast();
+  // Company-page images go to the client's own folder (storage.rules).
+  const { user } = useUser();
+  const uploadPath = `companies/${user?.uid ?? 'unknown'}`;
 
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const [loading, setLoading] = useState(true);
@@ -340,6 +344,7 @@ export default function HubCompanyProfileEditPage() {
             <ImageUpload
               label={en ? 'Logo' : 'Logo'}
               name="logo"
+              storagePath={uploadPath}
               initialValue={form.logoUrl}
               onUploadComplete={(url) => set('logoUrl', url)}
               onDelete={() => set('logoUrl', '')}
@@ -347,6 +352,7 @@ export default function HubCompanyProfileEditPage() {
             <ImageUpload
               label={en ? 'Hero image' : 'Immagine hero'}
               name="hero"
+              storagePath={uploadPath}
               initialValue={form.heroUrl}
               onUploadComplete={(url) => set('heroUrl', url)}
               onDelete={() => set('heroUrl', '')}

@@ -4,7 +4,10 @@ interface BaseLayoutInput {
   bodyHtml: string;
   ctaLabel?: string;
   ctaUrl?: string;
-  showUnsubscribe?: boolean;
+  /** Extra content under the button (e.g. "ignore this if it wasn't you"). */
+  afterCtaHtml?: string;
+  /** A real, signed unsubscribe link: newsletter emails only. */
+  unsubscribeUrl?: string;
   locale?: 'it' | 'en';
 }
 
@@ -28,7 +31,8 @@ export function renderBaseLayout({
   bodyHtml,
   ctaLabel,
   ctaUrl,
-  showUnsubscribe = false,
+  afterCtaHtml,
+  unsubscribeUrl,
   locale = 'it',
 }: BaseLayoutInput): string {
   const ctaBlock =
@@ -44,10 +48,19 @@ export function renderBaseLayout({
         </tr>`
       : '';
 
-  const unsubscribeBlock = showUnsubscribe
-    ? `<br/><a href="${SITE_URL}" style="color: ${BRAND.muted}; text-decoration: underline;">${
+  const unsubscribeBlock = unsubscribeUrl
+    ? `<br/><a href="${unsubscribeUrl}" style="color: ${BRAND.muted}; text-decoration: underline;">${
         locale === 'en' ? 'Unsubscribe' : 'Annulla iscrizione'
       }</a>`
+    : '';
+
+  const afterCtaBlock = afterCtaHtml
+    ? `
+        <tr>
+          <td style="padding: 0 40px 24px 40px; font-size:15px; line-height:1.6; color:${BRAND.text};">
+            ${afterCtaHtml}
+          </td>
+        </tr>`
     : '';
 
   const contactBlock = `
@@ -97,6 +110,7 @@ export function renderBaseLayout({
               </td>
             </tr>
             ${ctaBlock}
+            ${afterCtaBlock}
             <tr>
               <td style="padding: 24px 40px 32px 40px; border-top:1px solid ${BRAND.border}; font-size:13px; line-height:1.6; color:${BRAND.muted}; text-align:center;">
                 ${footerCopy}

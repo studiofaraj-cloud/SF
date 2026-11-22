@@ -1,6 +1,6 @@
 'use server';
 
-import { Timestamp } from 'firebase/firestore';
+import { Timestamp } from '@/lib/server-firestore';
 import { createSession, deleteSession, requireRole, requireUser, type SessionRole } from '@/lib/auth';
 import { verifyFirebaseIdToken } from '@/lib/firebase-token';
 import {

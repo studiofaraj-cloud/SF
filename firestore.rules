@@ -1,8 +1,158 @@
 rules_version = '2';
+
+// ===============================================================
+// Studio Faraj — Firestore Security Rules
+// ===============================================================
+//
+// The server (Next.js on App Hosting) reads and writes Firestore through the
+// Firebase Admin SDK (src/firebase/admin.ts), which bypasses these rules.
+// So these rules only describe what a BROWSER may do, and that is very little:
+// everything is denied unless listed below. Public pages never read Firestore
+// from the browser; all writes go through server actions.
+//
+// ===============================================================
+// Assumed Data Model (only the collections the browser can reach)
+// ===============================================================
+//
+// Collection: users
+// Document ID: Firebase Auth uid
+// Fields (written by the server only):
+//   - uid: string (required) - Firebase Auth uid
+//   - email: string (required) - PII
+//   - displayName, photoURL, company, phone, country, locale: string (optional) - PII
+//   - role: string (required, 'admin' | 'client') - access level, set by the server
+//   - billing fields (vatNumber, taxCode, address…): string (optional) - PII
+//   - createdAt, lastLoginAt: timestamp
+//
+// Collection: conversations
+// Document ID: the client's uid (one conversation per client)
+// Fields (written by the server only):
+//   - clientId: string (required, == document id)
+//   - clientName, clientEmail, lastMessage: string (optional) - PII
+//   - lastMessageAt, createdAt, updatedAt: timestamp
+//   - lastSenderRole: string ('admin' | 'client')
+//   - unreadForAdmin, unreadForClient: number
+//
+// Collection: conversationMessages
+// Document ID: auto
+// Fields (written by the server only):
+//   - conversationId: string (required) - the client's uid
+//   - senderId: string (required), senderName: string (optional)
+//   - senderRole: string ('admin' | 'client')
+//   - body: string (required)
+//   - createdAt: timestamp
+//
+// Collection: slugs
+// Document ID: a company page slug (plus one '_index' document listing all slugs)
+// Fields (written by the server only):
+//   - profileId: string, ownerUid: string, createdAt: timestamp
+//
+// Collection: system-check-test (admin diagnostics page)
+// Document ID: auto
+// Fields (written by an admin from the browser):
+//   - timestamp: timestamp (required, recent)
+//   - test: bool (required, true)
+//   - message: string (required, ≤ 200 chars)
+//
+// Every other collection (blogs, projects, messages, subscribers, bookings,
+// settings, reviews, serviceRequests, requestMessages, requestFiles, quotes,
+// quotePayments, clientFiles, companyProfiles, …) is server-only: no
+// browser access at all.
+//
+// ===============================================================
+
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // The role is stored by the server in users/{uid}.role; a user can never
+    // write it (no browser writes to users), so it can't be self-assigned.
+    function isAdmin() {
+      return isAuthenticated()
+        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    function hasOnlyAllowedFields(fields) {
+      return request.resource.data.keys().hasOnly(fields);
+    }
+
+    function hasRequiredFields(fields) {
+      return request.resource.data.keys().hasAll(fields);
+    }
+
+    function isRecent(time) {
+      return time is timestamp
+        && time > request.time - duration.value(5, 'm')
+        && time <= request.time + duration.value(1, 'm');
+    }
+
+    // ---------------------------------------------------------------
+    // Domain validators
+    // ---------------------------------------------------------------
+
+    function isValidSystemCheck(data) {
+      return hasOnlyAllowedFields(['timestamp', 'test', 'message'])
+        && hasRequiredFields(['timestamp', 'test', 'message'])
+        && isRecent(data.timestamp)
+        && data.test == true
+        && data.message is string && data.message.size() <= 200;
+    }
+
+    // ===============================================================
+    // Rules
+    // ===============================================================
+
+    // A user reads their own profile (the browser needs the role); admins
+    // read any. Profiles hold PII, so nobody else can. No browser writes:
+    // the server creates and updates profiles, including the role.
+    match /users/{userId} {
+      allow read: if isOwner(userId) || isAdmin();
+    }
+
+    // One conversation per client, keyed by the client's uid. The client
+    // follows their own; the admin chat lists them all. Writes: server only.
+    match /conversations/{conversationId} {
+      allow read: if isOwner(conversationId) || isAdmin();
+    }
+
+    // Chat messages. A client may only run queries filtered to their own
+    // conversation (where conversationId == their uid); admins read any.
+    // Writes: server only (the send actions).
+    match /conversationMessages/{messageId} {
+      allow read: if (isAuthenticated() && resource.data.conversationId == request.auth.uid) || isAdmin();
+    }
+
+    // Company-page slugs: the edge middleware checks with one unauthenticated
+    // REST get whether /{slug} is a company page. Single gets only (no list,
+    // so slugs can't be enumerated), and never the '_index' document that
+    // lists them all. Writes: server only.
+    match /slugs/{slug} {
+      allow get: if slug != '_index';
+    }
+
+    // Admin diagnostics (/admin/system-check): write, read back and delete a
+    // small test document.
+    match /system-check-test/{docId} {
+      allow read, delete: if isAdmin();
+      allow create: if isAdmin() && isValidSystemCheck(request.resource.data);
+    }
+
+    // Everything else: no browser access. (Rules deny by default; this makes
+    // it explicit.)
     match /{document=**} {
-      allow read, write: if true;
+      allow read, write: if false;
     }
   }
 }

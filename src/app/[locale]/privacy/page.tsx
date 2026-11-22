@@ -8,7 +8,7 @@ import { generateMetadata as generateSEOMetadata, siteConfig } from '@/lib/seo';
 import type { Locale } from '@/i18n/config';
 
 /** Date of the last change to this text: update it with every edit. */
-const UPDATED = '2026-09-29';
+const UPDATED = '2026-11-22';
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -78,10 +78,10 @@ function content(lang: Locale): { lead: string; brief: React.ReactNode[]; sectio
                   ['Contact and quote requests', 'Name, email, phone if you add it, service, budget, message', 'Reply to you and prepare a quote', 'Steps you ask for before a contract, art. 6(1)(b)', '2 years from the last contact'],
                   ['Booking a call', 'Name, email, phone, chosen day and time, optional message', 'Arrange and confirm the call', 'Steps you ask for before a contract, art. 6(1)(b)', '2 years from the last contact'],
                   ['Messages on WhatsApp', 'Number, profile name, messages', 'Reply to you', 'Steps you ask for before a contract, art. 6(1)(b)', '2 years from the last contact'],
-                  ['Newsletter', 'Email', 'Send you articles and news', 'Consent, art. 6(1)(a)', 'Until you unsubscribe'],
+                  ['Newsletter', 'Email; date, page and privacy-notice version of your sign-up and of your confirmation', 'Send you articles and news; prove your consent', 'Consent, art. 6(1)(a) (confirmed by email)', 'Until you unsubscribe; sign-ups not confirmed within 30 days are deleted'],
                   ['Client area', 'Account (name, email, Google sign-in if you use it), requests, messages, files, quotes and invoices', 'Provide the services you buy and manage the relationship', 'Contract, art. 6(1)(b); tax obligations, art. 6(1)(c)', 'For the relationship; invoices and accounting records 10 years'],
                   ['Business pages', 'The company details you choose to publish (name, services, contacts, VAT no. if added) and billing details', 'Publish the page and manage the subscription', 'Contract, art. 6(1)(b); tax obligations, art. 6(1)(c)', 'While the subscription is active; invoices 10 years'],
-                  ['Browsing and security', 'IP address, browser, requested pages, date and time, in the server logs', 'Run the site and protect it from abuse', 'Legitimate interest, art. 6(1)(f)', 'Up to 6 months'],
+                  ['Browsing and security', 'IP address, browser, requested pages, date and time, in the server logs; a code derived from the IP address (not the address itself) to limit repeated form submissions', 'Run the site and protect it and its forms from abuse', 'Legitimate interest, art. 6(1)(f)', 'Logs up to 6 months; form limits 24 hours'],
                   ['Visit statistics (only with consent)', 'Pages viewed, device, referrer, a pseudonymous identifier', 'Understand how the site is used', 'Consent, art. 6(1)(a)', 'Up to 14 months'],
                 ]}
               />
@@ -202,10 +202,10 @@ function content(lang: Locale): { lead: string; brief: React.ReactNode[]; sectio
                 ['Richieste di contatto e preventivo', 'Nome, email, telefono se lo indichi, servizio, budget, messaggio', 'Risponderti e preparare il preventivo', 'Misure precontrattuali su tua richiesta, art. 6.1.b', '2 anni dall’ultimo contatto'],
                 ['Prenotazione di una chiamata', 'Nome, email, telefono, giorno e orario scelti, messaggio facoltativo', 'Organizzare e confermare la chiamata', 'Misure precontrattuali su tua richiesta, art. 6.1.b', '2 anni dall’ultimo contatto'],
                 ['Messaggi su WhatsApp', 'Numero, nome del profilo, messaggi', 'Risponderti', 'Misure precontrattuali su tua richiesta, art. 6.1.b', '2 anni dall’ultimo contatto'],
-                ['Newsletter', 'Email', 'Inviarti articoli e novità', 'Consenso, art. 6.1.a', 'Fino alla disiscrizione'],
+                ['Newsletter', 'Email; data, pagina e versione dell’informativa dell’iscrizione e della conferma', 'Inviarti articoli e novità; dimostrare il tuo consenso', 'Consenso, art. 6.1.a (confermato via email)', 'Fino alla disiscrizione; le iscrizioni non confermate entro 30 giorni vengono cancellate'],
                 ['Area clienti', 'Account (nome, email, accesso con Google se lo usi), richieste, messaggi, file, preventivi e fatture', 'Fornire i servizi acquistati e gestire il rapporto', 'Contratto, art. 6.1.b; obblighi fiscali, art. 6.1.c', 'Per la durata del rapporto; fatture e scritture contabili 10 anni'],
                 ['Pagine aziendali', 'I dati dell’azienda che scegli di pubblicare (ragione sociale, servizi, contatti, P.IVA se la indichi) e i dati di fatturazione', 'Pubblicare la pagina e gestire l’abbonamento', 'Contratto, art. 6.1.b; obblighi fiscali, art. 6.1.c', 'Finché l’abbonamento è attivo; fatture 10 anni'],
-                ['Navigazione e sicurezza', 'Indirizzo IP, browser, pagine richieste, data e ora, nei log del server', 'Far funzionare il sito e proteggerlo da abusi', 'Legittimo interesse, art. 6.1.f', 'Fino a 6 mesi'],
+                ['Navigazione e sicurezza', 'Indirizzo IP, browser, pagine richieste, data e ora, nei log del server; un codice ricavato dall’indirizzo IP (non l’indirizzo) per limitare gli invii ripetuti dei moduli', 'Far funzionare il sito e proteggere il sito e i moduli da abusi', 'Legittimo interesse, art. 6.1.f', 'Log fino a 6 mesi; limiti dei moduli 24 ore'],
                 ['Statistiche di visita (solo col consenso)', 'Pagine viste, dispositivo, provenienza, un identificativo pseudonimo', 'Capire come viene usato il sito', 'Consenso, art. 6.1.a', 'Fino a 14 mesi'],
               ]}
             />

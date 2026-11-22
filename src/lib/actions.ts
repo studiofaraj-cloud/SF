@@ -10,7 +10,6 @@ import {
     createProjectData,
     updateProjectData,
     deleteProjectData,
-    createSubscriberData,
     getBlogs,
     getBlogById,
     getBlogBySlug,
@@ -34,7 +33,7 @@ import {
     getPublishedCompanyProfiles,
     type HeroSlideData,
 } from './firestore-data';
-import { Timestamp, deleteField } from 'firebase/firestore';
+import { Timestamp, deleteField } from '@/lib/server-firestore';
 import { sendTransactionalEmails, normalizeLocale } from './email/send';
 import { redirect } from 'next/navigation';
 import { after } from 'next/server';
@@ -277,7 +276,8 @@ export async function getDashboardStatsAction() {
         totalBlogs: blogs.length,
         totalProjects: projects.length,
         totalMessages: messages.length,
-        totalSubscribers: subscribers.length,
+        // Confirmed only (double opt-in); older records count while active.
+        totalSubscribers: subscribers.filter((s) => ((s as { status?: string }).status ?? (s.active === false ? 'unsubscribed' : 'active')) === 'active').length,
         totalBookings: bookings.length,
         totalRequests: requests.length,
         totalClients: clients.length,
@@ -674,40 +674,9 @@ export async function deleteProject(id: string) {
     }
 }
 
-const SubscriberSchema = z.object({
-  email: z.string().email('Invalid email address'),
-  locale: z.string().optional(),
-});
-
-export async function createSubscriber(prevState: { message: string | null, success: boolean }, formData: FormData) {
-  const validatedFields = SubscriberSchema.safeParse(Object.fromEntries(formData.entries()));
-
-  if (!validatedFields.success) {
-    return {
-      message: 'Indirizzo email non valido.',
-      success: false,
-    };
-  }
-
-  try {
-    await createSubscriberData({ email: validatedFields.data.email, active: true });
-
-    sendTransactionalEmails({
-      scenario: 'newsletter',
-      locale: normalizeLocale(validatedFields.data.locale),
-      client: { email: validatedFields.data.email },
-      adminFields: [
-        { label: 'Email', value: validatedFields.data.email },
-        { label: 'Tipo', value: 'Iscrizione Newsletter' },
-      ],
-    }).catch(() => {});
-  } catch (error) {
-    return { message: (error as Error).message, success: false };
-  }
-
-  revalidatePath('/admin/subscribers');
-  return { success: true, message: 'Iscrizione completata con successo!' };
-}
+// The newsletter sign-up lives in src/lib/newsletter-actions.ts (double opt-in,
+// bot checks and rate limits). The old single opt-in action was removed: a
+// server action stays callable as long as it exists.
 
 // Booking Actions
 const BookingSchema = z.object({

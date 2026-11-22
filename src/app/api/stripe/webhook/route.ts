@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import type Stripe from 'stripe';
-import { Timestamp } from 'firebase/firestore';
+import { Timestamp } from '@/lib/server-firestore';
 import { getStripe, isStripeConfigured } from '@/lib/stripe';
 import {
   getQuoteById,

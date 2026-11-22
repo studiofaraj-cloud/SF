@@ -97,7 +97,7 @@ export async function GET() {
       changefreq: 'weekly',
       computedLastmod: blogIndexLastmod,
     },
-    { url: '/privacy', priority: '0.3', changefreq: 'yearly', lastmod: '2026-09-29' },
+    { url: '/privacy', priority: '0.3', changefreq: 'yearly', lastmod: '2026-11-22' },
     { url: '/cookie', priority: '0.3', changefreq: 'yearly', lastmod: '2026-09-29' },
     { url: '/terms', priority: '0.3', changefreq: 'yearly', lastmod: '2026-09-29' },
   ];

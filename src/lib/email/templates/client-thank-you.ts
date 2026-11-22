@@ -39,7 +39,6 @@ export function renderClientThankYou({
       bodyHtml,
       ctaLabel: copy.ctaLabel,
       ctaUrl,
-      showUnsubscribe: scenario === 'newsletter',
       locale,
     }),
   };

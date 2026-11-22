@@ -1,7 +1,7 @@
 'use server';
 
 import { z } from 'zod';
-import { Timestamp } from 'firebase/firestore';
+import { Timestamp } from '@/lib/server-firestore';
 import { requireUser, requireRole } from '@/lib/auth';
 import { deleteFile } from '@/lib/storage';
 import {

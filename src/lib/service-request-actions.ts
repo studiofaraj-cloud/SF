@@ -2,7 +2,7 @@
 
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
-import { Timestamp } from 'firebase/firestore';
+import { Timestamp } from '@/lib/server-firestore';
 import { requireUser, requireRole } from '@/lib/auth';
 import {
   createServiceRequest,

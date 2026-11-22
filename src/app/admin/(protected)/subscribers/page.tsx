@@ -17,6 +17,16 @@ type Subscriber = {
   createdAt: string;
 };
 
+/**
+ * Double opt-in (src/lib/newsletter.ts): a record is a subscriber only once
+ * confirmed. Records from before it have no status and count when active.
+ */
+function statusOf(s: { status?: string; active?: boolean }): 'pending' | 'active' | 'unsubscribed' {
+  if (s.status === 'pending' || s.status === 'active' || s.status === 'unsubscribed') return s.status;
+  return s.active === false ? 'unsubscribed' : 'active';
+}
+const isConfirmed = (s: { status?: string; active?: boolean }) => statusOf(s) === 'active';
+
 export default function SubscribersPage() {
   const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
   const [loading, setLoading] = useState(true);
@@ -46,7 +56,8 @@ export default function SubscribersPage() {
 
   const handleExportCSV = () => {
     const headers = ['Email', 'Data Iscrizione'];
-    const rows = subscribers.map(s => {
+    // Only confirmed subscribers: the export is what newsletters get sent to.
+    const rows = subscribers.filter(isConfirmed).map(s => {
       // Handle both createdAt and subscribedAt fields, and Firestore Timestamps
       const dateValue = (s as any).subscribedAt || s.createdAt;
       let date: Date;
@@ -133,7 +144,7 @@ export default function SubscribersPage() {
             <div className="flex items-center justify-between">
               <div>
                 <div className="text-xs md:text-sm text-muted-foreground mb-1">Totale Iscritti</div>
-                <div className="text-2xl md:text-3xl font-bold text-primary">{subscribers.length}</div>
+                <div className="text-2xl md:text-3xl font-bold text-primary">{subscribers.filter(isConfirmed).length}</div>
               </div>
               <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center border border-primary/30">
                 <Mail className="h-6 w-6 text-primary" />
@@ -216,6 +227,11 @@ export default function SubscribersPage() {
                         <h3 className="font-semibold text-sm md:text-base text-foreground truncate">
                           {subscriber.email}
                         </h3>
+                        {!isConfirmed(subscriber) && (
+                          <span className="shrink-0 rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
+                            {statusOf(subscriber) === 'unsubscribed' ? 'Disiscritto' : 'Da confermare'}
+                          </span>
+                        )}
                       </div>
                       <div className="flex items-center gap-2 text-xs text-muted-foreground">
                         <Calendar className="h-3 w-3" />

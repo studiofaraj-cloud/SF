@@ -19,14 +19,13 @@ import {
   runTransaction,
   serverTimestamp,
   Timestamp,
-  DocumentData,
-  QueryConstraint,
-} from 'firebase/firestore';
-import { initializeServerSideFirebase } from '@/firebase/server-init';
-
-// Initialize server-side Firebase and get Firestore instance
-const { firestore } = initializeServerSideFirebase();
-export const db = firestore;
+  db,
+  type DocumentData,
+  type QueryConstraint,
+} from '@/lib/server-firestore';
+// The server's Admin SDK handle (src/lib/server-firestore.ts): it bypasses the
+// security rules, which deny anonymous visitors.
+export { db };
 
 export interface ImageMetadata {
   url: string;

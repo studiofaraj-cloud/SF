@@ -18,6 +18,8 @@ export interface BrevoSendInput {
   subject: string;
   htmlContent: string;
   replyTo?: BrevoAddress;
+  /** Extra headers, e.g. List-Unsubscribe for newsletters (newsletterHeaders). */
+  headers?: Record<string, string>;
 }
 
 export function getSender(): BrevoAddress {

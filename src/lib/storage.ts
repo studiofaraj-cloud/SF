@@ -1,10 +1,11 @@
-
 import "server-only";
 
-import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
-import { initializeServerSideFirebase } from '@/firebase/server-init';
+import { getDownloadURL } from 'firebase-admin/storage';
+import { adminBucket } from '@/firebase/admin';
 
-const { storage } = initializeServerSideFirebase();
+// Server-side Storage through the Admin SDK (src/firebase/admin.ts): it
+// doesn't depend on the storage rules, which only let signed-in users touch
+// their own files.
 
 export type ImageMetadata = {
   url: string;
@@ -89,26 +90,19 @@ export async function uploadFile(file: File, path: string): Promise<ImageMetadat
     throw new Error(fileValidation.error);
   }
 
-  const storageRef = ref(storage, path);
-  const snapshot = await uploadBytes(storageRef, file);
-  const url = await getDownloadURL(snapshot.ref);
-  
+  const object = adminBucket().file(path);
+  await object.save(Buffer.from(await file.arrayBuffer()), { contentType: file.type, resumable: false });
+  const url = await getDownloadURL(object);
+
   return {
     url,
     name: file.name,
     size: file.size,
-    path: snapshot.ref.fullPath
+    path,
   };
 }
 
 export async function deleteFile(path: string): Promise<void> {
-  try {
-    const storageRef = ref(storage, path);
-    await deleteObject(storageRef);
-  } catch (error: any) {
-    if (error.code === 'storage/object-not-found') {
-      return;
-    }
-    throw error;
-  }
+  // Already gone is fine: the goal is that the file doesn't exist.
+  await adminBucket().file(path).delete({ ignoreNotFound: true });
 }

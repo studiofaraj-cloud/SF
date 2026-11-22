@@ -1,8 +1,96 @@
 rules_version = '2';
+
+// Studio Faraj — Cloud Storage Security Rules
+//
+// The server uses the Admin SDK (src/firebase/admin.ts), which bypasses
+// these rules. They cover what a browser may upload, read or delete:
+//
+//   images/**, gallery/**    site images (blog, projects, slides, editor):
+//                            anyone reads, admins write
+//   companies/{uid}/**       a client's company-page logo and cover:
+//                            anyone reads (they're on a public page), the
+//                            owner and admins write
+//   clients/{uid}/**         a client's files in the client area: the owner
+//                            and admins only
+//   requests/{requestId}/**  attachments on a service request: the request's
+//                            client and admins only
+//   system-checks/**         admin diagnostics page
+//
+// Everything else is denied. Images shown on the site are served through
+// their download URLs (which carry their own token), not through these rules.
+// Roles come from Firestore (users/{uid}.role), which only the server writes.
+
 service firebase.storage {
   match /b/{bucket}/o {
-    match /{allPaths=**} {
-      allow read, write: if true;
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isAuthenticated()
+        && firestore.exists(/databases/(default)/documents/users/$(request.auth.uid))
+        && firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    function isDelete() {
+      return request.resource == null;
+    }
+
+    function isImageUnder(mb) {
+      return request.resource.contentType.matches('image/.*')
+        && request.resource.size < mb * 1024 * 1024;
+    }
+
+    function isFileUnder(mb) {
+      return request.resource.size < mb * 1024 * 1024;
+    }
+
+    // Site images: public, written by admins (images up to 10 MB).
+    match /images/{path=**} {
+      allow read: if true;
+      allow write: if isAdmin() && (isDelete() || isImageUnder(10));
+    }
+    match /gallery/{path=**} {
+      allow read: if true;
+      allow write: if isAdmin() && (isDelete() || isImageUnder(10));
+    }
+
+    // Company-page images: public, written by the page's owner (images up to 5 MB).
+    match /companies/{uid}/{path=**} {
+      allow read: if true;
+      allow write: if (request.auth.uid == uid || isAdmin())
+        && isAuthenticated()
+        && (isDelete() || isImageUnder(5));
+    }
+
+    // Client-area files: private to the client and admins (up to 25 MB).
+    match /clients/{uid}/{path=**} {
+      allow read: if isAuthenticated() && (request.auth.uid == uid || isAdmin());
+      allow write: if isAuthenticated()
+        && (request.auth.uid == uid || isAdmin())
+        && (isDelete() || isFileUnder(25));
+    }
+
+    // Request attachments: the request's own client and admins (up to 25 MB).
+    match /requests/{requestId}/{path=**} {
+      function isRequestClient() {
+        return isAuthenticated()
+          && firestore.exists(/databases/(default)/documents/serviceRequests/$(requestId))
+          && firestore.get(/databases/(default)/documents/serviceRequests/$(requestId)).data.clientId == request.auth.uid;
+      }
+      allow read: if isRequestClient() || isAdmin();
+      allow write: if (isRequestClient() || isAdmin()) && (isDelete() || isFileUnder(25));
+    }
+
+    // Admin diagnostics.
+    match /system-checks/{path=**} {
+      allow read, write: if isAdmin();
+    }
+
+    // Everything else: no browser access.
+    match /{path=**} {
+      allow read, write: if false;
     }
   }
 }

@@ -3,7 +3,7 @@
 import { headers } from 'next/headers';
 import { revalidatePath } from 'next/cache';
 import { after } from 'next/server';
-import { Timestamp } from 'firebase/firestore';
+import { Timestamp } from '@/lib/server-firestore';
 import { notifyIndexNow, companyProfileUrl } from '@/lib/indexnow';
 import { requireUser, requireRole } from '@/lib/auth';
 import { getStripe, isStripeConfigured } from '@/lib/stripe';
